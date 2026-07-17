@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import Header from "../components/global/Header.astro";
+import Footer from "../components/global/Footer.astro";
 
 interface Props {
   title?: string;
@@ -16,10 +17,6 @@ const pageTitle =
   title === "Aprende Francés Viajando"
     ? title
     : `${title} | Aprende Francés Viajando`;
-
-const baseUrl = import.meta.env.BASE_URL.endsWith("/")
-  ? import.meta.env.BASE_URL
-  : `${import.meta.env.BASE_URL}/`;
 ---
 
 <!doctype html>
@@ -36,8 +33,8 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
 
     <title>{pageTitle}</title>
 
-    <link rel="icon" type="image/svg+xml" href={`${baseUrl}favicon.svg`} />
-    <link rel="icon" href={`${baseUrl}favicon.ico`} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -51,5 +48,6 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
 <body>
   <Header />
   <slot />
+  <Footer />
 </body>
 </html>

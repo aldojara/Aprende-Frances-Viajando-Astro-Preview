@@ -7,17 +7,13 @@ interface Props {
 
 const { item } = Astro.props;
 const isAvailable = Boolean(item.status === "Disponible" && item.href);
-const baseUrl = import.meta.env.BASE_URL;
-const basePath = baseUrl.endsWith("/") ? baseUrl.slice(0, -1) : baseUrl;
-const withBase = (path: string) =>
-  path.startsWith("/") ? `${basePath}${path}` : path;
 ---
 
 {
   isAvailable ? (
     <a class="content-card card content-card-link" href={item.href}>
       <img
-        src={withBase(item.image)}
+        src={item.image}
         alt={item.alt}
         width="640"
         height="420"
@@ -51,7 +47,7 @@ const withBase = (path: string) =>
   ) : (
     <article class="content-card card">
       <img
-        src={withBase(item.image)}
+        src={item.image}
         alt={item.alt}
         width="640"
         height="420"
