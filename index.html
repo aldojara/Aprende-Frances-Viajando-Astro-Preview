@@ -1,0 +1,230 @@
+<!doctype html> 
+<html lang="es">
+<head>
+  <link rel="icon" type="image/x-icon" href="favicon.ico" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Aprende Francés Viajando</title>
+  <meta name="description" content="Una plataforma para aprender francés con el poder de la Inteligencia Artificial." />
+  <meta name="author" content="Aldo Jara" />
+  <meta name="theme-color" content="#0ea5e9" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    }
+    .glass { backdrop-filter: blur(10px); background: rgba(255,255,255,0.06); }
+    .gradient-text {
+      background: linear-gradient(90deg,#06b6d4,#3b82f6,#22c55e);
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+    }
+    @keyframes text-gradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .animate-text-gradient { background-size: 200% auto; animation: text-gradient 6s ease infinite; }
+
+    /* Ajustes responsivos del hero para mejorar el encuadre en móvil */
+    @media (max-width: 640px) {
+      .hero-wrap { min-height: 70vh !important; }
+      .hero-content { padding-top: 5rem !important; padding-bottom: 5rem !important; }
+    }
+    @keyframes text-gradient-france {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.animate-text-gradient-france {
+  background-size: 200% auto;
+  animation: text-gradient-france 8s ease infinite;
+}
+  </style>
+  <script>
+    // Redirección automática si el usuario visita index.html directamente
+    const current = window.location.href;
+    if (current.includes("index.html")) {
+      const clean = current.replace("index.html", "");
+      window.location.replace(clean);
+    }
+  </script>
+  <meta name="google-site-verification" content="YNzKBGqiipClyTJTRWNwYS-8kCwXlu5lx5BREcR9D2g" />
+</head>
+
+<body class="bg-slate-950 text-slate-100 selection:bg-sky-300/20">
+
+<!-- Navbar -->
+<header class="sticky top-0 z-50 bg-slate-950/80 glass border-b border-slate-800">
+  <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+    <a href="index.html" class="font-extrabold tracking-tight text-lg">
+      Aprende <span class="text-sky-400">Francés</span> Viajando
+    </a>
+    <nav class="hidden md:flex gap-6 text-sm">
+      <a href="index.html" class="text-sky-400 font-semibold">Inicio</a>
+      <a href="cursos.html" class="hover:text-sky-400">Cursos</a>
+      <a href="ejercicios.html" class="hover:text-sky-400">Ejercicios (IA)</a>
+      <a href="recursos.html" class="hover:text-sky-400">Recursos</a>
+      <a href="publicaciones.html" class="hover:text-sky-400">Publicaciones</a>
+      <a href="contacto.html" class="hover:text-sky-400">Contacto</a>
+    </nav>
+    <button id="menuBtn" class="md:hidden p-2 rounded-lg border border-slate-700" aria-label="Abrir menú">☰</button>
+  </div>
+
+  <!-- Menú móvil -->
+  <div id="mobileMenu" class="md:hidden hidden border-t border-slate-800">
+    <div class="px-4 py-3 space-y-2">
+      <a href="index.html" class="block">Inicio</a>
+      <a href="cursos.html" class="block">Cursos</a>
+      <a href="ejercicios.html" class="block">Ejercicios (IA)</a>
+      <a href="recursos.html" class="block">Recursos</a>
+      <a href="publicaciones.html" class="block">Publicaciones</a>
+      <a href="contacto.html" class="block">Contacto</a>
+    </div>
+  </div>
+</header>
+
+<!-- Hero con imagen perfectamente balanceada -->
+<section id="inicio" class="relative overflow-hidden">
+  <div
+    class="hero-wrap w-full min-h-[80vh] flex items-center justify-center text-center px-4"
+    style="
+      background-image:
+        linear-gradient(to bottom, rgba(2,6,23,0.25), rgba(2,6,23,0.45)),
+        url('./hero-paris.jpg');
+      background-size: cover;
+      /* bajamos encuadre para mostrar manos + laptop */
+      background-position: center 40%;
+      background-repeat: no-repeat;
+      /* más luz general y contraste suave */
+      filter: brightness(1.15) contrast(1.05);
+    "
+  >
+    <div class="hero-content max-w-3xl text-slate-100 py-28 md:py-32">
+      <h1 class="text-4xl md:text-6xl font-extrabold leading-tight md:leading-[1.15] drop-shadow-lg animate-text-gradient-france bg-gradient-to-r from-[#0055A4] via-[#FFFFFF] to-[#EF4135] bg-clip-text text-transparent">
+  Aprende francés <br class="md:hidden" /> Viajando
+    </h1>
+
+      <p class="mt-6 md:text-lg max-w-2xl mx-auto font-semibold text-transparent bg-clip-text bg-gradient-to-r from-[#0055A4] via-[#FFFFFF] to-[#EF4135] drop-shadow-md flex items-center justify-center gap-2">
+  <span>Una plataforma basada totalmente en Inteligencia Artificial.</span>
+  <span class="p-[3px] rounded-full bg-white/10 backdrop-blur-sm border border-white/20 shadow-md">
+    <img src="favicon.ico" alt="IA" class="w-6 h-6 rounded-full" />
+  </span>
+</p>
+
+
+
+      <div class="mt-8 flex justify-center gap-3">
+        <a href="cursos.html"
+           class="px-5 py-3 rounded-2xl bg-sky-500 hover:bg-sky-400 font-semibold text-slate-950 shadow-lg transition">
+          Explorar cursos
+        </a>
+        <a href="contacto.html"
+           class="px-5 py-3 rounded-2xl border border-slate-100/60 hover:border-sky-400 shadow-lg transition">
+          Contacto
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Placeholder Sections -->
+<!-- Sección Cursos -->
+<section id="cursos" class="max-w-6xl mx-auto px-4 py-20 border-t border-slate-800 text-center">
+  <h2 class="text-3xl md:text-4xl font-extrabold mb-10 animate-text-gradient-france bg-gradient-to-r from-[#0055A4] via-[#FFFFFF] to-[#EF4135] bg-clip-text text-transparent">
+    Cursos
+  </h2>
+  <p class="text-slate-400 max-w-2xl mx-auto mb-12">
+    Explora las rutas de aprendizaje por niveles. Cada uno combina teoría clara, práctica guiada y ejercicios generados por IA.
+  </p>
+
+  <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    <!-- Nivel A1 -->
+    <a href="cursos/a1/"
+       class="block rounded-2xl p-6 border border-slate-700 shadow-md transition transform hover:scale-105 hover:shadow-lg hover:border-sky-400 bg-gradient-to-b from-[#0B1835] via-[#0F1E46] to-[#12255B]">
+      <h3 class="font-bold text-xl mb-2 text-sky-400">Nivel A1</h3>
+      <p class="text-slate-300 text-sm">Bases del idioma y situaciones cotidianas simples.</p>
+    </a>
+
+    <!-- Nivel A2 -->
+    <a href="cursos/a2/"
+       class="block rounded-2xl p-6 border border-slate-700 shadow-md transition transform hover:scale-105 hover:shadow-lg hover:border-sky-400 bg-gradient-to-b from-[#112238] via-[#152B4A] to-[#19345C]">
+      <h3 class="font-bold text-xl mb-2 text-sky-300">Nivel A2</h3>
+      <p class="text-slate-300 text-sm">Proyectos reales: amigos, estudios, trabajo, viajes.</p>
+    </a>
+
+    <!-- Nivel B1 -->
+    <a href="cursos/b1/"
+       class="block rounded-2xl p-6 border border-slate-700 shadow-md transition transform hover:scale-105 hover:shadow-lg hover:border-white bg-gradient-to-b from-[#2C2C2C] via-[#3B3B3B] to-[#474747]">
+      <h3 class="font-bold text-xl mb-2 text-white">Nivel B1</h3>
+      <p class="text-slate-300 text-sm">Opinión, argumentación y comprensión detallada.</p>
+    </a>
+
+    <!-- Nivel B2 -->
+    <a href="cursos/b2/"
+       class="block rounded-2xl p-6 border border-slate-700 shadow-md transition transform hover:scale-105 hover:shadow-lg hover:border-rose-500 bg-gradient-to-b from-[#3A0E0E] via-[#4D1414] to-[#5E1919]">
+      <h3 class="font-bold text-xl mb-2 text-rose-400">Nivel B2</h3>
+      <p class="text-slate-300 text-sm">Dominio profesional y académico del idioma.</p>
+    </a>
+  </div>
+</section>
+
+<section id="ejercicios" class="max-w-6xl mx-auto px-4 py-16 border-t border-slate-800 text-center">
+  <h2 class="text-2xl md:text-3xl font-bold mb-4">Ejercicios (IA)</h2>
+  <p class="text-slate-400">Próximamente podrás practicar con ejercicios generados por IA.</p>
+</section>
+
+<section id="recursos" class="max-w-6xl mx-auto px-4 py-16 border-t border-slate-800 text-center">
+  <h2 class="text-2xl md:text-3xl font-bold mb-4">Recursos</h2>
+  <p class="text-slate-400">Guías, mapas mentales y materiales complementarios.</p>
+</section>
+
+<section id="publicaciones" class="max-w-6xl mx-auto px-4 py-16 border-t border-slate-800 text-center">
+  <h2 class="text-2xl md:text-3xl font-bold mb-4">Publicaciones</h2>
+  <p class="text-slate-400">Artículos y reflexiones sobre el aprendizaje del francés con IA.</p>
+</section>
+
+<section id="contacto" class="max-w-6xl mx-auto px-4 py-16 border-t border-slate-800 text-center">
+  <h2 class="text-2xl md:text-3xl font-bold mb-4">Contacto</h2>
+  <p class="text-slate-400">¿Tienes preguntas o ideas? Muy pronto podrás contactarme desde aquí.</p>
+</section>
+
+<!-- Footer -->
+<!-- Footer con redes sociales -->
+<footer class="border-t border-slate-800 mt-10">
+  <div class="max-w-6xl mx-auto px-4 py-10 text-center">
+    <div class="flex justify-center gap-6 mb-4">
+      <!-- YouTube -->
+      <a href="https://www.youtube.com/@Aprende.Frances.Viajando" target="_blank" rel="noopener"
+         class="group text-slate-400 hover:text-red-500 transition">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" fill="currentColor" class="w-6 h-6">
+          <path d="M549.65 124.08c-6.28-23.65-24.76-42.16-48.39-48.45C458.8 64 288 64 288 64s-170.8 0-213.26 11.63c-23.63 6.29-42.11 24.8-48.39 48.45C16 166.53 16 256.03 16 256.03s0 89.51 10.35 131.96c6.28 23.65 24.76 42.16 48.39 48.45C117.2 448 288 448 288 448s170.8 0 213.26-11.63c23.63-6.29 42.11-24.8 48.39-48.45C560 345.54 560 256.03 560 256.03s0-89.5-10.35-131.95zM232 338.55V173.51l142.74 82.52L232 338.55z"/>
+        </svg>
+      </a>
+
+      <!-- TikTok -->
+      <a href="https://www.tiktok.com/@AldoJara" target="_blank" rel="noopener"
+         class="group text-slate-400 hover:text-sky-400 transition">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="currentColor" class="w-6 h-6">
+          <path d="M448,209.9v102c-45.4,0-87.3-14.7-121.1-39.4V357c0,85.1-68.9,155-153.9,155S19,442.1,19,357S87.9,202,173,202h0.1v102
+          c-23.2,0-44.2,9.4-59.6,24.6c-15.3,15.2-24.7,36.2-24.7,59.4c0,46.4,37.8,84.2,84.3,84.2c46.4,0,84.3-37.8,84.3-84.2V0h95.7
+          c8.5,47.8,49.5,84.8,98.9,84.8V209.9z"/>
+        </svg>
+      </a>
+    </div>
+
+    <p class="text-sm text-slate-400">
+      © 2025 Aldo Jara — Aprende Francés Viajando
+    </p>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('menuBtn')?.addEventListener('click', () => {
+    document.getElementById('mobileMenu').classList.toggle('hidden');
+  });
+</script>
+</body>
+</html>

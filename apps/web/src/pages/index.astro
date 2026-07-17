@@ -1,0 +1,23 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Hero from "../components/home/Hero.astro";
+import HowItWorks from "../components/home/HowItWorks.astro";
+import LevelSelector from "../components/home/LevelSelector.astro";
+import ObjectiveCards from "../components/home/ObjectiveCards.astro";
+import RecentContent from "../components/home/RecentContent.astro";
+import FreeResources from "../components/home/FreeResources.astro";
+---
+
+<BaseLayout
+  title="Aprende Francés Viajando"
+  description="Aprende francés desde A1 hasta C1, prepara el DELF y practica con rutas, recursos visuales y apoyo de inteligencia artificial."
+>
+  <main>
+    <Hero />
+    <HowItWorks />
+    <LevelSelector />
+    <ObjectiveCards />
+    <RecentContent />
+    <FreeResources />
+  </main>
+</BaseLayout>
