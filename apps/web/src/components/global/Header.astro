@@ -1,4 +1,6 @@
 ---
+import { withBase } from "../../utils/paths";
+
 const currentPath = Astro.url.pathname;
 
 const navItems = [
@@ -11,11 +13,13 @@ const navItems = [
 ];
 
 const isActive = (href: string) => {
+  const resolvedHref = withBase(href);
+
   if (href === "/") {
-    return currentPath === "/";
+    return currentPath === resolvedHref;
   }
 
-  return currentPath.startsWith(href);
+  return currentPath.startsWith(resolvedHref);
 };
 ---
 
@@ -23,7 +27,7 @@ const isActive = (href: string) => {
 
 <header class="site-header">
   <div class="container header-inner">
-    <a class="brand" href="/" aria-label="Ir al inicio">
+    <a class="brand" href={withBase("/")} aria-label="Ir al inicio">
       <span class="brand-mark" aria-hidden="true">AFV</span>
 
       <span class="brand-text">
@@ -40,7 +44,7 @@ const isActive = (href: string) => {
               "nav-link",
               { "nav-link-active": isActive(item.href) },
             ]}
-            href={item.href}
+            href={withBase(item.href)}
           >
             {item.label}
           </a>
@@ -49,11 +53,11 @@ const isActive = (href: string) => {
     </nav>
 
     <div class="header-actions">
-      <a class="button button-secondary header-explore" href="/contenidos/">
+      <a class="button button-secondary header-explore" href={withBase("/contenidos/")}>
         Explorar
       </a>
 
-      <a class="button button-primary" href="/empieza/">
+      <a class="button button-primary" href={withBase("/empieza/")}>
         Empieza gratis
       </a>
     </div>

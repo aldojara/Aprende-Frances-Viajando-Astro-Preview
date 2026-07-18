@@ -1,5 +1,6 @@
 ---
 import type { RecentContentItem } from "../../data/recentContent";
+import { withBase } from "../../utils/paths";
 
 interface Props {
   item: RecentContentItem;
@@ -11,9 +12,9 @@ const isAvailable = Boolean(item.status === "Disponible" && item.href);
 
 {
   isAvailable ? (
-    <a class="content-card card content-card-link" href={item.href}>
+    <a class="content-card card content-card-link" href={withBase(item.href)}>
       <img
-        src={item.image}
+        src={withBase(item.image)}
         alt={item.alt}
         width="640"
         height="420"
@@ -47,7 +48,7 @@ const isAvailable = Boolean(item.status === "Disponible" && item.href);
   ) : (
     <article class="content-card card">
       <img
-        src={item.image}
+        src={withBase(item.image)}
         alt={item.alt}
         width="640"
         height="420"
