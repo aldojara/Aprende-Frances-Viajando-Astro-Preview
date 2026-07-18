@@ -1,6 +1,5 @@
 ---
 import { communicationGoals } from "../../data/taxonomies";
-import { withBase } from "../../utils/paths";
 
 const iconByGoal = {
   "hablar-del-pasado": "calendar",
@@ -19,7 +18,7 @@ const iconByGoal = {
       const icon = iconByGoal[goal.id];
       return (
         <li>
-          <a href={withBase(`/contenidos/?domain=grammar&goal=${goal.id}`)}>
+          <a href={`/contenidos/?domain=grammar&goal=${goal.id}`}>
             <span class="goal-icon" aria-hidden="true">
               {
                 icon === "calendar" ? (

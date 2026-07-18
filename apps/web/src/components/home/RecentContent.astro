@@ -1,7 +1,6 @@
 ---
 import ContentCard from "./ContentCard.astro";
 import { recentContent } from "../../data/recentContent";
-import { withBase } from "../../utils/paths";
 ---
 
 <section class="section recent-content" aria-labelledby="recent-content-heading">
@@ -19,7 +18,7 @@ import { withBase } from "../../utils/paths";
         Contenidos demostrativos integrados al catálogo inicial.
       </p>
 
-      <a class="recent-future-action" href={withBase("/contenidos/")} aria-label="Ver catálogo completo">
+      <a class="recent-future-action" href="/contenidos/" aria-label="Ver catálogo completo">
         <span>Catálogo completo</span>
         <span>Disponible</span>
       </a>

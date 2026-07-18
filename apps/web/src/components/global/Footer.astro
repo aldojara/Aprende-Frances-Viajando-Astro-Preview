@@ -14,6 +14,7 @@ const statusClass = (status: FooterLink["status"] | SocialChannel["status"]) =>
   ({
     Disponible: "is-available",
     "En construcción": "is-building",
+    "En expansión": "is-expanding",
     Próximamente: "is-upcoming",
   })[status];
 ---
@@ -51,7 +52,7 @@ const statusClass = (status: FooterLink["status"] | SocialChannel["status"]) =>
                 <li>
                   {link.href ? (
                     <a
-                      href={withBase(link.href)}
+                      href={link.external ? link.href : withBase(link.href)}
                       aria-label={link.ariaLabel}
                       target={link.external ? "_blank" : undefined}
                       rel={link.external ? "noopener noreferrer" : undefined}
@@ -383,6 +384,10 @@ const statusClass = (status: FooterLink["status"] | SocialChannel["status"]) =>
   }
 
   .footer-status.is-building {
+    color: var(--color-blue);
+  }
+
+  .footer-status.is-expanding {
     color: var(--color-blue);
   }
 

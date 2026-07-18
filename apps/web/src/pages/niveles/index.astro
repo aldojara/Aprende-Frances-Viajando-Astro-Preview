@@ -4,7 +4,6 @@ import ListingLayout from "../../layouts/ListingLayout.astro";
 import StatusBadge from "../../components/shared/StatusBadge.astro";
 import SectionHeader from "../../components/shared/SectionHeader.astro";
 import { levels } from "../../data/taxonomies";
-import { withBase } from "../../utils/paths";
 
 const contentItems = await getCollection("content");
 
@@ -29,7 +28,7 @@ const getCountForLevel = (levelId: string) =>
         {
           levels.map((level) => (
             <li>
-            <a class="level-card card" href={withBase(`/niveles/${level.slug}/`)}>
+              <a class="level-card card" href={`/niveles/${level.slug}/`}>
                 <div class="level-card-top">
                   <span class="level-code">{level.label}</span>
                   <StatusBadge status={level.coverageStatus} />

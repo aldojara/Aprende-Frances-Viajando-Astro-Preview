@@ -96,7 +96,7 @@ const { Content } = await render(lesson);
             <nav class="lesson-nav" aria-label="Navegación de lecciones">
               {
                 previousLesson ? (
-          <a href={withBase(`/gramatica/${previousLesson.id}/`)}>
+                  <a href={withBase(`/gramatica/${previousLesson.id}/`)}>
                     Anterior: {previousLesson.data.title}
                   </a>
                 ) : (
@@ -105,7 +105,7 @@ const { Content } = await render(lesson);
               }
               {
                 nextLesson ? (
-          <a href={withBase(`/gramatica/${nextLesson.id}/`)}>
+                  <a href={withBase(`/gramatica/${nextLesson.id}/`)}>
                     Siguiente: {nextLesson.data.title}
                   </a>
                 ) : (
