@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://aldojara.github.io/Aprende-Frances-Viajando-Astro-Preview/sitemap.xml
+Sitemap: https://aprendefrancesviajando.com/sitemap.xml
