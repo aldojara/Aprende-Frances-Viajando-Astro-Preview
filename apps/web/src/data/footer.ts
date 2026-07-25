@@ -59,7 +59,7 @@ export const footerSections: FooterSection[] = [
       { label: "IA aplicada", href: "/sobre-nosotros/#ia-aplicada", status: "Disponible" },
       {
         label: "Creador",
-        href: "/autor/aldo-jara-pisconti/",
+        href: "/sobre-nosotros/aldo-jara-pisconti/",
         status: "Disponible",
       },
       {

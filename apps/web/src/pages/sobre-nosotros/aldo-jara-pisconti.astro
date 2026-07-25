@@ -1,0 +1,36 @@
+---
+import AuthorClosing from "../../components/author/AuthorClosing.astro";
+import AuthorHero from "../../components/author/AuthorHero.astro";
+import ProfessionalArchitecture from "../../components/author/ProfessionalArchitecture.astro";
+import ProfileConnections from "../../components/author/ProfileConnections.astro";
+import ProjectEcosystem from "../../components/author/ProjectEcosystem.astro";
+import ProjectPrinciples from "../../components/author/ProjectPrinciples.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Aldo Jara Pisconti | Autor de Aprende Francés Viajando"
+  description="Conoce a Aldo Jara Pisconti, creador de Aprende Francés Viajando, y su ecosistema de proyectos que conecta datos, inteligencia artificial, educación, mentoría, viajes y contenido."
+  canonical="/sobre-nosotros/aldo-jara-pisconti/"
+  image="/images/project/aldo-jara-pisconti-paris.webp"
+  type="profile"
+  robots="index,follow"
+>
+  <main class="author-page">
+    <AuthorHero />
+    <ProfessionalArchitecture />
+    <ProjectEcosystem />
+    <ProfileConnections />
+    <ProjectPrinciples />
+    <AuthorClosing />
+  </main>
+</BaseLayout>
+
+<style>
+  .author-page {
+    background:
+      radial-gradient(circle at 94% 8%, rgba(0, 85, 164, 0.07), transparent 22rem),
+      radial-gradient(circle at 4% 38%, rgba(184, 134, 11, 0.08), transparent 20rem),
+      linear-gradient(180deg, #ffffff 0, #f7fbff 34rem, var(--color-bg) 100%);
+  }
+</style>

@@ -35,7 +35,7 @@ export const creatorProfile = {
   ],
 } as const;
 
-export const creatorProfilePath = `/autor/${creatorProfile.slug}/`;
+export const creatorProfilePath = `/sobre-nosotros/${creatorProfile.slug}/`;
 
 export const getCreatorSameAs = () => {
   const possibleUrls: readonly string[] = [

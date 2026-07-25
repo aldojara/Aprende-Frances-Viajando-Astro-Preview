@@ -1,0 +1,130 @@
+---
+type Principle = {
+  title: string;
+  text: string;
+  icon: "diamond" | "network" | "bubble" | "growth" | "globe";
+};
+
+const principles: Principle[] = [
+  {
+    title: "Claridad antes que complejidad",
+    text: "Simplificar lo complejo para que cualquiera pueda avanzar.",
+    icon: "diamond",
+  },
+  {
+    title: "Tecnología con utilidad real",
+    text: "Herramientas al servicio de las personas y del propósito.",
+    icon: "network",
+  },
+  {
+    title: "Aprender para comunicar",
+    text: "Solo se aprende de verdad cuando se comparte.",
+    icon: "bubble",
+  },
+  {
+    title: "Evolución continua",
+    text: "Iterar, medir y mejorar. Siempre un paso adelante.",
+    icon: "growth",
+  },
+  {
+    title: "Visión global",
+    text: "Pensar globalmente y actuar con impacto local.",
+    icon: "globe",
+  },
+];
+
+const iconPaths = {
+  diamond: "M12 3 3 9l9 12 9-12-9-6Zm-9 6h18M8 9l4 12 4-12",
+  network: "M12 5v14M5 9l14 6M19 9 5 15M12 5a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm0 18a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM5 11a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm14 0a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM5 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm14 0a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z",
+  bubble: "M5 18a8 8 0 1 1 3.2 2.1L4 21l1-3Z",
+  growth: "M4 19h16M6 16v-4m5 4V8m5 8V5m-5 3 5-5 4 4",
+  globe: "M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Zm-9-9h18M12 3c2.2 2.4 3.2 5.4 3.2 9S14.2 18.6 12 21M12 3c-2.2 2.4-3.2 5.4-3.2 9S9.8 18.6 12 21",
+} as const;
+---
+
+<section class="author-section principles-section container" aria-labelledby="principles-title">
+  <div class="section-copy">
+    <h2 id="principles-title">Principios que guían mis proyectos</h2>
+  </div>
+
+  <div class="principles-grid">
+    {
+      principles.map((principle) => (
+        <article>
+          <span aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false">
+              <path d={iconPaths[principle.icon]} />
+            </svg>
+          </span>
+          <h3>{principle.title}</h3>
+          <p>{principle.text}</p>
+        </article>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .principles-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 1rem;
+    margin-top: 1.1rem;
+  }
+
+  .principles-grid article {
+    min-height: 9.25rem;
+    padding: 1rem;
+    border: 1px solid rgba(11, 47, 85, 0.14);
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.88);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .principles-grid span {
+    display: block;
+    width: 2.65rem;
+    height: 2.65rem;
+    color: var(--color-gold);
+  }
+
+  .principles-grid svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .principles-grid path {
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.7;
+  }
+
+  .principles-grid h3 {
+    margin-top: 0.7rem;
+    font-family: var(--font-body);
+    font-size: 0.92rem;
+    font-weight: 900;
+    line-height: 1.28;
+  }
+
+  .principles-grid p {
+    margin: 0.35rem 0 0;
+    color: var(--color-text-muted);
+    font-size: 0.78rem;
+    line-height: 1.45;
+  }
+
+  @media (max-width: 1080px) {
+    .principles-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 640px) {
+    .principles-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

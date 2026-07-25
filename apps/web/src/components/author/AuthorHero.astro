@@ -1,0 +1,352 @@
+---
+import { withBase } from "../../utils/paths";
+
+type Dimension = {
+  title: string;
+  icon: "briefcase" | "chart" | "people" | "cap" | "pen" | "globe";
+};
+
+const tags = [
+  "Amplia experiencia",
+  "Datos e IA",
+  "Mentoría",
+  "Educación",
+  "Viajes",
+  "Construcción de productos",
+] as const;
+
+const dimensions: Dimension[] = [
+  { title: "Profesional y estrategia", icon: "briefcase" },
+  { title: "Consultoría aplicada", icon: "chart" },
+  { title: "Mentoría y crecimiento", icon: "people" },
+  { title: "Enseñanza y conocimiento", icon: "cap" },
+  { title: "Creatividad y contenido", icon: "pen" },
+  { title: "Visión holística", icon: "globe" },
+];
+
+const iconPaths = {
+  briefcase: "M8 9V7a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M4 9h16v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9Zm7 4h2",
+  chart: "M5 19V9m7 10V5m7 14v-7M4 19h16",
+  people: "M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm8 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM3 20a5 5 0 0 1 10 0m-2 0a5 5 0 0 1 10 0",
+  cap: "m3 8 9-4 9 4-9 4-9-4Zm4 3v4c2.4 1.8 7.6 1.8 10 0v-4",
+  pen: "M5 19l4.2-1 9.8-9.8a2.1 2.1 0 0 0-3-3L6.2 15 5 19Z",
+  globe: "M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Zm-9-9h18M12 3c2.2 2.4 3.2 5.4 3.2 9S14.2 18.6 12 21M12 3c-2.2 2.4-3.2 5.4-3.2 9S9.8 18.6 12 21",
+} as const;
+---
+
+<section class="author-hero" aria-labelledby="author-title">
+  <div class="container author-hero-grid">
+    <div class="author-hero-copy">
+      <p class="eyebrow">FUNDADOR · ESTRATEGA · CREADOR DE ECOSISTEMAS</p>
+      <h1 id="author-title">Aldo Jara Pisconti</h1>
+      <p class="author-lead">
+        Tecnología, educación, mentoría y viajes conectados para crear{" "}
+        <span>proyectos con utilidad real.</span>
+      </p>
+      <p class="author-intro">
+        Combino datos, inteligencia artificial, producto, comunicación y experiencias
+        del mundo real para diseñar soluciones que educan, inspiran y generan impacto.
+      </p>
+
+      <ul class="author-tags" aria-label="Dimensiones principales del perfil">
+        {tags.map((tag) => <li>{tag}</li>)}
+      </ul>
+    </div>
+
+    <div class="author-orbit" aria-label="Dimensiones conectadas del perfil de Aldo Jara Pisconti">
+      <div class="orbit-map" aria-hidden="true">
+        <span class="orbit-ring orbit-ring-one"></span>
+        <span class="orbit-ring orbit-ring-two"></span>
+        <span class="orbit-line orbit-line-one"></span>
+        <span class="orbit-line orbit-line-two"></span>
+        <span class="orbit-dot dot-one"></span>
+        <span class="orbit-dot dot-two"></span>
+        <span class="orbit-dot dot-three"></span>
+      </div>
+
+      <figure class="author-photo">
+        <img
+          src={withBase("/images/project/aldo-jara-pisconti-paris.webp")}
+          alt="Aldo Jara Pisconti en París"
+          width="960"
+          height="1012"
+          loading="eager"
+          decoding="async"
+        />
+      </figure>
+
+      <ul class="dimension-list">
+        {
+          dimensions.map((dimension) => (
+            <li class={`dimension-node dimension-${dimension.icon}`}>
+              <span aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false">
+                  <path d={iconPaths[dimension.icon]} />
+                </svg>
+              </span>
+              <strong>{dimension.title}</strong>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .author-hero {
+    overflow: hidden;
+    border-bottom: 1px solid rgba(11, 47, 85, 0.1);
+    background:
+      radial-gradient(circle at 79% 23%, rgba(0, 85, 164, 0.1), transparent 18rem),
+      radial-gradient(circle at 54% 63%, rgba(184, 134, 11, 0.12), transparent 17rem),
+      linear-gradient(180deg, #ffffff 0%, #f7fbff 100%);
+  }
+
+  .author-hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.92fr) minmax(22rem, 1.08fr);
+    gap: clamp(1.4rem, 4vw, 4.25rem);
+    align-items: center;
+    min-height: 39rem;
+    padding-block: clamp(3rem, 7vw, 5.4rem) clamp(2.2rem, 5vw, 4.4rem);
+  }
+
+  .author-hero-copy h1 {
+    max-width: 42rem;
+    font-size: clamp(3rem, 7.5vw, 5.7rem);
+  }
+
+  .author-lead {
+    max-width: 43rem;
+    margin: 0.8rem 0 0;
+    color: var(--color-heading);
+    font-family: var(--font-display);
+    font-size: clamp(1.65rem, 3.2vw, 2.7rem);
+    font-weight: 700;
+    line-height: 1.12;
+  }
+
+  .author-lead span {
+    color: var(--color-gold);
+  }
+
+  .author-intro {
+    max-width: 39rem;
+    margin: 1.05rem 0 0;
+    color: var(--color-text-muted);
+    font-size: 1.05rem;
+    line-height: 1.72;
+  }
+
+  .author-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.68rem;
+    padding: 0;
+    margin: 1.35rem 0 0;
+    list-style: none;
+  }
+
+  .author-tags li {
+    min-height: 2.55rem;
+    padding: 0.56rem 0.82rem;
+    border: 1px solid rgba(0, 85, 164, 0.22);
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.78);
+    color: var(--color-blue-dark);
+    font-size: 0.86rem;
+    font-weight: 800;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .author-orbit {
+    position: relative;
+    min-height: 35rem;
+    display: grid;
+    place-items: center;
+  }
+
+  .orbit-map {
+    position: absolute;
+    inset: 0;
+    color: rgba(0, 85, 164, 0.28);
+    background-image:
+      radial-gradient(circle, rgba(0, 85, 164, 0.18) 1px, transparent 1px),
+      linear-gradient(110deg, transparent 0 48%, rgba(0, 85, 164, 0.16) 48% 49%, transparent 49% 100%);
+    background-size: 16px 16px, 100% 100%;
+    mask-image: radial-gradient(circle at center, #000 0 72%, transparent 73%);
+  }
+
+  .orbit-ring,
+  .orbit-line,
+  .orbit-dot {
+    position: absolute;
+    pointer-events: none;
+  }
+
+  .orbit-ring {
+    inset: 8% 14%;
+    border: 1px solid rgba(0, 85, 164, 0.23);
+    border-radius: 50%;
+  }
+
+  .orbit-ring-two {
+    inset: 19% 25%;
+    border-color: rgba(184, 134, 11, 0.25);
+  }
+
+  .orbit-line {
+    top: 50%;
+    left: 14%;
+    width: 72%;
+    border-top: 1px solid rgba(0, 85, 164, 0.22);
+    transform: rotate(24deg);
+  }
+
+  .orbit-line-two {
+    transform: rotate(-18deg);
+  }
+
+  .orbit-dot {
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 50%;
+    background: var(--color-blue);
+    box-shadow: 0 0 0 5px rgba(0, 85, 164, 0.1);
+  }
+
+  .dot-one { top: 21%; left: 35%; }
+  .dot-two { right: 18%; top: 43%; background: var(--color-gold); }
+  .dot-three { bottom: 20%; left: 23%; }
+
+  .author-photo {
+    position: relative;
+    z-index: 2;
+    width: min(48vw, 26rem);
+    margin: 0;
+    overflow: hidden;
+    border-radius: 46% 46% 1.2rem 1.2rem;
+    background: #eaf3fb;
+    box-shadow: 0 1.6rem 3.6rem rgba(11, 47, 85, 0.16);
+  }
+
+  .author-photo img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 0.95;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .dimension-list {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .dimension-node {
+    position: absolute;
+    display: grid;
+    grid-template-columns: auto minmax(0, 8.8rem);
+    gap: 0.52rem;
+    align-items: center;
+    color: var(--color-blue-dark);
+    font-size: 0.78rem;
+    font-weight: 900;
+    line-height: 1.18;
+  }
+
+  .dimension-node span {
+    display: grid;
+    width: 3.05rem;
+    height: 3.05rem;
+    place-items: center;
+    border: 1px solid rgba(0, 85, 164, 0.18);
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .dimension-node svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  .dimension-node path {
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.9;
+  }
+
+  .dimension-briefcase { top: 4%; left: 48%; }
+  .dimension-chart { top: 25%; left: 5%; }
+  .dimension-people { bottom: 25%; left: 3%; }
+  .dimension-cap { top: 21%; right: 3%; }
+  .dimension-pen { right: 1%; bottom: 27%; }
+  .dimension-globe { bottom: 8%; left: 44%; color: var(--color-gold); }
+
+  @media (max-width: 980px) {
+    .author-hero-grid {
+      grid-template-columns: 1fr;
+      min-height: 0;
+    }
+
+    .author-orbit {
+      min-height: 34rem;
+    }
+
+    .author-photo {
+      width: min(72vw, 24rem);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .author-hero-grid {
+      padding-block: 2.45rem 2rem;
+    }
+
+    .author-orbit {
+      min-height: auto;
+      place-items: start center;
+      padding-top: 1rem;
+    }
+
+    .orbit-map {
+      inset: 0 0 auto;
+      height: 24rem;
+    }
+
+    .author-photo {
+      width: min(100%, 20.5rem);
+    }
+
+    .dimension-list {
+      position: static;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.6rem;
+      width: 100%;
+      margin-top: 1rem;
+    }
+
+    .dimension-node {
+      position: static;
+      grid-template-columns: auto minmax(0, 1fr);
+      padding: 0.55rem;
+      border: 1px solid rgba(0, 85, 164, 0.13);
+      border-radius: var(--radius-sm);
+      background: rgba(255, 255, 255, 0.78);
+    }
+
+    .dimension-node span {
+      width: 2.5rem;
+      height: 2.5rem;
+    }
+  }
+</style>

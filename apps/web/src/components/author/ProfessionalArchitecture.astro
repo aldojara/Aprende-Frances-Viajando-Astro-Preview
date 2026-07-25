@@ -1,0 +1,196 @@
+---
+type ArchitectureCard = {
+  title: string;
+  text: string;
+  icon: "target" | "bars" | "team" | "book" | "pencil" | "world";
+  tone: "blue" | "violet" | "green" | "sky" | "rose" | "gold";
+};
+
+const cards: ArchitectureCard[] = [
+  {
+    title: "Profesional y estrategia",
+    text: "Gestión de talento, análisis de datos y diseño de estrategias que alinean personas, procesos y tecnología.",
+    icon: "target",
+    tone: "blue",
+  },
+  {
+    title: "Consultoría aplicada",
+    text: "Asesoría a empresas y profesionales en datos, IA, producto y comunicación para generar resultados medibles.",
+    icon: "bars",
+    tone: "violet",
+  },
+  {
+    title: "Mentoría y crecimiento",
+    text: "Acompaño a profesionales y emprendedores a acelerar su desarrollo y potenciar su impacto.",
+    icon: "team",
+    tone: "green",
+  },
+  {
+    title: "Enseñanza y conocimiento",
+    text: "Creo experiencias de aprendizaje prácticas, claras y memorables que transforman la intención en acción.",
+    icon: "book",
+    tone: "sky",
+  },
+  {
+    title: "Creatividad y contenido",
+    text: "Contenido que informa, inspira y conecta: artículos, guías, cursos, podcasts y experiencias.",
+    icon: "pencil",
+    tone: "rose",
+  },
+  {
+    title: "Visión holística",
+    text: "Viajes, idiomas, bienestar y propósito que dan sentido y dirección a cada proyecto que construyo.",
+    icon: "world",
+    tone: "gold",
+  },
+];
+
+const iconPaths = {
+  target: "M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Zm0-4.8a4.2 4.2 0 1 0 0-8.4 4.2 4.2 0 0 0 0 8.4Zm0-2.2a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z",
+  bars: "M5 19V9m7 10V5m7 14v-7M4 19h16M7 9H3m11-4h-4m11 7h-4",
+  team: "M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm8 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM3 20a5 5 0 0 1 10 0m-2 0a5 5 0 0 1 10 0",
+  book: "M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21V5.5Zm0 0V21m4-13h8m-8 4h7",
+  pencil: "M5 19l4.2-1 9.8-9.8a2.1 2.1 0 0 0-3-3L6.2 15 5 19Z",
+  world: "M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Zm-9-9h18M12 3c2.2 2.4 3.2 5.4 3.2 9S14.2 18.6 12 21M12 3c-2.2 2.4-3.2 5.4-3.2 9S9.8 18.6 12 21",
+} as const;
+---
+
+<section class="author-section architecture-section container" aria-labelledby="architecture-title">
+  <div class="section-copy">
+    <h2 id="architecture-title">Mi arquitectura profesional</h2>
+    <p>Mi perfil se compone de dimensiones interconectadas que se potencian para crear soluciones reales.</p>
+  </div>
+
+  <div class="architecture-grid">
+    {
+      cards.map((card) => (
+        <article class={`architecture-card tone-${card.tone}`}>
+          <div class="card-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false">
+              <path d={iconPaths[card.icon]} />
+            </svg>
+          </div>
+          <div>
+            <h3>{card.title}</h3>
+            <p>{card.text}</p>
+          </div>
+          <span class="card-illustration" aria-hidden="true"></span>
+        </article>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .author-section {
+    padding-block: 3.5rem 0;
+  }
+
+  .section-copy h2 {
+    font-size: clamp(1.9rem, 3.4vw, 2.65rem);
+  }
+
+  .section-copy p {
+    max-width: 48rem;
+    margin: 0.35rem 0 0;
+    color: var(--color-text-muted);
+  }
+
+  .architecture-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+    margin-top: 1.25rem;
+  }
+
+  .architecture-card {
+    position: relative;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0.95rem;
+    min-height: 10rem;
+    padding: 1.1rem;
+    border: 1px solid rgba(11, 47, 85, 0.12);
+    border-radius: var(--radius-md);
+    background: linear-gradient(120deg, #ffffff 0%, rgba(246, 250, 255, 0.88) 100%);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .card-icon {
+    display: grid;
+    width: 3.55rem;
+    height: 3.55rem;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--tone);
+    color: #ffffff;
+    box-shadow: 0 0.75rem 1.6rem rgba(11, 47, 85, 0.12);
+  }
+
+  .card-icon svg {
+    width: 1.55rem;
+    height: 1.55rem;
+  }
+
+  .card-icon path {
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.9;
+  }
+
+  .architecture-card h3 {
+    max-width: 13rem;
+    font-size: 1.18rem;
+  }
+
+  .architecture-card p {
+    margin: 0.62rem 0 0;
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+    line-height: 1.56;
+  }
+
+  .card-illustration {
+    position: absolute;
+    right: 0.8rem;
+    bottom: 0.7rem;
+    width: 8rem;
+    height: 5rem;
+    opacity: 0.2;
+    background:
+      linear-gradient(to top, var(--tone) 0 18%, transparent 18%),
+      linear-gradient(135deg, transparent 0 45%, var(--tone) 45% 47%, transparent 47% 100%),
+      radial-gradient(circle at 72% 25%, var(--tone) 0 0.42rem, transparent 0.45rem);
+    clip-path: polygon(0 100%, 18% 56%, 34% 74%, 48% 35%, 67% 52%, 83% 14%, 100% 100%);
+  }
+
+  .tone-blue { --tone: var(--color-blue); }
+  .tone-violet { --tone: #6d5abf; }
+  .tone-green { --tone: #2d8a73; }
+  .tone-sky { --tone: #3a7eb6; }
+  .tone-rose { --tone: #c9526a; }
+  .tone-gold { --tone: var(--color-gold); }
+
+  @media (max-width: 980px) {
+    .architecture-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 640px) {
+    .author-section {
+      padding-block-start: 2.6rem;
+    }
+
+    .architecture-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .architecture-card {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

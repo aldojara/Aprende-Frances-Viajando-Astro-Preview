@@ -1,9 +1,9 @@
 ---
-import CreatorSection from "../components/project/CreatorSection.astro";
-import BaseLayout from "../layouts/BaseLayout.astro";
-import { creatorProfile, creatorProfilePath } from "../data/creator";
-import { absoluteUrl, siteName } from "../utils/seo";
-import { withBase } from "../utils/paths";
+import CreatorSection from "../../components/project/CreatorSection.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { creatorProfile, creatorProfilePath } from "../../data/creator";
+import { absoluteUrl, siteName } from "../../utils/seo";
+import { withBase } from "../../utils/paths";
 
 const baseUrl = Astro.site ?? Astro.url;
 const projectUrl = absoluteUrl("/sobre-nosotros/", baseUrl);
@@ -117,7 +117,7 @@ const projectStructuredData = [
         </p>
         <div class="hero-actions">
           <a class="button button-primary" href={withBase("/niveles/")}>Explorar la plataforma</a>
-          <a class="button button-secondary" href="#creador">Conocer al creador</a>
+          <a class="button button-secondary" href={withBase(creatorProfilePath)}>Conocer al creador</a>
         </div>
       </div>
 

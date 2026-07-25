@@ -1,0 +1,230 @@
+---
+import { withBase } from "../../utils/paths";
+
+type ProjectCard = {
+  title: string;
+  description: string;
+  tags: readonly string[];
+  href?: string;
+  status?: string;
+  tone: "brand" | "data" | "resource" | "travel";
+};
+
+const projects: ProjectCard[] = [
+  {
+    title: "Aprende Francés Viajando",
+    description: "Plataforma EdTech para aprender francés con contenido práctico, cultural y experiencias de viaje.",
+    tags: ["EdTech", "Idiomas", "Comunidad"],
+    href: "/",
+    tone: "brand",
+  },
+  {
+    title: "Big Talent Analytica",
+    description: "Consultoría en datos, analítica e IA aplicada a talento, educación y estrategia organizacional.",
+    tags: ["Data", "IA", "Consultoría"],
+    status: "En desarrollo",
+    tone: "data",
+  },
+  {
+    title: "Recursos inteligentes",
+    description: "Guías, plantillas y herramientas para aprender mejor con tecnología y enfoque estratégico.",
+    tags: ["EdTech", "Productividad", "IA"],
+    status: "En desarrollo",
+    tone: "resource",
+  },
+  {
+    title: "Exploración y contenido",
+    description: "Historias, rutas y consejos para viajar mejor, conectar culturas y vivir experiencias auténticas.",
+    tags: ["Viajes", "Contenido", "Experiencias"],
+    status: "En desarrollo",
+    tone: "travel",
+  },
+];
+---
+
+<section class="author-section ecosystem-section container" aria-labelledby="ecosystem-title">
+  <div class="section-copy">
+    <h2 id="ecosystem-title">Ecosistema de proyectos</h2>
+    <p>Proyectos propios que nacen de la intersección entre educación, tecnología y experiencias reales.</p>
+  </div>
+
+  <div class="project-grid">
+    {
+      projects.map((project) => {
+        const content = (
+          <>
+            <div class={`project-visual visual-${project.tone}`} aria-hidden="true">
+              <span>{project.title}</span>
+            </div>
+            <div class="project-body">
+              <h3>{project.title}</h3>
+              <p>{project.description}</p>
+              <ul>
+                {project.tags.map((tag) => <li>{tag}</li>)}
+              </ul>
+              {project.status && <span class="project-status">{project.status}</span>}
+            </div>
+          </>
+        );
+
+        return project.href ? (
+          <a class="project-card" href={withBase(project.href)}>{content}</a>
+        ) : (
+          <article class="project-card">{content}</article>
+        );
+      })
+    }
+  </div>
+</section>
+
+<style>
+  .project-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1rem;
+    margin-top: 1.2rem;
+  }
+
+  .project-card {
+    overflow: hidden;
+    border: 1px solid rgba(11, 47, 85, 0.12);
+    border-radius: var(--radius-md);
+    background: #ffffff;
+    box-shadow: var(--shadow-sm);
+    transition:
+      transform 160ms ease,
+      box-shadow 160ms ease,
+      border-color 160ms ease;
+  }
+
+  a.project-card:hover,
+  a.project-card:focus-visible {
+    transform: translateY(-2px);
+    border-color: rgba(0, 85, 164, 0.28);
+    box-shadow: var(--shadow-md);
+  }
+
+  .project-visual {
+    position: relative;
+    display: grid;
+    min-height: 8.2rem;
+    align-items: end;
+    padding: 1rem;
+    overflow: hidden;
+    color: #ffffff;
+    background: var(--visual-bg);
+  }
+
+  .project-visual::before,
+  .project-visual::after {
+    position: absolute;
+    content: "";
+    pointer-events: none;
+  }
+
+  .project-visual::before {
+    inset: auto -1rem -2rem auto;
+    width: 9rem;
+    height: 9rem;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 50%;
+  }
+
+  .project-visual::after {
+    inset: 1rem 1rem auto auto;
+    width: 5rem;
+    height: 3rem;
+    border-top: 2px solid rgba(255, 255, 255, 0.38);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.18);
+    transform: rotate(-8deg);
+  }
+
+  .project-visual span {
+    position: relative;
+    z-index: 1;
+    max-width: 12rem;
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 800;
+    line-height: 1.05;
+  }
+
+  .visual-brand {
+    --visual-bg:
+      linear-gradient(120deg, rgba(0, 85, 164, 0.92), rgba(184, 134, 11, 0.48)),
+      url("/images/project/aldo-jara-pisconti-paris.webp") center / cover;
+  }
+
+  .visual-data {
+    --visual-bg:
+      linear-gradient(135deg, #08213d, #0b5d8c);
+  }
+
+  .visual-resource {
+    --visual-bg:
+      linear-gradient(135deg, #0c6f76, #0b2f55);
+  }
+
+  .visual-travel {
+    --visual-bg:
+      linear-gradient(135deg, rgba(184, 134, 11, 0.88), rgba(0, 85, 164, 0.65)),
+      url("/images/hero-paris.jpg") center / cover;
+  }
+
+  .project-body {
+    display: grid;
+    gap: 0.62rem;
+    padding: 1rem;
+  }
+
+  .project-body h3 {
+    font-size: 1.18rem;
+  }
+
+  .project-body p {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+
+  .project-body ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .project-body li,
+  .project-status {
+    min-height: 1.65rem;
+    padding: 0.2rem 0.5rem;
+    border: 1px solid rgba(0, 85, 164, 0.18);
+    border-radius: var(--radius-sm);
+    background: #f7fbff;
+    color: var(--color-blue-dark);
+    font-size: 0.7rem;
+    font-weight: 800;
+  }
+
+  .project-status {
+    justify-self: start;
+    border-color: rgba(184, 134, 11, 0.28);
+    background: #fff8ea;
+    color: #8a6408;
+  }
+
+  @media (max-width: 1080px) {
+    .project-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 640px) {
+    .project-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

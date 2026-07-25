@@ -1,0 +1,220 @@
+---
+type FlowNode = {
+  title: string;
+  text: string;
+  icon: "data" | "education" | "mentor" | "travel" | "content" | "community";
+};
+
+const nodes: FlowNode[] = [
+  { title: "Datos e IA", text: "Entender para tomar mejores decisiones.", icon: "data" },
+  { title: "Educación", text: "Aprender para crecer y enseñar a otros.", icon: "education" },
+  { title: "Mentoría", text: "Acompañar para multiplicar resultados.", icon: "mentor" },
+  { title: "Viajes y experiencias", text: "Vivir para entender el mundo real.", icon: "travel" },
+  { title: "Comunicación y contenido", text: "Compartir para inspirar y generar impacto.", icon: "content" },
+  { title: "Comunidad", text: "Conectar para colaborar y crear valor.", icon: "community" },
+];
+
+const iconPaths = {
+  data: "M5 19V9m7 10V5m7 14v-7M4 19h16",
+  education: "m3 8 9-4 9 4-9 4-9-4Zm4 3v4c2.4 1.8 7.6 1.8 10 0v-4",
+  mentor: "M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm8 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM3 20a5 5 0 0 1 10 0m-2 0a5 5 0 0 1 10 0",
+  travel: "M3 12h18M4 12l7-7m-7 7 7 7M20 12l-7-7m7 7-7 7",
+  content: "M4 15h4l7 4V5L8 9H4v6Zm14-3h3",
+  community: "M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM4 21a8 8 0 0 1 16 0",
+} as const;
+---
+
+<section class="author-section connections-section container" aria-labelledby="connections-title">
+  <div class="section-copy">
+    <h2 id="connections-title">Cómo se conecta todo</h2>
+    <p>Un sistema donde cada elemento alimenta y amplifica al siguiente.</p>
+  </div>
+
+  <div class="connection-flow">
+    <ol>
+      {
+        nodes.map((node) => (
+          <li>
+            <span class={`flow-icon icon-${node.icon}`} aria-hidden="true">
+              <svg viewBox="0 0 24 24" focusable="false">
+                <path d={iconPaths[node.icon]} />
+              </svg>
+            </span>
+            <h3>{node.title}</h3>
+            <p>{node.text}</p>
+          </li>
+        ))
+      }
+    </ol>
+    <div class="purpose-pill" aria-label="Proyectos con propósito: utilidad real, impacto positivo y libertad creativa">
+      <strong>PROYECTOS CON PROPÓSITO</strong>
+      <span>Utilidad real · Impacto positivo · Libertad creativa</span>
+    </div>
+  </div>
+</section>
+
+<style>
+  .connection-flow {
+    margin-top: 1.25rem;
+  }
+
+  .connection-flow ol {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 0.5rem;
+    padding: 1.5rem 1rem 2.4rem;
+    margin: 0;
+    border: 1px solid rgba(0, 85, 164, 0.24);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.72);
+    list-style: none;
+  }
+
+  .connection-flow ol::before {
+    position: absolute;
+    top: 3.35rem;
+    right: 4rem;
+    left: 4rem;
+    border-top: 2px solid rgba(0, 85, 164, 0.26);
+    content: "";
+  }
+
+  .connection-flow li {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    justify-items: center;
+    text-align: center;
+  }
+
+  .connection-flow li:not(:last-child)::after {
+    position: absolute;
+    top: 1.4rem;
+    right: -0.42rem;
+    color: var(--color-blue-dark);
+    content: "+";
+    font-size: 1.3rem;
+    font-weight: 900;
+  }
+
+  .flow-icon {
+    display: grid;
+    width: 4rem;
+    height: 4rem;
+    place-items: center;
+    border: 4px solid #ffffff;
+    border-radius: 50%;
+    background: #f7fbff;
+    color: var(--color-blue);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .flow-icon svg {
+    width: 1.45rem;
+    height: 1.45rem;
+  }
+
+  .flow-icon path {
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.9;
+  }
+
+  .icon-mentor,
+  .icon-community {
+    color: var(--color-gold);
+  }
+
+  .icon-content {
+    color: var(--color-red);
+  }
+
+  .connection-flow h3 {
+    margin-top: 0.6rem;
+    font-family: var(--font-body);
+    font-size: 0.84rem;
+    font-weight: 900;
+  }
+
+  .connection-flow p {
+    max-width: 9rem;
+    margin: 0.18rem 0 0;
+    color: var(--color-text-muted);
+    font-size: 0.72rem;
+    line-height: 1.42;
+  }
+
+  .purpose-pill {
+    display: grid;
+    justify-items: center;
+    width: min(100% - 2rem, 22rem);
+    min-height: 3.4rem;
+    margin: -1.75rem auto 0;
+    padding: 0.45rem 1rem;
+    border: 1px solid rgba(0, 85, 164, 0.28);
+    border-radius: 999px;
+    background: linear-gradient(180deg, #ffffff, #eef6ff);
+    color: var(--color-blue-dark);
+    box-shadow: var(--shadow-sm);
+    text-align: center;
+  }
+
+  .purpose-pill strong {
+    font-size: 0.82rem;
+    letter-spacing: 0.08em;
+  }
+
+  .purpose-pill span {
+    color: var(--color-text-muted);
+    font-size: 0.74rem;
+  }
+
+  @media (max-width: 980px) {
+    .connection-flow ol {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      border-radius: var(--radius-lg);
+    }
+
+    .connection-flow ol::before,
+    .connection-flow li::after {
+      display: none;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .connection-flow ol {
+      grid-template-columns: 1fr;
+      padding: 1rem;
+    }
+
+    .connection-flow li {
+      grid-template-columns: auto minmax(0, 1fr);
+      column-gap: 0.8rem;
+      justify-items: start;
+      text-align: left;
+    }
+
+    .flow-icon {
+      grid-row: span 2;
+      width: 3.35rem;
+      height: 3.35rem;
+    }
+
+    .connection-flow h3 {
+      margin-top: 0.15rem;
+    }
+
+    .connection-flow p {
+      max-width: none;
+    }
+
+    .purpose-pill {
+      width: 100%;
+      margin-top: 0.8rem;
+      border-radius: var(--radius-md);
+    }
+  }
+</style>

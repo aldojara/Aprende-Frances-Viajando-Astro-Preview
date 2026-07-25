@@ -9,5 +9,13 @@ export default defineConfig({
       status: 301,
       destination: "/sobre-nosotros/",
     },
+    "/autor/": {
+      status: 301,
+      destination: "/sobre-nosotros/aldo-jara-pisconti/",
+    },
+    "/autor/aldo-jara-pisconti/": {
+      status: 301,
+      destination: "/sobre-nosotros/aldo-jara-pisconti/",
+    },
   },
 });
