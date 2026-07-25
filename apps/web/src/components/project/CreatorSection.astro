@@ -31,6 +31,9 @@ const professionalActions = [
   { label: "GitHub", href: creatorProfile.githubUrl },
   { label: "Contactar", href: creatorProfile.contactUrl },
 ];
+
+const aboutCreatorImage = "/images/project/aldo-jara-pisconti-paris.webp";
+const aboutCreatorImageAlt = "Aldo Jara Pisconti frente a la Torre Eiffel en París";
 ---
 
 <section id="creador" class="creator-section" aria-labelledby="creator-title">
@@ -43,8 +46,8 @@ const professionalActions = [
     <article class="creator-card">
       <div class="creator-portrait">
         <img
-          src={withBase(creatorProfile.image)}
-          alt={creatorProfile.imageAlt}
+          src={withBase(aboutCreatorImage)}
+          alt={aboutCreatorImageAlt}
           width="640"
           height="720"
           loading="lazy"
