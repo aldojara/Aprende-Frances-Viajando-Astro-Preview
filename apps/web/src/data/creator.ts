@@ -6,9 +6,9 @@ export const creatorProfile = {
     "Ingeniero de Sistemas · Analítica · Inteligencia artificial aplicada a la educación",
   shortBio:
     "Combino tecnología, datos, experiencia de aprendizaje y mi interés por el francés, los viajes y la educación para construir una plataforma útil, clara y progresiva que acompañe a estudiantes reales en su recorrido de A1 a C1.",
-  image: "/images/project/aldo-jara-pisconti-creador-aprende-frances-viajando.svg",
+  image: "/images/project/aldo-jara-pisconti-paris.webp",
   imageAlt:
-    "Aldo Jara Pisconti, creador de Aprende Francés Viajando",
+    "Aldo Jara Pisconti frente a la Torre Eiffel en París",
   linkedinUrl: "",
   githubUrl: "",
   contactUrl: "",
