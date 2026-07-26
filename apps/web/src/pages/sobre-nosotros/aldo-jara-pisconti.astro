@@ -6,6 +6,42 @@ import ProfileConnections from "../../components/author/ProfileConnections.astro
 import ProjectEcosystem from "../../components/author/ProjectEcosystem.astro";
 import ProjectPrinciples from "../../components/author/ProjectPrinciples.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const profilePageStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "ProfilePage",
+  "@id": "https://aprendefrancesviajando.com/sobre-nosotros/aldo-jara-pisconti/#profilepage",
+  url: "https://aprendefrancesviajando.com/sobre-nosotros/aldo-jara-pisconti/",
+  name: "Aldo Jara Pisconti",
+  description:
+    "Conoce a Aldo Jara Pisconti, creador de Aprende Francés Viajando, y su ecosistema de proyectos que conecta datos, inteligencia artificial, educación, mentoría, viajes y contenido.",
+  isPartOf: {
+    "@type": "WebSite",
+    "@id": "https://aprendefrancesviajando.com/#website",
+    name: "Aprende Francés Viajando",
+    url: "https://aprendefrancesviajando.com/",
+  },
+  mainEntity: {
+    "@type": "Person",
+    "@id": "https://aprendefrancesviajando.com/sobre-nosotros/aldo-jara-pisconti/#person",
+    name: "Aldo Jara Pisconti",
+    url: "https://aprendefrancesviajando.com/sobre-nosotros/aldo-jara-pisconti/",
+    image: "https://aprendefrancesviajando.com/images/project/aldo-jara-pisconti-paris.webp",
+    description:
+      "Fundador y creador de Aprende Francés Viajando. Combina datos, inteligencia artificial, educación, mentoría, producto, comunicación y experiencias de viaje para desarrollar proyectos con utilidad real.",
+    sameAs: ["https://www.linkedin.com/in/aldojarapisconti/"],
+    knowsAbout: [
+      "Análisis de datos",
+      "Inteligencia artificial",
+      "Educación",
+      "EdTech",
+      "Mentoría",
+      "Estrategia de producto",
+      "Comunicación",
+      "Creación de contenidos",
+    ],
+  },
+};
 ---
 
 <BaseLayout
@@ -15,6 +51,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
   image="/images/project/aldo-jara-pisconti-paris.webp"
   type="profile"
   robots="index,follow"
+  structuredData={profilePageStructuredData}
 >
   <main class="author-page">
     <AuthorHero />
