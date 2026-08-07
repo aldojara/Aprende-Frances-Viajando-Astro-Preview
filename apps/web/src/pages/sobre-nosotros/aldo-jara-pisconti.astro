@@ -5,6 +5,7 @@ import ProfessionalArchitecture from "../../components/author/ProfessionalArchit
 import ProfileConnections from "../../components/author/ProfileConnections.astro";
 import ProjectEcosystem from "../../components/author/ProjectEcosystem.astro";
 import ProjectPrinciples from "../../components/author/ProjectPrinciples.astro";
+import { creatorProfile, getCreatorSameAs } from "../../data/creator";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
 const profilePageStructuredData = {
@@ -14,22 +15,19 @@ const profilePageStructuredData = {
   url: "https://aprendefrancesviajando.com/sobre-nosotros/aldo-jara-pisconti/",
   name: "Aldo Jara Pisconti",
   description:
-    "Conoce a Aldo Jara Pisconti, creador de Aprende Francés Viajando, un proyecto que conecta educación, tecnología, inteligencia artificial, contenido y experiencias reales.",
+    "Conoce a Aldo Jara Pisconti, fundador y creador de Aprende Francés Viajando, un proyecto que conecta educación, tecnología, inteligencia artificial, contenido y experiencias reales.",
   isPartOf: {
-    "@type": "WebSite",
     "@id": "https://aprendefrancesviajando.com/#website",
-    name: "Aprende Francés Viajando",
-    url: "https://aprendefrancesviajando.com/",
   },
   mainEntity: {
     "@type": "Person",
-    "@id": "https://aprendefrancesviajando.com/sobre-nosotros/aldo-jara-pisconti/#person",
-    name: "Aldo Jara Pisconti",
-    url: "https://aprendefrancesviajando.com/sobre-nosotros/aldo-jara-pisconti/",
+    "@id": creatorProfile.personId,
+    name: creatorProfile.name,
+    url: creatorProfile.canonicalUrl,
     image: "https://aprendefrancesviajando.com/images/project/aldo-jara-pisconti-paris.webp",
     description:
       "Fundador y creador de Aprende Francés Viajando. Combina datos, inteligencia artificial, educación, mentoría, producto, comunicación y experiencias de viaje para desarrollar proyectos con utilidad real.",
-    sameAs: ["https://www.linkedin.com/in/aldojarapisconti/"],
+    sameAs: getCreatorSameAs(),
     knowsAbout: [
       "Análisis de datos",
       "Inteligencia artificial",
@@ -46,7 +44,7 @@ const profilePageStructuredData = {
 
 <BaseLayout
   title="Aldo Jara Pisconti | Creador de Aprende Francés Viajando"
-  description="Conoce a Aldo Jara Pisconti, creador de Aprende Francés Viajando, un proyecto que conecta educación, tecnología, inteligencia artificial, contenido y experiencias reales."
+  description="Conoce a Aldo Jara Pisconti, fundador y creador de Aprende Francés Viajando, un proyecto que conecta educación, tecnología, inteligencia artificial, contenido y experiencias reales."
   canonical="/sobre-nosotros/aldo-jara-pisconti/"
   image="/images/project/aldo-jara-pisconti-paris.webp"
   type="profile"

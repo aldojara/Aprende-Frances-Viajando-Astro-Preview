@@ -1,6 +1,10 @@
 export const creatorProfile = {
   name: "Aldo Jara Pisconti",
   slug: "aldo-jara-pisconti",
+  canonicalUrl: "https://aldojarapisconti.com/",
+  personId: "https://aldojarapisconti.com/#person",
+  projectProfileUrl:
+    "https://aprendefrancesviajando.com/sobre-nosotros/aldo-jara-pisconti/",
   role: "Ingeniero de Sistemas",
   professionalDescriptor:
     "Ingeniero de Sistemas · Analítica · Inteligencia artificial aplicada a la educación",
@@ -9,7 +13,10 @@ export const creatorProfile = {
   image: "/images/project/aldo-jara-pisconti-creador-aprende-frances-viajando.svg",
   imageAlt:
     "Aldo Jara Pisconti, creador de Aprende Francés Viajando",
-  linkedinUrl: "",
+  linkedinUrl: "https://www.linkedin.com/in/aldojarapisconti/",
+  youtubeUrl: "https://www.youtube.com/@aldopisconti",
+  bigTalentProfileUrl: "https://bigtalentanalytica.com/sobre-mi",
+  aldoAlVolanteProfileUrl: "https://aldoalvolante.com/sobre-aldo/",
   githubUrl: "",
   contactUrl: "",
   knowsAbout: [
@@ -40,8 +47,10 @@ export const creatorProfilePath = `/sobre-nosotros/${creatorProfile.slug}/`;
 export const getCreatorSameAs = () => {
   const possibleUrls: readonly string[] = [
     creatorProfile.linkedinUrl,
-    creatorProfile.githubUrl,
-    creatorProfile.contactUrl,
+    creatorProfile.youtubeUrl,
+    creatorProfile.bigTalentProfileUrl,
+    creatorProfile.projectProfileUrl,
+    creatorProfile.aldoAlVolanteProfileUrl,
   ];
 
   return possibleUrls.filter((url) => Boolean(url));

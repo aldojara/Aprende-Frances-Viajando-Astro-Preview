@@ -2,12 +2,10 @@
 import CreatorSection from "../../components/project/CreatorSection.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { creatorProfile, creatorProfilePath } from "../../data/creator";
-import { absoluteUrl, siteName } from "../../utils/seo";
+import { siteName } from "../../utils/seo";
 import { withBase } from "../../utils/paths";
 
-const baseUrl = Astro.site ?? Astro.url;
-const projectUrl = absoluteUrl("/sobre-nosotros/", baseUrl);
-const creatorUrl = absoluteUrl(creatorProfilePath, baseUrl);
+const siteUrl = "https://aprendefrancesviajando.com/";
 
 const visionItems = [
   ["A1-C1", "Un recorrido completo y progresivo para todos los niveles.", "level"],
@@ -55,15 +53,17 @@ const projectStructuredData = [
   {
     "@context": "https://schema.org",
     "@type": "WebSite",
+    "@id": "https://aprendefrancesviajando.com/#website",
     name: siteName,
-    url: absoluteUrl("/", baseUrl),
+    url: "https://aprendefrancesviajando.com/",
     description:
       "Plataforma educativa A1-C1 para aprender francés, preparar el DELF y conectar el idioma con viajes y tecnología educativa.",
     inLanguage: "es",
+    publisher: {
+      "@id": "https://aprendefrancesviajando.com/#organization",
+    },
     creator: {
-      "@type": "Person",
-      name: creatorProfile.name,
-      url: creatorUrl,
+      "@id": creatorProfile.personId,
     },
     about: [
       "Francés A1-C1",
@@ -76,15 +76,15 @@ const projectStructuredData = [
   {
     "@context": "https://schema.org",
     "@type": "EducationalOrganization",
+    "@id": "https://aprendefrancesviajando.com/#organization",
     name: siteName,
-    url: projectUrl,
+    url: siteUrl,
     description:
       "Proyecto educativo progresivo para aprender francés desde A1 hasta C1 con gramática, DELF, recursos multiformato, viajes e inteligencia artificial aplicada con criterio.",
     founder: {
-      "@type": "Person",
-      name: creatorProfile.name,
-      url: creatorUrl,
+      "@id": creatorProfile.personId,
     },
+    sameAs: ["https://www.tiktok.com/@aprende_frances_viajando"],
     knowsAbout: [
       "Francés",
       "Niveles A1-C1",
