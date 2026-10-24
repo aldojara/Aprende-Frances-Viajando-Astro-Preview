@@ -44,8 +44,9 @@ Cómo trabajar en local y cómo se publica: ver [README.md](README.md).
 
 - Antes de abrir un *pull request*: `cd apps/web && npm run check && npm run build`.
 - Al cambiar dependencias, el `package-lock.json` debe aceptarlo el npm de GitHub Actions, que puede ser
-  más nuevo y más estricto que el del Mac (en octubre de 2026, npm 11.21 rechazó un lock que npm 11.6
-  aceptaba). Antes de subirlo: `npx -y npm@11 ci --dry-run --ignore-scripts` en `apps/web`.
+  más nuevo y más estricto que el del Mac (en octubre de 2026, el npm 11.19 de Actions rechazó un lock
+  que el npm 11.6 del Mac aceptaba). Antes de subirlo: `npx -y npm@11 ci --dry-run --ignore-scripts`
+  en `apps/web`.
 - Servidor de desarrollo en segundo plano: `npx astro dev --background`; gestionarlo con
   `astro dev stop`, `astro dev status` y `astro dev logs`.
 - `site` y las redirecciones están en `apps/web/astro.config.mjs`. `public/_redirects` no tiene efecto en
