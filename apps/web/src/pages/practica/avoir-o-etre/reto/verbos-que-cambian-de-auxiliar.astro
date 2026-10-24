@@ -1,0 +1,162 @@
+---
+import BaseLayout from "../../../../layouts/BaseLayout.astro";
+import EjerciciosCorregibles from "../../../../components/practica/EjerciciosCorregibles.astro";
+import { PROTOTIPO, sesiones, tipos } from "../../../../data/practicaAvoirEtre";
+import { withBase } from "../../../../utils/paths";
+
+const sesion = sesiones.T3!;
+const tipo = tipos.find((t) => t.id === sesion.tipo)!;
+const retoUrl = withBase("/practica/avoir-o-etre/reto/");
+---
+
+<BaseLayout
+  title={`Reto ¿Avoir o être?: ${tipo.nombre}`}
+  description={`Sesión del reto: ${tipo.nombre}.`}
+  robots="noindex,nofollow"
+>
+  <main>
+    {
+      PROTOTIPO && (
+        <p class="prototipo-aviso" role="note">
+          Prototipo en borrador · contenido pendiente de revisión
+        </p>
+      )
+    }
+
+    <section class="section">
+      <div class="container sesion">
+        <a class="sesion-volver" href={retoUrl}>← Tus 5 sesiones</a>
+        <p class="eyebrow">Reto ¿Avoir o être? · Sesión</p>
+        <h1>{tipo.nombre}</h1>
+
+        <div class="sesion-idea card">
+          <p><strong>Idea clave.</strong> {sesion.idea}</p>
+          {sesion.pregunta && <p class="sesion-pregunta">{sesion.pregunta}</p>}
+        </div>
+
+        <EjerciciosCorregibles
+          grupo="sesion"
+          preguntas={sesion.ejercicios}
+          evento="reto_sesion"
+          progresoTipo={sesion.tipo}
+        />
+
+        {
+          sesion.fraseFinal && (
+            <section class="sesion-frase card" aria-labelledby="frase-titulo">
+              <h2 id="frase-titulo">Tu turno</h2>
+              <p>{sesion.fraseFinal.consigna}</p>
+              <label class="visually-hidden" for="frase-final">Tus frases</label>
+              <textarea id="frase-final" rows="3" lang="fr" placeholder="Escribe aquí (no se guarda)" />
+              <details>
+                <summary>Ver un modelo</summary>
+                <p lang="fr">{sesion.fraseFinal.modelo}</p>
+              </details>
+            </section>
+          )
+        }
+
+        <div class="sesion-fin" data-sesion-fin hidden>
+          <p>Sesión completada. Repasa la explicación de las respuestas que fallaste.</p>
+          <a class="button button-primary" href={retoUrl}>Siguiente sesión</a>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .sesion [hidden] {
+    display: none;
+  }
+
+  .prototipo-aviso {
+    margin: 0;
+    padding: 0.5rem 1rem;
+    background: var(--color-gold);
+    color: #ffffff;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-align: center;
+  }
+
+  .sesion {
+    display: grid;
+    gap: 1.25rem;
+    max-width: 820px;
+  }
+
+  .sesion h1 {
+    font-size: clamp(2rem, 4.5vw, 3.2rem);
+  }
+
+  .sesion-volver {
+    color: var(--color-blue);
+    font-weight: 600;
+  }
+
+  .sesion .eyebrow {
+    margin-bottom: -0.75rem;
+  }
+
+  .sesion-idea,
+  .sesion-frase {
+    padding: 1.1rem 1.25rem;
+  }
+
+  .sesion-idea p {
+    margin: 0;
+  }
+
+  .sesion-pregunta {
+    margin-top: 0.5rem !important;
+    color: var(--color-blue-dark);
+    font-weight: 600;
+  }
+
+  .sesion-frase {
+    display: grid;
+    gap: 0.6rem;
+  }
+
+  .sesion-frase h2 {
+    font-size: 1.4rem;
+  }
+
+  .sesion-frase p {
+    margin: 0;
+  }
+
+  .sesion-frase textarea {
+    width: 100%;
+    padding: 0.6rem 0.75rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    resize: vertical;
+  }
+
+  .sesion-frase summary {
+    color: var(--color-blue);
+    cursor: pointer;
+    font-weight: 600;
+  }
+
+  .sesion-fin {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .sesion-fin p {
+    margin: 0;
+    font-weight: 600;
+  }
+</style>
+
+<script>
+  const fin = document.querySelector<HTMLElement>("[data-sesion-fin]");
+  document.addEventListener("afv:sesion-completada", () => {
+    if (fin) fin.hidden = false;
+  });
+</script>

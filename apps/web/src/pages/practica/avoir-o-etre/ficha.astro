@@ -1,0 +1,248 @@
+---
+// Fuente imprimible de la ficha. El PDF se genera desde esta página (ver README) y se guarda en
+// public/descargas/. No se enlaza desde la web ni entra en el sitemap.
+import { ficha, PROTOTIPO } from "../../../data/practicaAvoirEtre";
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex,nofollow" />
+    <title>{ficha.titulo} · Ficha</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <article class="ficha">
+      <section class="hoja">
+        <header class="ficha-cabecera">
+          <p class="ficha-marca">Aprende Francés Viajando</p>
+          {PROTOTIPO && <p class="ficha-borrador">BORRADOR · pendiente de revisión</p>}
+          <h1>{ficha.titulo}</h1>
+        </header>
+
+        <h2>1. La regla en dos preguntas</h2>
+        <ol class="ficha-regla">
+          {ficha.regla.map((paso) => <li>{paso}</li>)}
+        </ol>
+
+        <h2>2. Los verbos que van con être</h2>
+        <ul class="ficha-verbos" lang="fr">
+          {
+            ficha.verbosEtre.map(([infinitivo, participio]) => (
+              <li>
+                <strong>{infinitivo}</strong> → {participio}
+              </li>
+            ))
+          }
+        </ul>
+        <p class="ficha-nota">Truco: «DR &amp; MRS VANDERTRAMP» recoge las iniciales de estos verbos.</p>
+
+        <h2>3. Con être, el participio concuerda con el sujeto</h2>
+        <ul class="ficha-ejemplos" lang="fr">
+          {ficha.concordancia.map((frase) => <li>{frase}</li>)}
+        </ul>
+
+        <h2>4. La trampa: verbos que cambian de auxiliar</h2>
+        <p>{ficha.trampa.texto}</p>
+        <table class="ficha-tabla" lang="fr">
+          <thead>
+            <tr><th>Sin complemento directo → être</th><th>Con complemento directo → avoir</th></tr>
+          </thead>
+          <tbody>
+            {ficha.trampa.ejemplos.map(([etre, avoir]) => <tr><td>{etre}</td><td>{avoir}</td></tr>)}
+          </tbody>
+        </table>
+
+        <h2>5. Errores típicos de quien habla español</h2>
+        <table class="ficha-tabla">
+          <thead><tr><th>✗ Incorrecto</th><th>✓ Correcto</th></tr></thead>
+          <tbody>
+            {
+              ficha.errores.map(([mal, bien]) => (
+                <tr><td lang="fr" class="ficha-mal">{mal}</td><td lang="fr">{bien}</td></tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </section>
+
+      <section class="hoja">
+        <h2>6. Ejercicios</h2>
+        <p>Completa con el passé composé del verbo entre paréntesis.</p>
+        <ol class="ficha-ejercicios" lang="fr">
+          {ficha.ejercicios.map(([frase]) => <li>{frase}</li>)}
+        </ol>
+
+        <h2>Soluciones</h2>
+        <ol class="ficha-soluciones" lang="fr">
+          {ficha.ejercicios.map(([, solucion]) => <li>{solucion}</li>)}
+        </ol>
+
+        <footer class="ficha-pie">
+          <p>
+            Practica con corrección al momento y descubre por dónde empezar en{" "}
+            <strong>aprendefrancesviajando.com/practica/avoir-o-etre/</strong>
+          </p>
+        </footer>
+      </section>
+    </article>
+  </body>
+</html>
+
+<style>
+  /* Estilos propios: importar global.css aquí cambiaría el reparto del CSS de toda la web. */
+  :root {
+    --color-surface: #ffffff;
+    --color-surface-soft: #efede8;
+    --color-text: #2e2b27;
+    --color-text-muted: #6d6861;
+    --color-heading: #0b2f55;
+    --color-blue: #0055a4;
+    --color-red: #b94035;
+    --color-gold: #b8860b;
+    --color-border: #e2ded7;
+  }
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    color: var(--color-text);
+    font-family: "Inter", Arial, sans-serif;
+  }
+
+  h1,
+  h2 {
+    color: var(--color-heading);
+    font-family: "Playfair Display", Georgia, serif;
+    line-height: 1.15;
+  }
+
+  @page {
+    size: A4;
+    margin: 14mm 16mm;
+  }
+
+  body {
+    background: var(--color-surface);
+    font-size: 10.5pt;
+    line-height: 1.45;
+  }
+
+  .ficha {
+    max-width: 180mm;
+    margin: 0 auto;
+    padding: 8mm 0;
+  }
+
+  .hoja + .hoja {
+    break-before: page;
+  }
+
+  .ficha-cabecera {
+    margin-bottom: 4mm;
+    padding-bottom: 3mm;
+    border-bottom: 2px solid var(--color-gold);
+  }
+
+  .ficha-marca {
+    margin: 0;
+    color: var(--color-blue);
+    font-size: 8pt;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .ficha-borrador {
+    margin: 1mm 0 0;
+    color: var(--color-red);
+    font-size: 8pt;
+    font-weight: 700;
+  }
+
+  h1 {
+    margin-top: 1mm;
+    font-size: 22pt;
+  }
+
+  h2 {
+    margin: 5mm 0 2mm;
+    font-size: 13pt;
+  }
+
+  p {
+    margin: 0 0 2mm;
+  }
+
+  ol,
+  ul {
+    margin: 0;
+    padding-left: 7mm;
+  }
+
+  .ficha-verbos {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.6mm 4mm;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ficha-nota {
+    margin-top: 2mm;
+    color: var(--color-text-muted);
+    font-size: 9pt;
+  }
+
+  .ficha-tabla {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .ficha-tabla th,
+  .ficha-tabla td {
+    padding: 1.5mm 2mm;
+    border: 1px solid var(--color-border);
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .ficha-tabla th {
+    background: var(--color-surface-soft);
+    color: var(--color-heading);
+    font-size: 9pt;
+  }
+
+  .ficha-mal {
+    color: var(--color-red);
+    text-decoration: line-through;
+  }
+
+  .ficha-ejercicios li {
+    margin-bottom: 4mm;
+  }
+
+  .ficha-soluciones {
+    columns: 2;
+  }
+
+  .ficha-pie {
+    margin-top: 8mm;
+    padding-top: 3mm;
+    border-top: 1px solid var(--color-border);
+    color: var(--color-text-muted);
+    font-size: 9pt;
+  }
+</style>

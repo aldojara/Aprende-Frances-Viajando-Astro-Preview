@@ -1,0 +1,158 @@
+---
+import type { Pregunta } from "../../data/practicaAvoirEtre";
+
+interface Props {
+  pregunta: Pregunta;
+  numero: number;
+  grupo: string;
+  conExplicacion?: boolean;
+}
+
+const { pregunta, numero, grupo, conExplicacion = true } = Astro.props;
+const [antes, despues = ""] = pregunta.enunciado.split("___");
+---
+
+<li class="pregunta" data-pregunta={pregunta.id} data-correcta={pregunta.correcta}>
+  <fieldset>
+    <legend>
+      <span class="pregunta-numero">{numero}</span>
+      <span class="pregunta-texto" lang="fr">
+        {antes}<span class="pregunta-hueco" aria-label="hueco">___</span>{despues}
+      </span>
+    </legend>
+
+    <div class="pregunta-opciones">
+      {
+        pregunta.opciones.map((opcion, indice) => (
+          <label class="opcion">
+            <input type="radio" name={`${grupo}-${pregunta.id}`} value={indice} />
+            <span lang="fr">{opcion}</span>
+          </label>
+        ))
+      }
+    </div>
+
+    {
+      conExplicacion && (
+        <p class="pregunta-feedback" data-feedback hidden>
+          <strong data-veredicto />
+          <span data-solucion lang="fr" />
+          <span class="pregunta-explicacion">{pregunta.explicacion}</span>
+        </p>
+      )
+    }
+  </fieldset>
+</li>
+
+<style>
+  .pregunta-feedback[hidden] {
+    display: none;
+  }
+
+  .pregunta fieldset {
+    margin: 0;
+    padding: 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+  }
+
+  .pregunta legend {
+    display: flex;
+    gap: 0.75rem;
+    align-items: baseline;
+    float: left;
+    width: 100%;
+    margin-bottom: 0.75rem;
+    padding: 0;
+    color: var(--color-heading);
+    font-size: 1.05rem;
+    font-weight: 600;
+  }
+
+  .pregunta legend + * {
+    clear: both;
+  }
+
+  .pregunta-numero {
+    flex: none;
+    display: inline-grid;
+    place-items: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 50%;
+    background: var(--color-surface-soft);
+    color: var(--color-blue-dark);
+    font-size: 0.8rem;
+    font-weight: 800;
+  }
+
+  .pregunta-hueco {
+    display: inline-block;
+    min-width: 3.5rem;
+    margin-inline: 0.2rem;
+    border-bottom: 2px solid var(--color-gold);
+    color: transparent;
+  }
+
+  .pregunta-opciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .opcion {
+    display: inline-flex;
+    gap: 0.5rem;
+    align-items: center;
+    min-height: 2.75rem;
+    padding: 0.5rem 0.9rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background: var(--color-bg);
+    cursor: pointer;
+    font-weight: 600;
+  }
+
+  .opcion:has(input:checked) {
+    border-color: var(--color-blue);
+    background: rgba(0, 85, 164, 0.07);
+  }
+
+  .opcion input {
+    accent-color: var(--color-blue);
+  }
+
+  .pregunta-feedback {
+    display: grid;
+    gap: 0.2rem;
+    margin: 0.85rem 0 0;
+    padding: 0.75rem 0.9rem;
+    border-left: 4px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background: var(--color-surface-soft);
+    font-size: 0.95rem;
+  }
+
+  :global(.pregunta.es-correcta) .pregunta-feedback {
+    border-left-color: #2f7d4f;
+  }
+
+  :global(.pregunta.es-incorrecta) .pregunta-feedback,
+  :global(.pregunta.sin-responder) .pregunta-feedback {
+    border-left-color: var(--color-red);
+  }
+
+  :global(.pregunta.es-correcta) [data-veredicto] {
+    color: #2f7d4f;
+  }
+
+  :global(.pregunta.es-incorrecta) [data-veredicto],
+  :global(.pregunta.sin-responder) [data-veredicto] {
+    color: var(--color-red);
+  }
+
+  .pregunta-explicacion {
+    color: var(--color-text-muted);
+  }
+</style>

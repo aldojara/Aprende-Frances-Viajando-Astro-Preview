@@ -44,6 +44,22 @@ las colecciones) y de compilación. **No garantizan** que funcionen los enlaces,
 bien ni que los formularios entreguen los datos. Después de cada publicación hay que revisar la web
 en vivo: las páginas tocadas, la portada y, cuando existan, los formularios.
 
+## Práctica «¿Avoir o être?» (prototipo)
+
+- Página: `/practica/avoir-o-etre/` · reto: `/practica/avoir-o-etre/reto/` (noindex, fuera del sitemap).
+- Contenido (ejercicios, diagnóstico, sesiones, ficha): `apps/web/src/data/practicaAvoirEtre.ts`.
+  Mientras `PROTOTIPO = true`, la página es `noindex`, muestra un aviso y el formulario es simulado
+  (no envía ni guarda nada). Reglas del diagnóstico: `apps/web/src/utils/diagnostico.ts`.
+- Eventos de medición: `apps/web/src/utils/track.ts` (sin servicio conectado).
+- **Regenerar el PDF de la ficha** tras cambiar su contenido (con `npm run build` y `npm run preview`
+  en marcha en `apps/web`):
+
+  ```bash
+  "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new --no-pdf-header-footer --virtual-time-budget=8000 --print-to-pdf="public/descargas/ficha-avoir-o-etre-borrador.pdf" http://localhost:4321/practica/avoir-o-etre/ficha/
+  ```
+
+  Después, volver a compilar para que el PDF nuevo entre en `dist`.
+
 ## Sitemap
 
 `/sitemap.xml` lo genera [`apps/web/src/pages/sitemap.xml.ts`](apps/web/src/pages/sitemap.xml.ts) en

@@ -1,0 +1,182 @@
+---
+import { withBase } from "../../utils/paths";
+
+const retoUrl = withBase("/practica/avoir-o-etre/reto/");
+---
+
+<div class="reto-form-wrap">
+  <form class="reto-form card" data-reto-form data-reto-url={retoUrl} novalidate>
+    <p class="reto-form-simulado" role="note">
+      <strong>Formulario simulado.</strong> En este prototipo no se envía ni se guarda ningún dato.
+    </p>
+
+    <label class="campo">
+      <span>Tu correo</span>
+      <input type="email" name="correo" autocomplete="email" required />
+      <span class="campo-error" data-error hidden>Escribe un correo válido.</span>
+    </label>
+
+    <label class="campo">
+      <span>¿Para qué estudias francés? <em>(opcional)</em></span>
+      <select name="objetivo">
+        <option value="">Prefiero no decirlo</option>
+        <option>Viajar</option>
+        <option>Trabajo o estudios</option>
+        <option>Vivir en un país francófono</option>
+        <option>Un examen</option>
+        <option>Clases o gusto</option>
+        <option>Otro</option>
+      </select>
+    </label>
+
+    <label class="casilla">
+      <input type="checkbox" name="avisos" />
+      <span>Avísame por correo si preparo un pack de práctica sobre los tiempos del pasado.</span>
+    </label>
+
+    <p class="reto-form-aviso">
+      Usaré tu correo para darte el acceso al reto. Solo te escribiré sobre otros temas si marcas la
+      casilla anterior. <span class="pendiente">[Política de privacidad: pendiente]</span>
+    </p>
+
+    <button class="button button-primary" type="submit">Quiero el reto</button>
+  </form>
+
+  <div class="reto-confirmacion card" data-reto-ok hidden tabindex="-1">
+    <h3>¡Listo! Aquí tienes tu acceso</h3>
+    <a class="button button-primary" data-reto-enlace href={retoUrl}>Empezar el reto</a>
+    <p>
+      También te enviamos una copia por correo para que puedas volver; puede tardar unos minutos. Si
+      no la ves, revisa spam.
+    </p>
+    <p class="reto-form-simulado" role="note">
+      <strong>Simulación:</strong> no se ha enviado ningún correo ni se ha guardado el dato.
+    </p>
+  </div>
+</div>
+
+<style>
+  .reto-form-wrap [hidden] {
+    display: none;
+  }
+
+  .reto-form,
+  .reto-confirmacion {
+    display: grid;
+    gap: 1rem;
+    padding: 1.5rem;
+  }
+
+  .reto-form-simulado {
+    margin: 0;
+    padding: 0.6rem 0.8rem;
+    border-radius: var(--radius-sm);
+    background: rgba(184, 134, 11, 0.12);
+    color: var(--color-text);
+    font-size: 0.9rem;
+  }
+
+  .campo {
+    display: grid;
+    gap: 0.35rem;
+    font-weight: 600;
+  }
+
+  .campo em {
+    color: var(--color-text-muted);
+    font-style: normal;
+    font-weight: 400;
+  }
+
+  .campo input,
+  .campo select {
+    min-height: 2.75rem;
+    padding: 0.55rem 0.75rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background: var(--color-surface);
+    color: var(--color-text);
+  }
+
+  .campo input[aria-invalid="true"] {
+    border-color: var(--color-red);
+  }
+
+  .campo-error {
+    color: var(--color-red);
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .casilla {
+    display: flex;
+    gap: 0.6rem;
+    align-items: flex-start;
+  }
+
+  .casilla input {
+    flex: none;
+    width: 1.15rem;
+    height: 1.15rem;
+    margin-top: 0.2rem;
+    accent-color: var(--color-blue);
+  }
+
+  .reto-form-aviso {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+  }
+
+  .pendiente {
+    font-style: italic;
+  }
+
+  .reto-form .button,
+  .reto-confirmacion .button {
+    justify-self: start;
+  }
+
+  .reto-confirmacion p {
+    margin: 0;
+  }
+</style>
+
+<script>
+  import { leerProgreso, track } from "../../utils/track";
+
+  const form = document.querySelector<HTMLFormElement>("[data-reto-form]");
+  const ok = document.querySelector<HTMLElement>("[data-reto-ok]");
+  const enlace = document.querySelector<HTMLAnchorElement>("[data-reto-enlace]");
+
+  form?.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const correo = form.elements.namedItem("correo") as HTMLInputElement;
+    const error = form.querySelector<HTMLElement>("[data-error]");
+    const valido = correo.value.trim() !== "" && correo.checkValidity();
+
+    correo.setAttribute("aria-invalid", String(!valido));
+    if (error) error.hidden = valido;
+    if (!valido) {
+      correo.focus();
+      return;
+    }
+
+    // Simulación: no se envía nada y el correo no se guarda en ningún sitio.
+    const avisos = (form.elements.namedItem("avisos") as HTMLInputElement).checked;
+    const orden = leerProgreso().orden;
+    if (enlace) {
+      const url = new URL(form.dataset.retoUrl ?? "/", window.location.origin);
+      if (orden) url.searchParams.set("orden", orden);
+      enlace.href = url.pathname + url.search;
+    }
+
+    track("reto_registro_simulado", { avisos: avisos ? "si" : "no" });
+    form.reset();
+    form.hidden = true;
+    if (ok) {
+      ok.hidden = false;
+      ok.focus();
+    }
+  });
+</script>

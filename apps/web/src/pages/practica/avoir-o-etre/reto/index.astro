@@ -1,0 +1,177 @@
+---
+import BaseLayout from "../../../../layouts/BaseLayout.astro";
+import { PROTOTIPO, sesiones, tipos } from "../../../../data/practicaAvoirEtre";
+import { withBase } from "../../../../utils/paths";
+
+const sesionUrl = (slug: string) => withBase(`/practica/avoir-o-etre/reto/${slug}/`);
+---
+
+<BaseLayout
+  title="Reto ¿Avoir o être?: tus 5 sesiones"
+  description="Reto de 5 sesiones para practicar el auxiliar del passé composé."
+  robots="noindex,nofollow"
+>
+  <main>
+    {
+      PROTOTIPO && (
+        <p class="prototipo-aviso" role="note">
+          Prototipo en borrador · solo la sesión «Verbos que cambian de auxiliar» está completa
+        </p>
+      )
+    }
+
+    <section class="section">
+      <div class="container reto-hub">
+        <p class="eyebrow">Reto ¿Avoir o être?</p>
+        <h1>Tus 5 sesiones</h1>
+        <p class="reto-hub-intro" data-orden-texto>
+          Orden estándar. Si haces la orientación, el reto empieza por lo que más te cuesta.
+        </p>
+
+        <ol class="reto-sesiones" data-sesiones>
+          {
+            tipos.map((tipo) => {
+              const disponible = Boolean(sesiones[tipo.id]);
+              return (
+                <li class="reto-sesion card" data-tipo={tipo.id}>
+                  <div>
+                    <h2>{tipo.nombre}</h2>
+                    <p class="reto-sesion-estado" data-estado>
+                      {disponible ? "Pendiente" : "En preparación"}
+                    </p>
+                  </div>
+                  {disponible ? (
+                    <a class="button button-primary" href={sesionUrl(tipo.slug)}>
+                      Empezar
+                    </a>
+                  ) : (
+                    <span class="reto-sesion-bloqueada">Próximamente en el prototipo</span>
+                  )}
+                </li>
+              );
+            })
+          }
+        </ol>
+
+        <p class="reto-hub-nota">
+          Tu avance se guarda solo en este navegador y dispositivo.
+          <a href={withBase("/practica/avoir-o-etre/")}>Volver a la ficha y la práctica</a>
+        </p>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .prototipo-aviso {
+    margin: 0;
+    padding: 0.5rem 1rem;
+    background: var(--color-gold);
+    color: #ffffff;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-align: center;
+  }
+
+  .reto-hub {
+    max-width: 820px;
+  }
+
+  .reto-hub h1 {
+    font-size: clamp(2.2rem, 5vw, 3.6rem);
+  }
+
+  .reto-hub-intro,
+  .reto-hub-nota {
+    color: var(--color-text-muted);
+  }
+
+  .reto-hub-intro {
+    margin: 0.75rem 0 1.5rem;
+  }
+
+  .reto-hub-nota a {
+    color: var(--color-blue);
+    font-weight: 600;
+  }
+
+  .reto-sesiones {
+    display: grid;
+    gap: 0.85rem;
+    margin: 0 0 1.5rem;
+    padding: 0;
+    list-style: none;
+    counter-reset: sesion;
+  }
+
+  .reto-sesion {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.25rem;
+    counter-increment: sesion;
+  }
+
+  .reto-sesion h2 {
+    font-size: 1.25rem;
+  }
+
+  .reto-sesion h2::before {
+    content: counter(sesion) ". ";
+    color: var(--color-gold);
+  }
+
+  .reto-sesion-estado {
+    margin: 0.2rem 0 0;
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+
+  :global(.reto-sesion.completada) .reto-sesion-estado {
+    color: #2f7d4f;
+  }
+
+  .reto-sesion-bloqueada {
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+  }
+</style>
+
+<script>
+  import { ordenEstandar } from "../../../../data/practicaAvoirEtre";
+  import { leerOrden } from "../../../../utils/diagnostico";
+  import { guardarProgreso, leerProgreso } from "../../../../utils/track";
+
+  const lista = document.querySelector<HTMLElement>("[data-sesiones]");
+  const texto = document.querySelector<HTMLElement>("[data-orden-texto]");
+  const progreso = leerProgreso();
+  const parametro = new URLSearchParams(window.location.search).get("orden");
+  const orden = leerOrden(parametro ?? progreso.orden ?? null, ordenEstandar);
+  const personalizado = orden.join("-") !== ordenEstandar.join("-");
+
+  if (parametro) guardarProgreso({ ...progreso, orden: orden.join("-") });
+
+  if (lista) {
+    orden.forEach((tipo) => {
+      const item = lista.querySelector(`[data-tipo="${tipo}"]`);
+      if (item) lista.append(item);
+    });
+
+    Object.entries(progreso.sesiones ?? {}).forEach(([tipo, sesion]) => {
+      const item = lista.querySelector(`[data-tipo="${tipo}"]`);
+      const estado = item?.querySelector("[data-estado]");
+      if (!item || !estado) return;
+      item.classList.add("completada");
+      estado.textContent = `Completada · ${sesion.aciertos} de ${sesion.total}`;
+      const boton = item.querySelector("a");
+      if (boton) boton.textContent = "Repetir";
+    });
+  }
+
+  if (texto && personalizado) {
+    texto.textContent = "Ordenadas según tu orientación: empieza por la primera.";
+  }
+</script>
