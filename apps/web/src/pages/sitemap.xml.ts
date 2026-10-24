@@ -44,6 +44,7 @@ const excludedPages = new Set([
   // Laboratorio de alternativas (solo local): se borra al elegir una opción.
   "./practica/avoir-o-etre/opcion-2/index.astro",
   "./practica/avoir-o-etre/opcion-3/index.astro",
+  "./practica/avoir-o-etre/opcion-4/index.astro",
   "./laboratorio.astro",
 ]);
 
