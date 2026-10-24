@@ -26,7 +26,10 @@ export const ejercicios: (Pregunta & { tipo: TipoVideo })[] = practica.map((preg
 
 // Clip específico de cada ejercicio (10–20 s). Mientras falte, el error muestra su explicación escrita
 // y el aviso «vídeo pendiente». El primero será el de sortir para p2 (guion en Documentos_Proyecto).
-export const videoPorEjercicio: Partial<Record<string, string>> = {};
+// VISTA PREVIA: el V1 genérico (78 s, archivo solo local y fuera de git) ocupa el sitio del clip de p2
+// para ver cómo queda en la tarjeta. Se sustituye por el clip real.
+export const VIDEO_PROVISIONAL = "/laboratorio-local/v1-avoir-etre-provisional.mp4";
+export const videoPorEjercicio: Partial<Record<string, string>> = { p2: VIDEO_PROVISIONAL };
 
 // La frase completa con la respuesta correcta en el hueco.
 export const fraseCorrecta = (pregunta: Pregunta) =>
