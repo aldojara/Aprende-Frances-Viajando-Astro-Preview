@@ -36,6 +36,22 @@ const opciones = [
     defectos: [],
     clave: `${RETO_STORAGE_KEY}-opcion-2`,
   },
+  {
+    numero: 3,
+    titulo: "Mira, entiende y vuelve a probar",
+    href: withBase("/practica/avoir-o-etre/opcion-3/"),
+    resumen:
+      "Los mismos 8 ejercicios de la opción 1. Al corregir, una tarjeta con tu respuesta y un vídeo breve de tu error (opcional, con explicación escrita desplegable), un caso nuevo de un clic y después «Recibe más práctica como esta». Sin fallos: un desafío de 3 frases.",
+    fijarse: [
+      "¿Te apetece ver el vídeo o lo saltas?",
+      "¿El caso nuevo de un clic se siente ágil?",
+      "¿La oferta llega en buen momento?",
+    ],
+    defectos: [
+      "Vídeo provisional: es el vertical V1 completo (78 s) para todos los errores, no un clip de 20–40 s de cada error. Sirve para probar el recorrido, no el ritmo del vídeo final.",
+    ],
+    clave: `${RETO_STORAGE_KEY}-opcion-3`,
+  },
 ];
 ---
 
@@ -47,7 +63,7 @@ const opciones = [
         <p class="eyebrow">Laboratorio · «¿Avoir o être?»</p>
         <h1>Compara las opciones</h1>
         <p class="laboratorio-intro">
-          Prueba cada opción como lo haría alguien que llega desde TikTok. Las dos usan el mismo estilo, la
+          Prueba cada opción como lo haría alguien que llega desde TikTok. Todas usan el mismo estilo, la
           misma ficha y la misma sesión de muestra; cambia el recorrido. Los formularios son simulados: no
           envían ni guardan datos. El progreso de cada opción se guarda por separado.
         </p>
@@ -67,7 +83,7 @@ const opciones = [
                 </ul>
                 {opcion.defectos.length > 0 && (
                   <>
-                    <h3>Defectos ya detectados (sin corregir, a propósito)</h3>
+                    <h3>{opcion.numero === 1 ? "Defectos ya detectados (sin corregir, a propósito)" : "Limitaciones de esta versión"}</h3>
                     <ul class="defectos">
                       {opcion.defectos.map((defecto) => (
                         <li>{defecto}</li>
@@ -115,7 +131,7 @@ const opciones = [
 
   .opciones {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 1.25rem;
     margin: 0;
     padding: 0;
@@ -167,7 +183,7 @@ const opciones = [
     margin-top: 0.75rem;
   }
 
-  @media (max-width: 900px) {
+  @media (max-width: 1100px) {
     .opciones {
       grid-template-columns: 1fr;
     }

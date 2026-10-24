@@ -1,0 +1,570 @@
+---
+// Laboratorio · Opción 3 «Mira, entiende y vuelve a probar». Solo prototipo local: noindex y
+// fuera del sitemap. El vídeo provisional vive en public/laboratorio-local/ (fuera de git).
+import BaseLayout from "../../../../layouts/BaseLayout.astro";
+import EjerciciosCorregibles from "../../../../components/practica/EjerciciosCorregibles.astro";
+import PreguntaOpciones from "../../../../components/practica/PreguntaOpciones.astro";
+import RetoFormulario from "../../../../components/practica/RetoFormulario.astro";
+import { fichaPdf } from "../../../../data/practicaAvoirEtre";
+import { ayudas, desafio, ejercicios } from "../../../../data/practicaAvoirEtreOpcion3";
+import { withBase } from "../../../../utils/paths";
+
+const pdf = withBase(fichaPdf);
+---
+
+<BaseLayout
+  title="¿Avoir o être? Mira, entiende y vuelve a probar (laboratorio · opción 3)"
+  description="Prototipo: práctica con vídeo de ayuda según tu error."
+  robots="noindex,nofollow"
+>
+  <main data-variante="opcion-3">
+    <p class="prototipo-aviso" role="note">
+      Laboratorio · Opción 3 · Mira, entiende y vuelve a probar · prototipo, no publicar ·
+      <a href={withBase("/laboratorio/")}>volver al laboratorio</a>
+    </p>
+
+    <section class="practica-hero">
+      <div class="container">
+        <p class="eyebrow">Passé composé · A2–B1</p>
+        <h1>¿Avoir o être? Elige el auxiliar sin dudar</h1>
+        <p class="practica-hero-texto">
+          Responde, corrige y, si fallas, mira una explicación breve en vídeo de justo ese error.
+        </p>
+        <div class="practica-acciones">
+          <a class="button button-primary button-descarga" href={pdf} download data-descarga="cabecera">
+            Descargar la ficha gratis (PDF)
+          </a>
+          <a class="button button-secondary" href="#practica">Empezar la práctica</a>
+        </div>
+        <p class="practica-nota">Ficha sin correo ni registro · Práctica, respuestas y vídeos gratis</p>
+      </div>
+    </section>
+
+    <section class="section" id="practica" aria-labelledby="practica-titulo">
+      <div class="container seccion-estrecha">
+        <p class="eyebrow">Practica</p>
+        <h2 id="practica-titulo">8 frases: ¿avoir o être?</h2>
+        <p class="seccion-intro">Elige una opción en cada frase y pulsa «Corregir».</p>
+        <div data-practica>
+          <EjerciciosCorregibles grupo="o3" preguntas={ejercicios} evento="practica" />
+        </div>
+
+        <!-- Ayuda: aparece al corregir, justo bajo el resultado -->
+        <div class="ayuda" data-ayuda-zona hidden>
+          {
+            Object.values(ayudas).map((ayuda) => (
+              <section class="ayuda-bloque card" data-ayuda={ayuda.tipo} hidden>
+                <p class="eyebrow">Vamos a repasar esta diferencia</p>
+                <h3 tabindex="-1">{ayuda.titulo}</h3>
+                <p class="ayuda-tu-respuesta" data-tu-respuesta />
+
+                <button class="button button-primary ayuda-play" type="button" data-ver-video>
+                  ▶ Ver explicación breve
+                </button>
+                <div class="ayuda-video" data-video-zona hidden>
+                  <video
+                    controls
+                    playsinline
+                    preload="none"
+                    data-video
+                    data-src={withBase(ayuda.video)}
+                  />
+                  {ayuda.videoProvisional && (
+                    <p class="ayuda-provisional">
+                      Vídeo provisional (vertical V1, 78 s). El clip definitivo de este error está por
+                      producir.
+                    </p>
+                  )}
+                  <p class="ayuda-error" data-video-error hidden>
+                    El vídeo no está disponible en esta copia del prototipo. Lee la explicación de abajo.
+                  </p>
+                </div>
+
+                <details class="ayuda-texto">
+                  <summary>Prefiero leerlo</summary>
+                  <p>{ayuda.resumen}</p>
+                </details>
+
+                <div class="ayuda-ejemplo" data-ejemplo-zona hidden>
+                  <h4>Ahora tú: un caso nuevo</h4>
+                  <ol class="lista-limpia" data-instantaneo>
+                    <PreguntaOpciones
+                      pregunta={ayuda.ejemploNuevo}
+                      numero={1}
+                      grupo={`o3-nuevo-${ayuda.tipo}`}
+                    />
+                  </ol>
+                  <p class="ayuda-pista" data-pista hidden>
+                    {ayuda.pista}
+                    <button class="enlace-boton" type="button" data-rever>Volver a ver el vídeo</button>
+                  </p>
+                </div>
+
+                <div class="ayuda-acciones">
+                  <button class="button button-secondary" type="button" data-probar>
+                    Probar un caso nuevo
+                  </button>
+                  <a class="enlace-continuar" href="#seguir" data-continuar>Seguir sin ver el vídeo →</a>
+                </div>
+              </section>
+            ))
+          }
+
+          <p class="ayuda-otros" data-otros hidden></p>
+
+          <section class="ayuda-bloque card" data-sin-fallos hidden>
+            <p class="eyebrow">Sin errores</p>
+            <h3 tabindex="-1" data-sin-fallos-titulo>¡Sin errores!</h3>
+            <p>¿Te atreves con un desafío? Tres frases más difíciles; la corrección aparece al elegir.</p>
+            <ol class="lista-limpia desafio" data-instantaneo>
+              {desafio.map((pregunta, indice) => (
+                <PreguntaOpciones pregunta={pregunta} numero={indice + 1} grupo="o3-desafio" />
+              ))}
+            </ol>
+            <a class="enlace-continuar" href="#seguir" data-continuar>Seguir →</a>
+          </section>
+        </div>
+      </div>
+    </section>
+
+    <section class="section seccion-suave" id="seguir" aria-labelledby="seguir-titulo" hidden data-seccion-seguir>
+      <div class="container reto">
+        <div>
+          <p class="eyebrow">Gratis, a cambio de tu correo</p>
+          <h2 id="seguir-titulo" tabindex="-1" data-oferta-titulo>Recibe más práctica como esta</h2>
+          <p class="seccion-intro" data-oferta-texto>
+            Un reto de 5 sesiones con corrección al momento.
+          </p>
+          <ul class="reto-lista">
+            <li>Empieza por lo que te ha costado</li>
+            <li>10 ejercicios por sesión, con la explicación de cada respuesta</li>
+            <li>Tu avance se guarda en este navegador</li>
+          </ul>
+        </div>
+        <RetoFormulario />
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  main [hidden] {
+    display: none;
+  }
+
+  .prototipo-aviso {
+    margin: 0;
+    padding: 0.5rem 1rem;
+    background: var(--color-gold);
+    color: #ffffff;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-align: center;
+  }
+
+  .prototipo-aviso a {
+    text-decoration: underline;
+  }
+
+  .practica-hero {
+    border-bottom: 1px solid var(--color-border);
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.54), rgba(247, 244, 237, 0)),
+      var(--color-bg);
+    padding-block: 3rem 2.5rem;
+  }
+
+  .practica-hero h1 {
+    max-width: 820px;
+    font-size: clamp(2.2rem, 5vw, 4.2rem);
+  }
+
+  .practica-hero-texto {
+    max-width: 640px;
+    margin: 1rem 0 0;
+    color: var(--color-text-muted);
+    font-size: 1.1rem;
+  }
+
+  .practica-acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+  }
+
+  .button-descarga,
+  .practica-acciones .button-secondary {
+    min-height: 3.25rem;
+  }
+
+  .button-descarga {
+    padding-inline: 1.6rem;
+    font-size: 1.05rem;
+  }
+
+  .practica-nota {
+    margin: 0.6rem 0 0;
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+  }
+
+  .seccion-estrecha {
+    max-width: 820px;
+  }
+
+  .section h2 {
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+  }
+
+  .seccion-intro {
+    max-width: 680px;
+    margin: 0.75rem 0 1.25rem;
+    color: var(--color-text-muted);
+  }
+
+  .seccion-suave {
+    border-block: 1px solid var(--color-border);
+    background: var(--color-surface-soft);
+  }
+
+  .ayuda {
+    margin-top: 1.5rem;
+  }
+
+  .ayuda-bloque {
+    display: grid;
+    gap: 0.9rem;
+    padding: 1.25rem;
+    border-left: 4px solid var(--color-gold);
+  }
+
+  .ayuda-bloque .eyebrow {
+    margin-bottom: -0.5rem;
+  }
+
+  .ayuda-bloque h3 {
+    font-size: 1.5rem;
+  }
+
+  .ayuda-bloque h4 {
+    margin-bottom: 0.5rem;
+    font-size: 1.15rem;
+  }
+
+  .ayuda-tu-respuesta {
+    margin: 0;
+    padding: 0.6rem 0.85rem;
+    border-radius: var(--radius-sm);
+    background: var(--color-surface-soft);
+  }
+
+  .ayuda-play {
+    justify-self: start;
+    min-height: 3.25rem;
+    padding-inline: 1.5rem;
+    font-size: 1.05rem;
+  }
+
+  .ayuda-video video {
+    display: block;
+    width: 100%;
+    max-width: 360px;
+    max-height: 70vh;
+    border-radius: var(--radius-md);
+    background: #000000;
+  }
+
+  .ayuda-provisional,
+  .ayuda-error {
+    margin: 0.5rem 0 0;
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+  }
+
+  .ayuda-error {
+    color: var(--color-red);
+  }
+
+  .ayuda-texto summary {
+    color: var(--color-blue);
+    cursor: pointer;
+    font-weight: 600;
+  }
+
+  .ayuda-texto p {
+    margin: 0.5rem 0 0;
+  }
+
+  .ayuda-ejemplo {
+    padding-top: 0.9rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .lista-limpia {
+    display: grid;
+    gap: 0.75rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ayuda-pista {
+    margin: 0.75rem 0 0;
+    font-weight: 600;
+  }
+
+  .enlace-boton {
+    margin-left: 0.4rem;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--color-blue);
+    cursor: pointer;
+    font: inherit;
+    text-decoration: underline;
+  }
+
+  .ayuda-acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.25rem;
+    align-items: center;
+  }
+
+  .enlace-continuar {
+    color: var(--color-blue);
+    font-weight: 600;
+    text-decoration: underline;
+  }
+
+  .ayuda-otros {
+    margin: 0.75rem 0 0;
+  }
+
+  .ayuda-otros :global(button) {
+    margin: 0.25rem 0.4rem 0 0;
+  }
+
+  .reto {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 2rem;
+    align-items: start;
+  }
+
+  .reto-lista {
+    display: grid;
+    gap: 0.4rem;
+    margin: 0;
+    padding-left: 1.2rem;
+  }
+
+  @media (max-width: 900px) {
+    .reto {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  import { ordenEstandar } from "../../../../data/practicaAvoirEtre";
+  import { ayudas, ejercicios, type TipoVideo } from "../../../../data/practicaAvoirEtreOpcion3";
+  import { decidirAyuda, type ResultadoEjercicio } from "../../../../utils/ayudaVideo";
+  import { guardarProgreso, leerProgreso, track } from "../../../../utils/track";
+
+  const zona = document.querySelector<HTMLElement>("[data-ayuda-zona]");
+  const seguir = document.querySelector<HTMLElement>("[data-seccion-seguir]");
+  const otrosZona = document.querySelector<HTMLElement>("[data-otros]");
+  const ofertaTitulo = document.querySelector<HTMLElement>("[data-oferta-titulo]");
+  const ofertaTexto = document.querySelector<HTMLElement>("[data-oferta-texto]");
+  const tipoPorId = Object.fromEntries(ejercicios.map((e) => [e.id, e.tipo])) as Record<string, TipoVideo>;
+  const textoOpcion = (id: string, indice: number) =>
+    ejercicios.find((e) => e.id === id)?.opciones[indice] ?? "";
+
+  let modoActual = "";
+  let tipoActual: TipoVideo | "" = "";
+
+  const mostrar = (seccion: HTMLElement | null) => {
+    if (!seccion) return;
+    seccion.hidden = false;
+    seccion.querySelector<HTMLElement>("h2, h3")?.focus({ preventScroll: true });
+    seccion.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  const mostrarAyuda = (tipo: TipoVideo) => {
+    tipoActual = tipo;
+    document.querySelectorAll<HTMLElement>("[data-ayuda]").forEach((bloque) => {
+      bloque.hidden = bloque.dataset.ayuda !== tipo;
+      if (bloque.hidden) bloque.querySelector<HTMLVideoElement>("[data-video]")?.pause();
+    });
+  };
+
+  const irASeguir = () => {
+    if (ofertaTitulo && ofertaTexto) {
+      if (modoActual === "con-fallos" && tipoActual) {
+        ofertaTitulo.textContent = "Recibe más práctica como esta";
+        ofertaTexto.textContent = `Un reto de 5 sesiones que empieza por «${ayudas[tipoActual].titulo.split(":")[0]}», con corrección al momento.`;
+      } else {
+        ofertaTitulo.textContent = "Sigue practicando con casos más variados";
+        ofertaTexto.textContent = "Un reto de 5 sesiones con corrección al momento.";
+      }
+    }
+    track("seguir_visto", { modo: modoActual, tipo: tipoActual || "ninguno" });
+    mostrar(seguir);
+  };
+
+  document.querySelector("[data-practica]")?.addEventListener("afv:corregido", (event) => {
+    const { resultados } = (event as CustomEvent<{ resultados: ResultadoEjercicio[] }>).detail;
+    const decision = decidirAyuda(resultados, tipoPorId, ordenEstandar);
+    modoActual = decision.modo;
+    guardarProgreso({ ...leerProgreso(), orden: decision.orden.join("-") });
+
+    if (!zona) return;
+    zona.hidden = false;
+    const sinFallos = zona.querySelector<HTMLElement>("[data-sin-fallos]");
+
+    if (decision.modo === "sin-fallos") {
+      document.querySelectorAll<HTMLElement>("[data-ayuda]").forEach((b) => (b.hidden = true));
+      if (otrosZona) otrosZona.hidden = true;
+      if (sinFallos) {
+        sinFallos.hidden = false;
+        const titulo = sinFallos.querySelector<HTMLElement>("[data-sin-fallos-titulo]");
+        if (titulo) {
+          titulo.textContent = decision.sinResponder
+            ? `Sin errores en lo que respondiste (dejaste ${decision.sinResponder} sin responder)`
+            : "¡Sin errores!";
+        }
+      }
+      track("ayuda_ofrecida", { modo: "sin-fallos" });
+      mostrar(sinFallos);
+      return;
+    }
+
+    if (sinFallos) sinFallos.hidden = true;
+    mostrarAyuda(decision.principal);
+
+    const bloque = document.querySelector<HTMLElement>(`[data-ayuda="${decision.principal}"]`);
+    const tuRespuesta = bloque?.querySelector<HTMLElement>("[data-tu-respuesta]");
+    const item = document.querySelector<HTMLElement>(`[data-practica] [data-pregunta="${decision.fallado}"]`);
+    const elegida = item?.querySelector<HTMLInputElement>("input:checked");
+    if (tuRespuesta && elegida && item) {
+      tuRespuesta.textContent = `Elegiste «${textoOpcion(decision.fallado, Number(elegida.value))}»; la correcta es «${textoOpcion(decision.fallado, Number(item.dataset.correcta))}».`;
+    }
+
+    if (otrosZona) {
+      otrosZona.replaceChildren();
+      otrosZona.hidden = decision.otros.length === 0;
+      if (decision.otros.length) {
+        otrosZona.append("También fallaste en: ");
+        decision.otros.forEach((tipo) => {
+          const boton = document.createElement("button");
+          boton.type = "button";
+          boton.className = "button button-secondary";
+          boton.textContent = ayudas[tipo].titulo.split(":")[0];
+          boton.addEventListener("click", () => {
+            mostrarAyuda(tipo);
+            mostrar(document.querySelector<HTMLElement>(`[data-ayuda="${tipo}"]`));
+          });
+          otrosZona.append(boton);
+        });
+      }
+    }
+
+    track("ayuda_ofrecida", { modo: "con-fallos", tipo: decision.principal });
+    mostrar(bloque);
+  });
+
+  document.querySelectorAll<HTMLElement>("[data-ayuda]").forEach((bloque) => {
+    const tipo = bloque.dataset.ayuda ?? "";
+    const video = bloque.querySelector<HTMLVideoElement>("[data-video]");
+    const videoZona = bloque.querySelector<HTMLElement>("[data-video-zona]");
+    const ejemploZona = bloque.querySelector<HTMLElement>("[data-ejemplo-zona]");
+    const continuar = bloque.querySelector<HTMLAnchorElement>("[data-continuar]");
+
+    const verVideo = () => {
+      if (!video || !videoZona) return;
+      videoZona.hidden = false;
+      const botonVer = bloque.querySelector<HTMLElement>("[data-ver-video]");
+      if (botonVer) botonVer.hidden = true;
+      if (!video.src && video.dataset.src) video.src = video.dataset.src;
+      video.play().catch(() => undefined);
+      if (continuar) continuar.textContent = "Seguir →";
+      track("video_play", { tipo });
+    };
+
+    bloque.querySelector("[data-ver-video]")?.addEventListener("click", verVideo);
+    bloque.querySelector("[data-rever]")?.addEventListener("click", () => {
+      if (video) video.currentTime = 0;
+      verVideo();
+    });
+    video?.addEventListener("ended", () => {
+      track("video_fin", { tipo });
+      if (ejemploZona) ejemploZona.hidden = false;
+    });
+    video?.addEventListener("error", () => {
+      const aviso = bloque.querySelector<HTMLElement>("[data-video-error]");
+      if (aviso) aviso.hidden = false;
+      const detalles = bloque.querySelector<HTMLDetailsElement>("details");
+      if (detalles) detalles.open = true;
+    });
+
+    bloque.querySelector("[data-probar]")?.addEventListener("click", () => {
+      if (ejemploZona) {
+        ejemploZona.hidden = false;
+        ejemploZona.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      }
+    });
+  });
+
+  // Ejercicios de un clic: la corrección aparece al elegir.
+  document.querySelectorAll<HTMLElement>("[data-instantaneo]").forEach((lista) => {
+    lista.addEventListener("change", (event) => {
+      const input = event.target as HTMLInputElement;
+      const item = input.closest<HTMLElement>("[data-pregunta]");
+      if (!item) return;
+      const correcta = Number(item.dataset.correcta);
+      const acierto = Number(input.value) === correcta;
+      const opciones = Array.from(item.querySelectorAll<HTMLInputElement>("input"));
+      const veredicto = item.querySelector<HTMLElement>("[data-veredicto]");
+      const solucion = item.querySelector<HTMLElement>("[data-solucion]");
+      const feedback = item.querySelector<HTMLElement>("[data-feedback]");
+
+      item.classList.remove("es-correcta", "es-incorrecta");
+      item.classList.add(acierto ? "es-correcta" : "es-incorrecta");
+      if (veredicto) {
+        veredicto.textContent = acierto
+          ? lista.closest("[data-ayuda]")
+            ? "¡Correcto! Has resuelto un caso nuevo de esta diferencia."
+            : "¡Correcto!"
+          : "No es correcto.";
+      }
+      if (solucion) solucion.textContent = `Respuesta: ${opciones[correcta]?.closest("label")?.textContent?.trim()}.`;
+      if (feedback) feedback.hidden = false;
+
+      const bloque = lista.closest<HTMLElement>("[data-ayuda]");
+      const pista = bloque?.querySelector<HTMLElement>("[data-pista]");
+      if (pista) pista.hidden = acierto;
+      track(bloque ? "ejemplo_nuevo" : "desafio", {
+        tipo: bloque?.dataset.ayuda ?? "desafio",
+        correcta: acierto ? "si" : "no",
+      });
+      if (bloque && acierto) {
+        const continuar = bloque.querySelector<HTMLAnchorElement>("[data-continuar]");
+        if (continuar) continuar.textContent = "Seguir practicando esto →";
+      }
+    });
+  });
+
+  document.querySelectorAll<HTMLAnchorElement>("[data-continuar]").forEach((enlace) => {
+    enlace.addEventListener("click", (event) => {
+      event.preventDefault();
+      document.querySelectorAll<HTMLVideoElement>("[data-video]").forEach((v) => v.pause());
+      irASeguir();
+    });
+  });
+
+  document.querySelectorAll<HTMLAnchorElement>("[data-descarga]").forEach((boton) => {
+    boton.addEventListener("click", () => track("descarga_ficha", { posicion: boton.dataset.descarga ?? "" }));
+  });
+</script>

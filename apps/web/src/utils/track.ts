@@ -4,7 +4,7 @@
 
 // Laboratorio de alternativas: cada variante guarda su progreso aparte y etiqueta sus eventos.
 // La opción 1 no declara variante y conserva la clave original.
-const VARIANTES = ["opcion-2"] as const;
+const VARIANTES = ["opcion-2", "opcion-3"] as const;
 export type Variante = (typeof VARIANTES)[number];
 
 export const varianteActual = (): Variante | null => {
