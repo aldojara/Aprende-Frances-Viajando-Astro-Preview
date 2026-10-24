@@ -120,13 +120,13 @@ Usar solo si la primera publicación desde el código fuente deja la web mal.
 
 En este orden, cada uno en su propio *pull request*:
 
-1. **Actualizar las dependencias** con avisos de seguridad conocidos (`npm audit`: 13 paquetes,
-   1 crítico, 11 altos, 1 moderado, todos con arreglo dentro de Astro 7). Va antes de construir
-   nuevas funcionalidades.
-2. **Sitemap completo.** Hoy `apps/web/src/pages/sitemap.xml.ts` contiene una lista fija de 7
+1. **Sitemap completo.** Hoy `apps/web/src/pages/sitemap.xml.ts` contiene una lista fija de 7
    direcciones. Debe incluir todas las páginas públicas indexables y excluir la página de error y
    las redirecciones (`/proyecto/`, `/autor/`, `/autor/aldo-jara-pisconti/`).
-3. **Práctica gratuita con captura de correo y medición de conversiones.**
+2. **Práctica gratuita con captura de correo y medición de conversiones.**
+
+Antes de cada publicación conviene ejecutar `npm audit` en `apps/web`: la actualización de
+dependencias de octubre de 2026 (Astro 7.1.0 → 7.4.2) dejó 0 vulnerabilidades conocidas.
 
 ## Historia
 
