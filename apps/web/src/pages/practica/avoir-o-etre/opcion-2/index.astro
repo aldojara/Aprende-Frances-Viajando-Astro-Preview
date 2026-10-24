@@ -337,6 +337,17 @@ const pdf = withBase(fichaPdf);
 
   document.querySelector("[data-paso1]")?.addEventListener("afv:corregido", (event) => {
     const { resultados } = (event as CustomEvent<{ resultados: ResultadoPregunta[] }>).detail;
+
+    // Sin ninguna respuesta no hay resultado que interpretar: se pide responder antes de seguir.
+    if (resultados.every((r) => !r.respondida)) {
+      const salida = document.querySelector<HTMLElement>("[data-paso1] [data-resultado]");
+      if (salida) salida.textContent = "No respondiste ninguna frase. Responde al menos una para continuar.";
+      if (paso2) paso2.hidden = true;
+      if (paso3) paso3.hidden = true;
+      marcarPaso(0);
+      return;
+    }
+
     const eleccion = elegirConfusion(resultados, confusiones, ordenEstandar);
     confusionActual = eleccion.confusion;
     modoActual = eleccion.modo;

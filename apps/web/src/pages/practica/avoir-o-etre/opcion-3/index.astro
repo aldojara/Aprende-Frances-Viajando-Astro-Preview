@@ -41,78 +41,94 @@ const pdf = withBase(fichaPdf);
     </section>
 
     <section class="section" id="practica" aria-labelledby="practica-titulo">
-      <div class="container seccion-estrecha">
+      <div class="container seccion-media">
         <p class="eyebrow">Practica</p>
         <h2 id="practica-titulo">8 frases: ¿avoir o être?</h2>
         <p class="seccion-intro">Elige una opción en cada frase y pulsa «Corregir».</p>
-        <div data-practica>
+        <div class="seccion-estrecha" data-practica id="mis-respuestas">
           <EjerciciosCorregibles grupo="o3" preguntas={ejercicios} evento="practica" />
         </div>
 
-        <!-- Ayuda: aparece al corregir, justo bajo el resultado -->
+        <!-- Aparece al corregir, justo bajo el resultado -->
         <div class="ayuda" data-ayuda-zona hidden>
+          <div class="ayuda-resumen card" data-resumen tabindex="-1">
+            <p class="ayuda-recuento" data-recuento aria-live="polite"></p>
+            <p class="ayuda-sin-respuestas" data-sin-respuestas hidden>
+              Responde al menos una frase para ver tu ayuda.
+            </p>
+            <a class="enlace" href="#mis-respuestas" data-ver-respuestas>Ver mis respuestas ↑</a>
+          </div>
+
+          <div class="ayuda-pestanas" data-pestanas hidden>
+            <span>Repasar:</span>
+          </div>
+
           {
             Object.values(ayudas).map((ayuda) => (
               <section class="ayuda-bloque card" data-ayuda={ayuda.tipo} hidden>
-                <p class="eyebrow">Vamos a repasar esta diferencia</p>
-                <h3 tabindex="-1">{ayuda.titulo}</h3>
-                <p class="ayuda-tu-respuesta" data-tu-respuesta />
-
-                <button class="button button-primary ayuda-play" type="button" data-ver-video>
-                  ▶ Ver explicación breve
-                </button>
-                <div class="ayuda-video" data-video-zona hidden>
-                  <video
-                    controls
-                    playsinline
-                    preload="none"
-                    data-video
-                    data-src={withBase(ayuda.video)}
-                  />
+                <div class="ayuda-media">
+                  <div class="ayuda-marco">
+                    <video
+                      controls
+                      playsinline
+                      preload="metadata"
+                      src={withBase(ayuda.video)}
+                      data-video
+                    />
+                    <button class="button button-primary ayuda-play" type="button" data-ver-video>
+                      ▶ Entender esta diferencia
+                    </button>
+                  </div>
                   {ayuda.videoProvisional && (
-                    <p class="ayuda-provisional">
+                    <p class="ayuda-nota">
                       Vídeo provisional (vertical V1, 78 s). El clip definitivo de este error está por
                       producir.
                     </p>
                   )}
-                  <p class="ayuda-error" data-video-error hidden>
-                    El vídeo no está disponible en esta copia del prototipo. Lee la explicación de abajo.
+                  <p class="ayuda-nota ayuda-error" data-video-error hidden>
+                    El vídeo no está disponible en esta copia del prototipo. Lee la explicación.
                   </p>
                 </div>
 
-                <details class="ayuda-texto">
-                  <summary>Prefiero leerlo</summary>
-                  <p>{ayuda.resumen}</p>
-                </details>
+                <div class="ayuda-info">
+                  <p class="eyebrow">Vamos a repasar esta diferencia</p>
+                  <h3 tabindex="-1">{ayuda.titulo}</h3>
+                  <p class="ayuda-tu-respuesta" data-tu-respuesta />
 
-                <div class="ayuda-ejemplo" data-ejemplo-zona hidden>
-                  <h4>Ahora tú: un caso nuevo</h4>
-                  <ol class="lista-limpia" data-instantaneo>
-                    <PreguntaOpciones
-                      pregunta={ayuda.ejemploNuevo}
-                      numero={1}
-                      grupo={`o3-nuevo-${ayuda.tipo}`}
-                    />
-                  </ol>
-                  <p class="ayuda-pista" data-pista hidden>
-                    {ayuda.pista}
-                    <button class="enlace-boton" type="button" data-rever>Volver a ver el vídeo</button>
-                  </p>
-                </div>
+                  <details class="ayuda-texto">
+                    <summary>Prefiero leerlo</summary>
+                    <p>{ayuda.resumen}</p>
+                  </details>
 
-                <div class="ayuda-acciones">
-                  <button class="button button-secondary" type="button" data-probar>
-                    Probar un caso nuevo
-                  </button>
-                  <a class="enlace-continuar" href="#seguir" data-continuar>Seguir sin ver el vídeo →</a>
+                  <div class="ayuda-ejemplo" data-ejemplo-zona hidden>
+                    <h4>Un caso nuevo</h4>
+                    <ol class="lista-limpia" data-instantaneo>
+                      <PreguntaOpciones
+                        pregunta={ayuda.ejemploNuevo}
+                        numero={1}
+                        grupo={`o3-nuevo-${ayuda.tipo}`}
+                      />
+                    </ol>
+                    <p class="ayuda-pista" data-pista hidden>
+                      {ayuda.pista}
+                      <button class="enlace-boton" type="button" data-rever>Volver a ver el vídeo</button>
+                    </p>
+                  </div>
+
+                  <div class="ayuda-acciones">
+                    <button class="button button-secondary" type="button" data-probar>
+                      Comprobar si lo entendí
+                    </button>
+                    <button class="button button-primary" type="button" data-continuar>
+                      Recibir práctica sobre esta dificultad
+                    </button>
+                  </div>
                 </div>
               </section>
             ))
           }
 
-          <p class="ayuda-otros" data-otros hidden></p>
-
-          <section class="ayuda-bloque card" data-sin-fallos hidden>
+          <section class="ayuda-bloque ayuda-bloque-simple card" data-sin-fallos hidden>
             <p class="eyebrow">Sin errores</p>
             <h3 tabindex="-1" data-sin-fallos-titulo>¡Sin errores!</h3>
             <p>¿Te atreves con un desafío? Tres frases más difíciles; la corrección aparece al elegir.</p>
@@ -121,7 +137,11 @@ const pdf = withBase(fichaPdf);
                 <PreguntaOpciones pregunta={pregunta} numero={indice + 1} grupo="o3-desafio" />
               ))}
             </ol>
-            <a class="enlace-continuar" href="#seguir" data-continuar>Seguir →</a>
+            <div class="ayuda-acciones">
+              <button class="button button-primary" type="button" data-continuar>
+                Recibir más práctica
+              </button>
+            </div>
           </section>
         </div>
       </div>
@@ -150,6 +170,20 @@ const pdf = withBase(fichaPdf);
 <style>
   main [hidden] {
     display: none;
+  }
+
+  /* El resumen de la ayuda (correctas · incorrectas · sin responder) sustituye a la línea genérica. */
+  [data-practica] :global([data-resultado]) {
+    display: none;
+  }
+
+  /* La cabecera de la web es fija: los destinos de los enlaces dejan margen para no quedar tapados. */
+  main :global([data-pregunta]),
+  #mis-respuestas,
+  .ayuda-resumen,
+  .ayuda-bloque,
+  #seguir {
+    scroll-margin-top: 6rem;
   }
 
   .prototipo-aviso {
@@ -209,6 +243,10 @@ const pdf = withBase(fichaPdf);
     font-size: 0.9rem;
   }
 
+  .seccion-media {
+    max-width: 980px;
+  }
+
   .seccion-estrecha {
     max-width: 820px;
   }
@@ -229,17 +267,116 @@ const pdf = withBase(fichaPdf);
   }
 
   .ayuda {
+    display: grid;
+    gap: 1rem;
     margin-top: 1.5rem;
+  }
+
+  .ayuda-resumen {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.25rem;
+    align-items: center;
+    padding: 0.9rem 1.25rem;
+  }
+
+  .ayuda-recuento,
+  .ayuda-sin-respuestas {
+    margin: 0;
+    color: var(--color-heading);
+    font-weight: 700;
+  }
+
+  .enlace,
+  .enlace-boton {
+    color: var(--color-blue);
+    font-weight: 600;
+    text-decoration: underline;
+  }
+
+  .enlace-boton {
+    margin-left: 0.4rem;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+    font: inherit;
+  }
+
+  .ayuda-pestanas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+    font-weight: 600;
+  }
+
+  .ayuda-pestanas :global(button[aria-pressed="true"]) {
+    border-color: var(--color-blue);
+    background: rgba(0, 85, 164, 0.08);
+    color: var(--color-blue);
   }
 
   .ayuda-bloque {
     display: grid;
-    gap: 0.9rem;
+    grid-template-columns: minmax(0, 300px) minmax(0, 1fr);
+    gap: 1.5rem;
+    align-items: start;
     padding: 1.25rem;
     border-left: 4px solid var(--color-gold);
   }
 
-  .ayuda-bloque .eyebrow {
+  .ayuda-bloque-simple {
+    grid-template-columns: 1fr;
+    gap: 0.8rem;
+  }
+
+  .ayuda-marco {
+    position: relative;
+  }
+
+  .ayuda-marco video {
+    display: block;
+    width: 100%;
+    aspect-ratio: 9 / 16;
+    max-height: 70vh;
+    border-radius: var(--radius-md);
+    background: #0b2f55;
+  }
+
+  .ayuda-play {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: max-content;
+    max-width: 90%;
+    min-height: 3.25rem;
+    transform: translate(-50%, -50%);
+    box-shadow: var(--shadow-md);
+  }
+
+  .ayuda-play:hover {
+    transform: translate(-50%, calc(-50% - 1px));
+  }
+
+  .ayuda-nota {
+    margin: 0.5rem 0 0;
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+  }
+
+  .ayuda-error {
+    color: var(--color-red);
+  }
+
+  .ayuda-info {
+    display: grid;
+    gap: 0.9rem;
+    align-content: start;
+  }
+
+  .ayuda-info .eyebrow,
+  .ayuda-bloque-simple .eyebrow {
     margin-bottom: -0.5rem;
   }
 
@@ -249,7 +386,7 @@ const pdf = withBase(fichaPdf);
 
   .ayuda-bloque h4 {
     margin-bottom: 0.5rem;
-    font-size: 1.15rem;
+    font-size: 1.1rem;
   }
 
   .ayuda-tu-respuesta {
@@ -257,33 +394,6 @@ const pdf = withBase(fichaPdf);
     padding: 0.6rem 0.85rem;
     border-radius: var(--radius-sm);
     background: var(--color-surface-soft);
-  }
-
-  .ayuda-play {
-    justify-self: start;
-    min-height: 3.25rem;
-    padding-inline: 1.5rem;
-    font-size: 1.05rem;
-  }
-
-  .ayuda-video video {
-    display: block;
-    width: 100%;
-    max-width: 360px;
-    max-height: 70vh;
-    border-radius: var(--radius-md);
-    background: #000000;
-  }
-
-  .ayuda-provisional,
-  .ayuda-error {
-    margin: 0.5rem 0 0;
-    color: var(--color-text-muted);
-    font-size: 0.85rem;
-  }
-
-  .ayuda-error {
-    color: var(--color-red);
   }
 
   .ayuda-texto summary {
@@ -314,36 +424,10 @@ const pdf = withBase(fichaPdf);
     font-weight: 600;
   }
 
-  .enlace-boton {
-    margin-left: 0.4rem;
-    padding: 0;
-    border: 0;
-    background: none;
-    color: var(--color-blue);
-    cursor: pointer;
-    font: inherit;
-    text-decoration: underline;
-  }
-
   .ayuda-acciones {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.75rem 1.25rem;
-    align-items: center;
-  }
-
-  .enlace-continuar {
-    color: var(--color-blue);
-    font-weight: 600;
-    text-decoration: underline;
-  }
-
-  .ayuda-otros {
-    margin: 0.75rem 0 0;
-  }
-
-  .ayuda-otros :global(button) {
-    margin: 0.25rem 0.4rem 0 0;
+    gap: 0.75rem;
   }
 
   .reto {
@@ -361,8 +445,13 @@ const pdf = withBase(fichaPdf);
   }
 
   @media (max-width: 900px) {
-    .reto {
+    .reto,
+    .ayuda-bloque {
       grid-template-columns: 1fr;
+    }
+
+    .ayuda-media {
+      max-width: 320px;
     }
   }
 </style>
@@ -370,139 +459,180 @@ const pdf = withBase(fichaPdf);
 <script>
   import { ordenEstandar } from "../../../../data/practicaAvoirEtre";
   import { ayudas, ejercicios, type TipoVideo } from "../../../../data/practicaAvoirEtreOpcion3";
-  import { decidirAyuda, type ResultadoEjercicio } from "../../../../utils/ayudaVideo";
+  import {
+    decidirAyuda,
+    ordenDesde,
+    type ResultadoEjercicio,
+  } from "../../../../utils/ayudaVideo";
   import { guardarProgreso, leerProgreso, track } from "../../../../utils/track";
 
   const zona = document.querySelector<HTMLElement>("[data-ayuda-zona]");
+  const resumen = document.querySelector<HTMLElement>("[data-resumen]");
+  const recuentoTexto = document.querySelector<HTMLElement>("[data-recuento]");
+  const sinRespuestas = document.querySelector<HTMLElement>("[data-sin-respuestas]");
+  const verRespuestas = document.querySelector<HTMLAnchorElement>("[data-ver-respuestas]");
+  const pestanas = document.querySelector<HTMLElement>("[data-pestanas]");
+  const sinFallos = document.querySelector<HTMLElement>("[data-sin-fallos]");
   const seguir = document.querySelector<HTMLElement>("[data-seccion-seguir]");
-  const otrosZona = document.querySelector<HTMLElement>("[data-otros]");
   const ofertaTitulo = document.querySelector<HTMLElement>("[data-oferta-titulo]");
   const ofertaTexto = document.querySelector<HTMLElement>("[data-oferta-texto]");
+  const bloques = Array.from(document.querySelectorAll<HTMLElement>("[data-ayuda]"));
   const tipoPorId = Object.fromEntries(ejercicios.map((e) => [e.id, e.tipo])) as Record<string, TipoVideo>;
+  const nombreCorto = (tipo: TipoVideo) => ayudas[tipo].titulo.split(":")[0];
   const textoOpcion = (id: string, indice: number) =>
     ejercicios.find((e) => e.id === id)?.opciones[indice] ?? "";
 
+  // Estado de la ayuda: el tipo que se ve manda sobre la comparación, la oferta y el reto.
   let modoActual = "";
-  let tipoActual: TipoVideo | "" = "";
+  let tipoActual: TipoVideo | null = null;
+  let tiposConFallos: TipoVideo[] = [];
+  let falladoPorTipo: Partial<Record<TipoVideo, string>> = {};
 
-  const mostrar = (seccion: HTMLElement | null) => {
-    if (!seccion) return;
-    seccion.hidden = false;
-    seccion.querySelector<HTMLElement>("h2, h3")?.focus({ preventScroll: true });
-    seccion.scrollIntoView({ behavior: "smooth", block: "start" });
-  };
+  const plural = (n: number, uno: string, varios: string) => `${n} ${n === 1 ? uno : varios}`;
 
-  const mostrarAyuda = (tipo: TipoVideo) => {
+  const pausarVideos = () =>
+    document.querySelectorAll<HTMLVideoElement>("[data-video]").forEach((video) => video.pause());
+
+  const seleccionarTipo = (tipo: TipoVideo) => {
     tipoActual = tipo;
-    document.querySelectorAll<HTMLElement>("[data-ayuda]").forEach((bloque) => {
-      bloque.hidden = bloque.dataset.ayuda !== tipo;
-      if (bloque.hidden) bloque.querySelector<HTMLVideoElement>("[data-video]")?.pause();
+    pausarVideos();
+    bloques.forEach((bloque) => (bloque.hidden = bloque.dataset.ayuda !== tipo));
+
+    const bloque = bloques.find((b) => b.dataset.ayuda === tipo);
+    const tuRespuesta = bloque?.querySelector<HTMLElement>("[data-tu-respuesta]");
+    const fallado = falladoPorTipo[tipo];
+    const item = fallado
+      ? document.querySelector<HTMLElement>(`[data-practica] [data-pregunta="${fallado}"]`)
+      : null;
+    const elegida = item?.querySelector<HTMLInputElement>("input:checked");
+    if (tuRespuesta && fallado && item && elegida) {
+      tuRespuesta.textContent = `Elegiste «${textoOpcion(fallado, Number(elegida.value))}»; la correcta es «${textoOpcion(fallado, Number(item.dataset.correcta))}».`;
+    }
+
+    pestanas?.querySelectorAll<HTMLButtonElement>("button").forEach((boton) => {
+      boton.setAttribute("aria-pressed", String(boton.dataset.tipo === tipo));
     });
+
+    guardarProgreso({ ...leerProgreso(), orden: ordenDesde(tipo, tiposConFallos, ordenEstandar).join("-") });
   };
 
   const irASeguir = () => {
     if (ofertaTitulo && ofertaTexto) {
       if (modoActual === "con-fallos" && tipoActual) {
-        ofertaTitulo.textContent = "Recibe más práctica como esta";
-        ofertaTexto.textContent = `Un reto de 5 sesiones que empieza por «${ayudas[tipoActual].titulo.split(":")[0]}», con corrección al momento.`;
+        ofertaTitulo.textContent = "Recibe práctica sobre esta dificultad";
+        ofertaTexto.textContent = `Un reto de 5 sesiones que empieza por «${nombreCorto(tipoActual)}», con corrección al momento.`;
       } else {
         ofertaTitulo.textContent = "Sigue practicando con casos más variados";
         ofertaTexto.textContent = "Un reto de 5 sesiones con corrección al momento.";
       }
     }
-    track("seguir_visto", { modo: modoActual, tipo: tipoActual || "ninguno" });
-    mostrar(seguir);
+    pausarVideos();
+    track("seguir_visto", { modo: modoActual, tipo: tipoActual ?? "ninguno" });
+    if (seguir) {
+      seguir.hidden = false;
+      seguir.querySelector<HTMLElement>("h2")?.focus({ preventScroll: true });
+      seguir.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
   };
 
   document.querySelector("[data-practica]")?.addEventListener("afv:corregido", (event) => {
     const { resultados } = (event as CustomEvent<{ resultados: ResultadoEjercicio[] }>).detail;
     const decision = decidirAyuda(resultados, tipoPorId, ordenEstandar);
     modoActual = decision.modo;
-    guardarProgreso({ ...leerProgreso(), orden: decision.orden.join("-") });
+    if (!zona || !recuentoTexto) return;
 
-    if (!zona) return;
     zona.hidden = false;
-    const sinFallos = zona.querySelector<HTMLElement>("[data-sin-fallos]");
+    const { correctas, incorrectas, sinResponder: vacias } = decision.recuento;
+    recuentoTexto.textContent = [
+      plural(correctas, "correcta", "correctas"),
+      plural(incorrectas, "incorrecta", "incorrectas"),
+      plural(vacias, "sin responder", "sin responder"),
+    ].join(" · ");
 
-    if (decision.modo === "sin-fallos") {
-      document.querySelectorAll<HTMLElement>("[data-ayuda]").forEach((b) => (b.hidden = true));
-      if (otrosZona) otrosZona.hidden = true;
+    bloques.forEach((b) => (b.hidden = true));
+    if (sinFallos) sinFallos.hidden = true;
+    if (pestanas) pestanas.hidden = true;
+    if (sinRespuestas) sinRespuestas.hidden = decision.modo !== "sin-respuestas";
+    tipoActual = null;
+
+    if (decision.modo === "con-fallos") {
+      tiposConFallos = decision.tipos;
+      falladoPorTipo = decision.falladoPorTipo;
+      if (pestanas) {
+        pestanas.querySelectorAll("button").forEach((b) => b.remove());
+        decision.tipos.forEach((tipo) => {
+          const boton = document.createElement("button");
+          boton.type = "button";
+          boton.className = "button button-secondary";
+          boton.dataset.tipo = tipo;
+          boton.textContent = nombreCorto(tipo);
+          boton.addEventListener("click", () => {
+            seleccionarTipo(tipo);
+            track("ayuda_cambiada", { tipo });
+          });
+          pestanas.append(boton);
+        });
+        pestanas.hidden = decision.tipos.length < 2;
+      }
+      seleccionarTipo(decision.tipos[0]);
+      track("ayuda_ofrecida", { modo: "con-fallos", tipo: decision.tipos[0] });
+    } else if (decision.modo === "sin-fallos") {
+      tiposConFallos = [];
+      guardarProgreso({ ...leerProgreso(), orden: decision.orden.join("-") });
       if (sinFallos) {
         sinFallos.hidden = false;
         const titulo = sinFallos.querySelector<HTMLElement>("[data-sin-fallos-titulo]");
         if (titulo) {
-          titulo.textContent = decision.sinResponder
-            ? `Sin errores en lo que respondiste (dejaste ${decision.sinResponder} sin responder)`
+          titulo.textContent = vacias
+            ? "Sin errores en las frases que respondiste"
             : "¡Sin errores!";
         }
       }
       track("ayuda_ofrecida", { modo: "sin-fallos" });
-      mostrar(sinFallos);
-      return;
     }
 
-    if (sinFallos) sinFallos.hidden = true;
-    mostrarAyuda(decision.principal);
-
-    const bloque = document.querySelector<HTMLElement>(`[data-ayuda="${decision.principal}"]`);
-    const tuRespuesta = bloque?.querySelector<HTMLElement>("[data-tu-respuesta]");
-    const item = document.querySelector<HTMLElement>(`[data-practica] [data-pregunta="${decision.fallado}"]`);
-    const elegida = item?.querySelector<HTMLInputElement>("input:checked");
-    if (tuRespuesta && elegida && item) {
-      tuRespuesta.textContent = `Elegiste «${textoOpcion(decision.fallado, Number(elegida.value))}»; la correcta es «${textoOpcion(decision.fallado, Number(item.dataset.correcta))}».`;
-    }
-
-    if (otrosZona) {
-      otrosZona.replaceChildren();
-      otrosZona.hidden = decision.otros.length === 0;
-      if (decision.otros.length) {
-        otrosZona.append("También fallaste en: ");
-        decision.otros.forEach((tipo) => {
-          const boton = document.createElement("button");
-          boton.type = "button";
-          boton.className = "button button-secondary";
-          boton.textContent = ayudas[tipo].titulo.split(":")[0];
-          boton.addEventListener("click", () => {
-            mostrarAyuda(tipo);
-            mostrar(document.querySelector<HTMLElement>(`[data-ayuda="${tipo}"]`));
-          });
-          otrosZona.append(boton);
-        });
-      }
-    }
-
-    track("ayuda_ofrecida", { modo: "con-fallos", tipo: decision.principal });
-    mostrar(bloque);
+    // El resultado queda visible: se muestra el resumen, no se salta más abajo.
+    resumen?.focus({ preventScroll: true });
+    resumen?.scrollIntoView({ behavior: "smooth", block: "start" });
   });
 
-  document.querySelectorAll<HTMLElement>("[data-ayuda]").forEach((bloque) => {
+  verRespuestas?.addEventListener("click", (event) => {
+    event.preventDefault();
+    const destino =
+      document.querySelector<HTMLElement>("[data-practica] .es-incorrecta") ??
+      document.querySelector<HTMLElement>("[data-practica] .sin-responder") ??
+      document.querySelector<HTMLElement>("#mis-respuestas");
+    destino?.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+
+  bloques.forEach((bloque) => {
     const tipo = bloque.dataset.ayuda ?? "";
     const video = bloque.querySelector<HTMLVideoElement>("[data-video]");
-    const videoZona = bloque.querySelector<HTMLElement>("[data-video-zona]");
+    const botonVer = bloque.querySelector<HTMLElement>("[data-ver-video]");
     const ejemploZona = bloque.querySelector<HTMLElement>("[data-ejemplo-zona]");
-    const continuar = bloque.querySelector<HTMLAnchorElement>("[data-continuar]");
 
     const verVideo = () => {
-      if (!video || !videoZona) return;
-      videoZona.hidden = false;
-      const botonVer = bloque.querySelector<HTMLElement>("[data-ver-video]");
+      if (!video) return;
       if (botonVer) botonVer.hidden = true;
-      if (!video.src && video.dataset.src) video.src = video.dataset.src;
       video.play().catch(() => undefined);
-      if (continuar) continuar.textContent = "Seguir →";
       track("video_play", { tipo });
     };
 
-    bloque.querySelector("[data-ver-video]")?.addEventListener("click", verVideo);
+    botonVer?.addEventListener("click", verVideo);
+    video?.addEventListener("play", () => {
+      if (botonVer) botonVer.hidden = true;
+    });
     bloque.querySelector("[data-rever]")?.addEventListener("click", () => {
       if (video) video.currentTime = 0;
       verVideo();
+      bloque.scrollIntoView({ behavior: "smooth", block: "start" });
     });
     video?.addEventListener("ended", () => {
       track("video_fin", { tipo });
       if (ejemploZona) ejemploZona.hidden = false;
     });
     video?.addEventListener("error", () => {
+      if (botonVer) botonVer.hidden = true;
       const aviso = bloque.querySelector<HTMLElement>("[data-video-error]");
       if (aviso) aviso.hidden = false;
       const detalles = bloque.querySelector<HTMLDetailsElement>("details");
@@ -510,10 +640,10 @@ const pdf = withBase(fichaPdf);
     });
 
     bloque.querySelector("[data-probar]")?.addEventListener("click", () => {
-      if (ejemploZona) {
-        ejemploZona.hidden = false;
-        ejemploZona.scrollIntoView({ behavior: "smooth", block: "nearest" });
-      }
+      if (!ejemploZona) return;
+      ejemploZona.hidden = false;
+      ejemploZona.querySelector<HTMLInputElement>("input")?.focus({ preventScroll: true });
+      ejemploZona.scrollIntoView({ behavior: "smooth", block: "nearest" });
     });
   });
 
@@ -529,12 +659,13 @@ const pdf = withBase(fichaPdf);
       const veredicto = item.querySelector<HTMLElement>("[data-veredicto]");
       const solucion = item.querySelector<HTMLElement>("[data-solucion]");
       const feedback = item.querySelector<HTMLElement>("[data-feedback]");
+      const bloque = lista.closest<HTMLElement>("[data-ayuda]");
 
       item.classList.remove("es-correcta", "es-incorrecta");
       item.classList.add(acierto ? "es-correcta" : "es-incorrecta");
       if (veredicto) {
         veredicto.textContent = acierto
-          ? lista.closest("[data-ayuda]")
+          ? bloque
             ? "¡Correcto! Has resuelto un caso nuevo de esta diferencia."
             : "¡Correcto!"
           : "No es correcto.";
@@ -542,26 +673,17 @@ const pdf = withBase(fichaPdf);
       if (solucion) solucion.textContent = `Respuesta: ${opciones[correcta]?.closest("label")?.textContent?.trim()}.`;
       if (feedback) feedback.hidden = false;
 
-      const bloque = lista.closest<HTMLElement>("[data-ayuda]");
       const pista = bloque?.querySelector<HTMLElement>("[data-pista]");
       if (pista) pista.hidden = acierto;
       track(bloque ? "ejemplo_nuevo" : "desafio", {
         tipo: bloque?.dataset.ayuda ?? "desafio",
         correcta: acierto ? "si" : "no",
       });
-      if (bloque && acierto) {
-        const continuar = bloque.querySelector<HTMLAnchorElement>("[data-continuar]");
-        if (continuar) continuar.textContent = "Seguir practicando esto →";
-      }
     });
   });
 
-  document.querySelectorAll<HTMLAnchorElement>("[data-continuar]").forEach((enlace) => {
-    enlace.addEventListener("click", (event) => {
-      event.preventDefault();
-      document.querySelectorAll<HTMLVideoElement>("[data-video]").forEach((v) => v.pause());
-      irASeguir();
-    });
+  document.querySelectorAll<HTMLButtonElement>("[data-continuar]").forEach((boton) => {
+    boton.addEventListener("click", irASeguir);
   });
 
   document.querySelectorAll<HTMLAnchorElement>("[data-descarga]").forEach((boton) => {
