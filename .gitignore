@@ -1,0 +1,3 @@
+# macOS (los archivos ._* aparecen en discos exFAT)
+._*
+.DS_Store

@@ -1,0 +1,351 @@
+---
+import { mainNavigation, primaryActions } from "../../data/navigation";
+import { withBase } from "../../utils/paths";
+
+const currentPath = Astro.url.pathname;
+const basePath = import.meta.env.BASE_URL || "/";
+const normalizedCurrentPath =
+  basePath !== "/" && currentPath.startsWith(basePath)
+    ? `/${currentPath.slice(basePath.length)}`
+    : currentPath;
+const stripTrailingSlash = (path: string) =>
+  path.length > 1 ? path.replace(/\/$/, "") : path;
+const routePattern = Astro.routePattern || normalizedCurrentPath;
+const currentComparable = stripTrailingSlash(routePattern);
+
+const isActive = (href: string) => {
+  if (href === "/") {
+    return currentComparable === "/";
+  }
+
+  return currentComparable.startsWith(stripTrailingSlash(href));
+};
+
+const isCurrentPage = (href: string) =>
+  currentComparable === stripTrailingSlash(href);
+---
+
+<div class="tricolor-bar" aria-hidden="true"></div>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href={withBase("/")} aria-label="Ir al inicio">
+      <span class="brand-mark" aria-hidden="true">AFV</span>
+
+      <span class="brand-text">
+        <strong>Aprende Francés</strong>
+        <span>Viajando</span>
+      </span>
+    </a>
+
+    <nav class="main-nav" aria-label="Navegación principal">
+      {
+        mainNavigation.map((item) => (
+          <a
+            class:list={[
+              "nav-link",
+              { "nav-link-active": isActive(item.href) },
+            ]}
+            href={withBase(item.href)}
+            aria-current={isCurrentPage(item.href) ? "page" : undefined}
+          >
+            {item.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <div class="header-actions">
+      <a class="button button-secondary header-explore" href={withBase(primaryActions[0].href)}>
+        {primaryActions[0].label}
+      </a>
+
+      <a class="button button-primary" href={withBase(primaryActions[1].href)}>
+        Empezar
+      </a>
+    </div>
+
+    <details class="mobile-menu">
+      <summary aria-label="Abrir navegación principal">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </summary>
+
+      <nav class="mobile-nav" aria-label="Navegación principal móvil">
+        {
+          mainNavigation.map((item) => (
+            <a
+              class:list={[
+                "mobile-nav-link",
+                { "mobile-nav-link-active": isActive(item.href) },
+              ]}
+              href={withBase(item.href)}
+              aria-current={isCurrentPage(item.href) ? "page" : undefined}
+            >
+              {item.label}
+            </a>
+          ))
+        }
+
+        <div class="mobile-actions">
+          <a class="button button-secondary" href={withBase(primaryActions[0].href)}>
+            Explorar contenidos
+          </a>
+          <a class="button button-primary" href={withBase(primaryActions[1].href)}>
+            Empezar por niveles
+          </a>
+        </div>
+      </nav>
+    </details>
+  </div>
+</header>
+
+<style>
+  .tricolor-bar {
+    height: 3px;
+    background: linear-gradient(
+      90deg,
+      var(--color-blue) 0 33.33%,
+      #ffffff 33.33% 66.66%,
+      var(--color-red) 66.66% 100%
+    );
+  }
+
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    border-bottom: 1px solid var(--color-border);
+    background: rgba(247, 244, 237, 0.94);
+    backdrop-filter: blur(14px);
+  }
+
+  .header-inner {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto auto;
+    align-items: center;
+    min-height: 4.75rem;
+    gap: 1.35rem;
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-width: max-content;
+  }
+
+  .brand-mark {
+    display: grid;
+    place-items: center;
+    width: 2.6rem;
+    height: 2.6rem;
+    border: 1px solid rgba(184, 134, 11, 0.35);
+    border-radius: 50%;
+    background: var(--color-surface);
+    color: var(--color-gold);
+    font-family: var(--font-display);
+    font-size: 0.8rem;
+    font-weight: 800;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .brand-text {
+    display: grid;
+    color: var(--color-heading);
+    line-height: 1.05;
+  }
+
+  .brand-text strong {
+    font-family: var(--font-display);
+    font-size: 1rem;
+  }
+
+  .brand-text span {
+    margin-top: 0.18rem;
+    color: var(--color-text-muted);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .main-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.05rem;
+  }
+
+  .nav-link {
+    position: relative;
+    padding-block: 0.45rem;
+    color: var(--color-text-muted);
+    font-size: 0.86rem;
+    font-weight: 600;
+    transition: color 160ms ease;
+  }
+
+  .nav-link:hover,
+  .nav-link-active {
+    color: var(--color-heading);
+  }
+
+  .nav-link-active::after {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    border-radius: 999px;
+    background: var(--color-gold);
+    content: "";
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+  }
+
+  .header-actions .button {
+    min-height: 2.45rem;
+    padding: 0.58rem 1rem;
+    font-size: 0.82rem;
+  }
+
+  .mobile-menu {
+    position: relative;
+    display: none;
+    justify-self: end;
+  }
+
+  .mobile-menu summary {
+    display: grid;
+    width: 2.75rem;
+    height: 2.75rem;
+    place-items: center;
+    gap: 0.24rem;
+    padding: 0.7rem;
+    border: 1px solid var(--color-border);
+    border-radius: 50%;
+    background: var(--color-surface);
+    color: var(--color-blue-dark);
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    list-style: none;
+  }
+
+  .mobile-menu summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .mobile-menu summary span {
+    width: 1.05rem;
+    height: 2px;
+    border-radius: 999px;
+    background: currentColor;
+  }
+
+  .mobile-nav {
+    position: absolute;
+    top: calc(100% + 0.7rem);
+    right: 0;
+    display: grid;
+    width: min(18.5rem, calc(100vw - 2rem));
+    gap: 0.2rem;
+    padding: 0.65rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.98);
+    box-shadow: var(--shadow-md);
+  }
+
+  .mobile-nav-link {
+    display: flex;
+    min-height: 2.75rem;
+    align-items: center;
+    padding: 0.62rem 0.75rem;
+    border-radius: var(--radius-sm);
+    color: var(--color-heading);
+    font-size: 0.9rem;
+    font-weight: 800;
+  }
+
+  .mobile-nav-link:hover,
+  .mobile-nav-link:focus-visible,
+  .mobile-nav-link-active {
+    background: var(--color-surface-soft);
+    color: var(--color-blue);
+  }
+
+  .mobile-actions {
+    display: grid;
+    gap: 0.5rem;
+    margin-top: 0.45rem;
+    padding-top: 0.6rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .mobile-actions .button {
+    width: 100%;
+  }
+
+  @media (max-width: 980px) {
+    .header-inner {
+      grid-template-columns: auto minmax(0, 1fr) auto;
+    }
+
+    .main-nav {
+      display: none;
+    }
+
+    .header-actions {
+      grid-column: 2;
+      justify-self: end;
+    }
+
+    .mobile-menu {
+      display: block;
+      grid-column: 3;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .header-inner {
+      grid-template-columns: auto auto;
+      gap: 1rem;
+      justify-content: space-between;
+    }
+
+    .brand-text,
+    .header-actions {
+      display: none;
+    }
+
+    .mobile-menu {
+      grid-column: 2;
+      transform: translateX(-2.25rem);
+    }
+
+    .mobile-menu summary {
+      width: 2.6rem;
+      height: 2.6rem;
+    }
+  }
+
+  @media (max-width: 360px) {
+    .header-inner {
+      width: min(100% - 2.5rem, 340px);
+      margin-inline: auto;
+      gap: 0.5rem;
+    }
+
+    .mobile-menu summary {
+      width: 2.35rem;
+      height: 2.35rem;
+      padding: 0.6rem;
+    }
+  }
+</style>

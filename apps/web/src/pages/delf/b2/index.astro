@@ -1,0 +1,22 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import DelfB2LandingPage from "../../../components/delf/DelfB2LandingPage.astro";
+
+const contents = (await getCollection("content"))
+  .filter(
+    (item) =>
+      item.data.domain === "delf" &&
+      item.data.publicationStatus === "published" &&
+      item.data.demonstration === false &&
+      item.data.levels.includes("B2"),
+  )
+  .sort((a, b) => (a.data.examOrder ?? 999) - (b.data.examOrder ?? 999));
+---
+
+<BaseLayout
+  title="DELF B2: preparación avanzada"
+  description="Página DELF B2 para comprender el examen, preparar las cuatro competencias y empezar con comprensión oral y estrategias de escucha."
+>
+  <DelfB2LandingPage contents={contents} />
+</BaseLayout>
