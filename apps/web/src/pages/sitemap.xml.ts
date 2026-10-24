@@ -41,6 +41,9 @@ const excludedPages = new Set([
   "./practica/avoir-o-etre/reto/verbos-que-cambian-de-auxiliar.astro",
   // Prototipo (noindex): quitar esta línea al publicar la página.
   "./practica/avoir-o-etre/index.astro",
+  // Laboratorio de alternativas (solo local): se borra al elegir una opción.
+  "./practica/avoir-o-etre/opcion-2/index.astro",
+  "./laboratorio.astro",
 ]);
 
 const routeFromFile = (file: string, params: Params = {}) => {

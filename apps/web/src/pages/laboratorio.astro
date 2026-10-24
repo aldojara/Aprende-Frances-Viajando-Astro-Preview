@@ -1,0 +1,188 @@
+---
+// Laboratorio de alternativas (solo local). Se borra al elegir una opción.
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { RETO_STORAGE_KEY } from "../utils/track";
+import { withBase } from "../utils/paths";
+
+const opciones = [
+  {
+    numero: 1,
+    titulo: "Práctica simple",
+    href: withBase("/practica/avoir-o-etre/"),
+    resumen:
+      "Una sola página: ficha, 8 ejercicios con corrección, diagnóstico de 15 preguntas y, al final, el reto a cambio del correo.",
+    fijarse: [
+      "¿Llegas al reto sin perderte por el camino?",
+      "¿El diagnóstico aporta o alarga demasiado?",
+    ],
+    defectos: [
+      "El reto está al final: hace falta bastante scroll para llegar.",
+      "No hay oferta junto al resultado de la práctica.",
+      "El mensaje de la oferta no se adapta al resultado.",
+    ],
+    clave: RETO_STORAGE_KEY,
+  },
+  {
+    numero: 2,
+    titulo: "Práctica por fases",
+    href: withBase("/practica/avoir-o-etre/opcion-2/"),
+    resumen:
+      "Tres pasos anunciados desde el inicio: 6 frases en parejas de contraste, laboratorio de errores (comparar, elegir la razón y probar un ejemplo nuevo) y la continuación por correo, adaptada al resultado.",
+    fijarse: [
+      "¿Se entiende el recorrido en 3 pasos?",
+      "¿El laboratorio ayuda a entender el error?",
+      "¿La oferta del paso 3 se siente natural o forzada?",
+    ],
+    defectos: [],
+    clave: `${RETO_STORAGE_KEY}-opcion-2`,
+  },
+];
+---
+
+<BaseLayout title="Laboratorio de alternativas" robots="noindex,nofollow">
+  <main>
+    <p class="prototipo-aviso" role="note">Laboratorio local · prototipo, no publicar</p>
+    <section class="section">
+      <div class="container laboratorio">
+        <p class="eyebrow">Laboratorio · «¿Avoir o être?»</p>
+        <h1>Compara las opciones</h1>
+        <p class="laboratorio-intro">
+          Prueba cada opción como lo haría alguien que llega desde TikTok. Las dos usan el mismo estilo, la
+          misma ficha y la misma sesión de muestra; cambia el recorrido. Los formularios son simulados: no
+          envían ni guardan datos. El progreso de cada opción se guarda por separado.
+        </p>
+
+        <ul class="opciones">
+          {
+            opciones.map((opcion) => (
+              <li class="opcion card">
+                <p class="opcion-numero">Opción {opcion.numero}</p>
+                <h2>{opcion.titulo}</h2>
+                <p>{opcion.resumen}</p>
+                <h3>En qué fijarse</h3>
+                <ul>
+                  {opcion.fijarse.map((punto) => (
+                    <li>{punto}</li>
+                  ))}
+                </ul>
+                {opcion.defectos.length > 0 && (
+                  <>
+                    <h3>Defectos ya detectados (sin corregir, a propósito)</h3>
+                    <ul class="defectos">
+                      {opcion.defectos.map((defecto) => (
+                        <li>{defecto}</li>
+                      ))}
+                    </ul>
+                  </>
+                )}
+                <div class="opcion-acciones">
+                  <a class="button button-primary" href={opcion.href}>
+                    Abrir la opción {opcion.numero}
+                  </a>
+                  <button class="button button-secondary" type="button" data-reiniciar={opcion.clave}>
+                    Reiniciar su progreso
+                  </button>
+                </div>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .prototipo-aviso {
+    margin: 0;
+    padding: 0.5rem 1rem;
+    background: var(--color-gold);
+    color: #ffffff;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-align: center;
+  }
+
+  .laboratorio h1 {
+    font-size: clamp(2.2rem, 5vw, 3.6rem);
+  }
+
+  .laboratorio-intro {
+    max-width: 760px;
+    margin: 0.75rem 0 2rem;
+    color: var(--color-text-muted);
+  }
+
+  .opciones {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .opcion {
+    display: grid;
+    gap: 0.6rem;
+    align-content: start;
+    padding: 1.5rem;
+  }
+
+  .opcion p,
+  .opcion ul {
+    margin: 0;
+  }
+
+  .opcion ul {
+    padding-left: 1.2rem;
+  }
+
+  .opcion-numero {
+    color: var(--color-gold);
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .opcion h2 {
+    font-size: 1.8rem;
+  }
+
+  .opcion h3 {
+    margin-top: 0.5rem;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+  }
+
+  .defectos {
+    color: var(--color-red);
+  }
+
+  .opcion-acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 0.75rem;
+  }
+
+  @media (max-width: 900px) {
+    .opciones {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>("[data-reiniciar]").forEach((boton) => {
+    boton.addEventListener("click", () => {
+      try {
+        localStorage.removeItem(boton.dataset.reiniciar ?? "");
+      } catch {
+        // Sin almacenamiento: nada que borrar.
+      }
+      boton.textContent = "Progreso reiniciado";
+    });
+  });
+</script>

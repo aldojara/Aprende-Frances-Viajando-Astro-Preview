@@ -25,7 +25,7 @@ const retoUrl = withBase("/practica/avoir-o-etre/reto/");
 
     <section class="section">
       <div class="container sesion">
-        <a class="sesion-volver" href={retoUrl}>← Tus 5 sesiones</a>
+        <a class="sesion-volver" href={retoUrl} data-con-variante>← Tus 5 sesiones</a>
         <p class="eyebrow">Reto ¿Avoir o être? · Sesión</p>
         <h1>{tipo.nombre}</h1>
 
@@ -58,7 +58,7 @@ const retoUrl = withBase("/practica/avoir-o-etre/reto/");
 
         <div class="sesion-fin" data-sesion-fin hidden>
           <p>Sesión completada. Repasa la explicación de las respuestas que fallaste.</p>
-          <a class="button button-primary" href={retoUrl}>Siguiente sesión</a>
+          <a class="button button-primary" href={retoUrl} data-con-variante>Siguiente sesión</a>
         </div>
       </div>
     </section>
@@ -155,6 +155,9 @@ const retoUrl = withBase("/practica/avoir-o-etre/reto/");
 </style>
 
 <script>
+  import { propagarVariante } from "../../../../utils/track";
+
+  propagarVariante();
   const fin = document.querySelector<HTMLElement>("[data-sesion-fin]");
   document.addEventListener("afv:sesion-completada", () => {
     if (fin) fin.hidden = false;

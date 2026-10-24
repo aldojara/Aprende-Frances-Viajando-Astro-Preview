@@ -122,6 +122,18 @@ const { grupo, preguntas, evento, progresoTipo } = Astro.props;
       if (reintentar) reintentar.hidden = false;
       track(`${evento}_fin`, { aciertos, total });
 
+      const resultados = preguntas.map((pregunta) => {
+        const elegida = pregunta.querySelector<HTMLInputElement>("input:checked");
+        return {
+          id: pregunta.dataset.pregunta ?? "",
+          respondida: Boolean(elegida),
+          correcta: Boolean(elegida) && Number(elegida?.value) === Number(pregunta.dataset.correcta),
+        };
+      });
+      form.dispatchEvent(
+        new CustomEvent("afv:corregido", { bubbles: true, detail: { resultados } }),
+      );
+
       const tipo = form.dataset.progresoTipo;
       if (tipo) {
         const progreso = leerProgreso();

@@ -41,7 +41,7 @@ const sesionUrl = (slug: string) => withBase(`/practica/avoir-o-etre/reto/${slug
                     </p>
                   </div>
                   {disponible ? (
-                    <a class="button button-primary" href={sesionUrl(tipo.slug)}>
+                    <a class="button button-primary" href={sesionUrl(tipo.slug)} data-con-variante>
                       Empezar
                     </a>
                   ) : (
@@ -55,7 +55,7 @@ const sesionUrl = (slug: string) => withBase(`/practica/avoir-o-etre/reto/${slug
 
         <p class="reto-hub-nota">
           Tu avance se guarda solo en este navegador y dispositivo.
-          <a href={withBase("/practica/avoir-o-etre/")}>Volver a la ficha y la práctica</a>
+          <a href={withBase("/practica/avoir-o-etre/")} data-volver>Volver a la ficha y la práctica</a>
         </p>
       </div>
     </section>
@@ -143,7 +143,7 @@ const sesionUrl = (slug: string) => withBase(`/practica/avoir-o-etre/reto/${slug
 <script>
   import { ordenEstandar } from "../../../../data/practicaAvoirEtre";
   import { leerOrden } from "../../../../utils/diagnostico";
-  import { guardarProgreso, leerProgreso } from "../../../../utils/track";
+  import { guardarProgreso, leerProgreso, propagarVariante, varianteActual } from "../../../../utils/track";
 
   const lista = document.querySelector<HTMLElement>("[data-sesiones]");
   const texto = document.querySelector<HTMLElement>("[data-orden-texto]");
@@ -170,6 +170,11 @@ const sesionUrl = (slug: string) => withBase(`/practica/avoir-o-etre/reto/${slug
       if (boton) boton.textContent = "Repetir";
     });
   }
+
+  propagarVariante();
+  const volver = document.querySelector<HTMLAnchorElement>("[data-volver]");
+  const variante = varianteActual();
+  if (volver && variante) volver.href = `/practica/avoir-o-etre/${variante}/`;
 
   if (texto && personalizado) {
     texto.textContent = "Ordenadas según tu orientación: empieza por la primera.";

@@ -143,7 +143,7 @@ const retoUrl = withBase("/practica/avoir-o-etre/reto/");
 </style>
 
 <script>
-  import { leerProgreso, track } from "../../utils/track";
+  import { leerProgreso, track, varianteActual } from "../../utils/track";
 
   const form = document.querySelector<HTMLFormElement>("[data-reto-form]");
   const ok = document.querySelector<HTMLElement>("[data-reto-ok]");
@@ -168,6 +168,8 @@ const retoUrl = withBase("/practica/avoir-o-etre/reto/");
     if (enlace) {
       const url = new URL(form.dataset.retoUrl ?? "/", window.location.origin);
       if (orden) url.searchParams.set("orden", orden);
+      const variante = varianteActual();
+      if (variante) url.searchParams.set("variante", variante);
       enlace.href = url.pathname + url.search;
     }
 
