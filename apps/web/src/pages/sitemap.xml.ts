@@ -45,6 +45,7 @@ const excludedPages = new Set([
   "./practica/avoir-o-etre/opcion-2/index.astro",
   "./practica/avoir-o-etre/opcion-3/index.astro",
   "./practica/avoir-o-etre/opcion-3-diseno-b/index.astro",
+  "./practica/avoir-o-etre/opcion-3-diseno-d/index.astro",
   "./practica/avoir-o-etre/opcion-4/index.astro",
   "./laboratorio.astro",
 ]);
