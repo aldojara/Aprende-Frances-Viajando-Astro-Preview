@@ -171,48 +171,52 @@ const partes = (enunciado: string) => {
                           <strong lang="fr">{fraseCorrecta(ejercicio)}</strong>
                         </div>
 
-                        <!-- Vídeo opcional y plegado: al abrirlo aparece aquí, antes de la invitación -->
-                        {video && (
-                          <button
-                            class="b-video c-video-boton"
-                            type="button"
-                            aria-expanded="false"
-                            aria-controls={`video-${ejercicio.id}`}
-                            data-ver-video
-                          >
-                            <span class="b-video-icono c-play-icon" aria-hidden="true">
-                              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg>
-                            </span>
-                            <span class="b-video-texto">
-                              <strong>Ver el vídeo de este error</strong>
-                              {video === VIDEO_PROVISIONAL && <span>Vista previa con el vídeo provisional</span>}
-                            </span>
-                          </button>
-                        )}
-                        <p class="aviso-video" data-video-pendiente hidden={Boolean(video)}>
-                          Vídeo pendiente: el clip de este ejemplo está en preparación.
-                        </p>
-                        {video && (
-                          <div class="error-video-zona c-video-zona" id={`video-${ejercicio.id}`} data-video-zona hidden>
-                            <video class="error-video" controls playsinline preload="metadata" src={withBase(video)} data-video />
-                            {video === VIDEO_PROVISIONAL && (
-                              <p class="aviso-video">Vista previa con el clip provisional V1 (78 s).</p>
-                            )}
-                          </div>
-                        )}
+                        <!-- Vídeo y reto: lado a lado en escritorio (vídeo a la izquierda); en móvil, uno debajo del otro.
+                             El vídeo abierto aparece debajo de la fila, antes del formulario. -->
+                        <div class="c-acciones-error">
+                          <!-- Vídeo opcional y plegado: al abrirlo aparece aquí, antes de la invitación -->
+                          {video && (
+                            <button
+                              class="b-video c-video-boton"
+                              type="button"
+                              aria-expanded="false"
+                              aria-controls={`video-${ejercicio.id}`}
+                              data-ver-video
+                            >
+                              <span class="b-video-icono c-play-icon" aria-hidden="true">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg>
+                              </span>
+                              <span class="b-video-texto">
+                                <strong>Ver el vídeo de este error</strong>
+                                {video === VIDEO_PROVISIONAL && <span>Vista previa con el vídeo provisional</span>}
+                              </span>
+                            </button>
+                          )}
+                          <p class="aviso-video" data-video-pendiente hidden={Boolean(video)}>
+                            Vídeo pendiente: el clip de este ejemplo está en preparación.
+                          </p>
+                          {video && (
+                            <div class="error-video-zona c-video-zona" id={`video-${ejercicio.id}`} data-video-zona hidden>
+                              <video class="error-video" controls playsinline preload="metadata" src={withBase(video)} data-video />
+                              {video === VIDEO_PROVISIONAL && (
+                                <p class="aviso-video">Vista previa con el clip provisional V1 (78 s).</p>
+                              )}
+                            </div>
+                          )}
 
-                        <!-- Después, el reto: disponible sin ver ni terminar el vídeo; el formulario se abre debajo -->
-                        <div class="error-reto c-reto-inline">
-                          <button
-                            class="c-boton c-boton-oro c-reto-boton"
-                            type="button"
-                            aria-expanded="false"
-                            aria-controls="reto-zona"
-                            data-abrir-reto
-                          >
-                            Quiero acertar la próxima →
-                          </button>
-                          <p class="invitacion-linea">Reto de 5 sesiones gratis · recibe el acceso por correo</p>
+                          <!-- Después, el reto: disponible sin ver ni terminar el vídeo; el formulario se abre debajo -->
+                          <div class="error-reto c-reto-inline">
+                            <button
+                              class="c-boton c-boton-oro c-reto-boton"
+                              type="button"
+                              aria-expanded="false"
+                              aria-controls="reto-zona"
+                              data-abrir-reto
+                            >
+                              Quiero acertar la próxima →
+                            </button>
+                            <p class="invitacion-linea">Reto de 5 sesiones gratis · recibe el acceso por correo</p>
+                          </div>
                         </div>
                         <div class="reto-hueco" data-reto-hueco />
 
@@ -1167,6 +1171,37 @@ const partes = (enunciado: string) => {
     box-shadow: var(--sombra-media);
   }
 
+  /* Vídeo a la izquierda y reto a la derecha; el vídeo abierto ocupa la fila de abajo */
+  .c-acciones-error {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.85rem;
+    align-items: start;
+  }
+
+  .c-acciones-error > .c-video-boton,
+  .c-acciones-error > .aviso-video {
+    grid-column: 1;
+    grid-row: 1;
+    width: 100%;
+  }
+
+  .c-acciones-error > .c-reto-inline {
+    grid-column: 2;
+    grid-row: 1;
+    justify-items: stretch;
+    text-align: center;
+  }
+
+  .c-acciones-error > .c-reto-inline .c-reto-boton {
+    width: 100%;
+  }
+
+  .c-acciones-error > .c-video-zona {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
   .aviso-video {
     margin: 0;
     color: var(--b-texto-muted);
@@ -1526,6 +1561,19 @@ const partes = (enunciado: string) => {
       flex-direction: column;
       align-items: stretch;
       text-align: center;
+    }
+
+    /* En móvil, uno debajo del otro: vídeo (y el vídeo abierto) primero, después el reto */
+    .c-acciones-error {
+      grid-template-columns: 1fr;
+    }
+
+    .c-acciones-error > .c-video-boton,
+    .c-acciones-error > .aviso-video,
+    .c-acciones-error > .c-video-zona,
+    .c-acciones-error > .c-reto-inline {
+      grid-column: auto;
+      grid-row: auto;
     }
 
     /* Cabecera del error: número arriba y la frase a todo el ancho */
