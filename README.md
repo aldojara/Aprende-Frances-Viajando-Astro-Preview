@@ -44,6 +44,41 @@ las colecciones) y de compilación. **No garantizan** que funcionen los enlaces,
 bien ni que los formularios entreguen los datos. Después de cada publicación hay que revisar la web
 en vivo: las páginas tocadas, la portada y, cuando existan, los formularios.
 
+## Sitemap
+
+`/sitemap.xml` lo genera [`apps/web/src/pages/sitemap.xml.ts`](apps/web/src/pages/sitemap.xml.ts) en
+cada compilación, a partir de los archivos de `apps/web/src/pages`.
+
+**Se incorpora solo:**
+
+- una página fija nueva en `src/pages` (por ejemplo `src/pages/precios.astro` → `/precios/`);
+- una lección de gramática o una página DELF nueva en `src/content/content`, si cumple las reglas de
+  publicación de su página (`gramatica/[slug].astro`, `delf/[level]/[slug].astro`);
+- una página dinámica nueva (`[param]`): se usan las rutas de su `getStaticPaths`.
+
+**Necesita mantenimiento manual** (en `sitemap.xml.ts`):
+
+- `excludedPages`: añadir la página si es de error, si solo redirige o si pasa `robots="noindex"`.
+  Las redirecciones de `astro.config.mjs` no son archivos y ya quedan fuera;
+- `pagesWithRoutesFromData`: los niveles se calculan con los mismos datos que su `getStaticPaths`
+  (`levels`, en `src/data/taxonomies.ts`). Si cambia el `getStaticPaths` de
+  `niveles/[level]/index.astro`, hay que cambiar también esa función. Se hace así porque importar esa
+  página desde el sitemap cambia el nombre de su hoja de estilos en la compilación.
+
+**Comprobar el sitemap** tras `npm run build` (en `apps/web`): compara sus direcciones con las páginas
+de `dist` que son indexables (sin `noindex`, sin redirección y con URL canónica propia).
+
+```bash
+node -e '
+const fs=require("fs"),path=require("path"),D="dist",S="https://aprendefrancesviajando.com";
+const walk=d=>fs.readdirSync(d,{withFileTypes:true}).flatMap(e=>e.name.startsWith("._")?[]:e.isDirectory()?walk(path.join(d,e.name)):[path.join(d,e.name)]);
+const ind=walk(D).filter(f=>f.endsWith("index.html")).flatMap(f=>{const s=fs.readFileSync(f,"utf8"),own=S+"/"+path.relative(D,f).replace(/index\.html$/,""),c=(s.match(/rel="canonical" href="([^"]*)"/)||[])[1];return /noindex/.test(s)||/http-equiv="refresh"/.test(s)||c!==own?[]:[c]});
+const sm=[...fs.readFileSync(D+"/sitemap.xml","utf8").matchAll(/<loc>([^<]*)<\/loc>/g)].map(m=>m[1]);
+console.log({indexables:ind.length,sitemap:sm.length,faltan:ind.filter(u=>!sm.includes(u)),sobran:sm.filter(u=>!ind.includes(u)),duplicadas:sm.filter((u,i)=>sm.indexOf(u)!==i)});'
+```
+
+`faltan`, `sobran` y `duplicadas` deben salir vacías.
+
 ## Volver atrás
 
 ### Deshacer un cambio publicado
@@ -120,10 +155,7 @@ Usar solo si la primera publicación desde el código fuente deja la web mal.
 
 En este orden, cada uno en su propio *pull request*:
 
-1. **Sitemap completo.** Hoy `apps/web/src/pages/sitemap.xml.ts` contiene una lista fija de 7
-   direcciones. Debe incluir todas las páginas públicas indexables y excluir la página de error y
-   las redirecciones (`/proyecto/`, `/autor/`, `/autor/aldo-jara-pisconti/`).
-2. **Práctica gratuita con captura de correo y medición de conversiones.**
+1. **Práctica gratuita con captura de correo y medición de conversiones.**
 
 Antes de cada publicación conviene ejecutar `npm audit` en `apps/web`: la actualización de
 dependencias de octubre de 2026 (Astro 7.1.0 → 7.4.2) dejó 0 vulnerabilidades conocidas.
