@@ -1,4 +1,4 @@
-// Opción 3: decide qué vídeo de ayuda ofrecer a partir de las respuestas.
+// Opción 3: decide qué ayuda mostrar a partir de las respuestas (lista de errores, desafío o aviso).
 // Solo importa tipos para poder probarse con Node sin el resto del proyecto.
 import type { TipoId } from "../data/practicaAvoirEtre";
 import type { TipoVideo } from "../data/practicaAvoirEtreOpcion3";
@@ -7,14 +7,18 @@ export type ResultadoEjercicio = { id: string; respondida: boolean; correcta: bo
 
 export type Recuento = { correctas: number; incorrectas: number; sinResponder: number };
 
+// «todo-correcto» exige responder todas las frases; sin fallos pero con frases vacías es
+// «parcial-sin-fallos»: no permite concluir que se domina todo.
 export type DecisionAyuda =
-  | { modo: "sin-respuestas"; recuento: Recuento }
-  | { modo: "sin-fallos"; recuento: Recuento; orden: TipoId[] }
+  | { modo: "sin-respuestas"; recuento: Recuento; vacias: string[] }
+  | { modo: "todo-correcto"; recuento: Recuento; vacias: string[]; orden: TipoId[] }
+  | { modo: "parcial-sin-fallos"; recuento: Recuento; vacias: string[]; orden: TipoId[] }
   | {
       modo: "con-fallos";
       recuento: Recuento;
-      tipos: TipoVideo[]; // tipos con fallos, el principal primero
-      falladoPorTipo: Partial<Record<TipoVideo, string>>; // primer ejercicio fallado de cada tipo
+      vacias: string[];
+      fallos: string[]; // ejercicios fallados, en el orden de la práctica
+      tipos: TipoVideo[]; // tipos con fallos, el de más fallos primero
       orden: TipoId[];
     };
 
@@ -36,37 +40,44 @@ export const decidirAyuda = (
   ordenEstandar: TipoId[],
 ): DecisionAyuda => {
   // Un fallo es una respuesta dada e incorrecta; sin responder no cuenta como fallo.
+  const fallos = resultados.filter((r) => r.respondida && !r.correcta).map((r) => r.id);
+  const vacias = resultados.filter((r) => !r.respondida).map((r) => r.id);
   const recuento: Recuento = {
     correctas: resultados.filter((r) => r.respondida && r.correcta).length,
-    incorrectas: resultados.filter((r) => r.respondida && !r.correcta).length,
-    sinResponder: resultados.filter((r) => !r.respondida).length,
+    incorrectas: fallos.length,
+    sinResponder: vacias.length,
   };
 
-  if (recuento.sinResponder === resultados.length) return { modo: "sin-respuestas", recuento };
+  if (vacias.length === resultados.length) return { modo: "sin-respuestas", recuento, vacias };
 
-  const porTipo = new Map<TipoVideo, string[]>();
-  resultados
-    .filter((r) => r.respondida && !r.correcta)
-    .forEach((f) => {
-      const tipo = tipoPorId[f.id];
-      if (tipo) porTipo.set(tipo, [...(porTipo.get(tipo) ?? []), f.id]);
-    });
+  if (!fallos.length) {
+    return {
+      modo: vacias.length ? "parcial-sin-fallos" : "todo-correcto",
+      recuento,
+      vacias,
+      orden: ordenEstandar,
+    };
+  }
 
-  if (!porTipo.size) return { modo: "sin-fallos", recuento, orden: ordenEstandar };
+  const porTipo = new Map<TipoVideo, number>();
+  fallos.forEach((id) => {
+    const tipo = tipoPorId[id];
+    if (tipo) porTipo.set(tipo, (porTipo.get(tipo) ?? 0) + 1);
+  });
 
   // Más fallos primero; empate → orden pedagógico.
   const tipos = [...porTipo.keys()].sort(
-    (a, b) =>
-      porTipo.get(b)!.length - porTipo.get(a)!.length ||
-      ORDEN_VIDEO.indexOf(a) - ORDEN_VIDEO.indexOf(b),
+    (a, b) => porTipo.get(b)! - porTipo.get(a)! || ORDEN_VIDEO.indexOf(a) - ORDEN_VIDEO.indexOf(b),
   );
-  const falladoPorTipo = Object.fromEntries(tipos.map((t) => [t, porTipo.get(t)![0]]));
 
+  // El reto empieza por el tipo del primer error de la lista, que es el que se abre de entrada.
+  const primero = tipoPorId[fallos[0]] ?? tipos[0];
   return {
     modo: "con-fallos",
     recuento,
+    vacias,
+    fallos,
     tipos,
-    falladoPorTipo,
-    orden: ordenDesde(tipos[0], tipos, ordenEstandar),
+    orden: ordenDesde(primero, tipos, ordenEstandar),
   };
 };

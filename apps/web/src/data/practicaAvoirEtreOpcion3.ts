@@ -1,5 +1,5 @@
 // Laboratorio · Opción 3 «Mira, entiende y vuelve a probar».
-// Mismos 8 ejercicios que la opción 1, etiquetados por tipo de error, y un clip por tipo.
+// Mismos 8 ejercicios que la opción 1, etiquetados por tipo de error, con ayuda para cada error.
 // BORRADOR: todo el francés debe revisarlo y aprobarlo el autor antes de publicar.
 import type { Pregunta, TipoId } from "./practicaAvoirEtre";
 import { practica } from "./practicaAvoirEtre";
@@ -24,15 +24,17 @@ export const ejercicios: (Pregunta & { tipo: TipoVideo })[] = practica.map((preg
   tipo: tipoPorEjercicio[pregunta.id],
 }));
 
-// Prototipo: todos los tipos usan el vertical V1 como vídeo provisional (archivo solo local,
-// fuera de git). El clip definitivo de T3 tiene guion en Documentos_Proyecto.
-const VIDEO_PROVISIONAL = "/laboratorio-local/v1-avoir-etre-provisional.mp4";
+// Clip específico de cada ejercicio (10–20 s). Mientras falte, el error muestra su explicación escrita
+// y el aviso «vídeo pendiente». El primero será el de sortir para p2 (guion en Documentos_Proyecto).
+export const videoPorEjercicio: Partial<Record<string, string>> = {};
+
+// La frase completa con la respuesta correcta en el hueco.
+export const fraseCorrecta = (pregunta: Pregunta) =>
+  pregunta.enunciado.replace("___", pregunta.opciones[pregunta.correcta]);
 
 export type Ayuda = {
   tipo: TipoVideo;
   titulo: string;
-  video: string;
-  videoProvisional: boolean;
   resumen: string;
   ejemploNuevo: Pregunta;
   pista: string;
@@ -44,8 +46,6 @@ export const ayudas: Record<TipoVideo, Ayuda> = {
   T1: {
     tipo: "T1",
     titulo: "Verbos de movimiento: ¿por qué être?",
-    video: VIDEO_PROVISIONAL,
-    videoProvisional: true,
     resumen:
       "Los verbos de movimiento o cambio de estado de la lista (aller, venir, partir, arriver, rester, naître…) van con être. Los demás, con avoir.",
     ejemploNuevo: ejemploDe("C1"),
@@ -54,8 +54,6 @@ export const ayudas: Record<TipoVideo, Ayuda> = {
   T2: {
     tipo: "T2",
     titulo: "Verbos pronominales: siempre être",
-    video: VIDEO_PROVISIONAL,
-    videoProvisional: true,
     resumen: "Si el verbo lleva «se» (se lever, se réveiller…), es pronominal y va con être.",
     ejemploNuevo: ejemploDe("C2"),
     pista: "Pista: «se réveiller» lleva «se».",
@@ -63,8 +61,6 @@ export const ayudas: Record<TipoVideo, Ayuda> = {
   T3: {
     tipo: "T3",
     titulo: "Sortir, monter, passer…: ¿sale él o saca algo?",
-    video: VIDEO_PROVISIONAL,
-    videoProvisional: true,
     resumen:
       "Sortir, monter, descendre, passer, rentrer y retourner van con être si la persona se mueve, y con avoir si llevan complemento directo (sacar, subir, bajar algo).",
     ejemploNuevo: ejemploDe("C3"),

@@ -1,20 +1,31 @@
 ---
 // Laboratorio · Opción 3 «Mira, entiende y vuelve a probar». Solo prototipo local: noindex y
-// fuera del sitemap. El vídeo provisional vive en public/laboratorio-local/ (fuera de git).
+// fuera del sitemap. Al corregir, una sola tarjeta reúne los errores, las frases sin responder y la
+// invitación al reto con su formulario (simulado).
 import BaseLayout from "../../../../layouts/BaseLayout.astro";
 import EjerciciosCorregibles from "../../../../components/practica/EjerciciosCorregibles.astro";
 import PreguntaOpciones from "../../../../components/practica/PreguntaOpciones.astro";
 import RetoFormulario from "../../../../components/practica/RetoFormulario.astro";
 import { fichaPdf } from "../../../../data/practicaAvoirEtre";
-import { ayudas, desafio, ejercicios } from "../../../../data/practicaAvoirEtreOpcion3";
+import {
+  ayudas,
+  desafio,
+  ejercicios,
+  fraseCorrecta,
+  videoPorEjercicio,
+} from "../../../../data/practicaAvoirEtreOpcion3";
 import { withBase } from "../../../../utils/paths";
 
 const pdf = withBase(fichaPdf);
+const partes = (enunciado: string) => {
+  const [antes, despues = ""] = enunciado.split("___");
+  return { antes, despues };
+};
 ---
 
 <BaseLayout
   title="¿Avoir o être? Mira, entiende y vuelve a probar (laboratorio · opción 3)"
-  description="Prototipo: práctica con vídeo de ayuda según tu error."
+  description="Prototipo: práctica con ayuda para cada error."
   robots="noindex,nofollow"
 >
   <main data-variante="opcion-3">
@@ -28,7 +39,7 @@ const pdf = withBase(fichaPdf);
         <p class="eyebrow">Passé composé · A2–B1</p>
         <h1>¿Avoir o être? Elige el auxiliar sin dudar</h1>
         <p class="practica-hero-texto">
-          Responde, corrige y, si fallas, mira una explicación breve en vídeo de justo ese error.
+          Responde, corrige y repasa cada error con la frase, tu elección y la explicación.
         </p>
         <div class="practica-acciones">
           <a class="button button-primary button-descarga" href={pdf} download data-descarga="cabecera">
@@ -36,7 +47,7 @@ const pdf = withBase(fichaPdf);
           </a>
           <a class="button button-secondary" href="#practica">Empezar la práctica</a>
         </div>
-        <p class="practica-nota">Ficha sin correo ni registro · Práctica, respuestas y vídeos gratis</p>
+        <p class="practica-nota">Ficha sin correo ni registro · Práctica y explicaciones gratis</p>
       </div>
     </section>
 
@@ -45,123 +56,147 @@ const pdf = withBase(fichaPdf);
         <p class="eyebrow">Practica</p>
         <h2 id="practica-titulo">8 frases: ¿avoir o être?</h2>
         <p class="seccion-intro">Elige una opción en cada frase y pulsa «Corregir».</p>
-        <div class="seccion-estrecha" data-practica id="mis-respuestas">
+        <div class="seccion-estrecha" data-practica>
           <EjerciciosCorregibles grupo="o3" preguntas={ejercicios} evento="practica" />
         </div>
 
-        <!-- Aparece al corregir, justo bajo el resultado -->
-        <div class="ayuda" data-ayuda-zona hidden>
-          <div class="ayuda-resumen card" data-resumen tabindex="-1">
+        <!-- Aparece al corregir, justo bajo la práctica: todo se revisa sin salir de esta tarjeta -->
+        <section class="ayuda card seccion-estrecha" data-ayuda-zona aria-labelledby="ayuda-titulo" hidden>
+          <header class="ayuda-cabecera">
             <p class="ayuda-recuento" data-recuento aria-live="polite"></p>
-            <p class="ayuda-sin-respuestas" data-sin-respuestas hidden>
-              Responde al menos una frase para ver tu ayuda.
-            </p>
-            <a class="enlace" href="#mis-respuestas" data-ver-respuestas>Ver mis respuestas ↑</a>
+            <h3 id="ayuda-titulo" tabindex="-1" data-estado-titulo></h3>
+            <p class="ayuda-estado" data-estado-texto></p>
+          </header>
+
+          <ol class="errores" data-errores hidden>
+            {
+              ejercicios.map((ejercicio, indice) => {
+                const { antes, despues } = partes(ejercicio.enunciado);
+                const video = videoPorEjercicio[ejercicio.id];
+                const ayuda = ayudas[ejercicio.tipo];
+                return (
+                  <li class="error" data-fallo={ejercicio.id} data-tipo={ejercicio.tipo} hidden>
+                    <button
+                      class="error-boton"
+                      type="button"
+                      aria-expanded="false"
+                      aria-controls={`error-${ejercicio.id}`}
+                      data-error-boton
+                    >
+                      <span class="error-frase">
+                        <span class="error-numero">Frase {indice + 1}</span>
+                        <span lang="fr">
+                          {antes}
+                          <span class="hueco">___</span>
+                          {despues}
+                        </span>
+                      </span>
+                      <span class="error-comparacion">
+                        Elegiste <s class="elegida" lang="fr" data-elegida /> → correcta{" "}
+                        <strong class="correcta" lang="fr">
+                          {ejercicio.opciones[ejercicio.correcta]}
+                        </strong>
+                      </span>
+                      <span class="error-icono" aria-hidden="true" />
+                    </button>
+
+                    <div class="error-panel" id={`error-${ejercicio.id}`} data-error-panel hidden>
+                      <p class="error-correcta">
+                        <span>Frase correcta:</span> <span lang="fr">{fraseCorrecta(ejercicio)}</span>
+                      </p>
+                      <p class="error-explicacion">{ejercicio.explicacion}</p>
+                      {video ? (
+                        <video class="error-video" controls playsinline preload="metadata" src={withBase(video)} data-video />
+                      ) : (
+                        <p class="aviso-video">
+                          <span aria-hidden="true">▶</span> Vídeo pendiente: el clip de este ejemplo está en
+                          preparación.
+                        </p>
+                      )}
+
+                      <div class="error-practica">
+                        <button class="button button-secondary" type="button" data-probar>
+                          Comprobar si lo entendí
+                        </button>
+                        <div class="ayuda-ejemplo" data-ejemplo-zona hidden>
+                          <h4>Un caso nuevo · {ayuda.titulo}</h4>
+                          <ol class="lista-limpia" data-instantaneo>
+                            <PreguntaOpciones
+                              pregunta={ayuda.ejemploNuevo}
+                              numero={1}
+                              grupo={`o3-nuevo-${ejercicio.id}`}
+                            />
+                          </ol>
+                          <p class="ayuda-pista" data-pista hidden>{ayuda.pista}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                );
+              })
+            }
+          </ol>
+
+          <div class="vacias" data-vacias hidden>
+            <p class="vacias-titulo">Sin responder · no cuentan como error</p>
+            <ul class="lista-limpia">
+              {
+                ejercicios.map((ejercicio, indice) => {
+                  const { antes, despues } = partes(ejercicio.enunciado);
+                  return (
+                    <li class="vacia" data-vacia={ejercicio.id} hidden>
+                      <span>
+                        <span class="error-numero">Frase {indice + 1}</span>{" "}
+                        <span lang="fr">
+                          {antes}
+                          <span class="hueco">___</span>
+                          {despues}
+                        </span>
+                      </span>
+                      <button class="enlace-boton" type="button" data-responder={ejercicio.id}>
+                        Responder
+                      </button>
+                    </li>
+                  );
+                })
+              }
+            </ul>
           </div>
 
-          <div class="ayuda-pestanas" data-pestanas hidden>
-            <span>Repasar:</span>
-          </div>
-
-          {
-            Object.values(ayudas).map((ayuda) => (
-              <section class="ayuda-bloque card" data-ayuda={ayuda.tipo} hidden>
-                <div class="ayuda-media">
-                  <div class="ayuda-marco">
-                    <video
-                      controls
-                      playsinline
-                      preload="metadata"
-                      src={withBase(ayuda.video)}
-                      data-video
-                    />
-                    <button class="button button-primary ayuda-play" type="button" data-ver-video>
-                      ▶ Entender esta diferencia
-                    </button>
-                  </div>
-                  {ayuda.videoProvisional && (
-                    <p class="ayuda-nota">
-                      Vídeo provisional (vertical V1, 78 s). El clip definitivo de este error está por
-                      producir.
-                    </p>
-                  )}
-                  <p class="ayuda-nota ayuda-error" data-video-error hidden>
-                    El vídeo no está disponible en esta copia del prototipo. Lee la explicación.
-                  </p>
-                </div>
-
-                <div class="ayuda-info">
-                  <p class="eyebrow">Vamos a repasar esta diferencia</p>
-                  <h3 tabindex="-1">{ayuda.titulo}</h3>
-                  <p class="ayuda-tu-respuesta" data-tu-respuesta />
-
-                  <details class="ayuda-texto">
-                    <summary>Prefiero leerlo</summary>
-                    <p>{ayuda.resumen}</p>
-                  </details>
-
-                  <div class="ayuda-ejemplo" data-ejemplo-zona hidden>
-                    <h4>Un caso nuevo</h4>
-                    <ol class="lista-limpia" data-instantaneo>
-                      <PreguntaOpciones
-                        pregunta={ayuda.ejemploNuevo}
-                        numero={1}
-                        grupo={`o3-nuevo-${ayuda.tipo}`}
-                      />
-                    </ol>
-                    <p class="ayuda-pista" data-pista hidden>
-                      {ayuda.pista}
-                      <button class="enlace-boton" type="button" data-rever>Volver a ver el vídeo</button>
-                    </p>
-                  </div>
-
-                  <div class="ayuda-acciones">
-                    <button class="button button-secondary" type="button" data-probar>
-                      Comprobar si lo entendí
-                    </button>
-                    <button class="button button-primary" type="button" data-continuar>
-                      Recibir práctica sobre esta dificultad
-                    </button>
-                  </div>
-                </div>
-              </section>
-            ))
-          }
-
-          <section class="ayuda-bloque ayuda-bloque-simple card" data-sin-fallos hidden>
-            <p class="eyebrow">Sin errores</p>
-            <h3 tabindex="-1" data-sin-fallos-titulo>¡Sin errores!</h3>
+          <div class="desafio-zona" data-desafio hidden>
             <p>¿Te atreves con un desafío? Tres frases más difíciles; la corrección aparece al elegir.</p>
-            <ol class="lista-limpia desafio" data-instantaneo>
+            <ol class="lista-limpia" data-instantaneo>
               {desafio.map((pregunta, indice) => (
                 <PreguntaOpciones pregunta={pregunta} numero={indice + 1} grupo="o3-desafio" />
               ))}
             </ol>
-            <div class="ayuda-acciones">
-              <button class="button button-primary" type="button" data-continuar>
-                Recibir más práctica
-              </button>
-            </div>
-          </section>
-        </div>
-      </div>
-    </section>
+          </div>
 
-    <section class="section seccion-suave" id="seguir" aria-labelledby="seguir-titulo" hidden data-seccion-seguir>
-      <div class="container reto">
-        <div>
-          <p class="eyebrow">Gratis, a cambio de tu correo</p>
-          <h2 id="seguir-titulo" tabindex="-1" data-oferta-titulo>Recibe más práctica como esta</h2>
-          <p class="seccion-intro" data-oferta-texto>
-            Un reto de 5 sesiones con corrección al momento.
-          </p>
-          <ul class="reto-lista">
-            <li>Empieza por lo que te ha costado</li>
-            <li>10 ejercicios por sesión, con la explicación de cada respuesta</li>
-            <li>Tu avance se guarda en este navegador</li>
-          </ul>
-        </div>
-        <RetoFormulario />
+          <!-- Invitación al reto: siempre visible en la tarjeta; el formulario se abre aquí mismo -->
+          <div class="invitacion" data-invitacion>
+            <button
+              class="button button-primary invitacion-boton"
+              type="button"
+              aria-expanded="false"
+              aria-controls="reto-zona"
+              data-abrir-reto
+            >
+              Quiero acertar la próxima →
+            </button>
+            <p class="invitacion-linea">Reto de 5 sesiones gratis · recibe el acceso por correo</p>
+
+            <div class="reto-zona" id="reto-zona" data-reto-zona hidden>
+              <h4 tabindex="-1" data-oferta-titulo>Sigue practicando con casos más variados</h4>
+              <p data-oferta-texto>Un reto de 5 sesiones con corrección al momento.</p>
+              <ul class="reto-lista">
+                <li>Empieza por lo que te ha costado</li>
+                <li>10 ejercicios por sesión, con la explicación de cada respuesta</li>
+                <li>Tu avance se guarda en este navegador</li>
+              </ul>
+              <RetoFormulario />
+            </div>
+          </div>
+        </section>
       </div>
     </section>
   </main>
@@ -172,17 +207,16 @@ const pdf = withBase(fichaPdf);
     display: none;
   }
 
-  /* El resumen de la ayuda (correctas · incorrectas · sin responder) sustituye a la línea genérica. */
+  /* El recuento de la tarjeta (correctas · incorrectas · sin responder) sustituye a la línea genérica. */
   [data-practica] :global([data-resultado]) {
     display: none;
   }
 
-  /* La cabecera de la web es fija: los destinos de los enlaces dejan margen para no quedar tapados. */
+  /* La cabecera de la web es fija: los destinos de los desplazamientos dejan margen para no quedar tapados. */
   main :global([data-pregunta]),
-  #mis-respuestas,
-  .ayuda-resumen,
-  .ayuda-bloque,
-  #seguir {
+  .ayuda,
+  .error,
+  .reto-zona {
     scroll-margin-top: 6rem;
   }
 
@@ -261,153 +295,171 @@ const pdf = withBase(fichaPdf);
     color: var(--color-text-muted);
   }
 
-  .seccion-suave {
-    border-block: 1px solid var(--color-border);
-    background: var(--color-surface-soft);
-  }
-
   .ayuda {
     display: grid;
-    gap: 1rem;
+    gap: 1.1rem;
     margin-top: 1.5rem;
-  }
-
-  .ayuda-resumen {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem 1.25rem;
-    align-items: center;
-    padding: 0.9rem 1.25rem;
-  }
-
-  .ayuda-recuento,
-  .ayuda-sin-respuestas {
-    margin: 0;
-    color: var(--color-heading);
-    font-weight: 700;
-  }
-
-  .enlace,
-  .enlace-boton {
-    color: var(--color-blue);
-    font-weight: 600;
-    text-decoration: underline;
-  }
-
-  .enlace-boton {
-    margin-left: 0.4rem;
-    padding: 0;
-    border: 0;
-    background: none;
-    cursor: pointer;
-    font: inherit;
-  }
-
-  .ayuda-pestanas {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    align-items: center;
-    font-weight: 600;
-  }
-
-  .ayuda-pestanas :global(button[aria-pressed="true"]) {
-    border-color: var(--color-blue);
-    background: rgba(0, 85, 164, 0.08);
-    color: var(--color-blue);
-  }
-
-  .ayuda-bloque {
-    display: grid;
-    grid-template-columns: minmax(0, 300px) minmax(0, 1fr);
-    gap: 1.5rem;
-    align-items: start;
     padding: 1.25rem;
     border-left: 4px solid var(--color-gold);
   }
 
-  .ayuda-bloque-simple {
-    grid-template-columns: 1fr;
-    gap: 0.8rem;
+  .ayuda-cabecera {
+    display: grid;
+    gap: 0.35rem;
   }
 
-  .ayuda-marco {
-    position: relative;
+  .ayuda-recuento {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+    font-weight: 700;
   }
 
-  .ayuda-marco video {
-    display: block;
-    width: 100%;
-    aspect-ratio: 9 / 16;
-    max-height: 70vh;
+  .ayuda h3 {
+    margin: 0;
+    font-size: 1.45rem;
+  }
+
+  .ayuda-estado {
+    margin: 0;
+  }
+
+  .ayuda h4 {
+    margin: 0 0 0.5rem;
+    font-size: 1.05rem;
+  }
+
+  .errores {
+    display: grid;
+    gap: 0.6rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .error {
+    border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
-    background: #0b2f55;
+    background: var(--color-surface);
   }
 
-  .ayuda-play {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    width: max-content;
-    max-width: 90%;
-    min-height: 3.25rem;
-    transform: translate(-50%, -50%);
-    box-shadow: var(--shadow-md);
+  .error:has([aria-expanded="true"]) {
+    border-color: var(--color-blue);
   }
 
-  .ayuda-play:hover {
-    transform: translate(-50%, calc(-50% - 1px));
+  .error-boton {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0.3rem 0.75rem;
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 0;
+    border-radius: var(--radius-md);
+    background: none;
+    color: var(--color-text);
+    cursor: pointer;
+    font: inherit;
+    text-align: left;
   }
 
-  .ayuda-nota {
-    margin: 0.5rem 0 0;
+  .error-frase {
+    color: var(--color-heading);
+    font-weight: 600;
+  }
+
+  .error-numero {
+    margin-right: 0.4rem;
     color: var(--color-text-muted);
     font-size: 0.85rem;
+    font-weight: 700;
   }
 
-  .ayuda-error {
+  .hueco {
+    display: inline-block;
+    margin-inline: 0.15rem;
+    color: var(--color-gold);
+    font-weight: 800;
+  }
+
+  .error-comparacion {
+    grid-column: 1;
+    font-size: 0.95rem;
+  }
+
+  .elegida {
     color: var(--color-red);
+    font-weight: 600;
   }
 
-  .ayuda-info {
+  .correcta {
+    color: #2f7d4f;
+  }
+
+  .error-icono {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    align-self: center;
+    color: var(--color-blue);
+    font-size: 1.4rem;
+    font-weight: 700;
+  }
+
+  .error-icono::before {
+    content: "+";
+  }
+
+  [aria-expanded="true"] .error-icono::before {
+    content: "−";
+  }
+
+  .error-panel {
     display: grid;
-    gap: 0.9rem;
-    align-content: start;
+    gap: 0.75rem;
+    padding: 0 1rem 1rem;
   }
 
-  .ayuda-info .eyebrow,
-  .ayuda-bloque-simple .eyebrow {
-    margin-bottom: -0.5rem;
-  }
-
-  .ayuda-bloque h3 {
-    font-size: 1.5rem;
-  }
-
-  .ayuda-bloque h4 {
-    margin-bottom: 0.5rem;
-    font-size: 1.1rem;
-  }
-
-  .ayuda-tu-respuesta {
+  .error-panel p {
     margin: 0;
+  }
+
+  .error-correcta {
     padding: 0.6rem 0.85rem;
     border-radius: var(--radius-sm);
     background: var(--color-surface-soft);
   }
 
-  .ayuda-texto summary {
-    color: var(--color-blue);
-    cursor: pointer;
+  .error-correcta > span:first-child {
+    font-weight: 700;
+  }
+
+  .error-correcta [lang="fr"] {
+    color: #2f7d4f;
     font-weight: 600;
   }
 
-  .ayuda-texto p {
-    margin: 0.5rem 0 0;
+  .aviso-video {
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+  }
+
+  .error-video {
+    display: block;
+    width: 100%;
+    max-width: 280px;
+    aspect-ratio: 9 / 16;
+    border-radius: var(--radius-md);
+    background: #0b2f55;
+  }
+
+  .error-practica {
+    display: grid;
+    gap: 0.75rem;
+    justify-items: start;
   }
 
   .ayuda-ejemplo {
-    padding-top: 0.9rem;
+    width: 100%;
+    padding-top: 0.75rem;
     border-top: 1px solid var(--color-border);
   }
 
@@ -424,17 +476,71 @@ const pdf = withBase(fichaPdf);
     font-weight: 600;
   }
 
-  .ayuda-acciones {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
+  .vacias {
+    display: grid;
+    gap: 0.5rem;
   }
 
-  .reto {
+  .vacias-titulo {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+    font-weight: 700;
+  }
+
+  .vacia {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 0.75rem;
+    align-items: baseline;
+    justify-content: space-between;
+    padding: 0.6rem 0.85rem;
+    border: 1px dashed var(--color-border);
+    border-radius: var(--radius-sm);
+  }
+
+  .enlace-boton {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--color-blue);
+    cursor: pointer;
+    font: inherit;
+    font-weight: 600;
+    text-decoration: underline;
+  }
+
+  .desafio-zona p {
+    margin: 0 0 0.75rem;
+  }
+
+  .invitacion {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: 2rem;
-    align-items: start;
+    gap: 0.5rem;
+    justify-items: start;
+    padding-top: 1.1rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .invitacion-boton {
+    min-height: 3.25rem;
+  }
+
+  .invitacion-linea {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+  }
+
+  .reto-zona {
+    display: grid;
+    gap: 0.75rem;
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+
+  .reto-zona p {
+    margin: 0;
   }
 
   .reto-lista {
@@ -444,210 +550,226 @@ const pdf = withBase(fichaPdf);
     padding-left: 1.2rem;
   }
 
-  @media (max-width: 900px) {
-    .reto,
-    .ayuda-bloque {
-      grid-template-columns: 1fr;
+  @media (max-width: 600px) {
+    .ayuda {
+      padding: 1rem;
     }
 
-    .ayuda-media {
-      max-width: 320px;
+    .error-boton {
+      padding: 0.75rem;
+    }
+
+    .error-panel {
+      padding: 0 0.75rem 0.75rem;
     }
   }
 </style>
 
 <script>
-  import { ordenEstandar } from "../../../../data/practicaAvoirEtre";
-  import { ayudas, ejercicios, type TipoVideo } from "../../../../data/practicaAvoirEtreOpcion3";
+  import { ordenEstandar, tipos as tiposReto } from "../../../../data/practicaAvoirEtre";
+  import { ejercicios, type TipoVideo } from "../../../../data/practicaAvoirEtreOpcion3";
   import {
     decidirAyuda,
     ordenDesde,
+    type DecisionAyuda,
     type ResultadoEjercicio,
   } from "../../../../utils/ayudaVideo";
   import { guardarProgreso, leerProgreso, track } from "../../../../utils/track";
 
   const zona = document.querySelector<HTMLElement>("[data-ayuda-zona]");
-  const resumen = document.querySelector<HTMLElement>("[data-resumen]");
   const recuentoTexto = document.querySelector<HTMLElement>("[data-recuento]");
-  const sinRespuestas = document.querySelector<HTMLElement>("[data-sin-respuestas]");
-  const verRespuestas = document.querySelector<HTMLAnchorElement>("[data-ver-respuestas]");
-  const pestanas = document.querySelector<HTMLElement>("[data-pestanas]");
-  const sinFallos = document.querySelector<HTMLElement>("[data-sin-fallos]");
-  const seguir = document.querySelector<HTMLElement>("[data-seccion-seguir]");
+  const estadoTitulo = document.querySelector<HTMLElement>("[data-estado-titulo]");
+  const estadoTexto = document.querySelector<HTMLElement>("[data-estado-texto]");
+  const listaErrores = document.querySelector<HTMLElement>("[data-errores]");
+  const errores = Array.from(document.querySelectorAll<HTMLElement>("[data-fallo]"));
+  const zonaVacias = document.querySelector<HTMLElement>("[data-vacias]");
+  const vacias = Array.from(document.querySelectorAll<HTMLElement>("[data-vacia]"));
+  const desafioZona = document.querySelector<HTMLElement>("[data-desafio]");
+  const abrirReto = document.querySelector<HTMLButtonElement>("[data-abrir-reto]");
+  const retoZona = document.querySelector<HTMLElement>("[data-reto-zona]");
   const ofertaTitulo = document.querySelector<HTMLElement>("[data-oferta-titulo]");
   const ofertaTexto = document.querySelector<HTMLElement>("[data-oferta-texto]");
-  const bloques = Array.from(document.querySelectorAll<HTMLElement>("[data-ayuda]"));
   const tipoPorId = Object.fromEntries(ejercicios.map((e) => [e.id, e.tipo])) as Record<string, TipoVideo>;
-  const nombreCorto = (tipo: TipoVideo) => ayudas[tipo].titulo.split(":")[0];
-  const textoOpcion = (id: string, indice: number) =>
-    ejercicios.find((e) => e.id === id)?.opciones[indice] ?? "";
+  const numeroDe = (id: string) => ejercicios.findIndex((e) => e.id === id) + 1;
+  const nombreSesion = (tipo: TipoVideo) => tiposReto.find((t) => t.id === tipo)?.nombre ?? tipo;
 
-  // Estado de la ayuda: el tipo que se ve manda sobre la comparación, la oferta y el reto.
-  let modoActual = "";
-  let tipoActual: TipoVideo | null = null;
-  let tiposConFallos: TipoVideo[] = [];
-  let falladoPorTipo: Partial<Record<TipoVideo, string>> = {};
+  // Estado: el error abierto (o el último abierto) manda sobre la oferta y el orden del reto.
+  let decision: DecisionAyuda | null = null;
+  let errorActual: string | null = null;
 
   const plural = (n: number, uno: string, varios: string) => `${n} ${n === 1 ? uno : varios}`;
 
   const pausarVideos = () =>
-    document.querySelectorAll<HTMLVideoElement>("[data-video]").forEach((video) => video.pause());
+    document.querySelectorAll<HTMLVideoElement>("[data-ayuda-zona] [data-video]").forEach((v) => v.pause());
 
-  const seleccionarTipo = (tipo: TipoVideo) => {
-    tipoActual = tipo;
-    pausarVideos();
-    bloques.forEach((bloque) => (bloque.hidden = bloque.dataset.ayuda !== tipo));
+  const enlaceReto = () => document.querySelector<HTMLAnchorElement>("[data-reto-enlace]");
 
-    const bloque = bloques.find((b) => b.dataset.ayuda === tipo);
-    const tuRespuesta = bloque?.querySelector<HTMLElement>("[data-tu-respuesta]");
-    const fallado = falladoPorTipo[tipo];
-    const item = fallado
-      ? document.querySelector<HTMLElement>(`[data-practica] [data-pregunta="${fallado}"]`)
-      : null;
-    const elegida = item?.querySelector<HTMLInputElement>("input:checked");
-    if (tuRespuesta && fallado && item && elegida) {
-      tuRespuesta.textContent = `Elegiste «${textoOpcion(fallado, Number(elegida.value))}»; la correcta es «${textoOpcion(fallado, Number(item.dataset.correcta))}».`;
+  // Guarda el orden del reto y, si el acceso ya se mostró, actualiza su enlace.
+  const fijarOrden = (orden: string) => {
+    guardarProgreso({ ...leerProgreso(), orden });
+    const enlace = enlaceReto();
+    if (enlace?.search.includes("orden=")) {
+      const url = new URL(enlace.href);
+      url.searchParams.set("orden", orden);
+      enlace.href = url.pathname + url.search;
     }
-
-    pestanas?.querySelectorAll<HTMLButtonElement>("button").forEach((boton) => {
-      boton.setAttribute("aria-pressed", String(boton.dataset.tipo === tipo));
-    });
-
-    guardarProgreso({ ...leerProgreso(), orden: ordenDesde(tipo, tiposConFallos, ordenEstandar).join("-") });
   };
 
-  const irASeguir = () => {
-    if (ofertaTitulo && ofertaTexto) {
-      if (modoActual === "con-fallos" && tipoActual) {
-        ofertaTitulo.textContent = "Recibe práctica sobre esta dificultad";
-        ofertaTexto.textContent = `Un reto de 5 sesiones que empieza por «${nombreCorto(tipoActual)}», con corrección al momento.`;
-      } else {
-        ofertaTitulo.textContent = "Sigue practicando con casos más variados";
-        ofertaTexto.textContent = "Un reto de 5 sesiones con corrección al momento.";
-      }
+  const actualizarOferta = () => {
+    if (!ofertaTitulo || !ofertaTexto || !decision) return;
+    if (decision.modo === "con-fallos" && errorActual) {
+      const tipo = tipoPorId[errorActual];
+      ofertaTitulo.textContent = `Tu reto empieza por: ${nombreSesion(tipo)}`;
+      ofertaTexto.textContent = `La primera sesión trabaja el error de la frase ${numeroDe(errorActual)}; después, el resto de dificultades. Corrección al momento.`;
+      fijarOrden(ordenDesde(tipo, decision.tipos, ordenEstandar).join("-"));
+    } else {
+      ofertaTitulo.textContent =
+        decision.modo === "todo-correcto"
+          ? "Sigue practicando con casos más variados"
+          : "Practica el passé composé paso a paso";
+      ofertaTexto.textContent = "Un reto de 5 sesiones con corrección al momento.";
+      fijarOrden((decision.modo === "sin-respuestas" ? ordenEstandar : decision.orden).join("-"));
     }
+  };
+
+  // Solo una explicación abierta a la vez: abrir una cierra la anterior y detiene su vídeo.
+  const abrirError = (id: string | null, desplazar = false) => {
     pausarVideos();
-    track("seguir_visto", { modo: modoActual, tipo: tipoActual ?? "ninguno" });
-    if (seguir) {
-      seguir.hidden = false;
-      seguir.querySelector<HTMLElement>("h2")?.focus({ preventScroll: true });
-      seguir.scrollIntoView({ behavior: "smooth", block: "start" });
+    errores.forEach((item) => {
+      const abierto = item.dataset.fallo === id;
+      item.querySelector("[data-error-boton]")?.setAttribute("aria-expanded", String(abierto));
+      const panel = item.querySelector<HTMLElement>("[data-error-panel]");
+      if (panel) panel.hidden = !abierto;
+    });
+    if (!id) return;
+    errorActual = id;
+    actualizarOferta();
+    if (desplazar) {
+      errores.find((item) => item.dataset.fallo === id)?.scrollIntoView({ behavior: "smooth", block: "nearest" });
     }
+  };
+
+  const reiniciarCasosNuevos = () => {
+    errores.forEach((item) => {
+      const ejemplo = item.querySelector<HTMLElement>("[data-ejemplo-zona]");
+      if (ejemplo) ejemplo.hidden = true;
+      ejemplo?.querySelectorAll<HTMLInputElement>("input").forEach((input) => (input.checked = false));
+      ejemplo?.querySelectorAll<HTMLElement>("[data-pregunta]").forEach((p) => p.classList.remove("es-correcta", "es-incorrecta"));
+      ejemplo?.querySelectorAll<HTMLElement>("[data-feedback], [data-pista]").forEach((el) => (el.hidden = true));
+    });
+  };
+
+  const textos: Record<DecisionAyuda["modo"], (d: DecisionAyuda) => [string, string]> = {
+    "sin-respuestas": () => [
+      "Aún no has respondido ninguna frase",
+      "Responde al menos una frase para ver tu ayuda.",
+    ],
+    "todo-correcto": (d) => [
+      `¡Las ${d.recuento.correctas} frases, correctas!`,
+      "Respondiste todas y no hay ningún error.",
+    ],
+    "parcial-sin-fallos": (d) => [
+      "Sin errores en las frases que respondiste",
+      `Pero ${d.recuento.sinResponder === 1 ? "falta 1 frase" : `faltan ${d.recuento.sinResponder} frases`} por responder: con ellas vacías no se puede saber si lo dominas todo. Respóndelas y vuelve a corregir.`,
+    ],
+    "con-fallos": (d) => [
+      d.recuento.incorrectas === 1 ? "Repasa tu error" : `Repasa tus ${d.recuento.incorrectas} errores`,
+      "Toca cada frase para ver su explicación.",
+    ],
   };
 
   document.querySelector("[data-practica]")?.addEventListener("afv:corregido", (event) => {
     const { resultados } = (event as CustomEvent<{ resultados: ResultadoEjercicio[] }>).detail;
-    const decision = decidirAyuda(resultados, tipoPorId, ordenEstandar);
-    modoActual = decision.modo;
-    if (!zona || !recuentoTexto) return;
+    decision = decidirAyuda(resultados, tipoPorId, ordenEstandar);
+    errorActual = null;
+    if (!zona) return;
 
     zona.hidden = false;
-    const { correctas, incorrectas, sinResponder: vacias } = decision.recuento;
-    recuentoTexto.textContent = [
-      plural(correctas, "correcta", "correctas"),
-      plural(incorrectas, "incorrecta", "incorrectas"),
-      plural(vacias, "sin responder", "sin responder"),
-    ].join(" · ");
-
-    bloques.forEach((b) => (b.hidden = true));
-    if (sinFallos) sinFallos.hidden = true;
-    if (pestanas) pestanas.hidden = true;
-    if (sinRespuestas) sinRespuestas.hidden = decision.modo !== "sin-respuestas";
-    tipoActual = null;
-
-    if (decision.modo === "con-fallos") {
-      tiposConFallos = decision.tipos;
-      falladoPorTipo = decision.falladoPorTipo;
-      if (pestanas) {
-        pestanas.querySelectorAll("button").forEach((b) => b.remove());
-        decision.tipos.forEach((tipo) => {
-          const boton = document.createElement("button");
-          boton.type = "button";
-          boton.className = "button button-secondary";
-          boton.dataset.tipo = tipo;
-          boton.textContent = nombreCorto(tipo);
-          boton.addEventListener("click", () => {
-            seleccionarTipo(tipo);
-            track("ayuda_cambiada", { tipo });
-          });
-          pestanas.append(boton);
-        });
-        pestanas.hidden = decision.tipos.length < 2;
-      }
-      seleccionarTipo(decision.tipos[0]);
-      track("ayuda_ofrecida", { modo: "con-fallos", tipo: decision.tipos[0] });
-    } else if (decision.modo === "sin-fallos") {
-      tiposConFallos = [];
-      guardarProgreso({ ...leerProgreso(), orden: decision.orden.join("-") });
-      if (sinFallos) {
-        sinFallos.hidden = false;
-        const titulo = sinFallos.querySelector<HTMLElement>("[data-sin-fallos-titulo]");
-        if (titulo) {
-          titulo.textContent = vacias
-            ? "Sin errores en las frases que respondiste"
-            : "¡Sin errores!";
-        }
-      }
-      track("ayuda_ofrecida", { modo: "sin-fallos" });
+    const { correctas, incorrectas, sinResponder } = decision.recuento;
+    if (recuentoTexto) {
+      recuentoTexto.textContent = [
+        plural(correctas, "correcta", "correctas"),
+        plural(incorrectas, "incorrecta", "incorrectas"),
+        plural(sinResponder, "sin responder", "sin responder"),
+      ].join(" · ");
     }
+    const [titulo, texto] = textos[decision.modo](decision);
+    if (estadoTitulo) estadoTitulo.textContent = titulo;
+    if (estadoTexto) estadoTexto.textContent = texto;
 
-    // El resultado queda visible: se muestra el resumen, no se salta más abajo.
-    resumen?.focus({ preventScroll: true });
-    resumen?.scrollIntoView({ behavior: "smooth", block: "start" });
+    // Errores: uno por línea con la frase, la elección y la correcta.
+    const fallos = decision.modo === "con-fallos" ? decision.fallos : [];
+    errores.forEach((item) => {
+      const id = item.dataset.fallo ?? "";
+      item.hidden = !fallos.includes(id);
+      const elegida = document.querySelector<HTMLInputElement>(`[data-practica] [data-pregunta="${id}"] input:checked`);
+      const destino = item.querySelector<HTMLElement>("[data-elegida]");
+      const ejercicio = ejercicios.find((e) => e.id === id);
+      if (destino && elegida && ejercicio) destino.textContent = ejercicio.opciones[Number(elegida.value)];
+    });
+    if (listaErrores) listaErrores.hidden = !fallos.length;
+    reiniciarCasosNuevos();
+
+    // Sin responder: aparte, salvo cuando no hay ninguna respuesta (el aviso ya lo dice).
+    const ids = decision.modo === "sin-respuestas" ? [] : decision.vacias;
+    vacias.forEach((item) => (item.hidden = !ids.includes(item.dataset.vacia ?? "")));
+    if (zonaVacias) zonaVacias.hidden = !ids.length;
+
+    if (desafioZona) desafioZona.hidden = decision.modo !== "todo-correcto";
+
+    abrirError(fallos[0] ?? null);
+    actualizarOferta();
+    track("ayuda_ofrecida", {
+      modo: decision.modo,
+      tipo: fallos[0] ? tipoPorId[fallos[0]] : "ninguno",
+    });
+
+    // El resultado queda a la vista: se salta al principio de la tarjeta.
+    estadoTitulo?.focus({ preventScroll: true });
+    zona.scrollIntoView({ behavior: "smooth", block: "start" });
   });
 
-  verRespuestas?.addEventListener("click", (event) => {
-    event.preventDefault();
-    const destino =
-      document.querySelector<HTMLElement>("[data-practica] .es-incorrecta") ??
-      document.querySelector<HTMLElement>("[data-practica] .sin-responder") ??
-      document.querySelector<HTMLElement>("#mis-respuestas");
-    destino?.scrollIntoView({ behavior: "smooth", block: "start" });
+  // «Intentar de nuevo» (botón del formulario compartido) limpia también la tarjeta.
+  document.querySelector("[data-practica] [data-reintentar]")?.addEventListener("click", () => {
+    pausarVideos();
+    if (zona) zona.hidden = true;
+    decision = null;
+    errorActual = null;
   });
 
-  bloques.forEach((bloque) => {
-    const tipo = bloque.dataset.ayuda ?? "";
-    const video = bloque.querySelector<HTMLVideoElement>("[data-video]");
-    const botonVer = bloque.querySelector<HTMLElement>("[data-ver-video]");
-    const ejemploZona = bloque.querySelector<HTMLElement>("[data-ejemplo-zona]");
-
-    const verVideo = () => {
-      if (!video) return;
-      if (botonVer) botonVer.hidden = true;
-      video.play().catch(() => undefined);
-      track("video_play", { tipo });
-    };
-
-    botonVer?.addEventListener("click", verVideo);
-    video?.addEventListener("play", () => {
-      if (botonVer) botonVer.hidden = true;
-    });
-    bloque.querySelector("[data-rever]")?.addEventListener("click", () => {
-      if (video) video.currentTime = 0;
-      verVideo();
-      bloque.scrollIntoView({ behavior: "smooth", block: "start" });
-    });
-    video?.addEventListener("ended", () => {
-      track("video_fin", { tipo });
-      if (ejemploZona) ejemploZona.hidden = false;
-    });
-    video?.addEventListener("error", () => {
-      if (botonVer) botonVer.hidden = true;
-      const aviso = bloque.querySelector<HTMLElement>("[data-video-error]");
-      if (aviso) aviso.hidden = false;
-      const detalles = bloque.querySelector<HTMLDetailsElement>("details");
-      if (detalles) detalles.open = true;
+  errores.forEach((item) => {
+    const id = item.dataset.fallo ?? "";
+    const boton = item.querySelector<HTMLButtonElement>("[data-error-boton]");
+    boton?.addEventListener("click", () => {
+      const abierto = boton.getAttribute("aria-expanded") === "true";
+      abrirError(abierto ? "" : id, !abierto);
+      if (!abierto) track("error_abierto", { ejercicio: id, tipo: tipoPorId[id] });
     });
 
-    bloque.querySelector("[data-probar]")?.addEventListener("click", () => {
+    const ejemploZona = item.querySelector<HTMLElement>("[data-ejemplo-zona]");
+    item.querySelector("[data-probar]")?.addEventListener("click", () => {
       if (!ejemploZona) return;
       ejemploZona.hidden = false;
       ejemploZona.querySelector<HTMLInputElement>("input")?.focus({ preventScroll: true });
       ejemploZona.scrollIntoView({ behavior: "smooth", block: "nearest" });
     });
+
+    const video = item.querySelector<HTMLVideoElement>("[data-video]");
+    video?.addEventListener("play", () => track("video_play", { ejercicio: id }));
+    video?.addEventListener("ended", () => track("video_fin", { ejercicio: id }));
   });
 
-  // Ejercicios de un clic: la corrección aparece al elegir.
+  vacias.forEach((item) => {
+    item.querySelector<HTMLButtonElement>("[data-responder]")?.addEventListener("click", () => {
+      const pregunta = document.querySelector<HTMLElement>(
+        `[data-practica] [data-pregunta="${item.dataset.vacia}"]`,
+      );
+      pregunta?.scrollIntoView({ behavior: "smooth", block: "start" });
+      pregunta?.querySelector<HTMLInputElement>("input")?.focus({ preventScroll: true });
+    });
+  });
+
+  // Ejercicios de un clic (caso nuevo y desafío): la corrección aparece al elegir.
   document.querySelectorAll<HTMLElement>("[data-instantaneo]").forEach((lista) => {
     lista.addEventListener("change", (event) => {
       const input = event.target as HTMLInputElement;
@@ -659,13 +781,13 @@ const pdf = withBase(fichaPdf);
       const veredicto = item.querySelector<HTMLElement>("[data-veredicto]");
       const solucion = item.querySelector<HTMLElement>("[data-solucion]");
       const feedback = item.querySelector<HTMLElement>("[data-feedback]");
-      const bloque = lista.closest<HTMLElement>("[data-ayuda]");
+      const error = lista.closest<HTMLElement>("[data-fallo]");
 
       item.classList.remove("es-correcta", "es-incorrecta");
       item.classList.add(acierto ? "es-correcta" : "es-incorrecta");
       if (veredicto) {
         veredicto.textContent = acierto
-          ? bloque
+          ? error
             ? "¡Correcto! Has resuelto un caso nuevo de esta diferencia."
             : "¡Correcto!"
           : "No es correcto.";
@@ -673,17 +795,30 @@ const pdf = withBase(fichaPdf);
       if (solucion) solucion.textContent = `Respuesta: ${opciones[correcta]?.closest("label")?.textContent?.trim()}.`;
       if (feedback) feedback.hidden = false;
 
-      const pista = bloque?.querySelector<HTMLElement>("[data-pista]");
+      const pista = error?.querySelector<HTMLElement>("[data-pista]");
       if (pista) pista.hidden = acierto;
-      track(bloque ? "ejemplo_nuevo" : "desafio", {
-        tipo: bloque?.dataset.ayuda ?? "desafio",
+      track(error ? "ejemplo_nuevo" : "desafio", {
+        tipo: error?.dataset.tipo ?? "desafio",
         correcta: acierto ? "si" : "no",
       });
     });
   });
 
-  document.querySelectorAll<HTMLButtonElement>("[data-continuar]").forEach((boton) => {
-    boton.addEventListener("click", irASeguir);
+  // El formulario del reto se abre dentro de la tarjeta, sin obligar a abrir explicaciones.
+  abrirReto?.addEventListener("click", () => {
+    if (!retoZona) return;
+    const abrir = retoZona.hidden;
+    retoZona.hidden = !abrir;
+    abrirReto.setAttribute("aria-expanded", String(abrir));
+    if (!abrir) return;
+    pausarVideos();
+    actualizarOferta();
+    track("seguir_visto", {
+      modo: decision?.modo ?? "sin-corregir",
+      tipo: errorActual ? tipoPorId[errorActual] : "ninguno",
+    });
+    ofertaTitulo?.focus({ preventScroll: true });
+    retoZona.scrollIntoView({ behavior: "smooth", block: "nearest" });
   });
 
   document.querySelectorAll<HTMLAnchorElement>("[data-descarga]").forEach((boton) => {
