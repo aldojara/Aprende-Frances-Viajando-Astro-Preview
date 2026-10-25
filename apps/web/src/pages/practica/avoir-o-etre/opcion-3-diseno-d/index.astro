@@ -8,7 +8,7 @@ import BaseLayout from "../../../../layouts/BaseLayout.astro";
 import EjerciciosCorregibles from "../../../../components/practica/EjerciciosCorregibles.astro";
 import PreguntaOpciones from "../../../../components/practica/PreguntaOpciones.astro";
 import RetoFormulario from "../../../../components/practica/RetoFormulario.astro";
-import { fichaPdf } from "../../../../data/practicaAvoirEtre";
+import { fichaPdf, ordenEstandar } from "../../../../data/practicaAvoirEtre";
 import {
   ayudas,
   desafio,
@@ -20,6 +20,7 @@ import {
 import { withBase } from "../../../../utils/paths";
 
 const pdf = withBase(fichaPdf);
+const urlRetoInicial = `${withBase("/practica/avoir-o-etre/reto/")}?orden=${ordenEstandar.join("-")}&variante=opcion-3-diseno-d`;
 const avatar = withBase("/laboratorio-local/avatar-provisional.jpg");
 const partes = (enunciado: string) => {
   const [antes, despues = ""] = enunciado.split("___");
@@ -156,9 +157,11 @@ const partes = (enunciado: string) => {
               </form>
               <div class="c-leadbox-confirmacion" role="status" data-leadbox-ok hidden>
                 <span class="c-leadbox-ok-icon" aria-hidden="true">✓</span>
-                <div>
+                <div class="c-leadbox-ok-content">
                   <strong>Simulación completada.</strong>
                   <p>En la versión real recibirías aquí el acceso al reto. En este prototipo no se ha enviado nada.</p>
+                  <!-- No usa data-reto-enlace: ese atributo lo busca el formulario compartido del reto -->
+                  <a class="c-boton c-boton-oro c-leadbox-btn-reto" href={urlRetoInicial} data-reto-acceso>Empezar el reto →</a>
                 </div>
               </div>
             </div>
@@ -2059,6 +2062,25 @@ const partes = (enunciado: string) => {
     font-size: 0.92rem;
   }
 
+  .c-leadbox-ok-content {
+    display: grid;
+    gap: 0.4rem;
+    width: 100%;
+  }
+
+  .c-leadbox-ok-content p {
+    margin: 0;
+    color: var(--b-texto);
+    line-height: 1.45;
+  }
+
+  .c-leadbox-btn-reto {
+    justify-self: start;
+    margin-top: 0.35rem;
+    padding: 0.65rem 1.25rem;
+    text-decoration: none;
+  }
+
   .c-aviso-simulado {
     margin: 0;
     padding: 0.5rem 0.75rem;
@@ -2205,27 +2227,45 @@ const partes = (enunciado: string) => {
       font-size: 1rem;
     }
 
-    /* Barra del fondo compacta, en una sola fila */
+    /* Barra del fondo: contador y Corregir en una fila; «Intentar de nuevo» debajo cuando aparece */
     .diseno-c [data-practica] :global(.ejercicios-acciones) {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      grid-template-areas:
+        "contador corregir"
+        "reintentar reintentar";
+      gap: 0.5rem 0.75rem;
       padding: 0.65rem 0.85rem;
-      gap: 0.5rem;
       box-shadow: 0 -6px 20px rgba(11, 47, 85, 0.12);
     }
 
     .diseno-c [data-practica] :global(.c-barra-contador) {
-      font-size: 0.82rem;
+      grid-area: contador;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 0.85rem;
     }
 
     .diseno-c [data-practica] :global([data-corregir]) {
-      min-height: 2.85rem;
+      grid-area: corregir;
+      justify-self: end;
+      min-height: 2.75rem;
       padding: 0 1.15rem;
-      font-size: 0.88rem;
+      font-size: 0.9rem;
     }
 
     .diseno-c [data-practica] :global([data-reintentar]) {
+      grid-area: reintentar;
+      width: 100%;
       min-height: 2.65rem;
-      padding: 0 0.75rem;
-      font-size: 0.78rem;
+      padding: 0 0.85rem;
+      font-size: 0.85rem;
+    }
+
+    .c-leadbox-btn-reto {
+      justify-self: stretch;
+      text-align: center;
     }
 
     /* En móvil, uno debajo del otro: vídeo (y el vídeo abierto) primero, después el reto */
@@ -2354,16 +2394,6 @@ const partes = (enunciado: string) => {
       padding: 1.5rem 1.25rem;
     }
   }
-
-  /* Pantallas muy estrechas: el contador pasa a dos líneas para que la barra no se salga */
-  @media (max-width: 400px) {
-    .diseno-c [data-practica] :global(.c-barra-contador) {
-      flex-shrink: 1;
-      min-width: 0;
-      white-space: normal;
-      line-height: 1.2;
-    }
-  }
 </style>
 
 <script>
@@ -2375,7 +2405,7 @@ const partes = (enunciado: string) => {
     type DecisionAyuda,
     type ResultadoEjercicio,
   } from "../../../../utils/ayudaVideo";
-  import { guardarProgreso, leerProgreso, track } from "../../../../utils/track";
+  import { guardarProgreso, leerProgreso, track, varianteActual } from "../../../../utils/track";
 
   const zona = document.querySelector<HTMLElement>("[data-ayuda-zona]");
   const recuentoTexto = document.querySelector<HTMLElement>("[data-recuento]");
@@ -2643,8 +2673,97 @@ const partes = (enunciado: string) => {
     });
   });
 
+  // Registro único en el reto durante la visita (simulado: solo se recuerda que hubo registro, nunca el correo).
+  // Pedir únicamente la ficha no cuenta como registro.
+  const CLAVE_REGISTRO = `afv-reto-registrado-${varianteActual() ?? "opcion-1"}`;
+  const formLeadbox = document.querySelector<HTMLFormElement>("[data-leadbox-form]");
+  const okLeadbox = document.querySelector<HTMLElement>("[data-leadbox-ok]");
+  const accesoLeadbox = document.querySelector<HTMLAnchorElement>("[data-reto-acceso]");
+  const formReto = document.querySelector<HTMLFormElement>("[data-reto-form]");
+  const okReto = document.querySelector<HTMLElement>("[data-reto-ok]");
+
+  let registradoEnMemoria = false;
+  const estaRegistrado = () => {
+    try {
+      return sessionStorage.getItem(CLAVE_REGISTRO) === "si";
+    } catch {
+      return registradoEnMemoria;
+    }
+  };
+
+  const ordenResultado = () =>
+    decision
+      ? (decision.modo === "sin-respuestas" ? ordenEstandar : decision.orden).join("-")
+      : leerProgreso().orden || ordenEstandar.join("-");
+
+  const ordenDeError = (id: string) =>
+    decision?.modo === "con-fallos" && tipoPorId[id]
+      ? ordenDesde(tipoPorId[id], decision.tipos, ordenEstandar).join("-")
+      : ordenResultado();
+
+  const urlReto = (orden: string) => {
+    const url = new URL(formReto?.dataset.retoUrl ?? "/", window.location.origin);
+    url.searchParams.set("orden", orden);
+    const variante = varianteActual();
+    if (variante) url.searchParams.set("variante", variante);
+    return url.pathname + url.search;
+  };
+
+  // El acceso del resumen sigue siempre el orden del resultado
+  const actualizarAcceso = () => {
+    if (accesoLeadbox) accesoLeadbox.href = urlReto(ordenResultado());
+  };
+  document.querySelector("[data-practica]")?.addEventListener("afv:corregido", actualizarAcceso);
+
+  const marcarRegistrado = () => {
+    registradoEnMemoria = true;
+    actualizarAcceso();
+    try {
+      sessionStorage.setItem(CLAVE_REGISTRO, "si");
+    } catch {
+      // Sin almacenamiento: el registro vale hasta recargar la página.
+    }
+    if (formLeadbox) formLeadbox.hidden = true;
+    if (okLeadbox) okLeadbox.hidden = false;
+    if (formReto) formReto.hidden = true;
+    if (okReto) okReto.hidden = false;
+    botonesReto.forEach((boton) => {
+      boton.textContent = "Empezar el reto →";
+      boton.removeAttribute("aria-expanded");
+    });
+  };
+
+  // El formulario compartido del reto avisa de su registro con este evento
+  window.addEventListener("afv:track", (event) => {
+    if ((event as CustomEvent<{ evento: string }>).detail.evento === "reto_registro_simulado") marcarRegistrado();
+  });
+
+  formLeadbox?.addEventListener("submit", (event) => {
+    event.preventDefault();
+    if (!correoValido(formLeadbox)) return;
+    fijarOrden(ordenResultado());
+    track("lead_simulado", { origen: "diagnostico", modo: decision?.modo ?? "sin-corregir" });
+    formLeadbox.reset();
+    marcarRegistrado();
+  });
+
+  accesoLeadbox?.addEventListener("click", () => {
+    const orden = ordenResultado();
+    fijarOrden(orden);
+    accesoLeadbox.href = urlReto(orden);
+    track("reto_acceso_directo", { posicion: "resumen" });
+  });
+
   botonesReto.forEach((boton) => {
     boton.addEventListener("click", () => {
+      if (estaRegistrado()) {
+        const error = boton.closest<HTMLElement>("[data-fallo]")?.dataset.fallo;
+        const orden = error ? ordenDeError(error) : ordenResultado();
+        fijarOrden(orden);
+        track("reto_acceso_directo", { posicion: error ? "error" : "final" });
+        window.location.href = urlReto(orden);
+        return;
+      }
       const hueco =
         boton.closest("[data-error-panel]")?.querySelector<HTMLElement>("[data-reto-hueco]") ?? huecoFinal;
       if (!retoZona || !hueco) return;
@@ -2680,8 +2799,15 @@ const partes = (enunciado: string) => {
     });
   });
 
-  // Ventana de la ficha: al cerrarla vuelve a su estado inicial
+  // Ventana de la ficha: cada vez que se abre empieza en su estado inicial
+  const resetearModalPdf = () => {
+    if (!formModalPdf || !exitoModalPdf) return;
+    formModalPdf.hidden = false;
+    formModalPdf.reset();
+    exitoModalPdf.hidden = true;
+  };
   document.querySelector("[data-abrir-modal-pdf]")?.addEventListener("click", () => {
+    resetearModalPdf();
     modalPdf?.showModal();
     track("modal_pdf_abierto");
   });
@@ -2689,12 +2815,7 @@ const partes = (enunciado: string) => {
   modalPdf?.addEventListener("click", (event) => {
     if (event.target === modalPdf) modalPdf.close();
   });
-  modalPdf?.addEventListener("close", () => {
-    if (!formModalPdf || !exitoModalPdf) return;
-    formModalPdf.hidden = false;
-    formModalPdf.reset();
-    exitoModalPdf.hidden = true;
-  });
+  modalPdf?.addEventListener("close", resetearModalPdf);
 
   // Correo simulado: se valida, pero no se envía ni se guarda; los eventos no llevan el correo
   const correoValido = (form: HTMLFormElement) => {
@@ -2719,15 +2840,7 @@ const partes = (enunciado: string) => {
     enlace.click();
   });
 
-  const formLeadbox = document.querySelector<HTMLFormElement>("[data-leadbox-form]");
-  const okLeadbox = document.querySelector<HTMLElement>("[data-leadbox-ok]");
-  formLeadbox?.addEventListener("submit", (event) => {
-    event.preventDefault();
-    if (!correoValido(formLeadbox)) return;
-    track("lead_simulado", { origen: "diagnostico", modo: decision?.modo ?? "sin-corregir" });
-    formLeadbox.hidden = true;
-    if (okLeadbox) okLeadbox.hidden = false;
-  });
+  if (estaRegistrado()) marcarRegistrado();
 
   // Contador sincronizado y barra de progreso interactiva
   const formPractica = document.querySelector<HTMLFormElement>("[data-practica] [data-ejercicios]");
