@@ -1,3 +1,6 @@
+/** @OnlyCurrentDoc */
+// La línea anterior limita el permiso de Hojas de cálculo a la hoja en la que está instalado el script.
+
 /**
  * Formularios de «¿Avoir o être?» (opción 3 · Diseño D).
  * Guarda cada solicitud en la hoja «Solicitudes» y envía el correo (acceso al reto o ficha en PDF).
