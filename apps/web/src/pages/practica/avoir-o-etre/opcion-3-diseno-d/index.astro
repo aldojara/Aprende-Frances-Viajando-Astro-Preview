@@ -68,10 +68,10 @@ const partes = (enunciado: string) => {
 
         <div class="c-acciones-hero">
           <div class="c-botones-hero">
-            <a class="c-boton c-boton-oro" href={pdf} download data-descarga="cabecera">
+            <button class="c-boton c-boton-oro" type="button" aria-haspopup="dialog" data-abrir-modal-pdf>
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"></path><path d="M7 10l5 5 5-5"></path><path d="M5 21h14"></path></svg>
               <span>Descargar ficha gratis en PDF</span>
-            </a>
+            </button>
             <a class="c-boton c-boton-ghost" href="#practica">
               <span>Empezar los ejercicios ↓</span>
             </a>
@@ -79,7 +79,7 @@ const partes = (enunciado: string) => {
 
           <div class="c-garantias">
             <span class="c-garantia-item"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> 2 páginas resumen</span>
-            <span class="c-garantia-item"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> Sin registro ni correo</span>
+            <span class="c-garantia-item"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> Descarga en PDF lista para imprimir</span>
             <span class="c-garantia-item"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> Con ejemplos clave</span>
           </div>
 
@@ -134,6 +134,32 @@ const partes = (enunciado: string) => {
                 <p class="ayuda-recuento" data-recuento aria-live="polite"></p>
                 <h3 id="ayuda-titulo" tabindex="-1" data-estado-titulo></h3>
                 <p class="ayuda-estado" data-estado-texto></p>
+              </div>
+            </div>
+
+            <!-- Caja de correo en el diagnóstico (simulada: no se envía nada) -->
+            <div class="c-diagnostico-leadbox" data-lead-box>
+              <div class="c-leadbox-header">
+                <span class="c-leadbox-badge">Recomendación de tu tutor</span>
+                <h4>Recibe el reto gratis de 5 sesiones en tu correo</h4>
+                <p>Empieza por lo que te ha costado, con corrección al momento.</p>
+              </div>
+              <form class="c-leadbox-form" data-leadbox-form novalidate>
+                <div class="c-leadbox-campos">
+                  <input type="email" name="correo_diagnostico" placeholder="Tu correo electrónico" required aria-label="Correo para recibir el reto" />
+                  <button class="c-boton c-boton-oro c-leadbox-btn" type="submit">Quiero el reto gratis →</button>
+                </div>
+                <p class="c-leadbox-garantias">✓ 10 ejercicios por sesión · ✓ Gratis · Sin spam</p>
+                <p class="c-aviso-simulado" role="note">
+                  <strong>Formulario simulado.</strong> En este prototipo no se envía ni se guarda ningún dato.
+                </p>
+              </form>
+              <div class="c-leadbox-confirmacion" role="status" data-leadbox-ok hidden>
+                <span class="c-leadbox-ok-icon" aria-hidden="true">✓</span>
+                <div>
+                  <strong>Simulación completada.</strong>
+                  <p>En la versión real recibirías aquí el acceso al reto. En este prototipo no se ha enviado nada.</p>
+                </div>
               </div>
             </div>
           </div>
@@ -368,6 +394,43 @@ const partes = (enunciado: string) => {
         </section>
       </div>
     </section>
+
+    <!-- Ventana de descarga de la ficha: pide el correo (simulado) o descarga directa -->
+    <dialog class="c-modal-pdf" aria-labelledby="modal-pdf-titulo" data-modal-pdf>
+      <div class="c-modal-card">
+        <button class="c-modal-cerrar" type="button" aria-label="Cerrar ventana" data-cerrar-modal-pdf>×</button>
+
+        <div class="c-modal-header">
+          <div class="c-modal-icono" aria-hidden="true">📄</div>
+          <div>
+            <p class="c-modal-eyebrow">Descarga gratuita</p>
+            <h3 id="modal-pdf-titulo">Ficha resumen: ¿Avoir o être?</h3>
+          </div>
+        </div>
+        <p class="c-modal-sub">2 páginas en PDF con la regla explicada y ejemplos clave.</p>
+
+        <form class="c-modal-form" data-modal-pdf-form novalidate>
+          <label class="c-modal-label">
+            <span>¿A qué correo te enviamos el PDF?</span>
+            <input type="email" name="correo_pdf" placeholder="Tu correo electrónico" required />
+          </label>
+          <button class="c-boton c-boton-oro c-modal-submit" type="submit">Enviarme la ficha y descargar ahora ↓</button>
+          <p class="c-modal-garantia">🔒 Sin spam. Tu correo solo se usará para enviarte materiales de francés.</p>
+          <p class="c-aviso-simulado" role="note">
+            <strong>Formulario simulado.</strong> En este prototipo no se envía ni se guarda ningún dato; solo se descarga la ficha.
+          </p>
+          <div class="c-modal-directo">
+            <a class="c-link-discreto" href={pdf} download data-descarga="cabecera">O descargar directamente sin correo →</a>
+          </div>
+        </form>
+
+        <div class="c-modal-exito" role="status" data-modal-pdf-exito hidden>
+          <span class="c-modal-exito-icon" aria-hidden="true">✓</span>
+          <h4>¡Ficha descargada!</h4>
+          <p>Si la descarga no ha empezado, <a href={pdf} download>haz clic aquí</a>. En este prototipo no se ha enviado ningún correo.</p>
+        </div>
+      </div>
+    </dialog>
   </main>
 </BaseLayout>
 
@@ -900,37 +963,43 @@ const partes = (enunciado: string) => {
     outline-offset: 2px;
   }
 
-  /* Barra flotante inferior de acciones (Corregir) */
+  /* Barra de acciones (Corregir) pegada al fondo de la pantalla, de lado a lado */
   .diseno-c [data-practica] :global(.ejercicios-acciones) {
     position: sticky;
-    bottom: 1rem;
-    z-index: 20;
-    margin-top: 2rem;
+    bottom: 0;
+    z-index: 60;
+    margin-inline: -1rem;
+    margin-top: 1.5rem;
     padding: 0.85rem 1.25rem;
-    border: 1px solid rgba(226, 222, 215, 0.95);
-    border-radius: 20px;
-    background: rgba(255, 255, 255, 0.94);
+    border: 0;
+    border-top: 2px solid var(--b-oro-claro);
+    border-radius: 18px 18px 0 0;
+    background: rgba(255, 255, 255, 0.98);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    box-shadow: var(--sombra-alta);
+    box-shadow: 0 -8px 26px rgba(11, 47, 85, 0.15);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 1rem;
+    gap: 0.85rem;
+    flex-wrap: nowrap;
+    box-sizing: border-box;
   }
 
   .diseno-c [data-practica] :global([data-corregir]) {
-    min-height: 3.3rem;
-    padding: 0 2rem;
+    min-height: 3.1rem;
+    padding: 0 1.75rem;
     border-radius: 999px;
     background: var(--b-navy);
     color: #ffffff;
-    font-size: 1.02rem;
+    font-size: 1rem;
     font-weight: 800;
     border: 0;
     cursor: pointer;
     box-shadow: 0 4px 16px rgba(11, 47, 85, 0.25);
     transition: all 0.18s ease;
+    white-space: nowrap;
+    flex-shrink: 0;
   }
 
   .diseno-c [data-practica] :global([data-corregir]:hover) {
@@ -946,29 +1015,32 @@ const partes = (enunciado: string) => {
   }
 
   .diseno-c [data-practica] :global([data-reintentar]) {
-    min-height: 3.1rem;
-    padding: 0 1.25rem;
+    min-height: 2.85rem;
+    padding: 0 1.15rem;
     border-radius: 999px;
-    background: transparent;
+    background: #ffffff;
     color: var(--b-texto-muted);
-    border: 1px solid var(--b-borde-fuerte);
+    border: 1.5px solid var(--b-borde-fuerte);
     font-weight: 600;
-    font-size: 0.92rem;
+    font-size: 0.88rem;
     cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: all 0.15s ease;
   }
 
   .diseno-c [data-practica] :global([data-reintentar]:hover) {
     background: var(--b-gris-suave);
-    color: var(--b-texto);
+    color: var(--b-navy);
+    border-color: var(--b-navy);
   }
 
   .diseno-c [data-practica] :global(.c-barra-contador) {
     font-size: 0.92rem;
     font-weight: 700;
     color: var(--b-navy);
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
+    white-space: nowrap;
+    flex-shrink: 0;
   }
 
   /* Zona de Resultados y Diagnóstico */
@@ -1350,8 +1422,16 @@ const partes = (enunciado: string) => {
     text-align: center;
   }
 
+  /* Las dos columnas con la misma altura: botón del vídeo y del reto iguales */
   .c-acciones-error > .c-reto-inline .c-reto-boton {
     width: 100%;
+    min-height: 3.5rem;
+    padding-inline: 1.15rem;
+    font-size: 0.94rem;
+  }
+
+  .c-acciones-error > .c-video-boton {
+    align-self: stretch;
   }
 
   .c-acciones-error > .c-video-zona {
@@ -1697,6 +1777,298 @@ const partes = (enunciado: string) => {
     transform: translateY(-1px);
   }
 
+  /* Caja de correo dentro del diagnóstico */
+  .c-diagnostico-leadbox {
+    margin-top: 1.5rem;
+    padding: 1.35rem 1.5rem;
+    border-radius: 18px;
+    background: #fdfaf3;
+    border: 1.5px solid var(--b-oro-claro);
+    box-shadow: 0 4px 16px rgba(184, 134, 11, 0.08);
+    display: grid;
+    gap: 0.85rem;
+  }
+
+  .c-leadbox-badge {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    background: var(--b-oro);
+    color: var(--b-tinta-oro);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 0.35rem;
+  }
+
+  .c-leadbox-header h4 {
+    margin: 0 0 0.35rem;
+    color: var(--b-navy);
+    font-family: var(--font-display, "Playfair Display", Georgia, serif);
+    font-size: 1.3rem;
+    line-height: 1.25;
+  }
+
+  .c-leadbox-header p {
+    margin: 0;
+    color: var(--b-texto);
+    font-size: 0.95rem;
+    line-height: 1.45;
+  }
+
+  .c-leadbox-form {
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .c-leadbox-campos {
+    display: flex;
+    gap: 0.65rem;
+    flex-wrap: wrap;
+  }
+
+  .c-leadbox-campos input {
+    flex: 1;
+    min-width: 220px;
+    min-height: 3.25rem;
+    padding: 0 1rem;
+    border: 1.5px solid var(--b-borde);
+    border-radius: 12px;
+    background: #ffffff;
+    color: var(--b-texto);
+    font-size: 0.98rem;
+    transition: border-color 0.15s ease;
+  }
+
+  .c-leadbox-campos input:focus {
+    border-color: var(--b-navy);
+    outline: none;
+  }
+
+  .c-leadbox-btn {
+    min-height: 3.25rem;
+    padding: 0 1.35rem;
+    white-space: nowrap;
+  }
+
+  .c-leadbox-garantias {
+    margin: 0;
+    font-size: 0.82rem;
+    color: var(--b-texto-muted);
+  }
+
+  .c-leadbox-confirmacion {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.85rem 1rem;
+    border-radius: 12px;
+    background: var(--b-bien-fondo);
+    border: 1px solid var(--b-bien-borde);
+    color: var(--b-bien);
+    font-size: 0.92rem;
+  }
+
+  .c-leadbox-ok-icon {
+    display: inline-grid;
+    place-items: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--b-bien);
+    color: #ffffff;
+    font-size: 0.75rem;
+    font-weight: 800;
+    flex: none;
+  }
+
+  /* Ventana de descarga de la ficha (diálogo nativo: Esc y el foco los gestiona el navegador) */
+  .c-modal-pdf {
+    width: calc(100% - 2rem);
+    max-width: 480px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    overflow: visible;
+  }
+
+  .c-modal-pdf::backdrop {
+    background: rgba(7, 31, 56, 0.72);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+  .c-modal-card {
+    position: relative;
+    box-sizing: border-box;
+    width: 100%;
+    border-radius: 24px;
+    background: #ffffff;
+    border: 1.5px solid var(--b-oro-claro);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+    padding: 2rem;
+    display: grid;
+    gap: 1.15rem;
+  }
+
+  .c-modal-cerrar {
+    position: absolute;
+    top: 1rem;
+    right: 1.1rem;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    border: 0;
+    background: var(--b-gris-suave);
+    color: var(--b-texto);
+    font-size: 1.35rem;
+    line-height: 1;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+
+  .c-modal-cerrar:hover {
+    background: #e2ded7;
+  }
+
+  .c-modal-header {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+  }
+
+  .c-modal-icono {
+    font-size: 2.2rem;
+    line-height: 1;
+    flex: none;
+  }
+
+  .c-modal-eyebrow {
+    margin: 0;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--b-oro);
+  }
+
+  .c-modal-header h3 {
+    margin: 0.15rem 0 0;
+    color: var(--b-navy);
+    font-family: var(--font-display, "Playfair Display", Georgia, serif);
+    font-size: 1.45rem;
+    line-height: 1.25;
+  }
+
+  .c-modal-sub {
+    margin: 0;
+    color: var(--b-texto-muted);
+    font-size: 0.95rem;
+    line-height: 1.45;
+  }
+
+  .c-modal-form {
+    display: grid;
+    gap: 0.85rem;
+  }
+
+  .c-modal-label {
+    display: grid;
+    gap: 0.35rem;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--b-navy);
+  }
+
+  .c-modal-label input {
+    min-height: 3.25rem;
+    padding: 0 1rem;
+    border: 1.5px solid var(--b-borde);
+    border-radius: 12px;
+    background: #ffffff;
+    color: var(--b-texto);
+    font-size: 1rem;
+  }
+
+  .c-modal-label input:focus {
+    border-color: var(--b-oro);
+    outline: none;
+  }
+
+  .c-modal-submit {
+    width: 100%;
+    min-height: 3.35rem;
+    font-size: 1.02rem;
+  }
+
+  .c-modal-garantia {
+    margin: 0;
+    font-size: 0.78rem;
+    color: var(--b-texto-muted);
+    text-align: center;
+  }
+
+  .c-modal-directo {
+    text-align: center;
+    padding-top: 0.25rem;
+  }
+
+  .c-link-discreto {
+    font-size: 0.82rem;
+    color: var(--b-navy);
+    text-decoration: underline;
+    opacity: 0.8;
+  }
+
+  .c-link-discreto:hover {
+    opacity: 1;
+  }
+
+  .c-modal-exito {
+    text-align: center;
+    padding: 1.5rem 1rem;
+    display: grid;
+    gap: 0.5rem;
+    justify-items: center;
+  }
+
+  .c-modal-exito-icon {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--b-bien);
+    color: #ffffff;
+    font-size: 1.25rem;
+    font-weight: 800;
+  }
+
+  .c-modal-exito h4 {
+    margin: 0;
+    color: var(--b-navy);
+    font-size: 1.35rem;
+  }
+
+  .c-modal-exito p {
+    margin: 0;
+    color: var(--b-texto-muted);
+    font-size: 0.92rem;
+  }
+
+  .c-aviso-simulado {
+    margin: 0;
+    padding: 0.5rem 0.75rem;
+    border-radius: 10px;
+    background: var(--b-gris-suave);
+    color: var(--b-texto-muted);
+    font-size: 0.8rem;
+    line-height: 1.4;
+  }
+
   /* Responsive */
   @media (max-width: 640px) {
     /* Hero compacto */
@@ -1825,12 +2197,35 @@ const partes = (enunciado: string) => {
 
     .diseno-c [data-practica] :global(.pregunta-opciones) {
       grid-template-columns: 1fr;
+      gap: 0.55rem;
     }
 
+    .diseno-c [data-practica] :global(.opcion) {
+      min-height: 3rem;
+      font-size: 1rem;
+    }
+
+    /* Barra del fondo compacta, en una sola fila */
     .diseno-c [data-practica] :global(.ejercicios-acciones) {
-      flex-direction: column;
-      align-items: stretch;
-      text-align: center;
+      padding: 0.65rem 0.85rem;
+      gap: 0.5rem;
+      box-shadow: 0 -6px 20px rgba(11, 47, 85, 0.12);
+    }
+
+    .diseno-c [data-practica] :global(.c-barra-contador) {
+      font-size: 0.82rem;
+    }
+
+    .diseno-c [data-practica] :global([data-corregir]) {
+      min-height: 2.85rem;
+      padding: 0 1.15rem;
+      font-size: 0.88rem;
+    }
+
+    .diseno-c [data-practica] :global([data-reintentar]) {
+      min-height: 2.65rem;
+      padding: 0 0.75rem;
+      font-size: 0.78rem;
     }
 
     /* En móvil, uno debajo del otro: vídeo (y el vídeo abierto) primero, después el reto */
@@ -1937,6 +2332,36 @@ const partes = (enunciado: string) => {
 
     .c-reto-form-card {
       padding: 1rem;
+    }
+
+    /* Caja de correo y ventana de la ficha */
+    .c-diagnostico-leadbox {
+      padding: 1.1rem;
+    }
+
+    .c-leadbox-campos {
+      flex-direction: column;
+    }
+
+    .c-leadbox-campos input,
+    .c-leadbox-btn {
+      width: 100%;
+      min-width: 0;
+      box-sizing: border-box;
+    }
+
+    .c-modal-card {
+      padding: 1.5rem 1.25rem;
+    }
+  }
+
+  /* Pantallas muy estrechas: el contador pasa a dos líneas para que la barra no se salga */
+  @media (max-width: 400px) {
+    .diseno-c [data-practica] :global(.c-barra-contador) {
+      flex-shrink: 1;
+      min-width: 0;
+      white-space: normal;
+      line-height: 1.2;
     }
   }
 </style>
@@ -2243,11 +2668,65 @@ const partes = (enunciado: string) => {
   });
 
   const descargada = document.querySelector<HTMLElement>("[data-descargada]");
+  const modalPdf = document.querySelector<HTMLDialogElement>("[data-modal-pdf]");
+  const formModalPdf = document.querySelector<HTMLFormElement>("[data-modal-pdf-form]");
+  const exitoModalPdf = document.querySelector<HTMLElement>("[data-modal-pdf-exito]");
+
   document.querySelectorAll<HTMLAnchorElement>("[data-descarga]").forEach((boton) => {
     boton.addEventListener("click", () => {
       track("descarga_ficha", { posicion: boton.dataset.descarga ?? "" });
       if (boton.dataset.descarga === "cabecera" && descargada) descargada.hidden = false;
+      if (boton.closest("[data-modal-pdf]")) modalPdf?.close();
     });
+  });
+
+  // Ventana de la ficha: al cerrarla vuelve a su estado inicial
+  document.querySelector("[data-abrir-modal-pdf]")?.addEventListener("click", () => {
+    modalPdf?.showModal();
+    track("modal_pdf_abierto");
+  });
+  document.querySelector("[data-cerrar-modal-pdf]")?.addEventListener("click", () => modalPdf?.close());
+  modalPdf?.addEventListener("click", (event) => {
+    if (event.target === modalPdf) modalPdf.close();
+  });
+  modalPdf?.addEventListener("close", () => {
+    if (!formModalPdf || !exitoModalPdf) return;
+    formModalPdf.hidden = false;
+    formModalPdf.reset();
+    exitoModalPdf.hidden = true;
+  });
+
+  // Correo simulado: se valida, pero no se envía ni se guarda; los eventos no llevan el correo
+  const correoValido = (form: HTMLFormElement) => {
+    const input = form.querySelector<HTMLInputElement>("input[type='email']");
+    if (input?.value.trim() && input.checkValidity()) return true;
+    input?.reportValidity();
+    input?.focus();
+    return false;
+  };
+
+  formModalPdf?.addEventListener("submit", (event) => {
+    event.preventDefault();
+    if (!correoValido(formModalPdf)) return;
+    track("lead_simulado", { origen: "modal_pdf" });
+    track("descarga_ficha", { posicion: "cabecera-correo" });
+    formModalPdf.hidden = true;
+    if (exitoModalPdf) exitoModalPdf.hidden = false;
+    if (descargada) descargada.hidden = false;
+    const enlace = document.createElement("a");
+    enlace.href = formModalPdf.querySelector<HTMLAnchorElement>("[data-descarga]")?.href ?? "";
+    enlace.download = "";
+    enlace.click();
+  });
+
+  const formLeadbox = document.querySelector<HTMLFormElement>("[data-leadbox-form]");
+  const okLeadbox = document.querySelector<HTMLElement>("[data-leadbox-ok]");
+  formLeadbox?.addEventListener("submit", (event) => {
+    event.preventDefault();
+    if (!correoValido(formLeadbox)) return;
+    track("lead_simulado", { origen: "diagnostico", modo: decision?.modo ?? "sin-corregir" });
+    formLeadbox.hidden = true;
+    if (okLeadbox) okLeadbox.hidden = false;
   });
 
   // Contador sincronizado y barra de progreso interactiva
