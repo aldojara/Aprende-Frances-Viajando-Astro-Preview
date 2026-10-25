@@ -49,6 +49,9 @@ Cómo trabajar en local y cómo se publica: ver [README.md](README.md).
   en `apps/web`.
 - Servidor de desarrollo en segundo plano: `npx astro dev --background`; gestionarlo con
   `astro dev stop`, `astro dev status` y `astro dev logs`.
+- Formularios de la práctica: la compilación de GitHub lee la variable del repositorio `PUBLIC_FORMULARIOS_URL`
+  (script de Google Apps Script). Cambiarla o borrarla afecta a lo publicado: avisar y esperar el OK. Detalle en
+  `integraciones/apps-script/README.md`.
 - `site` y las redirecciones están en `apps/web/astro.config.mjs`. `public/_redirects` no tiene efecto en
   GitHub Pages; las redirecciones reales las genera Astro.
 - La copia local está en un disco exFAT: macOS crea archivos `._*` en todas partes. Están en

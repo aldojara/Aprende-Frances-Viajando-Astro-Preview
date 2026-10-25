@@ -1,0 +1,169 @@
+---
+import { confusiones } from "../../data/practicaAvoirEtreOpcion2";
+import PreguntaOpciones from "./PreguntaOpciones.astro";
+---
+
+<div class="lab" data-laboratorio>
+  <p class="lab-mensaje" data-lab-mensaje aria-live="polite"></p>
+
+  {
+    confusiones.map((confusion) => (
+      <section class="lab-bloque card" data-confusion={confusion.id} hidden>
+        <h3>Compara estas dos frases</h3>
+        <div class="lab-comparacion" lang="fr">
+          <p>{confusion.comparacion[0]}</p>
+          <p>{confusion.comparacion[1]}</p>
+        </div>
+
+        <fieldset class="lab-razones" data-razones>
+          <legend>{confusion.pregunta}</legend>
+          {confusion.razones.map((razon, indice) => (
+            <label class="lab-razon">
+              <input type="radio" name={`razon-${confusion.id}`} value={indice} />
+              <span>{razon.texto}</span>
+              <span class="lab-respuesta" data-respuesta data-correcta={String(razon.correcta)} hidden>
+                {razon.respuesta}
+              </span>
+            </label>
+          ))}
+        </fieldset>
+        <button class="button button-secondary" type="button" data-comprobar-razon>
+          Comprobar
+        </button>
+        <p class="lab-aviso" data-aviso-razon hidden>Elige una opción.</p>
+
+        <div class="lab-ejemplo" data-ejemplo hidden>
+          <h4>Ahora, un ejemplo nuevo</h4>
+          <ol class="lab-ejemplo-lista">
+            <PreguntaOpciones pregunta={confusion.ejemploNuevo} numero={1} grupo={`nuevo-${confusion.id}`} />
+          </ol>
+          <button class="button button-primary" type="button" data-corregir-ejemplo>Corregir</button>
+        </div>
+      </section>
+    ))
+  }
+</div>
+
+<style>
+  .lab [hidden] {
+    display: none;
+  }
+
+  .lab-mensaje {
+    max-width: 680px;
+    font-weight: 600;
+  }
+
+  .lab-bloque {
+    display: grid;
+    gap: 1rem;
+    padding: 1.25rem;
+  }
+
+  .lab-bloque h3 {
+    font-size: 1.4rem;
+  }
+
+  .lab-bloque h4 {
+    margin-bottom: 0.6rem;
+    font-size: 1.15rem;
+  }
+
+  .lab-comparacion {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+
+  .lab-comparacion p {
+    margin: 0;
+    padding: 0.85rem 1rem;
+    border-radius: var(--radius-sm);
+    background: var(--color-surface-soft);
+    color: var(--color-heading);
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+
+  .lab-razones {
+    display: grid;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .lab-razones legend {
+    margin-bottom: 0.5rem;
+    padding: 0;
+    color: var(--color-heading);
+    font-weight: 700;
+  }
+
+  .lab-razon {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.25rem 0.6rem;
+    align-items: start;
+    padding: 0.7rem 0.85rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background: var(--color-bg);
+    cursor: pointer;
+  }
+
+  .lab-razon input {
+    margin-top: 0.3rem;
+    accent-color: var(--color-blue);
+  }
+
+  .lab-razon:has(input:checked) {
+    border-color: var(--color-blue);
+  }
+
+  .lab-respuesta {
+    grid-column: 2;
+    font-size: 0.92rem;
+  }
+
+  .lab-respuesta[data-correcta="true"] {
+    color: #2f7d4f;
+  }
+
+  .lab-respuesta[data-correcta="false"] {
+    color: var(--color-red);
+  }
+
+  .lab-bloque > .button {
+    justify-self: start;
+  }
+
+  .lab-aviso {
+    margin: -0.5rem 0 0;
+    color: var(--color-red);
+    font-size: 0.9rem;
+  }
+
+  .lab-ejemplo {
+    display: grid;
+    gap: 0.75rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .lab-ejemplo-lista {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .lab-ejemplo .button {
+    justify-self: start;
+  }
+
+  @media (max-width: 640px) {
+    .lab-comparacion {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

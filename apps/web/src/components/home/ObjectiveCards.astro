@@ -83,7 +83,7 @@ const isAvailable = (status: string) =>
                 </div>
               </a>
             ) : (
-              <article class="objective-card card" data-href={withBase(objective.href)}>
+              <article class="objective-card card">
                 <div class="objective-card-header">
                   <h3>{objective.title}</h3>
 
@@ -98,9 +98,8 @@ const isAvailable = (status: string) =>
                   ))}
                 </ul>
 
-                <div class="objective-route" aria-label={`Ruta prevista ${objective.href}`}>
+                <div class="objective-route">
                   <span>Ruta en construcción</span>
-                  <span class="objective-path">{objective.href}</span>
                 </div>
               </article>
             )}

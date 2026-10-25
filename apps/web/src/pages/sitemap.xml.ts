@@ -32,7 +32,23 @@ const pagesWithRoutesFromData: Record<string, () => StaticPaths> = {
 // - las páginas que solo redirigen (las redirecciones de astro.config.mjs no son archivos y ya
 //   quedan fuera);
 // - cualquier página que pase robots="noindex" a BaseLayout.
-const excludedPages = new Set(["./404.astro", "./proyecto.astro"]);
+const excludedPages = new Set([
+  "./404.astro",
+  "./proyecto.astro",
+  // Práctica «¿Avoir o être?»: la ficha imprimible y el reto no se indexan.
+  "./practica/avoir-o-etre/ficha.astro",
+  "./practica/avoir-o-etre/reto/index.astro",
+  "./practica/avoir-o-etre/reto/verbos-que-cambian-de-auxiliar.astro",
+  // Prototipo (noindex; la página principal es el Diseño D): quitar esta línea al publicar la página.
+  "./practica/avoir-o-etre/index.astro",
+  // Laboratorio de alternativas: se borra al elegir una opción.
+  "./practica/avoir-o-etre/opcion-1/index.astro",
+  "./practica/avoir-o-etre/opcion-2/index.astro",
+  "./practica/avoir-o-etre/opcion-3/index.astro",
+  "./practica/avoir-o-etre/opcion-3-diseno-b/index.astro",
+  "./practica/avoir-o-etre/opcion-4/index.astro",
+  "./laboratorio.astro",
+]);
 
 const routeFromFile = (file: string, params: Params = {}) => {
   const path = file

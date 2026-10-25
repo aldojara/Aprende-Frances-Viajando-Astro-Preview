@@ -1,0 +1,311 @@
+---
+import BaseLayout from "../../../../layouts/BaseLayout.astro";
+import EjerciciosCorregibles from "../../../../components/practica/EjerciciosCorregibles.astro";
+import Diagnostico from "../../../../components/practica/Diagnostico.astro";
+import RetoFormulario from "../../../../components/practica/RetoFormulario.astro";
+import { fichaPdf, practica, PROTOTIPO } from "../../../../data/practicaAvoirEtre";
+import { withBase } from "../../../../utils/paths";
+
+const pdf = withBase(fichaPdf);
+---
+
+<BaseLayout
+  title="¿Avoir o être? Passé composé: ficha gratis y práctica"
+  description="Elige el auxiliar del passé composé sin dudar: ficha gratis en PDF sin registro, ejercicios con corrección y una orientación sobre qué practicar."
+  robots={PROTOTIPO ? "noindex,nofollow" : "index,follow"}
+>
+  <main>
+    {
+      PROTOTIPO && (
+        <p class="prototipo-aviso" role="note">
+          Prototipo en borrador · contenido pendiente de revisión · no publicar
+        </p>
+      )
+    }
+
+    <section class="practica-hero">
+      <div class="container practica-hero-inner">
+        <div>
+          <p class="eyebrow">Passé composé · A2–B1</p>
+          <h1>¿Avoir o être? Elige el auxiliar sin dudar</h1>
+          <p class="practica-hero-texto">
+            La regla en dos preguntas, los verbos que usan être y los errores típicos de quien habla
+            español, con ejercicios resueltos.
+          </p>
+          <div class="practica-descarga">
+            <a class="button button-primary button-descarga" href={pdf} download data-descarga="cabecera">
+              Descargar la ficha gratis (PDF)
+            </a>
+            <p>Sin correo ni registro · Regla, ejemplos y 10 ejercicios con soluciones</p>
+          </div>
+        </div>
+
+        <aside class="practica-indice card" aria-label="En esta página">
+          <p class="practica-indice-titulo">En esta página</p>
+          <ol>
+            <li><a href="#regla">La regla en 30 segundos</a></li>
+            <li><a href="#practica">Practica ahora · 8 ejercicios</a></li>
+            <li><a href="#diagnostico">¿Por dónde empiezo? Orientación</a></li>
+            <li><a href="#reto">Reto de 5 sesiones</a></li>
+          </ol>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section" id="regla" aria-labelledby="regla-titulo">
+      <div class="container regla">
+        <div>
+          <p class="eyebrow">La regla en 30 segundos</p>
+          <h2 id="regla-titulo">Dos preguntas antes de elegir</h2>
+        </div>
+        <ol class="regla-pasos">
+          <li class="card">
+            <strong>¿El verbo es pronominal?</strong>
+            <span><span lang="fr">se lever, se promener…</span> → <strong>être</strong></span>
+          </li>
+          <li class="card">
+            <strong>¿Es de movimiento o cambio de estado?</strong>
+            <span><span lang="fr">aller, venir, partir, naître…</span> → <strong>être</strong></span>
+          </li>
+          <li class="card">
+            <strong>En los demás casos</strong>
+            <span>→ <strong>avoir</strong></span>
+          </li>
+        </ol>
+        <p class="regla-ejemplo" lang="fr">
+          <span class="regla-mal">j'ai allé</span>
+          <span aria-hidden="true">→</span>
+          <span class="regla-bien">je suis allé(e)</span>
+        </p>
+      </div>
+    </section>
+
+    <section class="section seccion-suave" id="practica" aria-labelledby="practica-titulo">
+      <div class="container seccion-estrecha">
+        <p class="eyebrow">Opcional</p>
+        <h2 id="practica-titulo">Practica ahora</h2>
+        <p class="seccion-intro">
+          Elige una opción en cada frase y pulsa «Corregir»: verás la respuesta correcta y por qué.
+        </p>
+        <EjerciciosCorregibles grupo="practica" preguntas={practica} evento="practica" />
+        <div class="practica-descarga practica-descarga-final">
+          <a class="button button-secondary" href={pdf} download data-descarga="tras-practica">
+            Descargar la ficha gratis (PDF)
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="diagnostico" aria-labelledby="diagnostico-titulo">
+      <div class="container">
+        <p class="eyebrow">Opcional · unos 5 minutos</p>
+        <h2 id="diagnostico-titulo">¿Por dónde empiezo? Orientación en 15 preguntas</h2>
+        <p class="seccion-intro">
+          Responde y te diremos qué tipo de frases te conviene practicar primero. Es una orientación,
+          no un examen de nivel.
+        </p>
+        <Diagnostico />
+      </div>
+    </section>
+
+    <section class="section seccion-suave" id="reto" aria-labelledby="reto-titulo">
+      <div class="container reto">
+        <div>
+          <p class="eyebrow">Gratis, a cambio de tu correo</p>
+          <h2 id="reto-titulo">Practica justo lo que más te cuesta: reto de 5 sesiones</h2>
+          <p class="seccion-intro">
+            5 sesiones cortas, en el orden que te recomienda la orientación, con corrección al momento.
+            Avanzas a tu ritmo.
+          </p>
+          <ul class="reto-lista">
+            <li>10 ejercicios por sesión, con la explicación de cada respuesta</li>
+            <li>Empieza por lo que más te cuesta (o en orden estándar si no hiciste la orientación)</li>
+            <li>Tu avance se guarda en este navegador</li>
+          </ul>
+        </div>
+        <RetoFormulario />
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .prototipo-aviso {
+    margin: 0;
+    padding: 0.5rem 1rem;
+    background: var(--color-gold);
+    color: #ffffff;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-align: center;
+  }
+
+  .practica-hero {
+    border-bottom: 1px solid var(--color-border);
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.54), rgba(247, 244, 237, 0)),
+      var(--color-bg);
+  }
+
+  .practica-hero-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(16rem, 0.32fr);
+    gap: 1.5rem;
+    align-items: end;
+    padding-block: 3.5rem 3rem;
+  }
+
+  .practica-hero h1 {
+    max-width: 820px;
+    font-size: clamp(2.2rem, 5vw, 4.2rem);
+  }
+
+  .practica-hero-texto {
+    max-width: 640px;
+    margin: 1rem 0 0;
+    color: var(--color-text-muted);
+    font-size: 1.1rem;
+  }
+
+  .practica-descarga {
+    display: grid;
+    justify-items: start;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .practica-descarga p {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+  }
+
+  .button-descarga {
+    min-height: 3.25rem;
+    padding-inline: 1.6rem;
+    font-size: 1.05rem;
+  }
+
+  .practica-descarga-final {
+    margin-top: 1.5rem;
+  }
+
+  .practica-indice {
+    padding: 1rem 1.25rem;
+  }
+
+  .practica-indice-titulo {
+    margin-bottom: 0.5rem;
+    color: var(--color-text-muted);
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .practica-indice ol {
+    display: grid;
+    gap: 0.35rem;
+    margin: 0;
+    padding-left: 1.1rem;
+    font-weight: 600;
+  }
+
+  .practica-indice a:hover {
+    color: var(--color-blue);
+  }
+
+  .seccion-suave {
+    border-block: 1px solid var(--color-border);
+    background: var(--color-surface-soft);
+  }
+
+  .seccion-estrecha {
+    max-width: 820px;
+  }
+
+  .section h2 {
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+  }
+
+  .seccion-intro {
+    max-width: 680px;
+    margin: 0.75rem 0 1.5rem;
+    color: var(--color-text-muted);
+  }
+
+  .regla {
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  .regla-pasos {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .regla-pasos li {
+    display: grid;
+    gap: 0.35rem;
+    align-content: start;
+    padding: 1.1rem;
+  }
+
+  .regla-ejemplo {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: center;
+    margin: 0;
+    font-size: 1.4rem;
+    font-weight: 700;
+  }
+
+  .regla-mal {
+    color: var(--color-red);
+    text-decoration: line-through;
+  }
+
+  .regla-bien {
+    color: #2f7d4f;
+  }
+
+  .reto {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 2rem;
+    align-items: start;
+  }
+
+  .reto-lista {
+    display: grid;
+    gap: 0.4rem;
+    margin: 0;
+    padding-left: 1.2rem;
+  }
+
+  @media (max-width: 900px) {
+    .practica-hero-inner,
+    .reto {
+      grid-template-columns: 1fr;
+    }
+
+    .regla-pasos {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  import { track } from "../../../../utils/track";
+
+  document.querySelectorAll<HTMLAnchorElement>("[data-descarga]").forEach((boton) => {
+    boton.addEventListener("click", () => {
+      track("descarga_ficha", { posicion: boton.dataset.descarga ?? "" });
+    });
+  });
+</script>

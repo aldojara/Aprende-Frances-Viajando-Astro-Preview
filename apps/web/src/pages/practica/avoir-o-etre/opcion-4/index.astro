@@ -1,0 +1,821 @@
+---
+// Laboratorio · Opción 4 «Una pista para decidir». Solo prototipo local: noindex y fuera del sitemap.
+// Una frase por pantalla con corrección inmediata; si se falla, una pregunta guiada adaptada a la
+// frase y su explicación. La invitación al reto (formulario simulado) aparece desde la primera respuesta.
+import BaseLayout from "../../../../layouts/BaseLayout.astro";
+import PreguntaOpciones from "../../../../components/practica/PreguntaOpciones.astro";
+import RetoFormulario from "../../../../components/practica/RetoFormulario.astro";
+import { fichaPdf } from "../../../../data/practicaAvoirEtre";
+import { fraseCorrecta } from "../../../../data/practicaAvoirEtreOpcion3";
+import {
+  casoNuevo,
+  ejercicios,
+  listaEtre,
+  nombreTipo,
+  pistas,
+} from "../../../../data/practicaAvoirEtreOpcion4";
+import { withBase } from "../../../../utils/paths";
+
+const pdf = withBase(fichaPdf);
+const total = ejercicios.length;
+const partes = (enunciado: string) => {
+  const [antes, despues = ""] = enunciado.split("___");
+  return { antes, despues };
+};
+---
+
+<BaseLayout
+  title="¿Avoir o être? Una pista para decidir (laboratorio · opción 4)"
+  description="Prototipo: práctica frase a frase con una pregunta guiada cuando hay un error."
+  robots="noindex,nofollow"
+>
+  <main data-variante="opcion-4">
+    <p class="prototipo-aviso" role="note">
+      Laboratorio · Opción 4 · Una pista para decidir · prototipo, no publicar ·
+      <a href={withBase("/laboratorio/")}>volver al laboratorio</a>
+    </p>
+
+    <section class="practica-hero">
+      <div class="container">
+        <p class="eyebrow">Passé composé · A2–B1</p>
+        <h1>¿Avoir o être? Una pista para decidir</h1>
+        <p class="practica-hero-texto">
+          Una frase cada vez. Si fallas, una sola pregunta te ayuda a decidir el auxiliar.
+        </p>
+        <div class="practica-acciones">
+          <a class="button button-primary button-descarga" href={pdf} download data-descarga="cabecera">
+            Descargar la ficha gratis (PDF)
+          </a>
+          <a class="button button-secondary" href="#practica">Empezar la práctica</a>
+        </div>
+        <p class="practica-nota">Ficha sin correo ni registro · Práctica y explicaciones gratis</p>
+      </div>
+    </section>
+
+    <section class="section" id="practica" aria-labelledby="practica-titulo">
+      <div class="container seccion-estrecha">
+        <p class="eyebrow">Practica</p>
+        <h2 id="practica-titulo">8 frases: ¿avoir o être?</h2>
+        <p class="seccion-intro">Elige una opción: la corrección aparece al momento.</p>
+
+        <div class="tarjeta card" data-tarjeta>
+          <div class="avance" aria-hidden="true"><span data-avance-barra></span></div>
+
+          {
+            ejercicios.map((ejercicio, indice) => {
+              const { antes, despues } = partes(ejercicio.enunciado);
+              const pista = pistas[ejercicio.id];
+              const ultimo = indice === total - 1;
+              return (
+                <section
+                  class="paso"
+                  data-paso={ejercicio.id}
+                  data-tipo={ejercicio.tipo}
+                  aria-labelledby={`paso-${ejercicio.id}`}
+                  hidden={indice > 0}
+                >
+                  <p class="paso-numero">
+                    Frase {indice + 1} de {total}
+                  </p>
+                  <p class="paso-frase" id={`paso-${ejercicio.id}`} tabindex="-1" lang="fr">
+                    {antes}
+                    <span class="hueco">___</span>
+                    {despues}
+                  </p>
+
+                  <div class="paso-opciones" role="group" aria-label="Elige una opción">
+                    {ejercicio.opciones.map((opcion, i) => (
+                      <button class="opcion-boton" type="button" lang="fr" data-opcion={i}>
+                        {opcion}
+                      </button>
+                    ))}
+                  </div>
+
+                  <div class="paso-resultado" aria-live="polite">
+                    <p class="veredicto veredicto-bien" data-bien hidden>
+                      ¡Correcto!
+                    </p>
+
+                    <div data-mal hidden>
+                      <p class="veredicto veredicto-mal">
+                        No es correcto. Elegiste «<span lang="fr" data-elegida />».
+                      </p>
+                      <div class="pista" data-pista>
+                        <p class="pista-titulo">Una pista para decidir</p>
+                        <p class="pista-pregunta">{pista.pregunta}</p>
+                        {pista.conLista && (
+                          <div class="lista-etre">
+                            <p class="lista-etre-titulo">Verbos que van con être en passé composé (lista principal):</p>
+                            <p class="lista-etre-verbos" lang="fr">{listaEtre.verbos.join(" · ")}</p>
+                            <ul>
+                              {listaEtre.notas.map((nota) => (
+                                <li>{nota}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                        <div class="pista-respuestas">
+                          {pista.respuestas.map((respuesta, i) => (
+                            <button class="opcion-boton" type="button" data-pista-respuesta={i}>
+                              {respuesta}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                      <p class="veredicto" data-pista-veredicto hidden />
+                    </div>
+
+                    <div class="explicacion" data-explicacion hidden>
+                      <p class="clave" data-clave hidden>
+                        <span>La clave:</span> {pista.pregunta}
+                      </p>
+                      <p class="frase-correcta">
+                        <span>Respuesta correcta:</span> <span lang="fr">{fraseCorrecta(ejercicio)}</span>
+                      </p>
+                      <p>{pista.razon}</p>
+                    </div>
+                  </div>
+
+                  <div class="paso-acciones" data-acciones hidden>
+                    <button class="button button-primary" type="button" data-siguiente>
+                      {ultimo ? "Ver mi resumen →" : "Siguiente frase →"}
+                    </button>
+                    <button class="button button-secondary" type="button" data-caso hidden>
+                      Probar un caso nuevo
+                    </button>
+                  </div>
+
+                  <div class="caso-nuevo" data-caso-zona hidden>
+                    <h3>Un caso nuevo (opcional) · {nombreTipo[ejercicio.tipo]}</h3>
+                    <ol class="lista-limpia" data-instantaneo>
+                      <PreguntaOpciones
+                        pregunta={casoNuevo[ejercicio.tipo]}
+                        numero={1}
+                        grupo={`o4-nuevo-${ejercicio.id}`}
+                      />
+                    </ol>
+                  </div>
+                </section>
+              );
+            })
+          }
+
+          <section class="resumen" data-resumen aria-labelledby="resumen-titulo" hidden>
+            <p class="paso-numero">Resumen</p>
+            <h3 id="resumen-titulo" tabindex="-1" data-resumen-titulo></h3>
+            <p data-resumen-recuento></p>
+            <p data-resumen-recomendacion></p>
+            <div class="paso-acciones">
+              <a class="button button-secondary" href={pdf} download data-descarga="resumen">
+                Descargar la ficha (PDF)
+              </a>
+              <button class="button button-secondary" type="button" data-reiniciar>Volver a empezar</button>
+            </div>
+          </section>
+
+          <!-- Invitación al reto: desde la primera respuesta, sin exigir pista, caso nuevo ni las 8 frases -->
+          <div class="invitacion" data-invitacion hidden>
+            <button
+              class="button button-primary"
+              type="button"
+              aria-expanded="false"
+              aria-controls="reto-zona"
+              data-abrir-reto
+            >
+              Quiero acertar la próxima →
+            </button>
+            <p class="invitacion-linea">Reto de 5 sesiones gratis · recibe el acceso por correo</p>
+
+            <div class="reto-zona" id="reto-zona" data-reto-zona hidden>
+              <h4 tabindex="-1" data-oferta-titulo>Sigue practicando con casos más variados</h4>
+              <p data-oferta-texto>Un reto de 5 sesiones con corrección al momento.</p>
+              <ul class="reto-lista">
+                <li>Empieza por lo que te ha costado</li>
+                <li>10 ejercicios por sesión, con la explicación de cada respuesta</li>
+                <li>Tu avance se guarda en este navegador</li>
+              </ul>
+              <RetoFormulario />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  main [hidden] {
+    display: none;
+  }
+
+  /* La cabecera de la web es fija: los destinos de los desplazamientos dejan margen. */
+  .tarjeta,
+  .reto-zona,
+  .caso-nuevo {
+    scroll-margin-top: 6rem;
+  }
+
+  .prototipo-aviso {
+    margin: 0;
+    padding: 0.5rem 1rem;
+    background: var(--color-gold);
+    color: #ffffff;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-align: center;
+  }
+
+  .prototipo-aviso a {
+    text-decoration: underline;
+  }
+
+  .practica-hero {
+    border-bottom: 1px solid var(--color-border);
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.54), rgba(247, 244, 237, 0)),
+      var(--color-bg);
+    padding-block: 3rem 2.5rem;
+  }
+
+  .practica-hero h1 {
+    max-width: 820px;
+    font-size: clamp(2.2rem, 5vw, 4.2rem);
+  }
+
+  .practica-hero-texto {
+    max-width: 640px;
+    margin: 1rem 0 0;
+    color: var(--color-text-muted);
+    font-size: 1.1rem;
+  }
+
+  .practica-acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+  }
+
+  .button-descarga,
+  .practica-acciones .button-secondary {
+    min-height: 3.25rem;
+  }
+
+  .button-descarga {
+    padding-inline: 1.6rem;
+    font-size: 1.05rem;
+  }
+
+  .practica-nota {
+    margin: 0.6rem 0 0;
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+  }
+
+  .seccion-estrecha {
+    max-width: 820px;
+  }
+
+  .section h2 {
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+  }
+
+  .seccion-intro {
+    max-width: 680px;
+    margin: 0.75rem 0 1.25rem;
+    color: var(--color-text-muted);
+  }
+
+  .tarjeta {
+    display: grid;
+    gap: 1.25rem;
+    padding: 1.25rem;
+    border-left: 4px solid var(--color-gold);
+  }
+
+  .avance {
+    height: 6px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: var(--color-surface-soft);
+  }
+
+  .avance span {
+    display: block;
+    width: 0;
+    height: 100%;
+    background: var(--color-blue);
+    transition: width 0.25s ease;
+  }
+
+  .paso,
+  .resumen {
+    display: grid;
+    gap: 0.9rem;
+  }
+
+  .paso p,
+  .resumen p {
+    margin: 0;
+  }
+
+  .paso-numero {
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+    font-weight: 700;
+  }
+
+  .paso-frase {
+    color: var(--color-heading);
+    font-size: clamp(1.3rem, 3vw, 1.7rem);
+    font-weight: 700;
+  }
+
+  .hueco {
+    display: inline-block;
+    margin-inline: 0.2rem;
+    color: var(--color-gold);
+  }
+
+  .paso-opciones,
+  .pista-respuestas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+  .opcion-boton {
+    min-height: 2.9rem;
+    padding: 0.55rem 1.1rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background: var(--color-bg);
+    color: var(--color-text);
+    cursor: pointer;
+    font: inherit;
+    font-weight: 600;
+  }
+
+  .opcion-boton:hover:not(:disabled) {
+    border-color: var(--color-blue);
+  }
+
+  .opcion-boton:disabled {
+    cursor: default;
+    opacity: 0.6;
+  }
+
+  .opcion-boton.es-correcta {
+    border-color: #2f7d4f;
+    background: rgba(47, 125, 79, 0.1);
+    color: #2f7d4f;
+    opacity: 1;
+  }
+
+  .opcion-boton.es-incorrecta {
+    border-color: var(--color-red);
+    background: rgba(190, 40, 40, 0.07);
+    color: var(--color-red);
+    opacity: 1;
+    text-decoration: line-through;
+  }
+
+  .paso-resultado {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .veredicto {
+    font-weight: 700;
+  }
+
+  .veredicto-bien {
+    color: #2f7d4f;
+  }
+
+  .veredicto-mal {
+    color: var(--color-red);
+  }
+
+  [data-mal] {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .pista {
+    display: grid;
+    gap: 0.6rem;
+    padding: 0.9rem 1rem;
+    border: 1px solid var(--color-blue);
+    border-radius: var(--radius-md);
+    background: rgba(0, 85, 164, 0.04);
+  }
+
+  .pista-titulo {
+    color: var(--color-blue);
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .pista-pregunta {
+    color: var(--color-heading);
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+
+  .lista-etre {
+    display: grid;
+    gap: 0.35rem;
+    padding: 0.7rem 0.85rem;
+    border-radius: var(--radius-sm);
+    background: var(--color-surface);
+    font-size: 0.92rem;
+  }
+
+  .lista-etre-titulo {
+    font-weight: 700;
+  }
+
+  .lista-etre-verbos {
+    color: var(--color-heading);
+    font-weight: 600;
+  }
+
+  .lista-etre ul {
+    margin: 0;
+    padding-left: 1.1rem;
+    color: var(--color-text-muted);
+  }
+
+  .explicacion {
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .clave > span {
+    color: var(--color-blue);
+    font-weight: 700;
+  }
+
+  .frase-correcta {
+    padding: 0.6rem 0.85rem;
+    border-radius: var(--radius-sm);
+    background: var(--color-surface-soft);
+  }
+
+  .frase-correcta > span:first-child {
+    font-weight: 700;
+  }
+
+  .frase-correcta [lang="fr"] {
+    color: #2f7d4f;
+    font-weight: 600;
+  }
+
+  .paso-acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .caso-nuevo {
+    padding-top: 0.9rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .caso-nuevo h3,
+  .resumen h3 {
+    margin: 0 0 0.5rem;
+    font-size: 1.15rem;
+  }
+
+  .resumen h3 {
+    font-size: 1.45rem;
+  }
+
+  .lista-limpia {
+    display: grid;
+    gap: 0.75rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .invitacion {
+    display: grid;
+    gap: 0.5rem;
+    justify-items: start;
+    padding-top: 1.1rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .invitacion > .button {
+    min-height: 3.25rem;
+  }
+
+  .invitacion-linea {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+  }
+
+  .reto-zona {
+    display: grid;
+    gap: 0.75rem;
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+
+  .reto-zona p,
+  .reto-zona h4 {
+    margin: 0;
+  }
+
+  .reto-lista {
+    display: grid;
+    gap: 0.4rem;
+    margin: 0;
+    padding-left: 1.2rem;
+  }
+
+  @media (max-width: 600px) {
+    .tarjeta {
+      padding: 1rem;
+    }
+
+    /* En móvil, opciones y botones uno debajo del otro y a lo ancho. */
+    .paso-opciones,
+    .pista-respuestas,
+    .paso-acciones {
+      flex-direction: column;
+    }
+
+    .opcion-boton,
+    .paso-acciones .button,
+    .invitacion > .button {
+      width: 100%;
+    }
+  }
+</style>
+
+<script>
+  import { ordenEstandar, type TipoId } from "../../../../data/practicaAvoirEtre";
+  import type { TipoVideo } from "../../../../data/practicaAvoirEtreOpcion3";
+  import { ejercicios, nombreTipo, pistas } from "../../../../data/practicaAvoirEtreOpcion4";
+  import { ordenDesde } from "../../../../utils/ayudaVideo";
+  import { guardarProgreso, leerProgreso, track } from "../../../../utils/track";
+
+  const tarjeta = document.querySelector<HTMLElement>("[data-tarjeta]");
+  const pasos = Array.from(document.querySelectorAll<HTMLElement>("[data-paso]"));
+  const barra = document.querySelector<HTMLElement>("[data-avance-barra]");
+  const resumen = document.querySelector<HTMLElement>("[data-resumen]");
+  const invitacion = document.querySelector<HTMLElement>("[data-invitacion]");
+  const abrirReto = document.querySelector<HTMLButtonElement>("[data-abrir-reto]");
+  const retoZona = document.querySelector<HTMLElement>("[data-reto-zona]");
+  const ofertaTitulo = document.querySelector<HTMLElement>("[data-oferta-titulo]");
+  const ofertaTexto = document.querySelector<HTMLElement>("[data-oferta-texto]");
+  const tipoPorId = Object.fromEntries(ejercicios.map((e) => [e.id, e.tipo])) as Record<string, TipoVideo>;
+  const numeroDe = (id: string) => ejercicios.findIndex((e) => e.id === id) + 1;
+  const total = ejercicios.length;
+
+  // Estado: resultado a la primera de cada frase y de su pista, en el orden en que se respondieron.
+  type Resultado = { correcta: boolean; pista?: boolean };
+  let resultados = new Map<string, Resultado>();
+  let iniciado = false;
+
+  // Tipo recomendado: el que más fallos tiene; en empate, el del fallo más reciente.
+  const tipoRecomendado = (): { tipo: TipoVideo; id: string } | null => {
+    const fallos = [...resultados].filter(([, r]) => !r.correcta).map(([id]) => id);
+    if (!fallos.length) return null;
+    const cuenta = new Map<TipoVideo, number>();
+    fallos.forEach((id) => cuenta.set(tipoPorId[id], (cuenta.get(tipoPorId[id]) ?? 0) + 1));
+    const maximo = Math.max(...cuenta.values());
+    const id = [...fallos].reverse().find((f) => cuenta.get(tipoPorId[f]) === maximo)!;
+    return { tipo: tipoPorId[id], id };
+  };
+
+  const tiposConFallos = (): TipoVideo[] => {
+    const cuenta = new Map<TipoVideo, number>();
+    resultados.forEach((r, id) => {
+      if (!r.correcta) cuenta.set(tipoPorId[id], (cuenta.get(tipoPorId[id]) ?? 0) + 1);
+    });
+    return [...cuenta.keys()].sort((a, b) => cuenta.get(b)! - cuenta.get(a)!);
+  };
+
+  // Guarda el orden del reto y, si el acceso ya se mostró, actualiza su enlace.
+  const fijarOrden = (orden: TipoId[]) => {
+    const texto = orden.join("-");
+    guardarProgreso({ ...leerProgreso(), orden: texto });
+    const enlace = document.querySelector<HTMLAnchorElement>("[data-reto-enlace]");
+    if (enlace?.search.includes("orden=")) {
+      const url = new URL(enlace.href);
+      url.searchParams.set("orden", texto);
+      enlace.href = url.pathname + url.search;
+    }
+  };
+
+  const actualizarOferta = () => {
+    const recomendado = tipoRecomendado();
+    if (recomendado) {
+      if (ofertaTitulo) ofertaTitulo.textContent = `Te recomendamos empezar por: ${nombreTipo[recomendado.tipo]}`;
+      if (ofertaTexto) {
+        ofertaTexto.textContent = `La primera sesión practica el tipo de frase en la que fallaste (frase ${numeroDe(recomendado.id)}); después, el resto. Corrección al momento.`;
+      }
+      fijarOrden(ordenDesde(recomendado.tipo, tiposConFallos(), ordenEstandar));
+    } else {
+      if (ofertaTitulo) ofertaTitulo.textContent = "Sigue practicando con casos más variados";
+      if (ofertaTexto) ofertaTexto.textContent = "Un reto de 5 sesiones con corrección al momento.";
+      fijarOrden(ordenEstandar);
+    }
+  };
+
+  const actualizarAvance = (respondidas: number) => {
+    if (barra) barra.style.width = `${(respondidas / total) * 100}%`;
+  };
+
+  const mostrarPaso = (paso: HTMLElement | undefined) => {
+    pasos.forEach((p) => (p.hidden = p !== paso));
+    if (resumen) resumen.hidden = Boolean(paso);
+    tarjeta?.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (paso) {
+      paso.querySelector<HTMLElement>(".paso-frase")?.focus({ preventScroll: true });
+      return;
+    }
+    mostrarResumen();
+  };
+
+  const mostrarResumen = () => {
+    const aciertos = [...resultados.values()].filter((r) => r.correcta).length;
+    const fallos = resultados.size - aciertos;
+    const pistasBien = [...resultados.values()].filter((r) => r.pista).length;
+    const titulo = document.querySelector<HTMLElement>("[data-resumen-titulo]");
+    const recuento = document.querySelector<HTMLElement>("[data-resumen-recuento]");
+    const recomendacion = document.querySelector<HTMLElement>("[data-resumen-recomendacion]");
+    if (titulo) titulo.textContent = fallos ? `${aciertos} de ${total} a la primera` : `¡Las ${total} a la primera!`;
+    if (recuento) {
+      recuento.textContent = fallos
+        ? `Fallaste ${fallos === 1 ? "1 frase" : `${fallos} frases`} y acertaste la pista en ${pistasBien} de ${fallos}.`
+        : "Respondiste las 8 sin ningún error.";
+    }
+    const recomendado = tipoRecomendado();
+    if (recomendacion) {
+      recomendacion.textContent = recomendado
+        ? `Te recomendamos practicar: ${nombreTipo[recomendado.tipo]}.`
+        : "Para seguir mejorando, prueba casos más variados en el reto.";
+    }
+    actualizarOferta();
+    track("practica_fin", { aciertos, total });
+    resumen?.querySelector<HTMLElement>("h3")?.focus({ preventScroll: true });
+  };
+
+  pasos.forEach((paso) => {
+    const id = paso.dataset.paso ?? "";
+    const ejercicio = ejercicios.find((e) => e.id === id)!;
+    const pista = pistas[id];
+    const opciones = Array.from(paso.querySelectorAll<HTMLButtonElement>("[data-opcion]"));
+    const respuestasPista = Array.from(paso.querySelectorAll<HTMLButtonElement>("[data-pista-respuesta]"));
+    const bien = paso.querySelector<HTMLElement>("[data-bien]");
+    const mal = paso.querySelector<HTMLElement>("[data-mal]");
+    const explicacion = paso.querySelector<HTMLElement>("[data-explicacion]");
+    const acciones = paso.querySelector<HTMLElement>("[data-acciones]");
+    const botonCaso = paso.querySelector<HTMLButtonElement>("[data-caso]");
+    const casoZona = paso.querySelector<HTMLElement>("[data-caso-zona]");
+    const veredictoPista = paso.querySelector<HTMLElement>("[data-pista-veredicto]");
+
+    // Corrección inmediata de la frase.
+    opciones.forEach((boton) => {
+      boton.addEventListener("click", () => {
+        const elegida = Number(boton.dataset.opcion);
+        const acierto = elegida === ejercicio.correcta;
+        opciones.forEach((b) => (b.disabled = true));
+        boton.classList.add(acierto ? "es-correcta" : "es-incorrecta");
+        boton.setAttribute("aria-pressed", "true");
+        resultados.set(id, { correcta: acierto });
+        actualizarAvance(resultados.size);
+        if (!iniciado) {
+          iniciado = true;
+          track("practica_inicio");
+        }
+        track("respuesta", { ejercicio: id, correcta: acierto ? "si" : "no" });
+
+        if (invitacion) invitacion.hidden = false;
+        actualizarOferta();
+
+        if (acierto) {
+          if (bien) bien.hidden = false;
+          const clave = paso.querySelector<HTMLElement>("[data-clave]");
+          if (clave) clave.hidden = false;
+          if (explicacion) explicacion.hidden = false;
+          if (acciones) acciones.hidden = false;
+          return;
+        }
+        const destino = paso.querySelector<HTMLElement>("[data-elegida]");
+        if (destino) destino.textContent = ejercicio.opciones[elegida];
+        if (mal) mal.hidden = false;
+        respuestasPista[0]?.focus({ preventScroll: true });
+      });
+    });
+
+    // Una sola pregunta guiada; acierte o no, se muestra la explicación y se puede seguir.
+    respuestasPista.forEach((boton) => {
+      boton.addEventListener("click", () => {
+        const acierto = Number(boton.dataset.pistaRespuesta) === pista.correcta;
+        respuestasPista.forEach((b) => (b.disabled = true));
+        respuestasPista[pista.correcta]?.classList.add("es-correcta");
+        if (!acierto) boton.classList.add("es-incorrecta");
+        resultados.set(id, { correcta: false, pista: acierto });
+        track("pista", { ejercicio: id, tipo: tipoPorId[id], correcta: acierto ? "si" : "no" });
+
+        if (veredictoPista) {
+          veredictoPista.hidden = false;
+          veredictoPista.className = `veredicto ${acierto ? "veredicto-bien" : "veredicto-mal"}`;
+          veredictoPista.textContent = acierto ? "¡Bien razonado!" : "No exactamente.";
+        }
+        if (explicacion) explicacion.hidden = false;
+        if (acciones) acciones.hidden = false;
+        if (botonCaso) botonCaso.hidden = false;
+      });
+    });
+
+    botonCaso?.addEventListener("click", () => {
+      if (!casoZona) return;
+      casoZona.hidden = false;
+      botonCaso.hidden = true;
+      casoZona.querySelector<HTMLInputElement>("input")?.focus({ preventScroll: true });
+      casoZona.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    });
+
+    paso.querySelector("[data-siguiente]")?.addEventListener("click", () => {
+      mostrarPaso(pasos[pasos.indexOf(paso) + 1]);
+    });
+  });
+
+  // Caso nuevo de un clic: la corrección aparece al elegir.
+  document.querySelectorAll<HTMLElement>("[data-instantaneo]").forEach((lista) => {
+    lista.addEventListener("change", (event) => {
+      const input = event.target as HTMLInputElement;
+      const item = input.closest<HTMLElement>("[data-pregunta]");
+      if (!item) return;
+      const correcta = Number(item.dataset.correcta);
+      const acierto = Number(input.value) === correcta;
+      const opciones = Array.from(item.querySelectorAll<HTMLInputElement>("input"));
+      const veredicto = item.querySelector<HTMLElement>("[data-veredicto]");
+      const solucion = item.querySelector<HTMLElement>("[data-solucion]");
+      const feedback = item.querySelector<HTMLElement>("[data-feedback]");
+      item.classList.remove("es-correcta", "es-incorrecta");
+      item.classList.add(acierto ? "es-correcta" : "es-incorrecta");
+      if (veredicto) veredicto.textContent = acierto ? "¡Correcto! Has resuelto un caso nuevo." : "No es correcto.";
+      if (solucion) solucion.textContent = `Respuesta: ${opciones[correcta]?.closest("label")?.textContent?.trim()}.`;
+      if (feedback) feedback.hidden = false;
+      opciones.forEach((o) => (o.disabled = true));
+      const paso = lista.closest<HTMLElement>("[data-paso]");
+      track("ejemplo_nuevo", { ejercicio: paso?.dataset.paso ?? "", tipo: paso?.dataset.tipo ?? "", correcta: acierto ? "si" : "no" });
+    });
+  });
+
+  // Volver a empezar: limpia las 8 frases; la invitación y lo escrito en el formulario se conservan.
+  document.querySelector("[data-reiniciar]")?.addEventListener("click", () => {
+    resultados = new Map();
+    pasos.forEach((paso) => {
+      paso.querySelectorAll<HTMLButtonElement>("button.opcion-boton").forEach((b) => {
+        b.disabled = false;
+        b.classList.remove("es-correcta", "es-incorrecta");
+        b.removeAttribute("aria-pressed");
+      });
+      paso
+        .querySelectorAll<HTMLElement>("[data-bien], [data-mal], [data-explicacion], [data-clave], [data-acciones], [data-caso-zona], [data-pista-veredicto]")
+        .forEach((el) => (el.hidden = true));
+      const botonCaso = paso.querySelector<HTMLElement>("[data-caso]");
+      if (botonCaso) botonCaso.hidden = true;
+      paso.querySelectorAll<HTMLInputElement>("[data-caso-zona] input").forEach((input) => {
+        input.checked = false;
+        input.disabled = false;
+      });
+      paso.querySelectorAll<HTMLElement>("[data-caso-zona] [data-pregunta]").forEach((p) => p.classList.remove("es-correcta", "es-incorrecta"));
+      paso.querySelectorAll<HTMLElement>("[data-caso-zona] [data-feedback]").forEach((f) => (f.hidden = true));
+    });
+    actualizarAvance(0);
+    actualizarOferta();
+    mostrarPaso(pasos[0]);
+  });
+
+  // El formulario se abre dentro de la tarjeta, sin obligar a terminar la pista ni el caso nuevo.
+  abrirReto?.addEventListener("click", () => {
+    if (!retoZona) return;
+    const abrir = retoZona.hidden;
+    retoZona.hidden = !abrir;
+    abrirReto.setAttribute("aria-expanded", String(abrir));
+    if (!abrir) return;
+    actualizarOferta();
+    const recomendado = tipoRecomendado();
+    track("seguir_visto", { respondidas: resultados.size, tipo: recomendado?.tipo ?? "ninguno" });
+    ofertaTitulo?.focus({ preventScroll: true });
+    retoZona.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  });
+
+  document.querySelectorAll<HTMLAnchorElement>("[data-descarga]").forEach((boton) => {
+    boton.addEventListener("click", () => track("descarga_ficha", { posicion: boton.dataset.descarga ?? "" }));
+  });
+</script>

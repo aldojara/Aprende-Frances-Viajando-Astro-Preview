@@ -1,0 +1,158 @@
+---
+import type { Pregunta } from "../../data/practicaAvoirEtre";
+import PreguntaOpciones from "./PreguntaOpciones.astro";
+
+interface Props {
+  grupo: string;
+  preguntas: Pregunta[];
+  evento: string;
+  progresoTipo?: string;
+}
+
+const { grupo, preguntas, evento, progresoTipo } = Astro.props;
+---
+
+<form
+  class="ejercicios"
+  data-ejercicios
+  data-evento={evento}
+  data-progreso-tipo={progresoTipo}
+  novalidate
+>
+  <ol class="ejercicios-lista">
+    {
+      preguntas.map((pregunta, indice) => (
+        <PreguntaOpciones pregunta={pregunta} numero={indice + 1} grupo={grupo} />
+      ))
+    }
+  </ol>
+
+  <div class="ejercicios-acciones">
+    <button class="button button-primary" type="submit" data-corregir>Corregir</button>
+    <button class="button button-secondary" type="button" data-reintentar hidden>
+      Intentar de nuevo
+    </button>
+    <p class="ejercicios-resultado" data-resultado aria-live="polite"></p>
+  </div>
+</form>
+
+<style>
+  .ejercicios [hidden] {
+    display: none;
+  }
+
+  .ejercicios-lista {
+    display: grid;
+    gap: 0.85rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ejercicios-acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: center;
+    margin-top: 1.25rem;
+  }
+
+  .ejercicios-resultado {
+    margin: 0;
+    color: var(--color-heading);
+    font-weight: 700;
+  }
+</style>
+
+<script>
+  import { guardarProgreso, leerProgreso, track } from "../../utils/track";
+
+  document.querySelectorAll<HTMLFormElement>("[data-ejercicios]").forEach((form) => {
+    const preguntas = Array.from(form.querySelectorAll<HTMLElement>("[data-pregunta]"));
+    const resultado = form.querySelector<HTMLElement>("[data-resultado]");
+    const reintentar = form.querySelector<HTMLButtonElement>("[data-reintentar]");
+    const evento = form.dataset.evento ?? "ejercicios";
+    let iniciado = false;
+
+    form.addEventListener("change", () => {
+      if (iniciado) return;
+      iniciado = true;
+      track(`${evento}_inicio`);
+    });
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      let aciertos = 0;
+      let sinResponder = 0;
+
+      preguntas.forEach((pregunta) => {
+        const correcta = Number(pregunta.dataset.correcta);
+        const elegida = pregunta.querySelector<HTMLInputElement>("input:checked");
+        const opciones = Array.from(pregunta.querySelectorAll<HTMLInputElement>("input"));
+        const textoCorrecto =
+          opciones[correcta]?.closest("label")?.textContent?.trim() ?? "";
+        const feedback = pregunta.querySelector<HTMLElement>("[data-feedback]");
+        const veredicto = pregunta.querySelector<HTMLElement>("[data-veredicto]");
+        const solucion = pregunta.querySelector<HTMLElement>("[data-solucion]");
+
+        pregunta.classList.remove("es-correcta", "es-incorrecta", "sin-responder");
+        if (!elegida) {
+          sinResponder += 1;
+          pregunta.classList.add("sin-responder");
+          if (veredicto) veredicto.textContent = "Sin responder.";
+        } else if (Number(elegida.value) === correcta) {
+          aciertos += 1;
+          pregunta.classList.add("es-correcta");
+          if (veredicto) veredicto.textContent = "¡Correcto!";
+        } else {
+          pregunta.classList.add("es-incorrecta");
+          if (veredicto) veredicto.textContent = "No es correcto.";
+        }
+        if (solucion) solucion.textContent = `Respuesta: ${textoCorrecto}.`;
+        if (feedback) feedback.hidden = false;
+      });
+
+      const total = preguntas.length;
+      if (resultado) {
+        resultado.textContent =
+          `${aciertos} de ${total} correctas` +
+          (sinResponder ? ` · ${sinResponder} sin responder` : "") +
+          ". Lee la explicación de cada respuesta.";
+      }
+      if (reintentar) reintentar.hidden = false;
+      track(`${evento}_fin`, { aciertos, total });
+
+      const resultados = preguntas.map((pregunta) => {
+        const elegida = pregunta.querySelector<HTMLInputElement>("input:checked");
+        return {
+          id: pregunta.dataset.pregunta ?? "",
+          respondida: Boolean(elegida),
+          correcta: Boolean(elegida) && Number(elegida?.value) === Number(pregunta.dataset.correcta),
+        };
+      });
+      form.dispatchEvent(
+        new CustomEvent("afv:corregido", { bubbles: true, detail: { resultados } }),
+      );
+
+      const tipo = form.dataset.progresoTipo;
+      if (tipo) {
+        const progreso = leerProgreso();
+        progreso.sesiones = { ...progreso.sesiones, [tipo]: { aciertos, total } };
+        guardarProgreso(progreso);
+        form.dispatchEvent(new CustomEvent("afv:sesion-completada", { bubbles: true }));
+      }
+    });
+
+    reintentar?.addEventListener("click", () => {
+      form.reset();
+      preguntas.forEach((pregunta) => {
+        pregunta.classList.remove("es-correcta", "es-incorrecta", "sin-responder");
+        const feedback = pregunta.querySelector<HTMLElement>("[data-feedback]");
+        if (feedback) feedback.hidden = true;
+      });
+      if (resultado) resultado.textContent = "";
+      reintentar.hidden = true;
+      preguntas[0]?.querySelector("input")?.focus();
+    });
+  });
+</script>
