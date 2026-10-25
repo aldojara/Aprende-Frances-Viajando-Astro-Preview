@@ -39,13 +39,13 @@ const excludedPages = new Set([
   "./practica/avoir-o-etre/ficha.astro",
   "./practica/avoir-o-etre/reto/index.astro",
   "./practica/avoir-o-etre/reto/verbos-que-cambian-de-auxiliar.astro",
-  // Prototipo (noindex): quitar esta línea al publicar la página.
+  // Prototipo (noindex; la página principal es el Diseño D): quitar esta línea al publicar la página.
   "./practica/avoir-o-etre/index.astro",
-  // Laboratorio de alternativas (solo local): se borra al elegir una opción.
+  // Laboratorio de alternativas: se borra al elegir una opción.
+  "./practica/avoir-o-etre/opcion-1/index.astro",
   "./practica/avoir-o-etre/opcion-2/index.astro",
   "./practica/avoir-o-etre/opcion-3/index.astro",
   "./practica/avoir-o-etre/opcion-3-diseno-b/index.astro",
-  "./practica/avoir-o-etre/opcion-3-diseno-d/index.astro",
   "./practica/avoir-o-etre/opcion-4/index.astro",
   "./laboratorio.astro",
 ]);

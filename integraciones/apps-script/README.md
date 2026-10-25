@@ -1,6 +1,6 @@
 # Formularios de la opción 3 · Diseño D (Google Sheets + Apps Script)
 
-Conexión **en modo de prueba** de los tres formularios de `/practica/avoir-o-etre/opcion-3-diseno-d/`:
+Conexión **en modo de prueba** de los tres formularios de `/practica/avoir-o-etre/` (opción 3 · Diseño D):
 la caja del resultado y el formulario del reto (acceso al reto) y la ventana de la ficha (PDF por correo).
 Las demás opciones del laboratorio siguen simuladas.
 
@@ -56,6 +56,8 @@ Estados de la columna `estado`: `pendiente`, `enviando`, `enviado`, `fallido`, `
    ```
 
    y se vuelve a compilar (`npm run build`). Sin esa línea, la página sigue con el formulario simulado.
+   Para lo publicado, la misma URL va en la variable del repositorio `PUBLIC_FORMULARIOS_URL` (GitHub → Settings →
+   Secrets and variables → Actions → Variables) y `SITIO_URL` pasa a `https://aprendefrancesviajando.com`.
 
 Si cambias `Codigo.gs` más adelante: **Implementar → Gestionar implementaciones → Editar → Versión: nueva** (la URL no
 cambia).
