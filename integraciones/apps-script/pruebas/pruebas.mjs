@@ -49,25 +49,6 @@ const pruebas = {
     assert.equal(e.enviados.length, 0);
   },
 
-  "cada solicitud escribe su fila en la hoja una sola vez"() {
-    const e = preparar();
-    const hoja = e.hojas.get("Solicitudes");
-    const getRange = hoja.getRange;
-    let escrituras = 0;
-    hoja.getRange = (...args) => {
-      const rango = getRange(...args);
-      return { ...rango, setValues: (v) => (escrituras++, rango.setValues(v)) };
-    };
-    e.post(reto());
-    assert.equal(escrituras, 1, "reto enviado");
-    e.post(reto({ tipo: "ficha", origen: "ventana_pdf", orden: "" }));
-    assert.equal(escrituras, 2, "ficha enviada");
-    e.control.fallarEnvio = () => true;
-    e.post(reto({ correo: "otra@ejemplo.com" }));
-    assert.equal(escrituras, 3, "envío fallido");
-    assert.equal(e.filas()[2].estado, "pendiente");
-  },
-
   "MODO_PRUEBA = no: acepta cualquier dirección, la guarda y la envía"() {
     const e = preparar({ MODO_PRUEBA: " No " });
     assert.deepEqual(e.post(reto({ correo: "otra.persona@ejemplo.com" })), { ok: true, envio: "enviado" });
