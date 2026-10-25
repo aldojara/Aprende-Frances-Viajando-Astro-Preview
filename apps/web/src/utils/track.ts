@@ -2,9 +2,9 @@
 // Prototipo: no hay ningún servicio de analítica conectado. Solo se emite un evento local
 // para poder comprobarlo; al conectar Umami bastará con cambiar esta función.
 
-// Laboratorio de alternativas: cada variante guarda su progreso aparte y etiqueta sus eventos.
-// La opción 1 no declara variante y conserva la clave original.
-const VARIANTES = ["opcion-2", "opcion-3", "opcion-3-diseno-b", "opcion-3-diseno-d", "opcion-4"] as const;
+// La página principal (opción 3 · Diseño D) guarda su progreso con su variante y etiqueta sus eventos.
+// Las demás variantes del laboratorio se retiraron (etiqueta git laboratorio/archivo).
+const VARIANTES = ["opcion-3-diseno-d"] as const;
 export type Variante = (typeof VARIANTES)[number];
 
 export const varianteActual = (): Variante | null => {

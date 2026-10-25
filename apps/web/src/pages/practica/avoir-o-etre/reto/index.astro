@@ -143,7 +143,7 @@ const sesionUrl = (slug: string) => withBase(`/practica/avoir-o-etre/reto/${slug
 <script>
   import { ordenEstandar } from "../../../../data/practicaAvoirEtre";
   import { leerOrden } from "../../../../utils/diagnostico";
-  import { guardarProgreso, leerProgreso, propagarVariante, varianteActual } from "../../../../utils/track";
+  import { guardarProgreso, leerProgreso, propagarVariante } from "../../../../utils/track";
 
   const lista = document.querySelector<HTMLElement>("[data-sesiones]");
   const texto = document.querySelector<HTMLElement>("[data-orden-texto]");
@@ -172,10 +172,6 @@ const sesionUrl = (slug: string) => withBase(`/practica/avoir-o-etre/reto/${slug
   }
 
   propagarVariante();
-  const volver = document.querySelector<HTMLAnchorElement>("[data-volver]");
-  const variante = varianteActual();
-  // El Diseño D es la página principal de la práctica; las demás variantes viven en su carpeta.
-  if (volver && variante && variante !== "opcion-3-diseno-d") volver.href = `/practica/avoir-o-etre/${variante}/`;
 
   if (texto && personalizado) {
     texto.textContent = "Ordenadas según tu orientación: empieza por la primera.";
