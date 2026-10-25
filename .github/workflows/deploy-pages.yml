@@ -40,6 +40,9 @@ jobs:
 
       - name: Compilar (astro build)
         run: npm run build
+        env:
+          # Dirección del script de formularios (variable del repositorio). Sin ella, los formularios quedan simulados.
+          PUBLIC_FORMULARIOS_URL: ${{ vars.PUBLIC_FORMULARIOS_URL }}
 
       - name: Preparar la web para GitHub Pages
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'

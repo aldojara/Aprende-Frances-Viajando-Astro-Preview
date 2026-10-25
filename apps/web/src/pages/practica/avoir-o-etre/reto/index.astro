@@ -174,7 +174,8 @@ const sesionUrl = (slug: string) => withBase(`/practica/avoir-o-etre/reto/${slug
   propagarVariante();
   const volver = document.querySelector<HTMLAnchorElement>("[data-volver]");
   const variante = varianteActual();
-  if (volver && variante) volver.href = `/practica/avoir-o-etre/${variante}/`;
+  // El Diseño D es la página principal de la práctica; las demás variantes viven en su carpeta.
+  if (volver && variante && variante !== "opcion-3-diseno-d") volver.href = `/practica/avoir-o-etre/${variante}/`;
 
   if (texto && personalizado) {
     texto.textContent = "Ordenadas según tu orientación: empieza por la primera.";

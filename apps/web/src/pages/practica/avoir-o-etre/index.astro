@@ -1,311 +1,3119 @@
 ---
+// Laboratorio · Opción 3 · Diseño D. Base visual: el diseño C (copiado tal cual el 24 oct 2026, que se
+// conserva aparte), con los textos acordados: sin promesas no verificadas (duración del vídeo, «5 días»,
+// «7 minutos», «nativos»), el botón y la línea del reto acordados, el formulario legible y sin dar por
+// dominado el tema cuando quedan frases sin responder. Mismo funcionamiento que la opción 3.
+// Página principal de la práctica (antes /opcion-3-diseno-d/; la variante conserva ese nombre para el progreso).
+// Prototipo: noindex y fuera del sitemap. Avatar y vídeo provisionales en public/laboratorio-local/ (no se publican).
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import EjerciciosCorregibles from "../../../components/practica/EjerciciosCorregibles.astro";
-import Diagnostico from "../../../components/practica/Diagnostico.astro";
+import PreguntaOpciones from "../../../components/practica/PreguntaOpciones.astro";
 import RetoFormulario from "../../../components/practica/RetoFormulario.astro";
-import { fichaPdf, practica, PROTOTIPO } from "../../../data/practicaAvoirEtre";
+import { fichaPdf, ordenEstandar } from "../../../data/practicaAvoirEtre";
+import {
+  ayudas,
+  desafio,
+  ejercicios,
+  fraseCorrecta,
+  VIDEO_PROVISIONAL,
+  videoPorEjercicio,
+} from "../../../data/practicaAvoirEtreOpcion3";
+import { URL_FORMULARIOS } from "../../../utils/formularios";
 import { withBase } from "../../../utils/paths";
 
+// Con PUBLIC_FORMULARIOS_URL, los tres formularios guardan y envían de verdad (modo de prueba).
+const conectado = Boolean(URL_FORMULARIOS);
+
 const pdf = withBase(fichaPdf);
+const urlRetoInicial = `${withBase("/practica/avoir-o-etre/reto/")}?orden=${ordenEstandar.join("-")}&variante=opcion-3-diseno-d`;
+const avatar = withBase("/laboratorio-local/avatar-provisional.jpg");
+const partes = (enunciado: string) => {
+  const [antes, despues = ""] = enunciado.split("___");
+  return { antes, despues };
+};
 ---
 
 <BaseLayout
-  title="¿Avoir o être? Passé composé: ficha gratis y práctica"
-  description="Elige el auxiliar del passé composé sin dudar: ficha gratis en PDF sin registro, ejercicios con corrección y una orientación sobre qué practicar."
-  robots={PROTOTIPO ? "noindex,nofollow" : "index,follow"}
+  title="¿Avoir o être? Mira, entiende y vuelve a probar (laboratorio · opción 3 · diseño D)"
+  description="Prototipo: práctica con ayuda para cada error, diseño D."
+  robots="noindex,nofollow"
 >
-  <main>
-    {
-      PROTOTIPO && (
-        <p class="prototipo-aviso" role="note">
-          Prototipo en borrador · contenido pendiente de revisión · no publicar
-        </p>
-      )
-    }
+  <main class="diseno-c" data-variante="opcion-3-diseno-d">
+    <!-- Barra de aviso de laboratorio -->
+    <div class="prototipo-aviso" role="note">
+      <span class="aviso-pill">Laboratorio · Opción 3 · Diseño D · prototipo, no publicar</span>
+      <a href={withBase("/practica/avoir-o-etre/opcion-3/")}>Comparar con la opción 3</a>
+      <a href={withBase("/laboratorio/")}>Volver al laboratorio</a>
+    </div>
 
-    <section class="practica-hero">
-      <div class="container practica-hero-inner">
-        <div>
-          <p class="eyebrow">Passé composé · A2–B1</p>
-          <h1>¿Avoir o être? Elige el auxiliar sin dudar</h1>
-          <p class="practica-hero-texto">
-            La regla en dos preguntas, los verbos que usan être y los errores típicos de quien habla
-            español, con ejercicios resueltos.
-          </p>
-          <div class="practica-descarga">
-            <a class="button button-primary button-descarga" href={pdf} download data-descarga="cabecera">
-              Descargar la ficha gratis (PDF)
-            </a>
-            <p>Sin correo ni registro · Regla, ejemplos y 10 ejercicios con soluciones</p>
+    <!-- Hero con Tutor Personal -->
+    <section class="c-hero">
+      <div class="container c-hero-dentro">
+        <div class="c-tutor-bloque">
+          <div class="c-avatar-wrap">
+            <img class="c-avatar" src={avatar} alt="Tu profesor de francés" width="84" height="84" data-avatar />
+          </div>
+          <div class="c-bocadillo-wrap">
+            <div class="c-bocadillo">
+              <p class="c-bocadillo-tutor">Tu tutor de gramática francesa</p>
+              <p class="c-bocadillo-texto">
+                Completa estas <strong>8 frases</strong>. Si fallas alguna, te explico justo ese error.
+              </p>
+            </div>
           </div>
         </div>
 
-        <aside class="practica-indice card" aria-label="En esta página">
-          <p class="practica-indice-titulo">En esta página</p>
-          <ol>
-            <li><a href="#regla">La regla en 30 segundos</a></li>
-            <li><a href="#practica">Practica ahora · 8 ejercicios</a></li>
-            <li><a href="#diagnostico">¿Por dónde empiezo? Orientación</a></li>
-            <li><a href="#reto">Reto de 5 sesiones</a></li>
-          </ol>
-        </aside>
-      </div>
-    </section>
-
-    <section class="section" id="regla" aria-labelledby="regla-titulo">
-      <div class="container regla">
-        <div>
-          <p class="eyebrow">La regla en 30 segundos</p>
-          <h2 id="regla-titulo">Dos preguntas antes de elegir</h2>
+        <div class="c-titulo-bloque">
+          <div class="c-badges">
+            <span class="c-badge-pill">Passé composé · A2–B1</span>
+            <span class="c-badge-pill c-badge-oro">Guía práctica interactiva</span>
+          </div>
+          <h1>¿Avoir o être? Elige el auxiliar sin dudar</h1>
+          <p class="c-subtitulo">Responde, corrige y repasa cada error con la frase, tu elección y la explicación.</p>
         </div>
-        <ol class="regla-pasos">
-          <li class="card">
-            <strong>¿El verbo es pronominal?</strong>
-            <span><span lang="fr">se lever, se promener…</span> → <strong>être</strong></span>
-          </li>
-          <li class="card">
-            <strong>¿Es de movimiento o cambio de estado?</strong>
-            <span><span lang="fr">aller, venir, partir, naître…</span> → <strong>être</strong></span>
-          </li>
-          <li class="card">
-            <strong>En los demás casos</strong>
-            <span>→ <strong>avoir</strong></span>
-          </li>
-        </ol>
-        <p class="regla-ejemplo" lang="fr">
-          <span class="regla-mal">j'ai allé</span>
-          <span aria-hidden="true">→</span>
-          <span class="regla-bien">je suis allé(e)</span>
-        </p>
-      </div>
-    </section>
 
-    <section class="section seccion-suave" id="practica" aria-labelledby="practica-titulo">
-      <div class="container seccion-estrecha">
-        <p class="eyebrow">Opcional</p>
-        <h2 id="practica-titulo">Practica ahora</h2>
-        <p class="seccion-intro">
-          Elige una opción en cada frase y pulsa «Corregir»: verás la respuesta correcta y por qué.
-        </p>
-        <EjerciciosCorregibles grupo="practica" preguntas={practica} evento="practica" />
-        <div class="practica-descarga practica-descarga-final">
-          <a class="button button-secondary" href={pdf} download data-descarga="tras-practica">
-            Descargar la ficha gratis (PDF)
-          </a>
-        </div>
-      </div>
-    </section>
+        <div class="c-acciones-hero">
+          <div class="c-botones-hero">
+            <button class="c-boton c-boton-oro" type="button" aria-haspopup="dialog" data-abrir-modal-pdf>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"></path><path d="M7 10l5 5 5-5"></path><path d="M5 21h14"></path></svg>
+              <span>Descargar ficha gratis en PDF</span>
+            </button>
+            <a class="c-boton c-boton-ghost" href="#practica">
+              <span>Empezar los ejercicios ↓</span>
+            </a>
+          </div>
 
-    <section class="section" id="diagnostico" aria-labelledby="diagnostico-titulo">
-      <div class="container">
-        <p class="eyebrow">Opcional · unos 5 minutos</p>
-        <h2 id="diagnostico-titulo">¿Por dónde empiezo? Orientación en 15 preguntas</h2>
-        <p class="seccion-intro">
-          Responde y te diremos qué tipo de frases te conviene practicar primero. Es una orientación,
-          no un examen de nivel.
-        </p>
-        <Diagnostico />
-      </div>
-    </section>
+          <div class="c-garantias">
+            <span class="c-garantia-item"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> 2 páginas resumen</span>
+            <span class="c-garantia-item"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> Descarga en PDF lista para imprimir</span>
+            <span class="c-garantia-item"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> Con ejemplos clave</span>
+          </div>
 
-    <section class="section seccion-suave" id="reto" aria-labelledby="reto-titulo">
-      <div class="container reto">
-        <div>
-          <p class="eyebrow">Gratis, a cambio de tu correo</p>
-          <h2 id="reto-titulo">Practica justo lo que más te cuesta: reto de 5 sesiones</h2>
-          <p class="seccion-intro">
-            5 sesiones cortas, en el orden que te recomienda la orientación, con corrección al momento.
-            Avanzas a tu ritmo.
+          <p class="c-descargada" role="status" data-descargada hidden>
+            <span class="c-descargada-icon">✓</span>
+            <span><strong>¡Ficha descargada con éxito!</strong> Pon a prueba lo aprendido resolviendo las 8 frases aquí abajo. ↓</span>
           </p>
-          <ul class="reto-lista">
-            <li>10 ejercicios por sesión, con la explicación de cada respuesta</li>
-            <li>Empieza por lo que más te cuesta (o en orden estándar si no hiciste la orientación)</li>
-            <li>Tu avance se guarda en este navegador</li>
-          </ul>
         </div>
-        <RetoFormulario />
       </div>
     </section>
+
+    <!-- Zona de Práctica -->
+    <section class="section c-seccion-practica" id="practica" aria-labelledby="practica-titulo">
+      <div class="container seccion-estrecha">
+        <header class="c-practica-header">
+          <div class="c-practica-header-top">
+            <div>
+              <p class="c-eyebrow-practica">Paso a paso</p>
+              <h2 id="practica-titulo">8 frases: ¿Avoir o Être?</h2>
+            </div>
+            <!-- Medidor visual de progreso en vivo -->
+            <div class="c-progreso-widget" aria-label="Progreso de respuestas">
+              <div class="c-progreso-info">
+                <span class="c-progreso-label">Tu avance</span>
+                <span class="c-progreso-valor" data-progreso-display>0 de 8</span>
+              </div>
+              <div class="c-progreso-track">
+                <div class="c-progreso-fill" data-progreso-fill style="width: 0%;"></div>
+              </div>
+            </div>
+          </div>
+          <p class="seccion-intro">
+            Elige la opción que creas correcta en cada hueco. Después pulsa <strong>«Corregir»</strong>: verás tu resultado y la explicación de cada error.
+          </p>
+        </header>
+
+        <!-- Formulario con las preguntas -->
+        <div data-practica class="c-practica-contenedor">
+          <EjerciciosCorregibles grupo="o3c" preguntas={ejercicios} evento="practica" />
+        </div>
+
+        <!-- Tarjeta de Resultados y Ayuda (aparece al corregir) -->
+        <section class="ayuda c-ayuda" data-ayuda-zona aria-labelledby="ayuda-titulo" hidden>
+          <!-- Diagnóstico de resultados con resumen visual -->
+          <div class="c-diagnostico-card">
+            <div class="c-diagnostico-header">
+              <div class="c-score-badge" data-score-badge>
+                <span class="c-score-num" data-score-num>0/8</span>
+                <span class="c-score-sub">Aciertos</span>
+              </div>
+              <div class="c-diagnostico-texto">
+                <p class="ayuda-recuento" data-recuento aria-live="polite"></p>
+                <h3 id="ayuda-titulo" tabindex="-1" data-estado-titulo></h3>
+                <p class="ayuda-estado" data-estado-texto></p>
+              </div>
+            </div>
+
+            <!-- Caja de correo en el diagnóstico (simulada, o real en modo de prueba si hay conexión) -->
+            <div class="c-diagnostico-leadbox" data-lead-box>
+              <div class="c-leadbox-header">
+                <span class="c-leadbox-badge">Recomendación de tu tutor</span>
+                <h4>Recibe el reto gratis de 5 sesiones en tu correo</h4>
+                <p>Empieza por lo que te ha costado, con corrección al momento.</p>
+              </div>
+              <form class="c-leadbox-form" data-leadbox-form novalidate>
+                <div class="c-leadbox-campos">
+                  <input type="email" name="correo_diagnostico" placeholder="Tu correo electrónico" required aria-label="Correo para recibir el reto" />
+                  <button class="c-boton c-boton-oro c-leadbox-btn" type="submit">Quiero el reto gratis →</button>
+                </div>
+                <p class="c-leadbox-garantias">✓ 10 ejercicios por sesión · ✓ Gratis · Sin spam</p>
+                {conectado && <p class="c-envio-error" role="alert" data-envio-error hidden />}
+                {
+                  conectado ? (
+                    <p class="c-aviso-simulado" role="note">
+                      <strong>Modo de prueba.</strong> Solo se aceptan direcciones autorizadas.
+                    </p>
+                  ) : (
+                    <p class="c-aviso-simulado" role="note">
+                      <strong>Formulario simulado.</strong> En este prototipo no se envía ni se guarda ningún dato.
+                    </p>
+                  )
+                }
+              </form>
+              <div class="c-leadbox-confirmacion" role="status" data-leadbox-ok hidden>
+                <span class="c-leadbox-ok-icon" aria-hidden="true">✓</span>
+                <div class="c-leadbox-ok-content">
+                  {
+                    conectado ? (
+                      <>
+                        <strong>¡Listo! Aquí tienes tu acceso.</strong>
+                        <p data-envio-estado="reto" />
+                      </>
+                    ) : (
+                      <>
+                        <strong>Simulación completada.</strong>
+                        <p>En la versión real recibirías aquí el acceso al reto. En este prototipo no se ha enviado nada.</p>
+                      </>
+                    )
+                  }
+                  <!-- No usa data-reto-enlace: ese atributo lo busca el formulario compartido del reto -->
+                  <a class="c-boton c-boton-oro c-leadbox-btn-reto" href={urlRetoInicial} data-reto-acceso>Empezar el reto →</a>
+                  {
+                    conectado && (
+                      <button class="c-boton-link" type="button" data-envio-reintentar="reto" hidden>
+                        Reintentar el guardado y el envío
+                      </button>
+                    )
+                  }
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Lista de errores desglosados -->
+          <div class="c-errores-seccion">
+            <ol class="errores c-errores-lista" data-errores hidden>
+              {
+                ejercicios.map((ejercicio, indice) => {
+                  const { antes, despues } = partes(ejercicio.enunciado);
+                  const video = videoPorEjercicio[ejercicio.id];
+                  const ayuda = ayudas[ejercicio.tipo];
+                  return (
+                    <li class="error c-error-card" data-fallo={ejercicio.id} data-tipo={ejercicio.tipo} hidden>
+                      <button
+                        class="error-boton c-error-toggle"
+                        type="button"
+                        aria-expanded="false"
+                        aria-controls={`error-${ejercicio.id}`}
+                        data-error-boton
+                      >
+                        <div class="c-error-status-col">
+                          <span class="c-error-icon" aria-hidden="true">✕</span>
+                          <span class="error-numero">Frase {indice + 1}</span>
+                        </div>
+
+                        <div class="c-error-frase-col">
+                          <span class="error-frase" lang="fr">
+                            {antes}
+                            <span class="hueco c-hueco-destacado">___</span>
+                            {despues}
+                          </span>
+                          <div class="error-comparacion c-comparacion">
+                            <span class="etiqueta etiqueta-mal c-pill-mal">
+                              <span class="etiqueta-titulo">Elegiste:</span>
+                              <s lang="fr" data-elegida />
+                            </span>
+                            <span class="etiqueta etiqueta-bien c-pill-bien">
+                              <span class="etiqueta-titulo">Correcto:</span>
+                              <strong lang="fr">{ejercicio.opciones[ejercicio.correcta]}</strong>
+                            </span>
+                          </div>
+                        </div>
+
+                        <div class="c-error-chevron-col">
+                          <svg class="error-icono c-chevron" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                      </button>
+
+                      <div class="error-panel c-error-detalle" id={`error-${ejercicio.id}`} data-error-panel hidden>
+                        <!-- Explicación Pedagógica -->
+                        <div class="c-explicacion-caja">
+                          <div class="c-explicacion-icono" aria-hidden="true">💡</div>
+                          <div class="c-explicacion-cuerpo">
+                            <h4 class="c-explicacion-titulo">¿Por qué es así?</h4>
+                            <p class="error-explicacion">{ejercicio.explicacion}</p>
+                          </div>
+                        </div>
+
+                        <!-- Frase Correcta Completa -->
+                        <div class="error-correcta c-frase-solucion">
+                          <span class="c-solucion-tag">Frase completa:</span>
+                          <strong lang="fr">{fraseCorrecta(ejercicio)}</strong>
+                        </div>
+
+                        <!-- Vídeo y reto: lado a lado en escritorio (vídeo a la izquierda); en móvil, uno debajo del otro.
+                             El vídeo abierto aparece debajo de la fila, antes del formulario. -->
+                        <div class="c-acciones-error">
+                          <!-- Vídeo opcional y plegado: al abrirlo aparece aquí, antes de la invitación -->
+                          {video && (
+                            <button
+                              class="b-video c-video-boton"
+                              type="button"
+                              aria-expanded="false"
+                              aria-controls={`video-${ejercicio.id}`}
+                              data-ver-video
+                            >
+                              <span class="b-video-icono c-play-icon" aria-hidden="true">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg>
+                              </span>
+                              <span class="b-video-texto">
+                                <strong>Ver el vídeo de este error</strong>
+                                {video === VIDEO_PROVISIONAL && <span>Vista previa con el vídeo provisional</span>}
+                              </span>
+                            </button>
+                          )}
+                          <p class="aviso-video" data-video-pendiente hidden={Boolean(video)}>
+                            Vídeo pendiente: el clip de este ejemplo está en preparación.
+                          </p>
+                          {video && (
+                            <div class="error-video-zona c-video-zona" id={`video-${ejercicio.id}`} data-video-zona hidden>
+                              <video class="error-video" controls playsinline preload="metadata" src={withBase(video)} data-video />
+                              {video === VIDEO_PROVISIONAL && (
+                                <p class="aviso-video">Vista previa con el clip provisional V1 (78 s).</p>
+                              )}
+                            </div>
+                          )}
+
+                          <!-- Después, el reto: disponible sin ver ni terminar el vídeo; el formulario se abre debajo -->
+                          <div class="error-reto c-reto-inline">
+                            <button
+                              class="c-boton c-boton-oro c-reto-boton"
+                              type="button"
+                              aria-expanded="false"
+                              aria-controls="reto-zona"
+                              data-abrir-reto
+                            >
+                              Quiero acertar la próxima →
+                            </button>
+                            <p class="invitacion-linea">Reto de 5 sesiones gratis · recibe el acceso por correo</p>
+                          </div>
+                        </div>
+                        <div class="reto-hueco" data-reto-hueco />
+
+                        <!-- Comprobar si lo entendí (mini-ejercicio interactivo) -->
+                        <div class="error-practica c-retest-box">
+                          <div class="c-retest-header">
+                            <button class="enlace-boton c-retest-btn" type="button" data-probar>
+                              <span>Probar otro ejemplo</span>
+                            </button>
+                          </div>
+                          <div class="ayuda-ejemplo c-retest-cuerpo" data-ejemplo-zona hidden>
+                            <h4 class="c-retest-titulo">Frase de refuerzo · {ayuda.titulo}</h4>
+                            <ol class="lista-limpia" data-instantaneo>
+                              <PreguntaOpciones
+                                pregunta={ayuda.ejemploNuevo}
+                                numero={1}
+                                grupo={`o3c-nuevo-${ejercicio.id}`}
+                              />
+                            </ol>
+                            <p class="ayuda-pista c-pista-caja" data-pista hidden>
+                              💡 <strong>Pista:</strong> {ayuda.pista}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  );
+                })
+              }
+            </ol>
+          </div>
+
+          <!-- Frases sin responder -->
+          <div class="vacias c-vacias-card" data-vacias hidden>
+            <div class="c-vacias-header">
+              <span class="c-vacias-icon" aria-hidden="true">⚠️</span>
+              <p class="vacias-titulo">Dejaste preguntas sin responder</p>
+            </div>
+            <p class="c-vacias-desc">No cuentan como error, pero con ellas vacías no se puede saber si lo dominas todo:</p>
+            <ul class="lista-limpia c-vacias-lista">
+              {
+                ejercicios.map((ejercicio, indice) => {
+                  const { antes, despues } = partes(ejercicio.enunciado);
+                  return (
+                    <li class="vacia c-vacia-fila" data-vacia={ejercicio.id} hidden>
+                      <span class="c-vacia-texto">
+                        <strong class="error-numero">Frase {indice + 1}:</strong>{" "}
+                        <span lang="fr">
+                          {antes}<span class="hueco">___</span>{despues}
+                        </span>
+                      </span>
+                      <button class="c-boton-link" type="button" data-responder={ejercicio.id}>
+                        Responder ahora →
+                      </button>
+                    </li>
+                  );
+                })
+              }
+            </ul>
+          </div>
+
+          <!-- Zona de Desafío (para quien acierta todo) -->
+          <div class="desafio-zona c-desafio-card" data-desafio hidden>
+            <div class="c-desafio-header">
+              <span class="c-desafio-trofeo" aria-hidden="true">🏆</span>
+              <div>
+                <h3>¡Dominio total! ¿Te atreves con el desafío?</h3>
+                <p>3 frases más difíciles, con rentrer, passer y descendre. La corrección aparece al elegir.</p>
+              </div>
+            </div>
+            <ol class="lista-limpia c-desafio-preguntas" data-instantaneo>
+              {desafio.map((pregunta, indice) => (
+                <PreguntaOpciones pregunta={pregunta} numero={indice + 1} grupo="o3c-desafio" />
+              ))}
+            </ol>
+          </div>
+
+          <!-- Invitación final al reto de 5 sesiones -->
+          <div class="invitacion c-invitacion-final" data-invitacion>
+            <div class="c-invitacion-box">
+              <div class="c-invitacion-intro">
+                <span class="c-badge-oro-sm">Reto gratis · 5 sesiones</span>
+                <h3>¿Quieres acertar la próxima vez?</h3>
+                <p class="invitacion-linea">Reto de 5 sesiones gratis · recibe el acceso por correo</p>
+              </div>
+
+              <div class="c-invitacion-acciones">
+                <button
+                  class="c-boton c-boton-oro"
+                  type="button"
+                  aria-expanded="false"
+                  aria-controls="reto-zona"
+                  data-abrir-reto
+                >
+                  Quiero acertar la próxima →
+                </button>
+                <a class="b-descarga-enlace c-link-descarga" href={pdf} download data-descarga="tras-corregir">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"></path><path d="M7 10l5 5 5-5"></path><path d="M5 21h14"></path></svg>
+                  <span>Descargar la ficha resumen (PDF)</span>
+                </a>
+              </div>
+            </div>
+
+            <!-- Formulario del Reto (se reposiciona dinámicamente) -->
+            <div class="reto-hueco" data-reto-hueco data-reto-final>
+              <div class="reto-zona c-reto-form-card" id="reto-zona" data-reto-zona hidden>
+                <div class="c-reto-encabezado">
+                  <p class="reto-eyebrow">Reto gratis · 5 sesiones</p>
+                  <h4 tabindex="-1" data-oferta-titulo>Sigue practicando con casos más variados</h4>
+                  <p data-oferta-texto>Un reto de 5 sesiones con corrección al momento.</p>
+                </div>
+                <ul class="reto-lista c-reto-beneficios">
+                  <li>Empieza por lo que te ha costado</li>
+                  <li>10 ejercicios por sesión, con la explicación de cada respuesta</li>
+                  <li>Tu avance se guarda en este navegador</li>
+                </ul>
+                <RetoFormulario envio={conectado ? "externo" : "simulado"} />
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <!-- Ventana de descarga de la ficha: pide el correo (simulado) o descarga directa -->
+    <dialog class="c-modal-pdf" aria-labelledby="modal-pdf-titulo" data-modal-pdf>
+      <div class="c-modal-card">
+        <button class="c-modal-cerrar" type="button" aria-label="Cerrar ventana" data-cerrar-modal-pdf>×</button>
+
+        <div class="c-modal-header">
+          <div class="c-modal-icono" aria-hidden="true">📄</div>
+          <div>
+            <p class="c-modal-eyebrow">Descarga gratuita</p>
+            <h3 id="modal-pdf-titulo">Ficha resumen: ¿Avoir o être?</h3>
+          </div>
+        </div>
+        <p class="c-modal-sub">2 páginas en PDF con la regla explicada y ejemplos clave.</p>
+
+        <form class="c-modal-form" data-modal-pdf-form novalidate>
+          <label class="c-modal-label">
+            <span>¿A qué correo te enviamos el PDF?</span>
+            <input type="email" name="correo_pdf" placeholder="Tu correo electrónico" required />
+          </label>
+          <button class="c-boton c-boton-oro c-modal-submit" type="submit">Enviarme la ficha y descargar ahora ↓</button>
+          {conectado && <p class="c-envio-error" role="alert" data-envio-error hidden />}
+          {
+            conectado ? (
+              <>
+                <p class="c-modal-garantia">🔒 Sin spam. Tu correo solo se usará para enviarte esta ficha.</p>
+                <p class="c-aviso-simulado" role="note">
+                  <strong>Modo de prueba.</strong> Solo se aceptan direcciones autorizadas.
+                </p>
+              </>
+            ) : (
+              <>
+                <p class="c-modal-garantia">🔒 Sin spam. Tu correo solo se usará para enviarte materiales de francés.</p>
+                <p class="c-aviso-simulado" role="note">
+                  <strong>Formulario simulado.</strong> En este prototipo no se envía ni se guarda ningún dato; solo se descarga la ficha.
+                </p>
+              </>
+            )
+          }
+          <div class="c-modal-directo">
+            <a class="c-link-discreto" href={pdf} download data-descarga="cabecera">O descargar directamente sin correo →</a>
+          </div>
+        </form>
+
+        <div class="c-modal-exito" role="status" data-modal-pdf-exito hidden>
+          <span class="c-modal-exito-icon" aria-hidden="true">✓</span>
+          <h4>¡Ficha descargada!</h4>
+          {
+            conectado ? (
+              <>
+                <p>Si la descarga no ha empezado, <a href={pdf} download>haz clic aquí</a>.</p>
+                <p data-envio-estado="ficha" />
+                <button class="c-boton-link" type="button" data-envio-reintentar="ficha" hidden>
+                  Reintentar el envío por correo
+                </button>
+              </>
+            ) : (
+              <p>Si la descarga no ha empezado, <a href={pdf} download>haz clic aquí</a>. En este prototipo no se ha enviado ningún correo.</p>
+            )
+          }
+        </div>
+      </div>
+    </dialog>
   </main>
 </BaseLayout>
 
 <style>
+  main [hidden] {
+    display: none !important;
+  }
+
+  /* Paleta corporativa */
+  .diseno-c {
+    --b-navy: #0b2f55;
+    --b-navy-dark: #071f38;
+    --b-oro: #b8860b;
+    --b-oro-hover: #9c7108;
+    --b-oro-claro: #f0d48a;
+    --b-oro-suave: rgba(184, 134, 11, 0.12);
+    --b-tinta-oro: #1a1608;
+    --b-crema: #f7f4ed;
+    --b-blanco: #ffffff;
+    --b-gris-suave: #efede8;
+    --b-borde: #e2ded7;
+    --b-borde-fuerte: #cfc9bf;
+    --b-texto: #2e2b27;
+    --b-texto-muted: #6d6861;
+    --b-mal-fondo: #fbf0ee;
+    --b-mal-borde: #f3cbc6;
+    --b-mal: #9a3329;
+    --b-bien-fondo: #edf7f1;
+    --b-bien-borde: #bde4cb;
+    --b-bien: #1e5a37;
+    --sombra-suave: 0 4px 18px rgba(11, 47, 85, 0.06);
+    --sombra-media: 0 8px 26px rgba(11, 47, 85, 0.1);
+    --sombra-alta: 0 16px 36px rgba(11, 47, 85, 0.15);
+  }
+
+  /* Ocultar resultado genérico para usar la tarjeta enriquecida */
+  [data-practica] :global([data-resultado]) {
+    display: none;
+  }
+
+  /* Scroll margins para cabecera fija */
+  main :global([data-pregunta]),
+  .ayuda,
+  .error,
+  .reto-zona {
+    scroll-margin-top: 6.5rem;
+  }
+
+  /* Banner de aviso del prototipo */
   .prototipo-aviso {
     margin: 0;
-    padding: 0.5rem 1rem;
-    background: var(--color-gold);
+    padding: 0.6rem 1rem;
+    background: #143862;
     color: #ffffff;
-    font-size: 0.85rem;
+    font-size: 0.86rem;
+    font-weight: 500;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    border-bottom: 1px solid rgba(240, 212, 138, 0.25);
+  }
+
+  .aviso-pill {
+    background: var(--b-oro);
+    color: var(--b-tinta-oro);
+    font-size: 0.75rem;
     font-weight: 700;
-    text-align: center;
-  }
-
-  .practica-hero {
-    border-bottom: 1px solid var(--color-border);
-    background:
-      linear-gradient(180deg, rgba(255, 255, 255, 0.54), rgba(247, 244, 237, 0)),
-      var(--color-bg);
-  }
-
-  .practica-hero-inner {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(16rem, 0.32fr);
-    gap: 1.5rem;
-    align-items: end;
-    padding-block: 3.5rem 3rem;
-  }
-
-  .practica-hero h1 {
-    max-width: 820px;
-    font-size: clamp(2.2rem, 5vw, 4.2rem);
-  }
-
-  .practica-hero-texto {
-    max-width: 640px;
-    margin: 1rem 0 0;
-    color: var(--color-text-muted);
-    font-size: 1.1rem;
-  }
-
-  .practica-descarga {
-    display: grid;
-    justify-items: start;
-    gap: 0.5rem;
-    margin-top: 1.5rem;
-  }
-
-  .practica-descarga p {
-    margin: 0;
-    color: var(--color-text-muted);
-    font-size: 0.9rem;
-  }
-
-  .button-descarga {
-    min-height: 3.25rem;
-    padding-inline: 1.6rem;
-    font-size: 1.05rem;
-  }
-
-  .practica-descarga-final {
-    margin-top: 1.5rem;
-  }
-
-  .practica-indice {
-    padding: 1rem 1.25rem;
-  }
-
-  .practica-indice-titulo {
-    margin-bottom: 0.5rem;
-    color: var(--color-text-muted);
-    font-size: 0.7rem;
-    font-weight: 800;
-    letter-spacing: 0.08em;
+    padding: 0.15rem 0.6rem;
+    border-radius: 999px;
+    letter-spacing: 0.04em;
     text-transform: uppercase;
   }
 
-  .practica-indice ol {
-    display: grid;
-    gap: 0.35rem;
-    margin: 0;
-    padding-left: 1.1rem;
+  .prototipo-aviso a {
+    color: var(--b-oro-claro);
+    text-decoration: underline;
     font-weight: 600;
+    transition: color 0.15s ease;
   }
 
-  .practica-indice a:hover {
-    color: var(--color-blue);
+  .prototipo-aviso a:hover {
+    color: #ffffff;
   }
 
-  .seccion-suave {
-    border-block: 1px solid var(--color-border);
-    background: var(--color-surface-soft);
+  /* Hero Section */
+  .c-hero {
+    border-radius: 0 0 32px 32px;
+    background: linear-gradient(180deg, var(--b-navy) 0%, var(--b-navy-dark) 100%);
+    color: #ffffff;
+    padding-block: 2.25rem 2.75rem;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(11, 47, 85, 0.15);
+  }
+
+  .c-hero-dentro {
+    display: grid;
+    gap: 1.6rem;
+    max-width: 840px;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+
+  /* Tutor Personal & Bocadillo */
+  .c-tutor-bloque {
+    display: flex;
+    gap: 1.1rem;
+    align-items: flex-end;
+  }
+
+  .c-avatar-wrap {
+    position: relative;
+    flex: none;
+  }
+
+  .c-avatar {
+    width: 82px;
+    height: 82px;
+    border: 3px solid var(--b-oro-claro);
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.28);
+    background: #0d3864;
+  }
+
+  .c-avatar-status {
+    position: absolute;
+    bottom: 4px;
+    right: 4px;
+    width: 14px;
+    height: 14px;
+    background: #22c55e;
+    border: 2px solid var(--b-navy);
+    border-radius: 50%;
+    box-shadow: 0 0 8px rgba(34, 197, 94, 0.8);
+  }
+
+  .c-bocadillo-wrap {
+    position: relative;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .c-bocadillo {
+    position: relative;
+    padding: 0.9rem 1.15rem;
+    border-radius: 18px 18px 18px 4px;
+    background: #ffffff;
+    color: var(--b-texto);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
+  }
+
+  .c-bocadillo::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: -8px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 8px 10px 0;
+    border-color: transparent #ffffff transparent transparent;
+  }
+
+  .c-bocadillo-tutor {
+    margin: 0 0 0.25rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--b-navy);
+  }
+
+  .c-bocadillo-texto {
+    margin: 0;
+    font-size: 0.98rem;
+    line-height: 1.48;
+    color: #3b3732;
+  }
+
+  .c-bocadillo-texto strong {
+    color: var(--b-navy);
+  }
+
+  /* Título y Badges */
+  .c-titulo-bloque {
+    display: grid;
+    gap: 0.6rem;
+  }
+
+  .c-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .c-badge-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: rgba(255, 255, 255, 0.12);
+    color: #e2eaf4;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+  }
+
+  .c-badge-oro {
+    background: rgba(240, 212, 138, 0.15);
+    color: var(--b-oro-claro);
+    border-color: rgba(240, 212, 138, 0.4);
+  }
+
+  .c-hero h1 {
+    margin: 0;
+    color: #ffffff;
+    font-family: var(--font-display, "Playfair Display", Georgia, serif);
+    font-size: clamp(1.9rem, 5vw, 3.1rem);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
+
+  .c-subtitulo {
+    margin: 0;
+    font-size: 1.05rem;
+    line-height: 1.5;
+    color: #c9d6e6;
+    max-width: 640px;
+  }
+
+  /* Acciones del Hero */
+  .c-acciones-hero {
+    display: grid;
+    gap: 0.9rem;
+    margin-top: 0.35rem;
+  }
+
+  .c-botones-hero {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .c-boton {
+    display: inline-flex;
+    gap: 0.6rem;
+    align-items: center;
+    justify-content: center;
+    min-height: 3.35rem;
+    padding: 0 1.5rem;
+    border: 0;
+    border-radius: 999px;
+    cursor: pointer;
+    font: inherit;
+    font-size: 1rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .c-boton-sm {
+    min-height: 2.75rem;
+    padding: 0 1.15rem;
+    font-size: 0.92rem;
+  }
+
+  .c-boton-oro {
+    background: var(--b-oro);
+    color: var(--b-tinta-oro);
+    box-shadow: 0 4px 14px rgba(184, 134, 11, 0.35);
+  }
+
+  .c-boton-oro:hover {
+    background: var(--b-oro-hover);
+    color: #ffffff;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(184, 134, 11, 0.45);
+  }
+
+  .c-boton-ghost {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    color: #ffffff;
+  }
+
+  .c-boton-ghost:hover {
+    background: rgba(255, 255, 255, 0.18);
+    border-color: #ffffff;
+    transform: translateY(-1px);
+  }
+
+  .c-garantias {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem 1.25rem;
+    font-size: 0.85rem;
+    color: #c9d6e6;
+  }
+
+  .c-garantia-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .c-garantia-item svg {
+    color: var(--b-oro-claro);
+  }
+
+  .c-descargada {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin: 0;
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.14);
+    border: 1px solid rgba(240, 212, 138, 0.3);
+    font-size: 0.94rem;
+    color: #ffffff;
+  }
+
+  .c-descargada-icon {
+    display: inline-grid;
+    place-items: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--b-oro);
+    color: var(--b-tinta-oro);
+    font-weight: 800;
+    font-size: 0.8rem;
+  }
+
+  /* Sección Práctica */
+  .c-seccion-practica {
+    padding-block: 2.75rem 4rem;
   }
 
   .seccion-estrecha {
     max-width: 820px;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
   }
 
-  .section h2 {
-    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+  .c-practica-header {
+    margin-bottom: 2rem;
+  }
+
+  .c-practica-header-top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1.25rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--b-borde);
+  }
+
+  .c-eyebrow-practica {
+    margin: 0;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--b-oro);
+  }
+
+  .c-practica-header h2 {
+    margin: 0.2rem 0 0;
+    color: var(--b-navy);
+    font-family: var(--font-display, "Playfair Display", Georgia, serif);
+    font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+    font-weight: 700;
+    line-height: 1.2;
   }
 
   .seccion-intro {
-    max-width: 680px;
-    margin: 0.75rem 0 1.5rem;
-    color: var(--color-text-muted);
+    margin: 0.9rem 0 0;
+    color: var(--b-texto-muted);
+    font-size: 1.02rem;
+    line-height: 1.55;
   }
 
-  .regla {
-    display: grid;
-    gap: 1.5rem;
+  /* Widget de Progreso en Vivo */
+  .c-progreso-widget {
+    background: var(--b-blanco);
+    border: 1px solid var(--b-borde);
+    border-radius: 14px;
+    padding: 0.6rem 0.9rem;
+    min-width: 170px;
+    box-shadow: var(--sombra-suave);
   }
 
-  .regla-pasos {
+  .c-progreso-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.78rem;
+    margin-bottom: 0.35rem;
+  }
+
+  .c-progreso-label {
+    color: var(--b-texto-muted);
+    font-weight: 600;
+  }
+
+  .c-progreso-valor {
+    color: var(--b-navy);
+    font-weight: 800;
+  }
+
+  .c-progreso-track {
+    height: 8px;
+    background: var(--b-gris-suave);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+
+  .c-progreso-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--b-navy), var(--b-oro));
+    border-radius: 999px;
+    transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Estilos personalizados para las preguntas y opciones */
+  .diseno-c :global(.pregunta) {
+    margin-bottom: 1.15rem;
+  }
+
+  .diseno-c :global(.pregunta fieldset) {
+    padding: 1.15rem 1.25rem;
+    border-radius: 18px;
+    border: 1px solid var(--b-borde);
+    background: var(--b-blanco);
+    box-shadow: var(--sombra-suave);
+    transition: all 0.2s ease;
+  }
+
+  .diseno-c :global(.pregunta:focus-within fieldset) {
+    border-color: rgba(11, 47, 85, 0.4);
+    box-shadow: var(--sombra-media);
+  }
+
+  .diseno-c :global(.pregunta legend) {
+    margin-bottom: 0.85rem;
+    font-size: 1.12rem;
+    font-weight: 600;
+    color: var(--b-navy);
+    line-height: 1.4;
+  }
+
+  .diseno-c :global(.pregunta-numero) {
+    background: var(--b-gris-suave);
+    color: var(--b-navy);
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    font-weight: 800;
+    font-size: 0.85rem;
+    display: inline-grid;
+    place-items: center;
+    margin-right: 0.6rem;
+  }
+
+  .diseno-c :global(.pregunta-hueco) {
+    display: inline-block;
+    padding: 0.05rem 0.6rem;
+    margin-inline: 0.25rem;
+    border-radius: 6px;
+    border-bottom: 2px solid var(--b-oro);
+    background: rgba(184, 134, 11, 0.08);
+    color: var(--b-oro);
+    font-weight: 800;
+  }
+
+  /* Opciones de respuesta */
+  .diseno-c [data-practica] :global(.pregunta-opciones) {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+
+  .diseno-c [data-practica] :global(.opcion) {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 3.25rem;
+    padding: 0.5rem 1rem;
+    border: 2px solid var(--b-borde);
+    border-radius: 12px;
+    background: var(--b-crema);
+    color: var(--b-texto);
+    font-size: 1.05rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.16s ease;
+    user-select: none;
+  }
+
+  .diseno-c [data-practica] :global(.opcion:hover) {
+    border-color: #b5c3d4;
+    background: #ffffff;
+    transform: translateY(-1px);
+  }
+
+  .diseno-c [data-practica] :global(.opcion input) {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .diseno-c [data-practica] :global(.opcion:has(input:checked)) {
+    border-color: var(--b-navy);
+    background: #f0f5fa;
+    color: var(--b-navy);
+    font-weight: 700;
+    box-shadow: 0 0 0 1px var(--b-navy), inset 0 0 0 1px var(--b-navy);
+  }
+
+  .diseno-c [data-practica] :global(.opcion:has(input:focus-visible)) {
+    outline: 3px solid var(--b-oro);
+    outline-offset: 2px;
+  }
+
+  /* Barra de acciones (Corregir) pegada al fondo de la pantalla, de lado a lado */
+  .diseno-c [data-practica] :global(.ejercicios-acciones) {
+    position: sticky;
+    bottom: 0;
+    z-index: 60;
+    margin-inline: -1rem;
+    margin-top: 1.5rem;
+    padding: 0.85rem 1.25rem;
+    border: 0;
+    border-top: 2px solid var(--b-oro-claro);
+    border-radius: 18px 18px 0 0;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 -8px 26px rgba(11, 47, 85, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.85rem;
+    flex-wrap: nowrap;
+    box-sizing: border-box;
+  }
+
+  .diseno-c [data-practica] :global([data-corregir]) {
+    min-height: 3.1rem;
+    padding: 0 1.75rem;
+    border-radius: 999px;
+    background: var(--b-navy);
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: 800;
+    border: 0;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(11, 47, 85, 0.25);
+    transition: all 0.18s ease;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .diseno-c [data-practica] :global([data-corregir]:hover) {
+    background: var(--b-navy-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(11, 47, 85, 0.35);
+  }
+
+  .diseno-c [data-practica] :global([data-corregir].c-listo-para-corregir) {
+    background: var(--b-oro);
+    color: var(--b-tinta-oro);
+    box-shadow: 0 4px 18px rgba(184, 134, 11, 0.45);
+  }
+
+  .diseno-c [data-practica] :global([data-reintentar]) {
+    min-height: 2.85rem;
+    padding: 0 1.15rem;
+    border-radius: 999px;
+    background: #ffffff;
+    color: var(--b-texto-muted);
+    border: 1.5px solid var(--b-borde-fuerte);
+    font-weight: 600;
+    font-size: 0.88rem;
+    cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: all 0.15s ease;
+  }
+
+  .diseno-c [data-practica] :global([data-reintentar]:hover) {
+    background: var(--b-gris-suave);
+    color: var(--b-navy);
+    border-color: var(--b-navy);
+  }
+
+  .diseno-c [data-practica] :global(.c-barra-contador) {
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--b-navy);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* Zona de Resultados y Diagnóstico */
+  .c-ayuda {
+    display: grid;
+    gap: 1.75rem;
+    margin-top: 2.5rem;
+  }
+
+  .c-diagnostico-card {
+    padding: 1.5rem;
+    border-radius: 24px;
+    background: var(--b-blanco);
+    border: 1px solid var(--b-borde);
+    box-shadow: var(--sombra-media);
+  }
+
+  .c-diagnostico-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.25rem;
+  }
+
+  .c-score-badge {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 84px;
+    height: 84px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, var(--b-navy), #143e6c);
+    color: #ffffff;
+    box-shadow: 0 6px 18px rgba(11, 47, 85, 0.25);
+  }
+
+  .c-score-num {
+    font-size: 1.6rem;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--b-oro-claro);
+  }
+
+  .c-score-sub {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #ffffff;
+  }
+
+  .c-diagnostico-texto {
+    flex: 1;
+    min-width: 240px;
+    display: grid;
+    gap: 0.3rem;
+  }
+
+  .ayuda-recuento {
+    margin: 0;
+    color: var(--b-oro);
+    font-size: 0.85rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .ayuda h3 {
+    margin: 0;
+    color: var(--b-navy);
+    font-family: var(--font-display, "Playfair Display", Georgia, serif);
+    font-size: 1.65rem;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  .ayuda-estado {
+    margin: 0;
+    color: var(--b-texto-muted);
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  /* Lista de Errores */
+  .c-errores-lista {
+    display: grid;
     gap: 1rem;
     margin: 0;
     padding: 0;
     list-style: none;
   }
 
-  .regla-pasos li {
-    display: grid;
-    gap: 0.35rem;
-    align-content: start;
-    padding: 1.1rem;
+  .c-error-card {
+    border-radius: 20px;
+    background: var(--b-blanco);
+    border: 1px solid var(--b-borde);
+    box-shadow: var(--sombra-suave);
+    overflow: hidden;
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
   }
 
-  .regla-ejemplo {
+  .c-error-card:has([aria-expanded="true"]) {
+    border-color: #b8c9dc;
+    box-shadow: var(--sombra-media);
+  }
+
+  .c-error-toggle {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 0.9rem;
+    align-items: center;
+    width: 100%;
+    padding: 1.2rem;
+    border: 0;
+    background: none;
+    color: var(--b-texto);
+    cursor: pointer;
+    font: inherit;
+    text-align: left;
+    transition: background 0.15s ease;
+  }
+
+  .c-error-toggle:hover {
+    background: #fbfaf8;
+  }
+
+  .c-error-status-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    flex: none;
+  }
+
+  .c-error-icon {
+    display: inline-grid;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--b-mal-fondo);
+    color: var(--b-mal);
+    font-size: 0.75rem;
+    font-weight: 900;
+  }
+
+  .error-numero {
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--b-texto-muted);
+    white-space: nowrap;
+  }
+
+  .c-error-frase-col {
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .error-frase {
+    color: var(--b-navy);
+    font-size: 1.18rem;
+    font-weight: 700;
+    line-height: 1.35;
+  }
+
+  .c-hueco-destacado {
+    color: var(--b-oro);
+    font-weight: 800;
+    padding-inline: 0.2rem;
+  }
+
+  .c-comparacion {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.75rem;
+    gap: 0.6rem;
+  }
+
+  .etiqueta {
+    display: inline-flex;
     align-items: center;
-    margin: 0;
-    font-size: 1.4rem;
+    gap: 0.4rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 8px;
+    font-size: 0.88rem;
+  }
+
+  .etiqueta-titulo {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    opacity: 0.85;
+  }
+
+  .c-pill-mal {
+    background: var(--b-mal-fondo);
+    color: var(--b-mal);
+    border: 1px solid var(--b-mal-borde);
+  }
+
+  .c-pill-mal s {
     font-weight: 700;
   }
 
-  .regla-mal {
-    color: var(--color-red);
-    text-decoration: line-through;
+  .c-pill-bien {
+    background: var(--b-bien-fondo);
+    color: var(--b-bien);
+    border: 1px solid var(--b-bien-borde);
   }
 
-  .regla-bien {
-    color: #2f7d4f;
+  .c-pill-bien strong {
+    font-weight: 800;
   }
 
-  .reto {
+  .c-chevron {
+    color: var(--b-navy);
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  [aria-expanded="true"] .c-chevron {
+    transform: rotate(180deg);
+  }
+
+  /* Panel interior expandido de cada error */
+  .c-error-detalle {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: 2rem;
+    gap: 1rem;
+    padding: 0 1.25rem 1.4rem;
+    border-top: 1px solid var(--b-gris-suave);
+    background: #ffffff;
+  }
+
+  .c-explicacion-caja {
+    display: flex;
+    gap: 0.85rem;
+    padding: 1rem 1.15rem;
+    margin-top: 1rem;
+    border-radius: 14px;
+    background: #fbfaf8;
+    border-left: 4px solid var(--b-oro);
+  }
+
+  .c-explicacion-icono {
+    font-size: 1.35rem;
+    line-height: 1;
+    flex: none;
+    margin-top: 0.1rem;
+  }
+
+  .c-explicacion-cuerpo {
+    display: grid;
+    gap: 0.25rem;
+  }
+
+  .c-explicacion-titulo {
+    margin: 0;
+    color: var(--b-navy);
+    font-size: 0.95rem;
+    font-weight: 800;
+  }
+
+  .error-explicacion {
+    margin: 0;
+    color: #3f3b35;
+    font-size: 0.98rem;
+    line-height: 1.55;
+  }
+
+  .c-frase-solucion {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+    background: var(--b-bien-fondo);
+    border: 1px solid var(--b-bien-borde);
+    font-size: 1rem;
+    color: var(--b-bien);
+  }
+
+  .c-solucion-tag {
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    background: rgba(30, 90, 55, 0.12);
+    padding: 0.2rem 0.5rem;
+    border-radius: 6px;
+  }
+
+  .c-frase-solucion strong {
+    font-weight: 700;
+  }
+
+  /* Botón de vídeo */
+  .c-video-boton {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    justify-self: start;
+    width: auto;
+    min-height: 3.5rem;
+    padding: 0.65rem 1rem;
+    border-radius: 16px;
+    border: 1px solid var(--b-borde);
+    background: var(--b-blanco);
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.18s ease;
+    box-sizing: border-box;
+  }
+
+  /* Título y subtítulo del botón del vídeo, en dos líneas. */
+  .c-video-boton .b-video-texto {
+    display: grid;
+    gap: 0.15rem;
+    text-align: left;
+  }
+
+  .c-video-boton .b-video-texto span {
+    color: var(--b-texto-muted);
+    font-size: 0.82rem;
+  }
+
+  .c-video-boton:hover {
+    border-color: var(--b-navy);
+    box-shadow: var(--sombra-suave);
+    transform: translateY(-1px);
+  }
+
+  .c-play-icon {
+    display: grid;
+    place-items: center;
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 12px;
+    background: var(--b-navy);
+    color: #ffffff;
+    flex: none;
+  }
+
+  .c-video-zona {
+    display: grid;
+    gap: 0.5rem;
+    margin-top: 0.35rem;
+  }
+
+  .c-video-zona video {
+    width: 100%;
+    max-width: 320px;
+    aspect-ratio: 9 / 16;
+    border-radius: 16px;
+    background: #000000;
+    box-shadow: var(--sombra-media);
+  }
+
+  /* Vídeo a la izquierda y reto a la derecha; el vídeo abierto ocupa la fila de abajo */
+  .c-acciones-error {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.85rem;
     align-items: start;
   }
 
-  .reto-lista {
-    display: grid;
-    gap: 0.4rem;
-    margin: 0;
-    padding-left: 1.2rem;
+  .c-acciones-error > .c-video-boton,
+  .c-acciones-error > .aviso-video {
+    grid-column: 1;
+    grid-row: 1;
+    width: 100%;
   }
 
-  @media (max-width: 900px) {
-    .practica-hero-inner,
-    .reto {
+  .c-acciones-error > .c-reto-inline {
+    grid-column: 2;
+    grid-row: 1;
+    justify-items: stretch;
+    text-align: center;
+  }
+
+  /* Las dos columnas con la misma altura: botón del vídeo y del reto iguales */
+  .c-acciones-error > .c-reto-inline .c-reto-boton {
+    width: 100%;
+    min-height: 3.5rem;
+    padding-inline: 1.15rem;
+    font-size: 0.94rem;
+  }
+
+  .c-acciones-error > .c-video-boton {
+    align-self: stretch;
+  }
+
+  .c-acciones-error > .c-video-zona {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  .aviso-video {
+    margin: 0;
+    color: var(--b-texto-muted);
+    font-size: 0.9rem;
+  }
+
+  .c-reto-boton {
+    min-height: 3.35rem;
+    padding: 0.65rem 1.5rem;
+    line-height: 1.25;
+  }
+
+  /* Mini-ejercicio de refuerzo (Probar si lo entendí) */
+  .c-retest-box {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .c-retest-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.6rem 0.9rem;
+    border-radius: 10px;
+    background: var(--b-crema);
+    border: 1px solid var(--b-borde);
+    color: var(--b-navy);
+    font-size: 0.92rem;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.15s ease;
+  }
+
+  .c-retest-btn:hover {
+    background: #efebe2;
+  }
+
+  .c-retest-cuerpo {
+    padding: 1.15rem;
+    border-radius: 14px;
+    background: #fbfaf8;
+    border: 1px dashed var(--b-borde-fuerte);
+  }
+
+  .c-retest-titulo {
+    margin: 0 0 0.85rem;
+    font-size: 0.96rem;
+    color: var(--b-navy);
+    font-weight: 800;
+  }
+
+  .c-pista-caja {
+    margin-top: 0.75rem;
+    padding: 0.65rem 0.85rem;
+    border-radius: 8px;
+    background: #fff8e6;
+    border: 1px solid #f2dfa9;
+    font-size: 0.92rem;
+    color: #634a05;
+  }
+
+  /* Botón y llamada al Reto dentro de cada error */
+  .c-reto-inline {
+    display: grid;
+    gap: 0.35rem;
+    justify-items: start;
+  }
+
+  .invitacion-linea {
+    margin: 0;
+    font-size: 0.84rem;
+    color: var(--b-texto-muted);
+  }
+
+  /* Preguntas vacías */
+  .c-vacias-card {
+    padding: 1.25rem;
+    border-radius: 18px;
+    background: #fff9f0;
+    border: 1px solid #fae1c3;
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .c-vacias-header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .c-vacias-icon {
+    font-size: 1.2rem;
+  }
+
+  .vacias-titulo {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: #8c5310;
+  }
+
+  .c-vacias-desc {
+    margin: 0;
+    color: #6d4b24;
+    font-size: 0.94rem;
+  }
+
+  .c-vacias-lista {
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .c-vacia-fila {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.65rem 1rem;
+    border-radius: 10px;
+    background: #ffffff;
+    border: 1px solid #fae1c3;
+  }
+
+  .c-boton-link {
+    background: none;
+    border: 0;
+    color: var(--b-navy);
+    font-weight: 800;
+    font-size: 0.9rem;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+
+  /* Desafío Card */
+  .c-desafio-card {
+    padding: 1.75rem;
+    border-radius: 22px;
+    background: var(--b-blanco);
+    border: 2px solid var(--b-oro-claro);
+    box-shadow: var(--sombra-media);
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .c-desafio-header {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .c-desafio-trofeo {
+    font-size: 2.2rem;
+    line-height: 1;
+    flex: none;
+  }
+
+  .c-desafio-header h3 {
+    margin: 0 0 0.35rem;
+    color: var(--b-navy);
+    font-family: var(--font-display, "Playfair Display", Georgia, serif);
+    font-size: 1.4rem;
+  }
+
+  .c-desafio-header p {
+    margin: 0;
+    color: var(--b-texto-muted);
+    font-size: 0.96rem;
+  }
+
+  /* Invitación final */
+  .c-invitacion-final {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--b-borde);
+  }
+
+  .c-invitacion-box {
+    padding: 1.75rem;
+    border-radius: 22px;
+    background: linear-gradient(135deg, #f7f4ed 0%, #ede8dc 100%);
+    border: 1px solid var(--b-borde-fuerte);
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .c-badge-oro-sm {
+    display: inline-block;
+    padding: 0.2rem 0.65rem;
+    border-radius: 999px;
+    background: var(--b-oro);
+    color: var(--b-tinta-oro);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 0.35rem;
+  }
+
+  .c-invitacion-intro h3 {
+    margin: 0 0 0.35rem;
+    color: var(--b-navy);
+    font-family: var(--font-display, "Playfair Display", Georgia, serif);
+    font-size: 1.45rem;
+    line-height: 1.25;
+  }
+
+  .c-invitacion-acciones {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .c-link-descarga {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--b-navy);
+    font-weight: 700;
+    font-size: 0.94rem;
+    text-decoration: underline;
+  }
+
+  /* Formulario del Reto estilizado */
+  .c-reto-form-card {
+    display: grid;
+    gap: 0.9rem;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 0.25rem;
+    padding: 1.25rem;
+    border-radius: 18px;
+    background: linear-gradient(180deg, var(--b-navy) 0%, var(--b-navy-dark) 100%);
+    color: #ffffff;
+  }
+
+  .c-reto-encabezado {
+    display: grid;
+    gap: 0.35rem;
+  }
+
+  .c-reto-form-card h4 {
+    margin: 0;
+    color: #ffffff;
+    font-family: var(--font-display, "Playfair Display", Georgia, serif);
+    font-size: 1.45rem;
+    line-height: 1.25;
+  }
+
+  .c-reto-beneficios {
+    display: grid;
+    gap: 0.55rem;
+    margin: 0;
+    padding-left: 1.2rem;
+    color: #e6ecf3;
+    font-size: 0.94rem;
+  }
+
+  .c-reto-beneficios li::marker {
+    color: var(--b-oro-claro);
+  }
+
+  /* El formulario compartido va directamente sobre el bloque azul (sin su tarjeta blanca), a todo el ancho. */
+  .c-reto-form-card :global(.reto-form),
+  .c-reto-form-card :global(.reto-confirmacion) {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    color: #ffffff;
+  }
+
+  .c-reto-form-card :global(.reto-form-simulado) {
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+  }
+
+  .c-reto-form-card :global(.campo),
+  .c-reto-form-card :global(.reto-confirmacion h3) {
+    color: #ffffff;
+  }
+
+  .c-reto-form-card :global(.campo em),
+  .c-reto-form-card :global(.reto-form-aviso),
+  .c-reto-form-card :global(.reto-confirmacion p) {
+    color: #c9d6e6;
+  }
+
+  .c-reto-form-card :global(.casilla) {
+    color: #e6ecf3;
+  }
+
+  .c-reto-form-card :global(.casilla input) {
+    accent-color: var(--b-oro);
+  }
+
+  .c-reto-form-card :global(.campo-error) {
+    color: #ffc2b8;
+  }
+
+  .c-reto-form-card :global(.campo input),
+  .c-reto-form-card :global(.campo select) {
+    min-height: 3.1rem;
+    border: 2px solid transparent;
+    border-radius: 12px;
+    background: #ffffff;
+    color: var(--b-texto);
+    font-size: 1rem;
+  }
+
+  .c-reto-form-card :global(.campo input:focus),
+  .c-reto-form-card :global(.campo select:focus) {
+    border-color: var(--b-oro);
+    outline: none;
+  }
+
+  .c-reto-form-card :global(.reto-form .button),
+  .c-reto-form-card :global(.reto-confirmacion .button) {
+    min-height: 3.35rem;
+    border: 0;
+    border-radius: 999px;
+    background: var(--b-oro);
+    color: var(--b-tinta-oro);
+    font-weight: 800;
+    font-size: 1.05rem;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(184, 134, 11, 0.4);
+    transition: all 0.18s ease;
+  }
+
+  .c-reto-form-card :global(.reto-form .button:hover) {
+    background: var(--b-oro-hover);
+    color: #ffffff;
+    transform: translateY(-1px);
+  }
+
+  /* Caja de correo dentro del diagnóstico */
+  .c-diagnostico-leadbox {
+    margin-top: 1.5rem;
+    padding: 1.35rem 1.5rem;
+    border-radius: 18px;
+    background: #fdfaf3;
+    border: 1.5px solid var(--b-oro-claro);
+    box-shadow: 0 4px 16px rgba(184, 134, 11, 0.08);
+    display: grid;
+    gap: 0.85rem;
+  }
+
+  .c-leadbox-badge {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    background: var(--b-oro);
+    color: var(--b-tinta-oro);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 0.35rem;
+  }
+
+  .c-leadbox-header h4 {
+    margin: 0 0 0.35rem;
+    color: var(--b-navy);
+    font-family: var(--font-display, "Playfair Display", Georgia, serif);
+    font-size: 1.3rem;
+    line-height: 1.25;
+  }
+
+  .c-leadbox-header p {
+    margin: 0;
+    color: var(--b-texto);
+    font-size: 0.95rem;
+    line-height: 1.45;
+  }
+
+  .c-leadbox-form {
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .c-leadbox-campos {
+    display: flex;
+    gap: 0.65rem;
+    flex-wrap: wrap;
+  }
+
+  .c-leadbox-campos input {
+    flex: 1;
+    min-width: 220px;
+    min-height: 3.25rem;
+    padding: 0 1rem;
+    border: 1.5px solid var(--b-borde);
+    border-radius: 12px;
+    background: #ffffff;
+    color: var(--b-texto);
+    font-size: 0.98rem;
+    transition: border-color 0.15s ease;
+  }
+
+  .c-leadbox-campos input:focus {
+    border-color: var(--b-navy);
+    outline: none;
+  }
+
+  .c-leadbox-btn {
+    min-height: 3.25rem;
+    padding: 0 1.35rem;
+    white-space: nowrap;
+  }
+
+  .c-leadbox-garantias {
+    margin: 0;
+    font-size: 0.82rem;
+    color: var(--b-texto-muted);
+  }
+
+  .c-leadbox-confirmacion {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.85rem 1rem;
+    border-radius: 12px;
+    background: var(--b-bien-fondo);
+    border: 1px solid var(--b-bien-borde);
+    color: var(--b-bien);
+    font-size: 0.92rem;
+  }
+
+  .c-leadbox-ok-icon {
+    display: inline-grid;
+    place-items: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--b-bien);
+    color: #ffffff;
+    font-size: 0.75rem;
+    font-weight: 800;
+    flex: none;
+  }
+
+  /* Ventana de descarga de la ficha (diálogo nativo: Esc y el foco los gestiona el navegador) */
+  .c-modal-pdf {
+    width: calc(100% - 2rem);
+    max-width: 480px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    overflow: visible;
+  }
+
+  .c-modal-pdf::backdrop {
+    background: rgba(7, 31, 56, 0.72);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+  .c-modal-card {
+    position: relative;
+    box-sizing: border-box;
+    width: 100%;
+    border-radius: 24px;
+    background: #ffffff;
+    border: 1.5px solid var(--b-oro-claro);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+    padding: 2rem;
+    display: grid;
+    gap: 1.15rem;
+  }
+
+  .c-modal-cerrar {
+    position: absolute;
+    top: 1rem;
+    right: 1.1rem;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    border: 0;
+    background: var(--b-gris-suave);
+    color: var(--b-texto);
+    font-size: 1.35rem;
+    line-height: 1;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+
+  .c-modal-cerrar:hover {
+    background: #e2ded7;
+  }
+
+  .c-modal-header {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+  }
+
+  .c-modal-icono {
+    font-size: 2.2rem;
+    line-height: 1;
+    flex: none;
+  }
+
+  .c-modal-eyebrow {
+    margin: 0;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--b-oro);
+  }
+
+  .c-modal-header h3 {
+    margin: 0.15rem 0 0;
+    color: var(--b-navy);
+    font-family: var(--font-display, "Playfair Display", Georgia, serif);
+    font-size: 1.45rem;
+    line-height: 1.25;
+  }
+
+  .c-modal-sub {
+    margin: 0;
+    color: var(--b-texto-muted);
+    font-size: 0.95rem;
+    line-height: 1.45;
+  }
+
+  .c-modal-form {
+    display: grid;
+    gap: 0.85rem;
+  }
+
+  .c-modal-label {
+    display: grid;
+    gap: 0.35rem;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--b-navy);
+  }
+
+  .c-modal-label input {
+    min-height: 3.25rem;
+    padding: 0 1rem;
+    border: 1.5px solid var(--b-borde);
+    border-radius: 12px;
+    background: #ffffff;
+    color: var(--b-texto);
+    font-size: 1rem;
+  }
+
+  .c-modal-label input:focus {
+    border-color: var(--b-oro);
+    outline: none;
+  }
+
+  .c-modal-submit {
+    width: 100%;
+    min-height: 3.35rem;
+    font-size: 1.02rem;
+  }
+
+  .c-modal-garantia {
+    margin: 0;
+    font-size: 0.78rem;
+    color: var(--b-texto-muted);
+    text-align: center;
+  }
+
+  .c-modal-directo {
+    text-align: center;
+    padding-top: 0.25rem;
+  }
+
+  .c-link-discreto {
+    font-size: 0.82rem;
+    color: var(--b-navy);
+    text-decoration: underline;
+    opacity: 0.8;
+  }
+
+  .c-link-discreto:hover {
+    opacity: 1;
+  }
+
+  .c-modal-exito {
+    text-align: center;
+    padding: 1.5rem 1rem;
+    display: grid;
+    gap: 0.5rem;
+    justify-items: center;
+  }
+
+  .c-modal-exito-icon {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--b-bien);
+    color: #ffffff;
+    font-size: 1.25rem;
+    font-weight: 800;
+  }
+
+  .c-modal-exito h4 {
+    margin: 0;
+    color: var(--b-navy);
+    font-size: 1.35rem;
+  }
+
+  .c-modal-exito p {
+    margin: 0;
+    color: var(--b-texto-muted);
+    font-size: 0.92rem;
+  }
+
+  .c-leadbox-ok-content {
+    display: grid;
+    gap: 0.4rem;
+    width: 100%;
+  }
+
+  .c-leadbox-ok-content p {
+    margin: 0;
+    color: var(--b-texto);
+    line-height: 1.45;
+  }
+
+  .c-leadbox-btn-reto {
+    justify-self: start;
+    margin-top: 0.35rem;
+    padding: 0.65rem 1.25rem;
+    text-decoration: none;
+  }
+
+  .c-envio-error {
+    margin: 0;
+    color: var(--b-mal);
+    font-size: 0.88rem;
+    font-weight: 600;
+  }
+
+  .c-aviso-simulado {
+    margin: 0;
+    padding: 0.5rem 0.75rem;
+    border-radius: 10px;
+    background: var(--b-gris-suave);
+    color: var(--b-texto-muted);
+    font-size: 0.8rem;
+    line-height: 1.4;
+  }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    /* Hero compacto */
+    .c-hero {
+      padding-block: 1.5rem 2rem;
+      border-radius: 0 0 24px 24px;
+    }
+
+    .c-hero-dentro {
+      gap: 1.2rem;
+      padding-inline: 1rem;
+    }
+
+    .c-tutor-bloque {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 0.85rem;
+    }
+
+    .c-avatar {
+      width: 58px;
+      height: 58px;
+      border-width: 2px;
+    }
+
+    .c-avatar-status {
+      width: 11px;
+      height: 11px;
+      bottom: 2px;
+      right: 2px;
+    }
+
+    .c-bocadillo {
+      padding: 0.65rem 0.85rem;
+      border-radius: 14px;
+    }
+
+    .c-bocadillo::before {
+      display: none;
+    }
+
+    .c-bocadillo-texto {
+      font-size: 0.88rem;
+      line-height: 1.4;
+    }
+
+    .c-hero h1 {
+      font-size: 1.75rem;
+      line-height: 1.18;
+    }
+
+    .c-subtitulo {
+      font-size: 0.94rem;
+    }
+
+    .c-botones-hero {
+      flex-direction: column;
+    }
+
+    .c-botones-hero .c-boton {
+      width: 100%;
+      min-height: 3.1rem;
+      font-size: 0.95rem;
+    }
+
+    .c-garantias {
+      flex-direction: column;
+      gap: 0.35rem;
+      font-size: 0.8rem;
+    }
+
+    .c-practica-header-top {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.85rem;
+    }
+
+    .c-progreso-widget {
+      width: 100%;
+      min-width: 0;
+    }
+
+    /* Diagnóstico tras corregir */
+    .c-diagnostico-card {
+      padding: 1.15rem;
+    }
+
+    .c-diagnostico-header {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      text-align: left;
+      gap: 0.9rem;
+    }
+
+    .c-score-badge {
+      width: 66px;
+      height: 66px;
+      border-radius: 16px;
+      flex: none;
+    }
+
+    .c-score-num {
+      font-size: 1.35rem;
+    }
+
+    .c-score-sub {
+      font-size: 0.65rem;
+    }
+
+    .ayuda h3 {
+      font-size: 1.3rem;
+    }
+
+    .ayuda-estado {
+      font-size: 0.9rem;
+    }
+
+    .c-botones-hero .c-boton,
+    .c-reto-boton,
+    .c-video-boton {
+      width: 100%;
+    }
+
+
+    .diseno-c [data-practica] :global(.pregunta-opciones) {
+      grid-template-columns: 1fr;
+      gap: 0.55rem;
+    }
+
+    .diseno-c [data-practica] :global(.opcion) {
+      min-height: 3rem;
+      font-size: 1rem;
+    }
+
+    /* Barra del fondo: contador y Corregir en una fila; «Intentar de nuevo» debajo cuando aparece */
+    .diseno-c [data-practica] :global(.ejercicios-acciones) {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      grid-template-areas:
+        "contador corregir"
+        "reintentar reintentar";
+      gap: 0.5rem 0.75rem;
+      padding: 0.65rem 0.85rem;
+      box-shadow: 0 -6px 20px rgba(11, 47, 85, 0.12);
+    }
+
+    .diseno-c [data-practica] :global(.c-barra-contador) {
+      grid-area: contador;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 0.85rem;
+    }
+
+    .diseno-c [data-practica] :global([data-corregir]) {
+      grid-area: corregir;
+      justify-self: end;
+      min-height: 2.75rem;
+      padding: 0 1.15rem;
+      font-size: 0.9rem;
+    }
+
+    .diseno-c [data-practica] :global([data-reintentar]) {
+      grid-area: reintentar;
+      width: 100%;
+      min-height: 2.65rem;
+      padding: 0 0.85rem;
+      font-size: 0.85rem;
+    }
+
+    .c-leadbox-btn-reto {
+      justify-self: stretch;
+      text-align: center;
+    }
+
+    /* En móvil, uno debajo del otro: vídeo (y el vídeo abierto) primero, después el reto */
+    .c-acciones-error {
       grid-template-columns: 1fr;
     }
 
-    .regla-pasos {
-      grid-template-columns: 1fr;
+    .c-acciones-error > .c-video-boton,
+    .c-acciones-error > .aviso-video,
+    .c-acciones-error > .c-video-zona,
+    .c-acciones-error > .c-reto-inline {
+      grid-column: auto;
+      grid-row: auto;
+    }
+
+    /* Cabecera del error: número arriba y la frase a todo el ancho */
+    .c-error-toggle {
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 0.5rem 0.75rem;
+      padding: 1rem;
+    }
+
+    .c-error-status-col {
+      grid-column: 1;
+      grid-row: 1;
+      flex-direction: row;
+      justify-self: start;
+      gap: 0.4rem;
+    }
+
+    .c-error-chevron-col {
+      grid-column: 2;
+      grid-row: 1;
+      justify-self: end;
+    }
+
+    .c-error-frase-col {
+      grid-column: 1 / -1;
+      grid-row: 2;
+    }
+
+    .c-error-detalle {
+      gap: 0.75rem;
+      padding: 0 1rem 1.1rem;
+    }
+
+    /* El contenedor de la web ya deja margen lateral: sin el relleno extra, la práctica y el formulario ganan ancho */
+    .c-seccion-practica > .container {
+      padding-inline: 0;
+    }
+
+    /* Más compacto en pantallas estrechas: recuento en una línea, etiquetas ajustadas, recuadros ajustados */
+    .c-comparacion {
+      gap: 0.4rem;
+    }
+
+    .etiqueta {
+      gap: 0.3rem;
+      padding: 0.25rem 0.5rem;
+      font-size: 0.82rem;
+    }
+
+    .etiqueta-titulo {
+      font-size: 0.62rem;
+    }
+
+    .c-explicacion-caja {
+      gap: 0.6rem;
+      margin-top: 0.75rem;
+      padding: 0.75rem 0.85rem;
+    }
+
+    .c-explicacion-icono {
+      font-size: 1.1rem;
+    }
+
+    .c-frase-solucion {
+      padding: 0.55rem 0.75rem;
+      font-size: 0.95rem;
+    }
+
+    .c-video-boton {
+      min-height: 0;
+      padding: 0.5rem 0.75rem;
+    }
+
+    .c-video-boton .b-video-texto strong {
+      font-size: 0.95rem;
+    }
+
+    .c-video-boton .b-video-texto span {
+      font-size: 0.78rem;
+    }
+
+    .c-play-icon {
+      width: 2.3rem;
+      height: 2.3rem;
+    }
+
+    .c-reto-inline {
+      justify-items: stretch;
+      text-align: center;
+    }
+
+    .c-reto-form-card {
+      padding: 1rem;
+    }
+
+    /* Caja de correo y ventana de la ficha */
+    .c-diagnostico-leadbox {
+      padding: 1.1rem;
+    }
+
+    .c-leadbox-campos {
+      flex-direction: column;
+    }
+
+    .c-leadbox-campos input,
+    .c-leadbox-btn {
+      width: 100%;
+      min-width: 0;
+      box-sizing: border-box;
+    }
+
+    .c-modal-card {
+      padding: 1.5rem 1.25rem;
     }
   }
 </style>
 
 <script>
-  import { track } from "../../../utils/track";
+  import { ordenEstandar, tipos as tiposReto } from "../../../data/practicaAvoirEtre";
+  import { ejercicios, type TipoVideo } from "../../../data/practicaAvoirEtreOpcion3";
+  import {
+    decidirAyuda,
+    ordenDesde,
+    type DecisionAyuda,
+    type ResultadoEjercicio,
+  } from "../../../utils/ayudaVideo";
+  import {
+    URL_FORMULARIOS,
+    enviarSolicitud,
+    nuevaClave,
+    type Respuesta,
+    type Solicitud,
+  } from "../../../utils/formularios";
+  import { guardarProgreso, leerProgreso, track, varianteActual } from "../../../utils/track";
+
+  const zona = document.querySelector<HTMLElement>("[data-ayuda-zona]");
+  const recuentoTexto = document.querySelector<HTMLElement>("[data-recuento]");
+  const estadoTitulo = document.querySelector<HTMLElement>("[data-estado-titulo]");
+  const estadoTexto = document.querySelector<HTMLElement>("[data-estado-texto]");
+  const listaErrores = document.querySelector<HTMLElement>("[data-errores]");
+  const errores = Array.from(document.querySelectorAll<HTMLElement>("[data-fallo]"));
+  const zonaVacias = document.querySelector<HTMLElement>("[data-vacias]");
+  const vacias = Array.from(document.querySelectorAll<HTMLElement>("[data-vacia]"));
+  const desafioZona = document.querySelector<HTMLElement>("[data-desafio]");
+  const botonesReto = Array.from(document.querySelectorAll<HTMLButtonElement>("[data-abrir-reto]"));
+  const retoZona = document.querySelector<HTMLElement>("[data-reto-zona]");
+  const huecoFinal = document.querySelector<HTMLElement>("[data-reto-final]");
+  const ofertaTitulo = document.querySelector<HTMLElement>("[data-oferta-titulo]");
+  const ofertaTexto = document.querySelector<HTMLElement>("[data-oferta-texto]");
+  const scoreNum = document.querySelector<HTMLElement>("[data-score-num]");
+  const tipoPorId = Object.fromEntries(ejercicios.map((e) => [e.id, e.tipo])) as Record<string, TipoVideo>;
+  const numeroDe = (id: string) => ejercicios.findIndex((e) => e.id === id) + 1;
+  const nombreSesion = (tipo: TipoVideo) => tiposReto.find((t) => t.id === tipo)?.nombre ?? tipo;
+
+  let decision: DecisionAyuda | null = null;
+  let errorActual: string | null = null;
+
+  const plural = (n: number, uno: string, varios: string) => `${n} ${n === 1 ? uno : varios}`;
+
+  const pausarVideos = () =>
+    document.querySelectorAll<HTMLVideoElement>("[data-ayuda-zona] [data-video]").forEach((v) => v.pause());
+
+  const enlaceReto = () => document.querySelector<HTMLAnchorElement>("[data-reto-enlace]");
+
+  const fijarOrden = (orden: string) => {
+    guardarProgreso({ ...leerProgreso(), orden });
+    const enlace = enlaceReto();
+    if (enlace?.search.includes("orden=")) {
+      const url = new URL(enlace.href);
+      url.searchParams.set("orden", orden);
+      enlace.href = url.pathname + url.search;
+    }
+  };
+
+  const actualizarOferta = () => {
+    if (!ofertaTitulo || !ofertaTexto || !decision) return;
+    if (decision.modo === "con-fallos" && errorActual) {
+      const tipo = tipoPorId[errorActual];
+      ofertaTitulo.textContent = `Tu reto empieza por: ${nombreSesion(tipo)}`;
+      ofertaTexto.textContent = `La primera sesión trabaja el error de la frase ${numeroDe(errorActual)}; después, el resto de dificultades. Corrección al momento.`;
+      fijarOrden(ordenDesde(tipo, decision.tipos, ordenEstandar).join("-"));
+    } else {
+      ofertaTitulo.textContent =
+        decision.modo === "todo-correcto"
+          ? "Sigue practicando con casos más variados"
+          : "Practica el passé composé paso a paso";
+      ofertaTexto.textContent = "Un reto de 5 sesiones con corrección al momento.";
+      fijarOrden((decision.modo === "sin-respuestas" ? ordenEstandar : decision.orden).join("-"));
+    }
+  };
+
+  const cerrarReto = (volverAlFinal = false) => {
+    if (!retoZona) return;
+    retoZona.hidden = true;
+    botonesReto.forEach((boton) => boton.setAttribute("aria-expanded", "false"));
+    if (volverAlFinal && huecoFinal && retoZona.parentElement !== huecoFinal) huecoFinal.append(retoZona);
+  };
+
+  const plegarVideos = () => {
+    pausarVideos();
+    document.querySelectorAll<HTMLElement>("[data-ayuda-zona] [data-video-zona]").forEach((z) => (z.hidden = true));
+    document
+      .querySelectorAll<HTMLElement>("[data-ayuda-zona] [data-ver-video]")
+      .forEach((boton) => boton.setAttribute("aria-expanded", "false"));
+  };
+
+  const abrirError = (id: string | null, desplazar = false) => {
+    plegarVideos();
+    const errorDelReto = retoZona?.closest<HTMLElement>("[data-fallo]");
+    if (errorDelReto && errorDelReto.dataset.fallo !== id) cerrarReto(true);
+    errores.forEach((item) => {
+      const abierto = item.dataset.fallo === id;
+      item.querySelector("[data-error-boton]")?.setAttribute("aria-expanded", String(abierto));
+      const panel = item.querySelector<HTMLElement>("[data-error-panel]");
+      if (panel) panel.hidden = !abierto;
+    });
+    if (!id) return;
+    errorActual = id;
+    actualizarOferta();
+    if (desplazar) {
+      errores.find((item) => item.dataset.fallo === id)?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+  };
+
+  const reiniciarCasosNuevos = () => {
+    errores.forEach((item) => {
+      const ejemplo = item.querySelector<HTMLElement>("[data-ejemplo-zona]");
+      if (ejemplo) ejemplo.hidden = true;
+      ejemplo?.querySelectorAll<HTMLInputElement>("input").forEach((input) => (input.checked = false));
+      ejemplo?.querySelectorAll<HTMLElement>("[data-pregunta]").forEach((p) => p.classList.remove("es-correcta", "es-incorrecta"));
+      ejemplo?.querySelectorAll<HTMLElement>("[data-feedback], [data-pista]").forEach((el) => (el.hidden = true));
+    });
+  };
+
+  const textos: Record<DecisionAyuda["modo"], (d: DecisionAyuda) => [string, string]> = {
+    "sin-respuestas": () => [
+      "Aún no has respondido ninguna frase",
+      "Responde al menos una frase para ver tu ayuda.",
+    ],
+    "todo-correcto": (d) => [
+      `¡Las ${d.recuento.correctas} frases, correctas!`,
+      "Respondiste todas y no hay ningún error.",
+    ],
+    "parcial-sin-fallos": (d) => [
+      "Sin errores en las frases que respondiste",
+      `Pero ${d.recuento.sinResponder === 1 ? "falta 1 frase" : `faltan ${d.recuento.sinResponder} frases`} por responder: con ellas vacías no se puede saber si lo dominas todo. Respóndelas y vuelve a corregir.`,
+    ],
+    "con-fallos": (d) => [
+      d.recuento.incorrectas === 1 ? "Revisemos tu único error" : `Revisemos tus ${d.recuento.incorrectas} errores`,
+      "Toca cada frase para ver su explicación.",
+    ],
+  };
+
+  document.querySelector("[data-practica]")?.addEventListener("afv:corregido", (event) => {
+    const { resultados } = (event as CustomEvent<{ resultados: ResultadoEjercicio[] }>).detail;
+    decision = decidirAyuda(resultados, tipoPorId, ordenEstandar);
+    errorActual = null;
+    if (!zona) return;
+
+    cerrarReto(true);
+    zona.hidden = false;
+    const { correctas, incorrectas, sinResponder } = decision.recuento;
+
+    if (scoreNum) {
+      scoreNum.textContent = `${correctas}/${resultados.length}`;
+    }
+
+    if (recuentoTexto) {
+      recuentoTexto.textContent = [
+        plural(correctas, "correcta", "correctas"),
+        plural(incorrectas, "con error", "con errores"),
+        plural(sinResponder, "sin responder", "sin responder"),
+      ].join(" · ");
+    }
+    const [titulo, texto] = textos[decision.modo](decision);
+    if (estadoTitulo) estadoTitulo.textContent = titulo;
+    if (estadoTexto) estadoTexto.textContent = texto;
+
+    const fallos = decision.modo === "con-fallos" ? decision.fallos : [];
+    errores.forEach((item) => {
+      const id = item.dataset.fallo ?? "";
+      item.hidden = !fallos.includes(id);
+      const elegida = document.querySelector<HTMLInputElement>(`[data-practica] [data-pregunta="${id}"] input:checked`);
+      const destino = item.querySelector<HTMLElement>("[data-elegida]");
+      const ejercicio = ejercicios.find((e) => e.id === id);
+      if (destino && elegida && ejercicio) destino.textContent = ejercicio.opciones[Number(elegida.value)];
+    });
+    if (listaErrores) listaErrores.hidden = !fallos.length;
+    reiniciarCasosNuevos();
+
+    const ids = decision.modo === "sin-respuestas" ? [] : decision.vacias;
+    vacias.forEach((item) => (item.hidden = !ids.includes(item.dataset.vacia ?? "")));
+    if (zonaVacias) zonaVacias.hidden = !ids.length;
+
+    if (desafioZona) desafioZona.hidden = decision.modo !== "todo-correcto";
+
+    abrirError(fallos[0] ?? null);
+    actualizarOferta();
+    track("ayuda_ofrecida", {
+      modo: decision.modo,
+      tipo: fallos[0] ? tipoPorId[fallos[0]] : "ninguno",
+    });
+
+    estadoTitulo?.focus({ preventScroll: true });
+    zona.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+
+  document.querySelector("[data-practica] [data-reintentar]")?.addEventListener("click", () => {
+    plegarVideos();
+    cerrarReto(true);
+    if (zona) zona.hidden = true;
+    decision = null;
+    errorActual = null;
+  });
+
+  errores.forEach((item) => {
+    const id = item.dataset.fallo ?? "";
+    const boton = item.querySelector<HTMLButtonElement>("[data-error-boton]");
+    boton?.addEventListener("click", () => {
+      const abierto = boton.getAttribute("aria-expanded") === "true";
+      abrirError(abierto ? "" : id, !abierto);
+      if (!abierto) track("error_abierto", { ejercicio: id, tipo: tipoPorId[id] });
+    });
+
+    const ejemploZona = item.querySelector<HTMLElement>("[data-ejemplo-zona]");
+    item.querySelector("[data-probar]")?.addEventListener("click", () => {
+      if (!ejemploZona) return;
+      ejemploZona.hidden = false;
+      ejemploZona.querySelector<HTMLInputElement>("input")?.focus({ preventScroll: true });
+      ejemploZona.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    });
+
+    const video = item.querySelector<HTMLVideoElement>("[data-video]");
+    const verVideo = item.querySelector<HTMLButtonElement>("[data-ver-video]");
+    const zonaVideo = item.querySelector<HTMLElement>("[data-video-zona]");
+    verVideo?.addEventListener("click", () => {
+      if (!video || !zonaVideo) return;
+      const abrir = zonaVideo.hidden;
+      zonaVideo.hidden = !abrir;
+      verVideo.setAttribute("aria-expanded", String(abrir));
+      if (!abrir) {
+        video.pause();
+        return;
+      }
+      video.play().catch(() => undefined);
+      zonaVideo.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    });
+    video?.addEventListener("play", () => track("video_play", { ejercicio: id }));
+    video?.addEventListener("ended", () => track("video_fin", { ejercicio: id }));
+    video?.addEventListener("error", () => {
+      const pendiente = item.querySelector<HTMLElement>("[data-video-pendiente]");
+      if (zonaVideo) zonaVideo.hidden = true;
+      if (verVideo) verVideo.hidden = true;
+      if (pendiente) pendiente.hidden = false;
+    });
+  });
+
+  vacias.forEach((item) => {
+    item.querySelector<HTMLButtonElement>("[data-responder]")?.addEventListener("click", () => {
+      const pregunta = document.querySelector<HTMLElement>(
+        `[data-practica] [data-pregunta="${item.dataset.vacia}"]`,
+      );
+      pregunta?.scrollIntoView({ behavior: "smooth", block: "start" });
+      pregunta?.querySelector<HTMLInputElement>("input")?.focus({ preventScroll: true });
+    });
+  });
+
+  document.querySelectorAll<HTMLElement>("[data-instantaneo]").forEach((lista) => {
+    lista.addEventListener("change", (event) => {
+      const input = event.target as HTMLInputElement;
+      const item = input.closest<HTMLElement>("[data-pregunta]");
+      if (!item) return;
+      const correcta = Number(item.dataset.correcta);
+      const acierto = Number(input.value) === correcta;
+      const opciones = Array.from(item.querySelectorAll<HTMLInputElement>("input"));
+      const veredicto = item.querySelector<HTMLElement>("[data-veredicto]");
+      const solucion = item.querySelector<HTMLElement>("[data-solucion]");
+      const feedback = item.querySelector<HTMLElement>("[data-feedback]");
+      const error = lista.closest<HTMLElement>("[data-fallo]");
+
+      item.classList.remove("es-correcta", "es-incorrecta");
+      item.classList.add(acierto ? "es-correcta" : "es-incorrecta");
+      if (veredicto) {
+        veredicto.textContent = acierto
+          ? error
+            ? "¡Correcto! Has resuelto un caso nuevo de esta diferencia."
+            : "¡Correcto!"
+          : "No es correcto.";
+      }
+      if (solucion) solucion.textContent = `Respuesta: ${opciones[correcta]?.closest("label")?.textContent?.trim()}.`;
+      if (feedback) feedback.hidden = false;
+
+      const pista = error?.querySelector<HTMLElement>("[data-pista]");
+      if (pista) pista.hidden = acierto;
+      track(error ? "ejemplo_nuevo" : "desafio", {
+        tipo: error?.dataset.tipo ?? "desafio",
+        correcta: acierto ? "si" : "no",
+      });
+    });
+  });
+
+  // Registro único en el reto durante la visita (simulado: solo se recuerda que hubo registro, nunca el correo).
+  // Pedir únicamente la ficha no cuenta como registro.
+  const CLAVE_REGISTRO = `afv-reto-registrado-${varianteActual() ?? "opcion-1"}`;
+  const formLeadbox = document.querySelector<HTMLFormElement>("[data-leadbox-form]");
+  const okLeadbox = document.querySelector<HTMLElement>("[data-leadbox-ok]");
+  const accesoLeadbox = document.querySelector<HTMLAnchorElement>("[data-reto-acceso]");
+  const formReto = document.querySelector<HTMLFormElement>("[data-reto-form]");
+  const okReto = document.querySelector<HTMLElement>("[data-reto-ok]");
+
+  let registradoEnMemoria = false;
+  const estaRegistrado = () => {
+    try {
+      return sessionStorage.getItem(CLAVE_REGISTRO) === "si";
+    } catch {
+      return registradoEnMemoria;
+    }
+  };
+
+  const ordenResultado = () =>
+    decision
+      ? (decision.modo === "sin-respuestas" ? ordenEstandar : decision.orden).join("-")
+      : leerProgreso().orden || ordenEstandar.join("-");
+
+  const ordenDeError = (id: string) =>
+    decision?.modo === "con-fallos" && tipoPorId[id]
+      ? ordenDesde(tipoPorId[id], decision.tipos, ordenEstandar).join("-")
+      : ordenResultado();
+
+  const urlReto = (orden: string) => {
+    const url = new URL(formReto?.dataset.retoUrl ?? "/", window.location.origin);
+    url.searchParams.set("orden", orden);
+    const variante = varianteActual();
+    if (variante) url.searchParams.set("variante", variante);
+    return url.pathname + url.search;
+  };
+
+  // El acceso del resumen sigue siempre el orden del resultado
+  const actualizarAcceso = () => {
+    if (accesoLeadbox) accesoLeadbox.href = urlReto(ordenResultado());
+  };
+  document.querySelector("[data-practica]")?.addEventListener("afv:corregido", actualizarAcceso);
+
+  const marcarRegistrado = () => {
+    registradoEnMemoria = true;
+    actualizarAcceso();
+    try {
+      sessionStorage.setItem(CLAVE_REGISTRO, "si");
+    } catch {
+      // Sin almacenamiento: el registro vale hasta recargar la página.
+    }
+    if (formLeadbox) formLeadbox.hidden = true;
+    if (okLeadbox) okLeadbox.hidden = false;
+    if (formReto) formReto.hidden = true;
+    if (okReto) okReto.hidden = false;
+    botonesReto.forEach((boton) => {
+      boton.textContent = "Empezar el reto →";
+      boton.removeAttribute("aria-expanded");
+    });
+  };
+
+  // El formulario compartido del reto avisa de su registro con este evento
+  window.addEventListener("afv:track", (event) => {
+    if ((event as CustomEvent<{ evento: string }>).detail.evento === "reto_registro_simulado") marcarRegistrado();
+  });
+
+  // ---------- Envío real (modo de prueba) ----------
+  // Solo con PUBLIC_FORMULARIOS_URL. El correo vive en memoria mientras dura el envío o el reintento
+  // manual; no se guarda en el navegador.
+  const conectado = Boolean(URL_FORMULARIOS);
+  type Resultado = "enviado" | "pendiente" | "fallido" | "limitada" | "error";
+  type TipoSolicitud = Solicitud["tipo"];
+
+  const MENSAJES: Record<TipoSolicitud, Record<Resultado | "enviando", string>> = {
+    reto: {
+      enviando: "Guardando tu solicitud…",
+      enviado: "Te hemos enviado una copia por correo para que puedas volver. Si no la ves, revisa spam.",
+      pendiente: "La copia por correo está en camino; si tarda, la reintentaremos automáticamente.",
+      fallido: "No hemos podido enviarte la copia por correo. Tu acceso funciona igualmente.",
+      limitada: "Ya pediste este acceso hace poco: revisa tu correo (también spam). Podrás pedirlo de nuevo en unos minutos.",
+      error: "No hemos podido guardar tu solicitud ni enviarte la copia. Tu acceso funciona igualmente.",
+    },
+    ficha: {
+      enviando: "Enviando la ficha a tu correo…",
+      enviado: "Te hemos enviado también la ficha por correo. Si no la ves, revisa spam.",
+      pendiente: "La ficha por correo está en camino; si tarda, la reintentaremos automáticamente.",
+      fallido: "No hemos podido enviarte la ficha por correo.",
+      limitada: "Ya pediste la ficha hace poco: revisa tu correo (también spam). Podrás pedirla de nuevo en unos minutos.",
+      error: "No hemos podido guardar tu solicitud ni enviarte la ficha por correo.",
+    },
+  };
+  const RECHAZOS: Record<string, string> = {
+    no_permitido: "Modo de prueba: esta dirección no está autorizada.",
+    correo_no_valido: "Escribe un correo válido.",
+  };
+
+  // Solicitud que falló, para el botón «Reintentar» (misma clave: el script no la duplica).
+  const pendientes: Partial<Record<TipoSolicitud, Solicitud>> = {};
+  const enCurso = new Set<TipoSolicitud>();
+
+  const resultadoDe = (r: Respuesta | null): Resultado =>
+    !r || !r.ok ? "error" : r.limitada ? "limitada" : (r.envio ?? "pendiente");
+
+  const mostrarEstado = (tipo: TipoSolicitud, estado: Resultado | "enviando", texto = MENSAJES[tipo][estado]) => {
+    document.querySelectorAll<HTMLElement>(`[data-envio-estado="${tipo}"]`).forEach((p) => (p.textContent = texto));
+    document
+      .querySelectorAll<HTMLButtonElement>(`[data-envio-reintentar="${tipo}"]`)
+      .forEach((b) => (b.hidden = estado !== "error"));
+  };
+
+  const solicitar = async (solicitud: Solicitud, boton?: HTMLButtonElement | null) => {
+    const texto = boton?.textContent;
+    if (boton) {
+      boton.disabled = true;
+      boton.textContent = "Enviando…";
+    }
+    try {
+      return await enviarSolicitud(solicitud);
+    } catch {
+      return null;
+    } finally {
+      if (boton) {
+        boton.disabled = false;
+        boton.textContent = texto ?? "";
+      }
+    }
+  };
+
+  const mostrarRechazo = (form: HTMLFormElement, r: Respuesta | null) => {
+    const motivo = r && !r.ok ? RECHAZOS[r.motivo ?? ""] : undefined;
+    const aviso = form.querySelector<HTMLElement>("[data-envio-error]");
+    if (aviso) {
+      aviso.textContent = motivo ?? "";
+      aviso.hidden = !motivo;
+    }
+    return Boolean(motivo);
+  };
+
+  const solicitarReto = async (
+    form: HTMLFormElement,
+    datos: { correo: string; objetivo?: string; avisos?: boolean },
+    origen: Solicitud["origen"],
+    orden: string,
+  ) => {
+    if (enCurso.has("reto")) return;
+    enCurso.add("reto");
+    const solicitud: Solicitud = {
+      tipo: "reto",
+      correo: datos.correo,
+      origen,
+      orden,
+      variante: varianteActual() ?? "opcion-3-diseno-d",
+      objetivo: datos.objetivo ?? "",
+      avisos: datos.avisos ?? false,
+      clave: nuevaClave(),
+    };
+    mostrarRechazo(form, null);
+    const r = await solicitar(solicitud, form.querySelector<HTMLButtonElement>("button[type='submit']"));
+    enCurso.delete("reto");
+    if (mostrarRechazo(form, r)) return;
+
+    const resultado = resultadoDe(r);
+    if (resultado === "error") pendientes.reto = solicitud;
+    else delete pendientes.reto;
+    fijarOrden(orden);
+    const enlaceFormulario = enlaceReto();
+    if (enlaceFormulario) enlaceFormulario.href = urlReto(orden);
+    track("reto_solicitud", { origen, resultado });
+    form.reset();
+    marcarRegistrado();
+    mostrarEstado("reto", resultado);
+  };
+
+  // El formulario compartido del reto valida y avisa; aquí se envía (error → orden del error; final → del resultado).
+  formReto?.addEventListener("afv:reto-solicitud", (event) => {
+    const datos = (event as CustomEvent<{ correo: string; objetivo: string; avisos: boolean }>).detail;
+    const error = formReto.closest<HTMLElement>("[data-fallo]")?.dataset.fallo;
+    void solicitarReto(formReto, datos, error ? "error" : "final", error ? ordenDeError(error) : ordenResultado());
+  });
+
+  document.querySelectorAll<HTMLButtonElement>("[data-envio-reintentar]").forEach((boton) => {
+    boton.addEventListener("click", async () => {
+      const tipo = boton.dataset.envioReintentar as TipoSolicitud;
+      const solicitud = pendientes[tipo];
+      if (!solicitud || enCurso.has(tipo)) return;
+      enCurso.add(tipo);
+      mostrarEstado(tipo, "enviando");
+      const r = await solicitar(solicitud, boton);
+      enCurso.delete(tipo);
+      const resultado = resultadoDe(r);
+      if (resultado !== "error") delete pendientes[tipo];
+      mostrarEstado(tipo, resultado);
+      track("solicitud_reintento", { tipo, resultado });
+    });
+  });
+
+  formLeadbox?.addEventListener("submit", (event) => {
+    event.preventDefault();
+    if (!correoValido(formLeadbox)) return;
+    if (conectado) {
+      const correo = formLeadbox.querySelector<HTMLInputElement>("input[type='email']")?.value.trim() ?? "";
+      void solicitarReto(formLeadbox, { correo }, "resumen", ordenResultado());
+      return;
+    }
+    fijarOrden(ordenResultado());
+    track("lead_simulado", { origen: "diagnostico", modo: decision?.modo ?? "sin-corregir" });
+    formLeadbox.reset();
+    marcarRegistrado();
+  });
+
+  accesoLeadbox?.addEventListener("click", () => {
+    const orden = ordenResultado();
+    fijarOrden(orden);
+    accesoLeadbox.href = urlReto(orden);
+    track("reto_acceso_directo", { posicion: "resumen" });
+  });
+
+  botonesReto.forEach((boton) => {
+    boton.addEventListener("click", () => {
+      if (estaRegistrado()) {
+        const error = boton.closest<HTMLElement>("[data-fallo]")?.dataset.fallo;
+        const orden = error ? ordenDeError(error) : ordenResultado();
+        fijarOrden(orden);
+        track("reto_acceso_directo", { posicion: error ? "error" : "final" });
+        window.location.href = urlReto(orden);
+        return;
+      }
+      const hueco =
+        boton.closest("[data-error-panel]")?.querySelector<HTMLElement>("[data-reto-hueco]") ?? huecoFinal;
+      if (!retoZona || !hueco) return;
+      if (!retoZona.hidden && retoZona.parentElement === hueco) {
+        cerrarReto();
+        return;
+      }
+      hueco.append(retoZona);
+      retoZona.hidden = false;
+      botonesReto.forEach((b) => b.setAttribute("aria-expanded", String(b === boton)));
+      pausarVideos();
+      actualizarOferta();
+      track("seguir_visto", {
+        modo: decision?.modo ?? "sin-corregir",
+        tipo: errorActual ? tipoPorId[errorActual] : "ninguno",
+        posicion: hueco === huecoFinal ? "final" : "error",
+      });
+      ofertaTitulo?.focus({ preventScroll: true });
+      retoZona.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    });
+  });
+
+  const descargada = document.querySelector<HTMLElement>("[data-descargada]");
+  const modalPdf = document.querySelector<HTMLDialogElement>("[data-modal-pdf]");
+  const formModalPdf = document.querySelector<HTMLFormElement>("[data-modal-pdf-form]");
+  const exitoModalPdf = document.querySelector<HTMLElement>("[data-modal-pdf-exito]");
 
   document.querySelectorAll<HTMLAnchorElement>("[data-descarga]").forEach((boton) => {
     boton.addEventListener("click", () => {
       track("descarga_ficha", { posicion: boton.dataset.descarga ?? "" });
+      if (boton.dataset.descarga === "cabecera" && descargada) descargada.hidden = false;
+      if (boton.closest("[data-modal-pdf]")) modalPdf?.close();
     });
   });
+
+  // Ventana de la ficha: cada vez que se abre empieza en su estado inicial
+  const resetearModalPdf = () => {
+    if (!formModalPdf || !exitoModalPdf) return;
+    formModalPdf.hidden = false;
+    formModalPdf.reset();
+    exitoModalPdf.hidden = true;
+    mostrarRechazo(formModalPdf, null);
+    delete pendientes.ficha;
+    mostrarEstado("ficha", "enviando", "");
+  };
+  document.querySelector("[data-abrir-modal-pdf]")?.addEventListener("click", () => {
+    resetearModalPdf();
+    modalPdf?.showModal();
+    track("modal_pdf_abierto");
+  });
+  document.querySelector("[data-cerrar-modal-pdf]")?.addEventListener("click", () => modalPdf?.close());
+  modalPdf?.addEventListener("click", (event) => {
+    if (event.target === modalPdf) modalPdf.close();
+  });
+
+  // Correo simulado: se valida, pero no se envía ni se guarda; los eventos no llevan el correo
+  const correoValido = (form: HTMLFormElement) => {
+    const input = form.querySelector<HTMLInputElement>("input[type='email']");
+    if (input?.value.trim() && input.checkValidity()) return true;
+    input?.reportValidity();
+    input?.focus();
+    return false;
+  };
+
+  // La descarga sale al momento; con conexión, el envío por correo se informa debajo cuando responde el script.
+  formModalPdf?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    if (!correoValido(formModalPdf) || enCurso.has("ficha")) return;
+    track(conectado ? "ficha_solicitud" : "lead_simulado", { origen: "modal_pdf" });
+    track("descarga_ficha", { posicion: "cabecera-correo" });
+    const correo = formModalPdf.querySelector<HTMLInputElement>("input[type='email']")?.value.trim() ?? "";
+    formModalPdf.hidden = true;
+    if (exitoModalPdf) exitoModalPdf.hidden = false;
+    if (descargada) descargada.hidden = false;
+    const enlace = document.createElement("a");
+    enlace.href = formModalPdf.querySelector<HTMLAnchorElement>("[data-descarga]")?.href ?? "";
+    enlace.download = "";
+    enlace.click();
+    if (!conectado) return;
+
+    const solicitud: Solicitud = {
+      tipo: "ficha",
+      correo,
+      origen: "ventana_pdf",
+      variante: varianteActual() ?? "opcion-3-diseno-d",
+      clave: nuevaClave(),
+    };
+    enCurso.add("ficha");
+    mostrarEstado("ficha", "enviando");
+    const r = await solicitar(solicitud);
+    enCurso.delete("ficha");
+    const rechazo = r && !r.ok ? RECHAZOS[r.motivo ?? ""] : undefined;
+    if (rechazo) {
+      mostrarEstado("ficha", "fallido", `${rechazo} No se ha enviado por correo.`);
+      return;
+    }
+    const resultado = resultadoDe(r);
+    if (resultado === "error") pendientes.ficha = solicitud;
+    mostrarEstado("ficha", resultado);
+    track("ficha_resultado", { resultado });
+  });
+
+  if (estaRegistrado()) marcarRegistrado();
+
+  // Contador sincronizado y barra de progreso interactiva
+  const formPractica = document.querySelector<HTMLFormElement>("[data-practica] [data-ejercicios]");
+  const accionesPractica = formPractica?.querySelector<HTMLElement>(".ejercicios-acciones");
+  const progresoFill = document.querySelector<HTMLElement>("[data-progreso-fill]");
+  const progresoDisplay = document.querySelector<HTMLElement>("[data-progreso-display]");
+  const btnCorregir = formPractica?.querySelector<HTMLButtonElement>("[data-corregir]");
+
+  if (formPractica && accionesPractica) {
+    const contador = document.createElement("span");
+    contador.className = "c-barra-contador";
+    contador.setAttribute("aria-live", "polite");
+    accionesPractica.prepend(contador);
+    const total = formPractica.querySelectorAll("[data-pregunta]").length;
+
+    const actualizarProgreso = () => {
+      const respondidas = formPractica.querySelectorAll("input:checked").length;
+      contador.textContent = `${respondidas} de ${total} respondidas`;
+      if (progresoDisplay) progresoDisplay.textContent = `${respondidas} de ${total}`;
+      const porcentaje = Math.round((respondidas / total) * 100);
+      if (progresoFill) progresoFill.style.width = `${porcentaje}%`;
+
+      if (btnCorregir) {
+        if (respondidas === total) {
+          btnCorregir.classList.add("c-listo-para-corregir");
+          btnCorregir.textContent = "¡Listo! Corregir respuestas →";
+        } else {
+          btnCorregir.classList.remove("c-listo-para-corregir");
+          btnCorregir.textContent = "Corregir";
+        }
+      }
+    };
+
+    actualizarProgreso();
+    formPractica.addEventListener("change", actualizarProgreso);
+    formPractica.querySelector("[data-reintentar]")?.addEventListener("click", () => setTimeout(actualizarProgreso));
+  }
+
+  const avatar = document.querySelector<HTMLImageElement>("[data-avatar]");
+  const quitarAvatar = () => avatar?.remove();
+  if (avatar?.complete && avatar.naturalWidth === 0) quitarAvatar();
+  avatar?.addEventListener("error", quitarAvatar);
 </script>
