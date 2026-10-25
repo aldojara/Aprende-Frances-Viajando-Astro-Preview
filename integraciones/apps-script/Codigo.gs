@@ -11,6 +11,7 @@
  *   valor, solo las de CORREOS_PERMITIDOS. Se comprueba antes de guardar y antes de cada envío.
  * - Una misma clave de envío (doble clic, reintento del navegador) nunca crea otra fila ni otro correo.
  * - Pedir de nuevo el mismo acceso se permite, con un intervalo mínimo y un máximo cada 24 h.
+ * - Cada solicitud escribe su fila una sola vez, con el resultado del primer envío.
  * - Si el envío falla, la tarea programada lo reintenta con esperas crecientes hasta MAX_INTENTOS.
  *   Una fila que quedó «enviando» (ejecución interrumpida) pasa a «revisar» y no se reenvía sola.
  */
@@ -117,9 +118,9 @@ function registrar_(datos, ahora) {
       error: "",
       _fila: hoja.getLastRow() + 1,
     };
-    escribirFila_(hoja, fila);
-    SpreadsheetApp.flush();
-    intentarEnvio_(hoja, fila, c, ahora);
+    // Una sola escritura por solicitud: la fila se guarda ya con el resultado del primer envío
+    // (cada escritura obliga a actualizar la hoja si está abierta en el navegador).
+    intentarEnvio_(hoja, fila, c, ahora, true);
     return { ok: true, envio: estadoPublico_(fila.estado) };
   } finally {
     cerrojo.releaseLock();
@@ -128,7 +129,8 @@ function registrar_(datos, ahora) {
 
 // ---------- Envío y reintentos ----------
 
-function intentarEnvio_(hoja, fila, c, ahora) {
+// primerEnvio: la fila aún no está en la hoja; se escribe una sola vez, al final.
+function intentarEnvio_(hoja, fila, c, ahora, primerEnvio) {
   // Modo de prueba: también antes de cada envío (la lista o el modo pueden haber cambiado).
   if (!permitido_(c, fila.correo)) {
     fila.estado = "no_permitido";
@@ -147,8 +149,11 @@ function intentarEnvio_(hoja, fila, c, ahora) {
   fila.estado = "enviando";
   fila.intentos = Number(fila.intentos || 0) + 1;
   fila.ultimo_intento = ahora;
-  escribirFila_(hoja, fila);
-  SpreadsheetApp.flush();
+  if (!primerEnvio) {
+    // Reintento: se marca «enviando» antes de enviar para detectar una ejecución interrumpida.
+    escribirFila_(hoja, fila);
+    SpreadsheetApp.flush();
+  }
 
   try {
     MailApp.sendEmail(mensaje_(fila, c));
