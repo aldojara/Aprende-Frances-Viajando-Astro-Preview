@@ -2,7 +2,7 @@
 
 Conexión **en modo de prueba** de los tres formularios de `/practica/avoir-o-etre/` (opción 3 · Diseño D):
 la caja del resultado y el formulario del reto (acceso al reto) y la ventana de la ficha (PDF por correo).
-Las demás opciones del laboratorio siguen simuladas.
+Las demás opciones del laboratorio se retiraron (etiqueta git `laboratorio/archivo`).
 
 ## Qué hace
 

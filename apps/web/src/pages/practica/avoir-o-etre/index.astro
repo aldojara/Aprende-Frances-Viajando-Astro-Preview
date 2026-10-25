@@ -1,9 +1,8 @@
 ---
-// Laboratorio · Opción 3 · Diseño D. Base visual: el diseño C (copiado tal cual el 24 oct 2026, que se
-// conserva aparte), con los textos acordados: sin promesas no verificadas (duración del vídeo, «5 días»,
-// «7 minutos», «nativos»), el botón y la línea del reto acordados, el formulario legible y sin dar por
-// dominado el tema cuando quedan frases sin responder. Mismo funcionamiento que la opción 3.
-// Página principal de la práctica (antes /opcion-3-diseno-d/; la variante conserva ese nombre para el progreso).
+// Página principal de la práctica: opción 3 · Diseño D, la elegida del laboratorio (archivado en la etiqueta
+// git laboratorio/archivo; el diseño C, fuera del repositorio). Base visual del diseño C con los textos
+// acordados: sin promesas no verificadas (duración del vídeo, «5 días», «7 minutos», «nativos»).
+// La variante conserva el nombre «opcion-3-diseno-d» para el progreso y los eventos.
 // Prototipo: noindex y fuera del sitemap. Avatar y vídeo provisionales en public/laboratorio-local/ (no se publican).
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import EjerciciosCorregibles from "../../../components/practica/EjerciciosCorregibles.astro";
@@ -34,18 +33,11 @@ const partes = (enunciado: string) => {
 ---
 
 <BaseLayout
-  title="¿Avoir o être? Mira, entiende y vuelve a probar (laboratorio · opción 3 · diseño D)"
-  description="Prototipo: práctica con ayuda para cada error, diseño D."
+  title="¿Avoir o être? Mira, entiende y vuelve a probar"
+  description="Prototipo: práctica con ayuda para cada error."
   robots="noindex,nofollow"
 >
   <main class="diseno-c" data-variante="opcion-3-diseno-d">
-    <!-- Barra de aviso de laboratorio -->
-    <div class="prototipo-aviso" role="note">
-      <span class="aviso-pill">Laboratorio · Opción 3 · Diseño D · prototipo, no publicar</span>
-      <a href={withBase("/practica/avoir-o-etre/opcion-3/")}>Comparar con la opción 3</a>
-      <a href={withBase("/laboratorio/")}>Volver al laboratorio</a>
-    </div>
-
     <!-- Hero con Tutor Personal -->
     <section class="c-hero">
       <div class="container c-hero-dentro">
@@ -538,44 +530,6 @@ const partes = (enunciado: string) => {
   .error,
   .reto-zona {
     scroll-margin-top: 6.5rem;
-  }
-
-  /* Banner de aviso del prototipo */
-  .prototipo-aviso {
-    margin: 0;
-    padding: 0.6rem 1rem;
-    background: #143862;
-    color: #ffffff;
-    font-size: 0.86rem;
-    font-weight: 500;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-    gap: 0.75rem;
-    border-bottom: 1px solid rgba(240, 212, 138, 0.25);
-  }
-
-  .aviso-pill {
-    background: var(--b-oro);
-    color: var(--b-tinta-oro);
-    font-size: 0.75rem;
-    font-weight: 700;
-    padding: 0.15rem 0.6rem;
-    border-radius: 999px;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-  }
-
-  .prototipo-aviso a {
-    color: var(--b-oro-claro);
-    text-decoration: underline;
-    font-weight: 600;
-    transition: color 0.15s ease;
-  }
-
-  .prototipo-aviso a:hover {
-    color: #ffffff;
   }
 
   /* Hero Section */
