@@ -17,7 +17,11 @@ import {
   VIDEO_PROVISIONAL,
   videoPorEjercicio,
 } from "../../../../data/practicaAvoirEtreOpcion3";
+import { URL_FORMULARIOS } from "../../../../utils/formularios";
 import { withBase } from "../../../../utils/paths";
+
+// Con PUBLIC_FORMULARIOS_URL, los tres formularios guardan y envían de verdad (modo de prueba).
+const conectado = Boolean(URL_FORMULARIOS);
 
 const pdf = withBase(fichaPdf);
 const urlRetoInicial = `${withBase("/practica/avoir-o-etre/reto/")}?orden=${ordenEstandar.join("-")}&variante=opcion-3-diseno-d`;
@@ -138,7 +142,7 @@ const partes = (enunciado: string) => {
               </div>
             </div>
 
-            <!-- Caja de correo en el diagnóstico (simulada: no se envía nada) -->
+            <!-- Caja de correo en el diagnóstico (simulada, o real en modo de prueba si hay conexión) -->
             <div class="c-diagnostico-leadbox" data-lead-box>
               <div class="c-leadbox-header">
                 <span class="c-leadbox-badge">Recomendación de tu tutor</span>
@@ -151,17 +155,44 @@ const partes = (enunciado: string) => {
                   <button class="c-boton c-boton-oro c-leadbox-btn" type="submit">Quiero el reto gratis →</button>
                 </div>
                 <p class="c-leadbox-garantias">✓ 10 ejercicios por sesión · ✓ Gratis · Sin spam</p>
-                <p class="c-aviso-simulado" role="note">
-                  <strong>Formulario simulado.</strong> En este prototipo no se envía ni se guarda ningún dato.
-                </p>
+                {conectado && <p class="c-envio-error" role="alert" data-envio-error hidden />}
+                {
+                  conectado ? (
+                    <p class="c-aviso-simulado" role="note">
+                      <strong>Modo de prueba.</strong> Solo se aceptan direcciones autorizadas.
+                    </p>
+                  ) : (
+                    <p class="c-aviso-simulado" role="note">
+                      <strong>Formulario simulado.</strong> En este prototipo no se envía ni se guarda ningún dato.
+                    </p>
+                  )
+                }
               </form>
               <div class="c-leadbox-confirmacion" role="status" data-leadbox-ok hidden>
                 <span class="c-leadbox-ok-icon" aria-hidden="true">✓</span>
                 <div class="c-leadbox-ok-content">
-                  <strong>Simulación completada.</strong>
-                  <p>En la versión real recibirías aquí el acceso al reto. En este prototipo no se ha enviado nada.</p>
+                  {
+                    conectado ? (
+                      <>
+                        <strong>¡Listo! Aquí tienes tu acceso.</strong>
+                        <p data-envio-estado="reto" />
+                      </>
+                    ) : (
+                      <>
+                        <strong>Simulación completada.</strong>
+                        <p>En la versión real recibirías aquí el acceso al reto. En este prototipo no se ha enviado nada.</p>
+                      </>
+                    )
+                  }
                   <!-- No usa data-reto-enlace: ese atributo lo busca el formulario compartido del reto -->
                   <a class="c-boton c-boton-oro c-leadbox-btn-reto" href={urlRetoInicial} data-reto-acceso>Empezar el reto →</a>
+                  {
+                    conectado && (
+                      <button class="c-boton-link" type="button" data-envio-reintentar="reto" hidden>
+                        Reintentar el guardado y el envío
+                      </button>
+                    )
+                  }
                 </div>
               </div>
             </div>
@@ -390,7 +421,7 @@ const partes = (enunciado: string) => {
                   <li>10 ejercicios por sesión, con la explicación de cada respuesta</li>
                   <li>Tu avance se guarda en este navegador</li>
                 </ul>
-                <RetoFormulario />
+                <RetoFormulario envio={conectado ? "externo" : "simulado"} />
               </div>
             </div>
           </div>
@@ -418,10 +449,24 @@ const partes = (enunciado: string) => {
             <input type="email" name="correo_pdf" placeholder="Tu correo electrónico" required />
           </label>
           <button class="c-boton c-boton-oro c-modal-submit" type="submit">Enviarme la ficha y descargar ahora ↓</button>
-          <p class="c-modal-garantia">🔒 Sin spam. Tu correo solo se usará para enviarte materiales de francés.</p>
-          <p class="c-aviso-simulado" role="note">
-            <strong>Formulario simulado.</strong> En este prototipo no se envía ni se guarda ningún dato; solo se descarga la ficha.
-          </p>
+          {conectado && <p class="c-envio-error" role="alert" data-envio-error hidden />}
+          {
+            conectado ? (
+              <>
+                <p class="c-modal-garantia">🔒 Sin spam. Tu correo solo se usará para enviarte esta ficha.</p>
+                <p class="c-aviso-simulado" role="note">
+                  <strong>Modo de prueba.</strong> Solo se aceptan direcciones autorizadas.
+                </p>
+              </>
+            ) : (
+              <>
+                <p class="c-modal-garantia">🔒 Sin spam. Tu correo solo se usará para enviarte materiales de francés.</p>
+                <p class="c-aviso-simulado" role="note">
+                  <strong>Formulario simulado.</strong> En este prototipo no se envía ni se guarda ningún dato; solo se descarga la ficha.
+                </p>
+              </>
+            )
+          }
           <div class="c-modal-directo">
             <a class="c-link-discreto" href={pdf} download data-descarga="cabecera">O descargar directamente sin correo →</a>
           </div>
@@ -430,7 +475,19 @@ const partes = (enunciado: string) => {
         <div class="c-modal-exito" role="status" data-modal-pdf-exito hidden>
           <span class="c-modal-exito-icon" aria-hidden="true">✓</span>
           <h4>¡Ficha descargada!</h4>
-          <p>Si la descarga no ha empezado, <a href={pdf} download>haz clic aquí</a>. En este prototipo no se ha enviado ningún correo.</p>
+          {
+            conectado ? (
+              <>
+                <p>Si la descarga no ha empezado, <a href={pdf} download>haz clic aquí</a>.</p>
+                <p data-envio-estado="ficha" />
+                <button class="c-boton-link" type="button" data-envio-reintentar="ficha" hidden>
+                  Reintentar el envío por correo
+                </button>
+              </>
+            ) : (
+              <p>Si la descarga no ha empezado, <a href={pdf} download>haz clic aquí</a>. En este prototipo no se ha enviado ningún correo.</p>
+            )
+          }
         </div>
       </div>
     </dialog>
@@ -2081,6 +2138,13 @@ const partes = (enunciado: string) => {
     text-decoration: none;
   }
 
+  .c-envio-error {
+    margin: 0;
+    color: var(--b-mal);
+    font-size: 0.88rem;
+    font-weight: 600;
+  }
+
   .c-aviso-simulado {
     margin: 0;
     padding: 0.5rem 0.75rem;
@@ -2405,6 +2469,13 @@ const partes = (enunciado: string) => {
     type DecisionAyuda,
     type ResultadoEjercicio,
   } from "../../../../utils/ayudaVideo";
+  import {
+    URL_FORMULARIOS,
+    enviarSolicitud,
+    nuevaClave,
+    type Respuesta,
+    type Solicitud,
+  } from "../../../../utils/formularios";
   import { guardarProgreso, leerProgreso, track, varianteActual } from "../../../../utils/track";
 
   const zona = document.querySelector<HTMLElement>("[data-ayuda-zona]");
@@ -2738,9 +2809,144 @@ const partes = (enunciado: string) => {
     if ((event as CustomEvent<{ evento: string }>).detail.evento === "reto_registro_simulado") marcarRegistrado();
   });
 
+  // ---------- Envío real (modo de prueba) ----------
+  // Solo con PUBLIC_FORMULARIOS_URL. El correo vive en memoria mientras dura el envío o el reintento
+  // manual; no se guarda en el navegador.
+  const conectado = Boolean(URL_FORMULARIOS);
+  type Resultado = "enviado" | "pendiente" | "fallido" | "limitada" | "error";
+  type TipoSolicitud = Solicitud["tipo"];
+
+  const MENSAJES: Record<TipoSolicitud, Record<Resultado | "enviando", string>> = {
+    reto: {
+      enviando: "Guardando tu solicitud…",
+      enviado: "Te hemos enviado una copia por correo para que puedas volver. Si no la ves, revisa spam.",
+      pendiente: "La copia por correo está en camino; si tarda, la reintentaremos automáticamente.",
+      fallido: "No hemos podido enviarte la copia por correo. Tu acceso funciona igualmente.",
+      limitada: "Ya pediste este acceso hace poco: revisa tu correo (también spam). Podrás pedirlo de nuevo en unos minutos.",
+      error: "No hemos podido guardar tu solicitud ni enviarte la copia. Tu acceso funciona igualmente.",
+    },
+    ficha: {
+      enviando: "Enviando la ficha a tu correo…",
+      enviado: "Te hemos enviado también la ficha por correo. Si no la ves, revisa spam.",
+      pendiente: "La ficha por correo está en camino; si tarda, la reintentaremos automáticamente.",
+      fallido: "No hemos podido enviarte la ficha por correo.",
+      limitada: "Ya pediste la ficha hace poco: revisa tu correo (también spam). Podrás pedirla de nuevo en unos minutos.",
+      error: "No hemos podido guardar tu solicitud ni enviarte la ficha por correo.",
+    },
+  };
+  const RECHAZOS: Record<string, string> = {
+    no_permitido: "Modo de prueba: esta dirección no está autorizada.",
+    correo_no_valido: "Escribe un correo válido.",
+  };
+
+  // Solicitud que falló, para el botón «Reintentar» (misma clave: el script no la duplica).
+  const pendientes: Partial<Record<TipoSolicitud, Solicitud>> = {};
+  const enCurso = new Set<TipoSolicitud>();
+
+  const resultadoDe = (r: Respuesta | null): Resultado =>
+    !r || !r.ok ? "error" : r.limitada ? "limitada" : (r.envio ?? "pendiente");
+
+  const mostrarEstado = (tipo: TipoSolicitud, estado: Resultado | "enviando", texto = MENSAJES[tipo][estado]) => {
+    document.querySelectorAll<HTMLElement>(`[data-envio-estado="${tipo}"]`).forEach((p) => (p.textContent = texto));
+    document
+      .querySelectorAll<HTMLButtonElement>(`[data-envio-reintentar="${tipo}"]`)
+      .forEach((b) => (b.hidden = estado !== "error"));
+  };
+
+  const solicitar = async (solicitud: Solicitud, boton?: HTMLButtonElement | null) => {
+    const texto = boton?.textContent;
+    if (boton) {
+      boton.disabled = true;
+      boton.textContent = "Enviando…";
+    }
+    try {
+      return await enviarSolicitud(solicitud);
+    } catch {
+      return null;
+    } finally {
+      if (boton) {
+        boton.disabled = false;
+        boton.textContent = texto ?? "";
+      }
+    }
+  };
+
+  const mostrarRechazo = (form: HTMLFormElement, r: Respuesta | null) => {
+    const motivo = r && !r.ok ? RECHAZOS[r.motivo ?? ""] : undefined;
+    const aviso = form.querySelector<HTMLElement>("[data-envio-error]");
+    if (aviso) {
+      aviso.textContent = motivo ?? "";
+      aviso.hidden = !motivo;
+    }
+    return Boolean(motivo);
+  };
+
+  const solicitarReto = async (
+    form: HTMLFormElement,
+    datos: { correo: string; objetivo?: string; avisos?: boolean },
+    origen: Solicitud["origen"],
+    orden: string,
+  ) => {
+    if (enCurso.has("reto")) return;
+    enCurso.add("reto");
+    const solicitud: Solicitud = {
+      tipo: "reto",
+      correo: datos.correo,
+      origen,
+      orden,
+      variante: varianteActual() ?? "opcion-3-diseno-d",
+      objetivo: datos.objetivo ?? "",
+      avisos: datos.avisos ?? false,
+      clave: nuevaClave(),
+    };
+    mostrarRechazo(form, null);
+    const r = await solicitar(solicitud, form.querySelector<HTMLButtonElement>("button[type='submit']"));
+    enCurso.delete("reto");
+    if (mostrarRechazo(form, r)) return;
+
+    const resultado = resultadoDe(r);
+    if (resultado === "error") pendientes.reto = solicitud;
+    else delete pendientes.reto;
+    fijarOrden(orden);
+    const enlaceFormulario = enlaceReto();
+    if (enlaceFormulario) enlaceFormulario.href = urlReto(orden);
+    track("reto_solicitud", { origen, resultado });
+    form.reset();
+    marcarRegistrado();
+    mostrarEstado("reto", resultado);
+  };
+
+  // El formulario compartido del reto valida y avisa; aquí se envía (error → orden del error; final → del resultado).
+  formReto?.addEventListener("afv:reto-solicitud", (event) => {
+    const datos = (event as CustomEvent<{ correo: string; objetivo: string; avisos: boolean }>).detail;
+    const error = formReto.closest<HTMLElement>("[data-fallo]")?.dataset.fallo;
+    void solicitarReto(formReto, datos, error ? "error" : "final", error ? ordenDeError(error) : ordenResultado());
+  });
+
+  document.querySelectorAll<HTMLButtonElement>("[data-envio-reintentar]").forEach((boton) => {
+    boton.addEventListener("click", async () => {
+      const tipo = boton.dataset.envioReintentar as TipoSolicitud;
+      const solicitud = pendientes[tipo];
+      if (!solicitud || enCurso.has(tipo)) return;
+      enCurso.add(tipo);
+      mostrarEstado(tipo, "enviando");
+      const r = await solicitar(solicitud, boton);
+      enCurso.delete(tipo);
+      const resultado = resultadoDe(r);
+      if (resultado !== "error") delete pendientes[tipo];
+      mostrarEstado(tipo, resultado);
+      track("solicitud_reintento", { tipo, resultado });
+    });
+  });
+
   formLeadbox?.addEventListener("submit", (event) => {
     event.preventDefault();
     if (!correoValido(formLeadbox)) return;
+    if (conectado) {
+      const correo = formLeadbox.querySelector<HTMLInputElement>("input[type='email']")?.value.trim() ?? "";
+      void solicitarReto(formLeadbox, { correo }, "resumen", ordenResultado());
+      return;
+    }
     fijarOrden(ordenResultado());
     track("lead_simulado", { origen: "diagnostico", modo: decision?.modo ?? "sin-corregir" });
     formLeadbox.reset();
@@ -2805,6 +3011,9 @@ const partes = (enunciado: string) => {
     formModalPdf.hidden = false;
     formModalPdf.reset();
     exitoModalPdf.hidden = true;
+    mostrarRechazo(formModalPdf, null);
+    delete pendientes.ficha;
+    mostrarEstado("ficha", "enviando", "");
   };
   document.querySelector("[data-abrir-modal-pdf]")?.addEventListener("click", () => {
     resetearModalPdf();
@@ -2815,7 +3024,6 @@ const partes = (enunciado: string) => {
   modalPdf?.addEventListener("click", (event) => {
     if (event.target === modalPdf) modalPdf.close();
   });
-  modalPdf?.addEventListener("close", resetearModalPdf);
 
   // Correo simulado: se valida, pero no se envía ni se guarda; los eventos no llevan el correo
   const correoValido = (form: HTMLFormElement) => {
@@ -2826,11 +3034,13 @@ const partes = (enunciado: string) => {
     return false;
   };
 
-  formModalPdf?.addEventListener("submit", (event) => {
+  // La descarga sale al momento; con conexión, el envío por correo se informa debajo cuando responde el script.
+  formModalPdf?.addEventListener("submit", async (event) => {
     event.preventDefault();
-    if (!correoValido(formModalPdf)) return;
-    track("lead_simulado", { origen: "modal_pdf" });
+    if (!correoValido(formModalPdf) || enCurso.has("ficha")) return;
+    track(conectado ? "ficha_solicitud" : "lead_simulado", { origen: "modal_pdf" });
     track("descarga_ficha", { posicion: "cabecera-correo" });
+    const correo = formModalPdf.querySelector<HTMLInputElement>("input[type='email']")?.value.trim() ?? "";
     formModalPdf.hidden = true;
     if (exitoModalPdf) exitoModalPdf.hidden = false;
     if (descargada) descargada.hidden = false;
@@ -2838,6 +3048,28 @@ const partes = (enunciado: string) => {
     enlace.href = formModalPdf.querySelector<HTMLAnchorElement>("[data-descarga]")?.href ?? "";
     enlace.download = "";
     enlace.click();
+    if (!conectado) return;
+
+    const solicitud: Solicitud = {
+      tipo: "ficha",
+      correo,
+      origen: "ventana_pdf",
+      variante: varianteActual() ?? "opcion-3-diseno-d",
+      clave: nuevaClave(),
+    };
+    enCurso.add("ficha");
+    mostrarEstado("ficha", "enviando");
+    const r = await solicitar(solicitud);
+    enCurso.delete("ficha");
+    const rechazo = r && !r.ok ? RECHAZOS[r.motivo ?? ""] : undefined;
+    if (rechazo) {
+      mostrarEstado("ficha", "fallido", `${rechazo} No se ha enviado por correo.`);
+      return;
+    }
+    const resultado = resultadoDe(r);
+    if (resultado === "error") pendientes.ficha = solicitud;
+    mostrarEstado("ficha", resultado);
+    track("ficha_resultado", { resultado });
   });
 
   if (estaRegistrado()) marcarRegistrado();

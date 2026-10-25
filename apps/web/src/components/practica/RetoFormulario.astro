@@ -1,19 +1,35 @@
 ---
 import { withBase } from "../../utils/paths";
 
+interface Props {
+  // «externo»: la página que lo usa envía la solicitud de verdad (modo de prueba); por defecto, simulado.
+  envio?: "simulado" | "externo";
+}
+
+const { envio = "simulado" } = Astro.props;
+const externo = envio === "externo";
 const retoUrl = withBase("/practica/avoir-o-etre/reto/");
 ---
 
 <div class="reto-form-wrap">
-  <form class="reto-form card" data-reto-form data-reto-url={retoUrl} novalidate>
-    <p class="reto-form-simulado" role="note">
-      <strong>Formulario simulado.</strong> En este prototipo no se envía ni se guarda ningún dato.
-    </p>
+  <form class="reto-form card" data-reto-form data-reto-url={retoUrl} data-envio={envio} novalidate>
+    {
+      externo ? (
+        <p class="reto-form-simulado" role="note">
+          <strong>Modo de prueba.</strong> Solo se aceptan direcciones autorizadas.
+        </p>
+      ) : (
+        <p class="reto-form-simulado" role="note">
+          <strong>Formulario simulado.</strong> En este prototipo no se envía ni se guarda ningún dato.
+        </p>
+      )
+    }
 
     <label class="campo">
       <span>Tu correo</span>
       <input type="email" name="correo" autocomplete="email" required />
       <span class="campo-error" data-error hidden>Escribe un correo válido.</span>
+      {externo && <span class="campo-error" role="alert" data-envio-error hidden></span>}
     </label>
 
     <label class="campo">
@@ -45,13 +61,26 @@ const retoUrl = withBase("/practica/avoir-o-etre/reto/");
   <div class="reto-confirmacion card" data-reto-ok hidden tabindex="-1">
     <h3>¡Listo! Aquí tienes tu acceso</h3>
     <a class="button button-primary" data-reto-enlace href={retoUrl}>Empezar el reto</a>
-    <p>
-      También te enviamos una copia por correo para que puedas volver; puede tardar unos minutos. Si
-      no la ves, revisa spam.
-    </p>
-    <p class="reto-form-simulado" role="note">
-      <strong>Simulación:</strong> no se ha enviado ningún correo ni se ha guardado el dato.
-    </p>
+    {
+      externo ? (
+        <>
+          <p role="status" data-envio-estado="reto" />
+          <button class="button button-secondary" type="button" data-envio-reintentar="reto" hidden>
+            Reintentar
+          </button>
+        </>
+      ) : (
+        <>
+          <p>
+            También te enviamos una copia por correo para que puedas volver; puede tardar unos minutos. Si
+            no la ves, revisa spam.
+          </p>
+          <p class="reto-form-simulado" role="note">
+            <strong>Simulación:</strong> no se ha enviado ningún correo ni se ha guardado el dato.
+          </p>
+        </>
+      )
+    }
   </div>
 </div>
 
@@ -159,6 +188,16 @@ const retoUrl = withBase("/practica/avoir-o-etre/reto/");
     if (error) error.hidden = valido;
     if (!valido) {
       correo.focus();
+      return;
+    }
+
+    // Envío real: lo hace la página que lo usa, con los datos ya validados.
+    if (form.dataset.envio === "externo") {
+      const objetivo = (form.elements.namedItem("objetivo") as HTMLSelectElement).value;
+      const avisos = (form.elements.namedItem("avisos") as HTMLInputElement).checked;
+      form.dispatchEvent(
+        new CustomEvent("afv:reto-solicitud", { detail: { correo: correo.value.trim(), objetivo, avisos } }),
+      );
       return;
     }
 
