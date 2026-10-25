@@ -23,8 +23,8 @@ const reto = (extra = {}) => ({
   ...extra,
 });
 
-const preparar = () => {
-  const e = crearEntorno(PROPIEDADES);
+const preparar = (extra = {}) => {
+  const e = crearEntorno({ ...PROPIEDADES, ...extra });
   e.control.ahora = T0;
   e.gs.configurarHoja();
   return e;
@@ -46,6 +46,45 @@ const pruebas = {
     const e = preparar();
     assert.deepEqual(e.post(reto({ correo: "otra.persona@ejemplo.com" })), { ok: false, motivo: "no_permitido" });
     assert.equal(e.filas().length, 0);
+    assert.equal(e.enviados.length, 0);
+  },
+
+  "MODO_PRUEBA = no: acepta cualquier dirección, la guarda y la envía"() {
+    const e = preparar({ MODO_PRUEBA: " No " });
+    assert.deepEqual(e.post(reto({ correo: "otra.persona@ejemplo.com" })), { ok: true, envio: "enviado" });
+    assert.equal(e.filas()[0].estado, "enviado");
+    assert.equal(e.enviados[0].to, "otra.persona@ejemplo.com");
+  },
+
+  "MODO_PRUEBA ausente, «si» o mal escrito: solo la lista"() {
+    for (const valor of [undefined, "", "si", "SI", "nop", "false", "0"]) {
+      const e = preparar(valor === undefined ? {} : { MODO_PRUEBA: valor });
+      assert.equal(e.post(reto({ correo: "otra.persona@ejemplo.com" })).motivo, "no_permitido", `valor ${valor}`);
+      assert.equal(e.post(reto()).ok, true, `valor ${valor}`);
+      assert.equal(e.filas().length, 1);
+    }
+  },
+
+  "la consulta del modo (GET) dice si está en prueba"() {
+    const modo = (extra) => JSON.parse(preparar(extra).gs.doGet().texto).modoPrueba;
+    assert.equal(modo({}), true);
+    assert.equal(modo({ MODO_PRUEBA: "si" }), true);
+    assert.equal(modo({ MODO_PRUEBA: "no" }), false);
+  },
+
+  "volver a MODO_PRUEBA = si antes de un reintento: no se envía a direcciones fuera de la lista"() {
+    const propiedades = { ...PROPIEDADES, MODO_PRUEBA: "no" };
+    const e = crearEntorno(propiedades);
+    e.control.ahora = T0;
+    e.gs.configurarHoja();
+    e.control.fallarEnvio = () => true;
+    e.post(reto({ correo: "otra.persona@ejemplo.com" }));
+    assert.equal(e.filas()[0].estado, "pendiente");
+    propiedades.MODO_PRUEBA = "si";
+    e.control.fallarEnvio = () => false;
+    e.control.ahora = T0 + 61 * MIN;
+    e.gs.procesarPendientes();
+    assert.equal(e.filas()[0].estado, "no_permitido");
     assert.equal(e.enviados.length, 0);
   },
 

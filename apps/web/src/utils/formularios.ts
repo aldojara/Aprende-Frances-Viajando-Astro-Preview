@@ -46,3 +46,20 @@ export const enviarSolicitud = async (solicitud: Solicitud): Promise<Respuesta> 
     clearTimeout(temporizador);
   }
 };
+
+// Modo del script (propiedad MODO_PRUEBA): true si solo acepta las direcciones de su lista.
+// Ante cualquier fallo devuelve true: la página conserva el aviso de modo de prueba.
+export const consultarModoPrueba = async (): Promise<boolean> => {
+  const limite = new AbortController();
+  const temporizador = setTimeout(() => limite.abort(), 10000);
+  try {
+    const respuesta = await fetch(URL_FORMULARIOS, { redirect: "follow", signal: limite.signal });
+    if (!respuesta.ok) return true;
+    const datos = (await respuesta.json()) as { modoPrueba?: unknown };
+    return datos.modoPrueba !== false;
+  } catch {
+    return true;
+  } finally {
+    clearTimeout(temporizador);
+  }
+};
