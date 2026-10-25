@@ -15,7 +15,7 @@ const retoUrl = withBase("/practica/avoir-o-etre/reto/");
   <form class="reto-form card" data-reto-form data-reto-url={retoUrl} data-envio={envio} novalidate>
     {
       externo ? (
-        <p class="reto-form-simulado" role="note">
+        <p class="reto-form-simulado" role="note" data-aviso-modo-prueba>
           <strong>Modo de prueba.</strong> Solo se aceptan direcciones autorizadas.
         </p>
       ) : (

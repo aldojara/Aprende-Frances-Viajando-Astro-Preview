@@ -151,7 +151,7 @@ const partes = (enunciado: string) => {
                 {conectado && <p class="c-envio-error" role="alert" data-envio-error hidden />}
                 {
                   conectado ? (
-                    <p class="c-aviso-simulado" role="note">
+                    <p class="c-aviso-simulado" role="note" data-aviso-modo-prueba>
                       <strong>Modo de prueba.</strong> Solo se aceptan direcciones autorizadas.
                     </p>
                   ) : (
@@ -447,7 +447,7 @@ const partes = (enunciado: string) => {
             conectado ? (
               <>
                 <p class="c-modal-garantia">🔒 Sin spam. Tu correo solo se usará para enviarte esta ficha.</p>
-                <p class="c-aviso-simulado" role="note">
+                <p class="c-aviso-simulado" role="note" data-aviso-modo-prueba>
                   <strong>Modo de prueba.</strong> Solo se aceptan direcciones autorizadas.
                 </p>
               </>
@@ -2426,6 +2426,7 @@ const partes = (enunciado: string) => {
   } from "../../../utils/ayudaVideo";
   import {
     URL_FORMULARIOS,
+    consultarModoPrueba,
     enviarSolicitud,
     nuevaClave,
     type Respuesta,
@@ -2768,6 +2769,15 @@ const partes = (enunciado: string) => {
   // Solo con PUBLIC_FORMULARIOS_URL. El correo vive en memoria mientras dura el envío o el reintento
   // manual; no se guarda en el navegador.
   const conectado = Boolean(URL_FORMULARIOS);
+
+  // El aviso de modo de prueba sale en el HTML y solo se oculta si el script confirma que acepta cualquier
+  // dirección (MODO_PRUEBA = no). Así basta cambiar la propiedad, sin volver a compilar la web.
+  if (conectado) {
+    void consultarModoPrueba().then((modoPrueba) => {
+      if (modoPrueba) return;
+      document.querySelectorAll<HTMLElement>("[data-aviso-modo-prueba]").forEach((aviso) => (aviso.hidden = true));
+    });
+  }
   type Resultado = "enviado" | "pendiente" | "fallido" | "limitada" | "error";
   type TipoSolicitud = Solicitud["tipo"];
 

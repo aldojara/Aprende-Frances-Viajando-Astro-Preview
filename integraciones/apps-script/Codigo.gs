@@ -7,7 +7,8 @@
  * Toda la configuración va en Propiedades del script (ver README.md); este archivo no contiene datos personales.
  *
  * Reglas:
- * - Solo se aceptan las direcciones de CORREOS_PERMITIDOS: se comprueba antes de guardar y antes de cada envío.
+ * - Interruptor MODO_PRUEBA: con «no» se acepta cualquier dirección; con «si», sin la propiedad o con cualquier otro
+ *   valor, solo las de CORREOS_PERMITIDOS. Se comprueba antes de guardar y antes de cada envío.
  * - Una misma clave de envío (doble clic, reintento del navegador) nunca crea otra fila ni otro correo.
  * - Pedir de nuevo el mismo acceso se permite, con un intervalo mínimo y un máximo cada 24 h.
  * - Si el envío falla, la tarea programada lo reintenta con esperas crecientes hasta MAX_INTENTOS.
@@ -31,8 +32,9 @@ var INTERRUMPIDO_MINUTOS = 15;
 
 // ---------- Entrada web ----------
 
+// La página consulta el modo al cargar para mostrar u ocultar el aviso de modo de prueba.
 function doGet() {
-  return responder_({ ok: true, servicio: "formularios-afv" });
+  return responder_({ ok: true, servicio: "formularios-afv", modoPrueba: config_().modoPrueba });
 }
 
 function doPost(e) {
@@ -67,8 +69,8 @@ function registrar_(datos, ahora) {
     return { ok: false, motivo: "datos_no_validos" };
   }
   if (!CORREO_VALIDO.test(correo) || correo.length > 254) return { ok: false, motivo: "correo_no_valido" };
-  // Lista de direcciones permitidas: antes de guardar nada.
-  if (c.permitidos.indexOf(correo) < 0) return { ok: false, motivo: "no_permitido" };
+  // Modo de prueba: antes de guardar nada.
+  if (!permitido_(c, correo)) return { ok: false, motivo: "no_permitido" };
 
   var orden = tipo === "reto" ? String(datos.orden || "") : "";
   var variante = String(datos.variante || "");
@@ -127,8 +129,8 @@ function registrar_(datos, ahora) {
 // ---------- Envío y reintentos ----------
 
 function intentarEnvio_(hoja, fila, c, ahora) {
-  // Lista de direcciones permitidas: también antes de cada envío (puede haber cambiado).
-  if (c.permitidos.indexOf(fila.correo) < 0) {
+  // Modo de prueba: también antes de cada envío (la lista o el modo pueden haber cambiado).
+  if (!permitido_(c, fila.correo)) {
     fila.estado = "no_permitido";
     fila.proximo_intento = "";
     escribirFila_(hoja, fila);
@@ -245,6 +247,7 @@ function instalarTareaProgramada() {
 function comprobarConfiguracion() {
   var c = config_();
   console.log(JSON.stringify({
+    modoPrueba: c.modoPrueba,
     direccionesPermitidas: c.permitidos.length,
     sitio: c.sitio,
     remitente: c.remitente,
@@ -265,6 +268,8 @@ function config_() {
     return valor === null || valor === "" ? defecto : valor;
   };
   return {
+    // Solo «no» abre el formulario a cualquier dirección; lo demás (o la propiedad ausente) mantiene la lista.
+    modoPrueba: String(leer("MODO_PRUEBA", "si")).trim().toLowerCase() !== "no",
     permitidos: String(leer("CORREOS_PERMITIDOS", "")).split(/[\s,;]+/).map(normalizar_).filter(Boolean),
     sitio: String(leer("SITIO_URL", "")).replace(/\/+$/, ""),
     remitente: leer("REMITENTE_NOMBRE", "Aprende Francés Viajando"),
@@ -275,6 +280,10 @@ function config_() {
     intervaloMinutos: Number(leer("REPETICION_MINUTOS", "10")),
     maximo24h: Number(leer("REPETICION_MAX_24H", "3")),
   };
+}
+
+function permitido_(c, correo) {
+  return !c.modoPrueba || c.permitidos.indexOf(correo) >= 0;
 }
 
 function hoja_() {

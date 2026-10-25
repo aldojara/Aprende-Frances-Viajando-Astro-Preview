@@ -3,6 +3,7 @@
 // En apps/web/.env: PUBLIC_FORMULARIOS_URL=http://localhost:<puerto>/exec
 // Direcciones permitidas: prueba@ejemplo.com, falla-envio@ejemplo.com (el envío falla siempre)
 // y falla-guardado@ejemplo.com (el servidor responde con error, como si no se pudiera guardar).
+// Con MODO_PRUEBA=no en el entorno, acepta cualquier dirección (como la propiedad del script).
 // No envía correos: los muestra en la consola y en GET /enviados.
 import { createServer } from "node:http";
 import { crearEntorno } from "./entorno-simulado.mjs";
@@ -12,6 +13,7 @@ const entorno = crearEntorno({
   CORREOS_PERMITIDOS: "prueba@ejemplo.com, falla-envio@ejemplo.com, falla-guardado@ejemplo.com",
   SITIO_URL: "http://localhost:4321",
   REMITENTE_NOMBRE: "Prueba local",
+  MODO_PRUEBA: process.env.MODO_PRUEBA ?? "si",
 });
 entorno.gs.configurarHoja();
 entorno.control.fallarEnvio = (mensaje) => mensaje.to === "falla-envio@ejemplo.com";
@@ -23,6 +25,10 @@ createServer((req, res) => {
   if (req.method === "GET" && ruta === "/enviados") {
     res.writeHead(200, cabeceras);
     return res.end(JSON.stringify({ enviados: entorno.enviados, filas: entorno.filas() }));
+  }
+  if (req.method === "GET" && ruta === "/exec") {
+    res.writeHead(200, cabeceras);
+    return res.end(entorno.gs.doGet().texto);
   }
   if (req.method === "POST" && ruta === "/exec") {
     let cuerpo = "";

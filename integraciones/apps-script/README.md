@@ -10,7 +10,10 @@ Las demás opciones del laboratorio se retiraron (etiqueta git `laboratorio/arch
   permiso de avisos, estado del envío).
 - **Envía** el correo desde la cuenta de Google que publica el script: el enlace al reto con su orden, o el enlace
   a la ficha. Pedir la ficha no registra en el reto ni da permiso para avisos.
-- **Solo acepta direcciones de `CORREOS_PERMITIDOS`**: lo comprueba antes de guardar y antes de cada envío.
+- **Interruptor `MODO_PRUEBA`**: con `no` acepta cualquier dirección; con `si`, sin la propiedad o con cualquier
+  otro valor, solo las de `CORREOS_PERMITIDOS`. Lo comprueba antes de guardar y antes de cada envío. La página
+  consulta el modo al cargar: muestra el aviso «Modo de prueba» salvo que el script confirme `no` (si no responde,
+  el aviso se queda). Cambiar la propiedad basta; no hay que volver a compilar la web.
 - **Sin duplicados**: cada solicitud lleva una clave; un doble clic o un reintento con la misma clave no crea otra
   fila ni otro correo. Pedir de nuevo el mismo acceso se permite tras `REPETICION_MINUTOS` y hasta
   `REPETICION_MAX_24H` veces en 24 h.
@@ -31,7 +34,8 @@ Estados de la columna `estado`: `pendiente`, `enviando`, `enviado`, `fallido`, `
 
    | Propiedad | Valor | Obligatoria |
    |---|---|---|
-   | `CORREOS_PERMITIDOS` | tus direcciones de prueba, separadas por comas | sí |
+   | `MODO_PRUEBA` | `si` (solo la lista) o `no` (cualquier dirección); ausente = `si` | no |
+   | `CORREOS_PERMITIDOS` | tus direcciones de prueba, separadas por comas | con `MODO_PRUEBA` = `si` |
    | `SITIO_URL` | dirección de la web que abrirán los enlaces del correo (para probar en el móvil: la de la vista previa en la wifi, `http://<IP-del-Mac>:<puerto>`) | sí |
    | `REMITENTE_NOMBRE` | nombre que verá quien recibe el correo | sí |
    | `REINTENTOS_ESPERA_MINUTOS` | `60,1500` (propuesta pendiente de aprobación) | no |
@@ -43,7 +47,7 @@ Estados de la columna `estado`: `pendiente`, `enviando`, `enviado`, `fallido`, `
    enviar correo en tu nombre, ejecutar tareas programadas). Saldrá «Google no ha verificado esta aplicación»: es tu
    propio script; **Configuración avanzada → Ir a … (no seguro)** → Permitir.
 5. Ejecuta **`instalarTareaProgramada`** (una vez) y **`comprobarConfiguracion`**: en el registro debe aparecer el
-   número de direcciones permitidas, el sitio y la cuota de correo restante.
+   modo (`modoPrueba`), el número de direcciones permitidas, el sitio y la cuota de correo restante.
 6. **Implementar → Nueva implementación** → tipo **Aplicación web**:
    - Ejecutar como: **Yo**
    - Quién tiene acceso: **Cualquier usuario** (la página debe poder enviar sin iniciar sesión; la lista de
@@ -67,8 +71,8 @@ cambia).
 - Cuota de correo de Apps Script: unos 100 destinatarios al día en una cuenta personal (más en Workspace). Sin cuota,
   el envío se aplaza una hora sin gastar intento.
 - La hoja contiene correos: no la compartas ni la publiques. Para vaciar las pruebas, borra filas (no la cabecera).
-- La URL `/exec` no es una contraseña, pero conviene no difundirla; mientras esté en modo de prueba, solo las
-  direcciones permitidas se guardan y reciben correo.
+- La URL `/exec` no es una contraseña, pero conviene no difundirla; con `MODO_PRUEBA` = `si`, solo las
+  direcciones permitidas se guardan y reciben correo. Con `no`, cualquiera que llegue a la página puede hacerlo.
 - Pendiente antes de publicar (fuera de esta fase): plazos de conservación aprobados y su borrado automático,
   antispam (Turnstile), textos legales y quitar la lista de direcciones permitidas.
 
@@ -86,5 +90,5 @@ node integraciones/apps-script/pruebas/servidor-simulado.mjs 4420
 ```
 
 Responde como el script publicado en `http://localhost:4420/exec` (sin enviar correos; los muestra en
-`/enviados`). Permite `prueba@ejemplo.com`, `falla-envio@ejemplo.com` (el envío falla) y
+`/enviados`). Con `MODO_PRUEBA=no node …` acepta cualquier dirección. Permite `prueba@ejemplo.com`, `falla-envio@ejemplo.com` (el envío falla) y
 `falla-guardado@ejemplo.com` (el guardado falla).
