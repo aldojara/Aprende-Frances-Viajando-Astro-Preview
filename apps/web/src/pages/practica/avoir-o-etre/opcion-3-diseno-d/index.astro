@@ -40,32 +40,52 @@ const partes = (enunciado: string) => {
       <a href={withBase("/laboratorio/")}>Volver al laboratorio</a>
     </div>
 
-    <!-- Presentación breve: tutor, título y la descarga como acción principal -->
+    <!-- Hero con Tutor Personal -->
     <section class="c-hero">
       <div class="container c-hero-dentro">
         <div class="c-tutor-bloque">
-          <img class="c-avatar" src={avatar} alt="Tu profesor de francés" width="56" height="56" data-avatar />
-          <p class="c-bocadillo">Completa estas <strong>8 frases</strong>. Si fallas alguna, te explico justo ese error.</p>
+          <div class="c-avatar-wrap">
+            <img class="c-avatar" src={avatar} alt="Tu profesor de francés" width="84" height="84" data-avatar />
+          </div>
+          <div class="c-bocadillo-wrap">
+            <div class="c-bocadillo">
+              <p class="c-bocadillo-tutor">Tu tutor de gramática francesa</p>
+              <p class="c-bocadillo-texto">
+                Completa estas <strong>8 frases</strong>. Si fallas alguna, te explico justo ese error.
+              </p>
+            </div>
+          </div>
         </div>
 
         <div class="c-titulo-bloque">
-          <p class="c-eyebrow-hero">Passé composé · A2–B1</p>
+          <div class="c-badges">
+            <span class="c-badge-pill">Passé composé · A2–B1</span>
+            <span class="c-badge-pill c-badge-oro">Guía práctica interactiva</span>
+          </div>
           <h1>¿Avoir o être? Elige el auxiliar sin dudar</h1>
+          <p class="c-subtitulo">Responde, corrige y repasa cada error con la frase, tu elección y la explicación.</p>
         </div>
 
         <div class="c-acciones-hero">
           <div class="c-botones-hero">
             <a class="c-boton c-boton-oro" href={pdf} download data-descarga="cabecera">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"></path><path d="M7 10l5 5 5-5"></path><path d="M5 21h14"></path></svg>
-              <span>Descargar la ficha gratis (PDF)</span>
+              <span>Descargar ficha gratis en PDF</span>
             </a>
             <a class="c-boton c-boton-ghost" href="#practica">
-              <span>Empezar la práctica</span>
+              <span>Empezar los ejercicios ↓</span>
             </a>
           </div>
-          <p class="c-nota-hero">2 páginas · sin correo ni registro</p>
+
+          <div class="c-garantias">
+            <span class="c-garantia-item"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> 2 páginas resumen</span>
+            <span class="c-garantia-item"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> Sin registro ni correo</span>
+            <span class="c-garantia-item"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> Con ejemplos clave</span>
+          </div>
+
           <p class="c-descargada" role="status" data-descargada hidden>
-            <strong>Ficha descargada.</strong> ¿Pruebas 8 frases para ver si la dominas? ↓
+            <span class="c-descargada-icon">✓</span>
+            <span><strong>¡Ficha descargada con éxito!</strong> Pon a prueba lo aprendido resolviendo las 8 frases aquí abajo. ↓</span>
           </p>
         </div>
       </div>
@@ -103,12 +123,20 @@ const partes = (enunciado: string) => {
 
         <!-- Tarjeta de Resultados y Ayuda (aparece al corregir) -->
         <section class="ayuda c-ayuda" data-ayuda-zona aria-labelledby="ayuda-titulo" hidden>
-          <!-- Resumen compacto: la franja de recuento y, debajo, directamente los errores -->
-          <header class="c-resumen">
-            <p class="c-resumen-franja" data-recuento aria-live="polite"></p>
-            <h3 id="ayuda-titulo" tabindex="-1" data-estado-titulo></h3>
-            <p class="ayuda-estado" data-estado-texto></p>
-          </header>
+          <!-- Diagnóstico de resultados con resumen visual -->
+          <div class="c-diagnostico-card">
+            <div class="c-diagnostico-header">
+              <div class="c-score-badge" data-score-badge>
+                <span class="c-score-num" data-score-num>0/8</span>
+                <span class="c-score-sub">Aciertos</span>
+              </div>
+              <div class="c-diagnostico-texto">
+                <p class="ayuda-recuento" data-recuento aria-live="polite"></p>
+                <h3 id="ayuda-titulo" tabindex="-1" data-estado-titulo></h3>
+                <p class="ayuda-estado" data-estado-texto></p>
+              </div>
+            </div>
+          </div>
 
           <!-- Lista de errores desglosados -->
           <div class="c-errores-seccion">
@@ -428,88 +456,158 @@ const partes = (enunciado: string) => {
 
   /* Hero Section */
   .c-hero {
-    border-radius: 0 0 28px 28px;
+    border-radius: 0 0 32px 32px;
     background: linear-gradient(180deg, var(--b-navy) 0%, var(--b-navy-dark) 100%);
     color: #ffffff;
-    padding-block: 1.5rem 1.75rem;
+    padding-block: 2.25rem 2.75rem;
     position: relative;
     box-shadow: 0 10px 30px rgba(11, 47, 85, 0.15);
   }
 
   .c-hero-dentro {
     display: grid;
-    gap: 1.1rem;
+    gap: 1.6rem;
     max-width: 840px;
     margin-inline: auto;
     padding-inline: 1.25rem;
   }
 
-  /* Tutor: avatar pequeño junto a una frase breve */
+  /* Tutor Personal & Bocadillo */
   .c-tutor-bloque {
     display: flex;
-    gap: 0.75rem;
-    align-items: center;
+    gap: 1.1rem;
+    align-items: flex-end;
+  }
+
+  .c-avatar-wrap {
+    position: relative;
+    flex: none;
   }
 
   .c-avatar {
-    flex: none;
-    width: 56px;
-    height: 56px;
-    border: 2px solid var(--b-oro-claro);
+    width: 82px;
+    height: 82px;
+    border: 3px solid var(--b-oro-claro);
     border-radius: 50%;
     object-fit: cover;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.28);
     background: #0d3864;
   }
 
-  .c-bocadillo {
-    max-width: 32rem;
-    margin: 0;
-    padding: 0.6rem 0.9rem;
-    border-radius: 16px 16px 16px 4px;
-    background: #ffffff;
-    color: #3b3732;
-    font-size: 0.95rem;
-    line-height: 1.45;
+  .c-avatar-status {
+    position: absolute;
+    bottom: 4px;
+    right: 4px;
+    width: 14px;
+    height: 14px;
+    background: #22c55e;
+    border: 2px solid var(--b-navy);
+    border-radius: 50%;
+    box-shadow: 0 0 8px rgba(34, 197, 94, 0.8);
   }
 
-  .c-bocadillo strong {
+  .c-bocadillo-wrap {
+    position: relative;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .c-bocadillo {
+    position: relative;
+    padding: 0.9rem 1.15rem;
+    border-radius: 18px 18px 18px 4px;
+    background: #ffffff;
+    color: var(--b-texto);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
+  }
+
+  .c-bocadillo::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: -8px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 8px 10px 0;
+    border-color: transparent #ffffff transparent transparent;
+  }
+
+  .c-bocadillo-tutor {
+    margin: 0 0 0.25rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
     color: var(--b-navy);
   }
 
-  .c-titulo-bloque {
-    display: grid;
-    gap: 0.4rem;
+  .c-bocadillo-texto {
+    margin: 0;
+    font-size: 0.98rem;
+    line-height: 1.48;
+    color: #3b3732;
   }
 
-  .c-eyebrow-hero {
-    margin: 0;
-    color: var(--b-oro-claro);
+  .c-bocadillo-texto strong {
+    color: var(--b-navy);
+  }
+
+  /* Título y Badges */
+  .c-titulo-bloque {
+    display: grid;
+    gap: 0.6rem;
+  }
+
+  .c-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .c-badge-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
     font-size: 0.75rem;
     font-weight: 700;
     letter-spacing: 0.08em;
     text-transform: uppercase;
+    background: rgba(255, 255, 255, 0.12);
+    color: #e2eaf4;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+  }
+
+  .c-badge-oro {
+    background: rgba(240, 212, 138, 0.15);
+    color: var(--b-oro-claro);
+    border-color: rgba(240, 212, 138, 0.4);
   }
 
   .c-hero h1 {
     margin: 0;
     color: #ffffff;
     font-family: var(--font-display, "Playfair Display", Georgia, serif);
-    font-size: clamp(1.8rem, 5vw, 3rem);
+    font-size: clamp(1.9rem, 5vw, 3.1rem);
     font-weight: 700;
     line-height: 1.15;
     letter-spacing: -0.01em;
   }
 
-  .c-nota-hero {
+  .c-subtitulo {
     margin: 0;
+    font-size: 1.05rem;
+    line-height: 1.5;
     color: #c9d6e6;
-    font-size: 0.85rem;
+    max-width: 640px;
   }
 
   /* Acciones del Hero */
   .c-acciones-hero {
     display: grid;
-    gap: 0.6rem;
+    gap: 0.9rem;
+    margin-top: 0.35rem;
   }
 
   .c-botones-hero {
@@ -564,6 +662,24 @@ const partes = (enunciado: string) => {
     background: rgba(255, 255, 255, 0.18);
     border-color: #ffffff;
     transform: translateY(-1px);
+  }
+
+  .c-garantias {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem 1.25rem;
+    font-size: 0.85rem;
+    color: #c9d6e6;
+  }
+
+  .c-garantia-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .c-garantia-item svg {
+    color: var(--b-oro-claro);
   }
 
   .c-descargada {
@@ -858,32 +974,73 @@ const partes = (enunciado: string) => {
   /* Zona de Resultados y Diagnóstico */
   .c-ayuda {
     display: grid;
-    gap: 1rem;
-    margin-top: 1.5rem;
+    gap: 1.75rem;
+    margin-top: 2.5rem;
   }
 
-  .c-resumen {
-    display: grid;
-    gap: 0.35rem;
-  }
-
-  .c-resumen-franja {
-    justify-self: start;
-    margin: 0;
-    padding: 0.35rem 0.8rem;
-    border-radius: 999px;
+  .c-diagnostico-card {
+    padding: 1.5rem;
+    border-radius: 24px;
     background: var(--b-blanco);
     border: 1px solid var(--b-borde);
-    color: var(--b-navy);
-    font-size: 0.88rem;
+    box-shadow: var(--sombra-media);
+  }
+
+  .c-diagnostico-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.25rem;
+  }
+
+  .c-score-badge {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 84px;
+    height: 84px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, var(--b-navy), #143e6c);
+    color: #ffffff;
+    box-shadow: 0 6px 18px rgba(11, 47, 85, 0.25);
+  }
+
+  .c-score-num {
+    font-size: 1.6rem;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--b-oro-claro);
+  }
+
+  .c-score-sub {
+    font-size: 0.72rem;
     font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #ffffff;
+  }
+
+  .c-diagnostico-texto {
+    flex: 1;
+    min-width: 240px;
+    display: grid;
+    gap: 0.3rem;
+  }
+
+  .ayuda-recuento {
+    margin: 0;
+    color: var(--b-oro);
+    font-size: 0.85rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
   }
 
   .ayuda h3 {
     margin: 0;
     color: var(--b-navy);
     font-family: var(--font-display, "Playfair Display", Georgia, serif);
-    font-size: 1.4rem;
+    font-size: 1.65rem;
     font-weight: 700;
     line-height: 1.2;
   }
@@ -891,8 +1048,8 @@ const partes = (enunciado: string) => {
   .ayuda-estado {
     margin: 0;
     color: var(--b-texto-muted);
-    font-size: 0.95rem;
-    line-height: 1.45;
+    font-size: 1rem;
+    line-height: 1.5;
   }
 
   /* Lista de Errores */
@@ -1542,16 +1699,129 @@ const partes = (enunciado: string) => {
 
   /* Responsive */
   @media (max-width: 640px) {
+    /* Hero compacto */
+    .c-hero {
+      padding-block: 1.5rem 2rem;
+      border-radius: 0 0 24px 24px;
+    }
+
+    .c-hero-dentro {
+      gap: 1.2rem;
+      padding-inline: 1rem;
+    }
+
+    .c-tutor-bloque {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 0.85rem;
+    }
+
+    .c-avatar {
+      width: 58px;
+      height: 58px;
+      border-width: 2px;
+    }
+
+    .c-avatar-status {
+      width: 11px;
+      height: 11px;
+      bottom: 2px;
+      right: 2px;
+    }
+
+    .c-bocadillo {
+      padding: 0.65rem 0.85rem;
+      border-radius: 14px;
+    }
+
+    .c-bocadillo::before {
+      display: none;
+    }
+
+    .c-bocadillo-texto {
+      font-size: 0.88rem;
+      line-height: 1.4;
+    }
+
+    .c-hero h1 {
+      font-size: 1.75rem;
+      line-height: 1.18;
+    }
+
+    .c-subtitulo {
+      font-size: 0.94rem;
+    }
+
+    .c-botones-hero {
+      flex-direction: column;
+    }
+
+    .c-botones-hero .c-boton {
+      width: 100%;
+      min-height: 3.1rem;
+      font-size: 0.95rem;
+    }
+
+    .c-garantias {
+      flex-direction: column;
+      gap: 0.35rem;
+      font-size: 0.8rem;
+    }
+
+    .c-practica-header-top {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.85rem;
+    }
+
+    .c-progreso-widget {
+      width: 100%;
+      min-width: 0;
+    }
+
+    /* Diagnóstico tras corregir */
+    .c-diagnostico-card {
+      padding: 1.15rem;
+    }
+
+    .c-diagnostico-header {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      text-align: left;
+      gap: 0.9rem;
+    }
+
+    .c-score-badge {
+      width: 66px;
+      height: 66px;
+      border-radius: 16px;
+      flex: none;
+    }
+
+    .c-score-num {
+      font-size: 1.35rem;
+    }
+
+    .c-score-sub {
+      font-size: 0.65rem;
+    }
+
+    .ayuda h3 {
+      font-size: 1.3rem;
+    }
+
+    .ayuda-estado {
+      font-size: 0.9rem;
+    }
+
     .c-botones-hero .c-boton,
     .c-reto-boton,
     .c-video-boton {
       width: 100%;
     }
 
-    .c-botones-hero .c-boton {
-      padding-inline: 0.9rem;
-      font-size: 0.95rem;
-    }
 
     .diseno-c [data-practica] :global(.pregunta-opciones) {
       grid-template-columns: 1fr;
@@ -1613,10 +1883,6 @@ const partes = (enunciado: string) => {
     }
 
     /* Más compacto en pantallas estrechas: recuento en una línea, etiquetas ajustadas, recuadros ajustados */
-    .c-resumen-franja {
-      font-size: 0.8rem;
-    }
-
     .c-comparacion {
       gap: 0.4rem;
     }
@@ -1700,6 +1966,7 @@ const partes = (enunciado: string) => {
   const huecoFinal = document.querySelector<HTMLElement>("[data-reto-final]");
   const ofertaTitulo = document.querySelector<HTMLElement>("[data-oferta-titulo]");
   const ofertaTexto = document.querySelector<HTMLElement>("[data-oferta-texto]");
+  const scoreNum = document.querySelector<HTMLElement>("[data-score-num]");
   const tipoPorId = Object.fromEntries(ejercicios.map((e) => [e.id, e.tipo])) as Record<string, TipoVideo>;
   const numeroDe = (id: string) => ejercicios.findIndex((e) => e.id === id) + 1;
   const nombreSesion = (tipo: TipoVideo) => tiposReto.find((t) => t.id === tipo)?.nombre ?? tipo;
@@ -1813,11 +2080,15 @@ const partes = (enunciado: string) => {
     zona.hidden = false;
     const { correctas, incorrectas, sinResponder } = decision.recuento;
 
+    if (scoreNum) {
+      scoreNum.textContent = `${correctas}/${resultados.length}`;
+    }
+
     if (recuentoTexto) {
       recuentoTexto.textContent = [
-        `${correctas}/${resultados.length} correctas`,
-        plural(incorrectas, "error", "errores"),
-        `${sinResponder} sin responder`,
+        plural(correctas, "correcta", "correctas"),
+        plural(incorrectas, "con error", "con errores"),
+        plural(sinResponder, "sin responder", "sin responder"),
       ].join(" · ");
     }
     const [titulo, texto] = textos[decision.modo](decision);
