@@ -194,7 +194,11 @@ const defaultTab = tieneTeoria ? "teoria" : "regla";
         >
           <div class="u-panel-flujo">
             {unidad.errores && unidad.errores.length > 0 && (
-              <UnidadErrores errores={unidad.errores} practicaUrl={unidad.practica?.url} />
+              <UnidadErrores
+                errores={unidad.errores}
+                gruposErrores={unidad.gruposErrores}
+                practicaUrl={unidad.practica?.url}
+              />
             )}
 
             {unidad.resumen && unidad.resumen.length > 0 && (
@@ -394,7 +398,7 @@ const defaultTab = tieneTeoria ? "teoria" : "regla";
         tabDestino = "regla";
       } else if (rawHash === "idea-clave") {
         tabDestino = tieneTeoria ? "teoria" : "regla";
-      } else if (rawHash === "errores" || rawHash === "resumen" || rawHash.startsWith("error-")) {
+      } else if (rawHash === "errores" || rawHash === "resumen" || rawHash.startsWith("error-") || rawHash.startsWith("grupo-")) {
         tabDestino = "errores";
       } else if (rawHash === "contexto" || rawHash === "practica" || rawHash === "ejemplos" || rawHash === "aplicacion" || rawHash === "relacionados") {
         tabDestino = "contexto";

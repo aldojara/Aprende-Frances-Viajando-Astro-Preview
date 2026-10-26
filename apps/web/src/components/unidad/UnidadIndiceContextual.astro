@@ -26,10 +26,18 @@ interface TocItem {
   isError?: boolean;
 }
 
+interface TocSubGrupo {
+  id: string;
+  titulo: string;
+  items: TocItem[];
+}
+
 interface TabToc {
   tabId: string;
   tabLabel: string;
-  items: TocItem[];
+  items?: TocItem[];
+  subGrupos?: TocSubGrupo[];
+  itemFinal?: TocItem;
 }
 
 const tabTocs: TabToc[] = [];
@@ -65,30 +73,64 @@ if (unidad.consulta && unidad.consulta.length > 0) {
 }
 tabTocs.push({ tabId: "regla", tabLabel: "Aprende la regla", items: itemsRegla });
 
-// 3. Pestaña Errores típicos
-const itemsErrores: TocItem[] = [];
-if (unidad.errores && unidad.errores.length > 0) {
-  unidad.errores.forEach((err, idx) => {
-    itemsErrores.push({
-      id: `error-${idx + 1}`,
-      label: formaCortaError(err.mal),
-      badge: `#${String(idx + 1).padStart(2, "0")}`,
-      isError: true,
-    });
-  });
-}
-if (unidad.resumen && unidad.resumen.length > 0) {
-  itemsErrores.push({ id: "resumen", label: "Para recordar" });
-}
-tabTocs.push({ tabId: "errores", tabLabel: "Errores típicos", items: itemsErrores });
+// 3. Pestaña Errores típicos (Ronda 6: Agrupados si existen gruposErrores)
+if (unidad.gruposErrores && unidad.gruposErrores.length > 0 && unidad.errores && unidad.errores.length > 0) {
+  const subGrupos: TocSubGrupo[] = [];
+  const erroresConIndice = unidad.errores.map((item, idx) => ({ ...item, globalIdx: idx + 1 }));
 
-// 4. Pestaña En contexto y práctica
+  unidad.gruposErrores.forEach((grupo) => {
+    const erroresGrupo = erroresConIndice.filter((e) => e.grupo === grupo.id);
+    if (erroresGrupo.length > 0) {
+      subGrupos.push({
+        id: `grupo-${grupo.id}`,
+        titulo: grupo.titulo,
+        items: erroresGrupo.map((err) => ({
+          id: `error-${err.globalIdx}`,
+          label: err.corto || formaCortaError(err.mal),
+          isError: true,
+        })),
+      });
+    }
+  });
+
+  const itemFinal: TocItem | undefined =
+    unidad.resumen && unidad.resumen.length > 0
+      ? { id: "resumen", label: "Para recordar" }
+      : undefined;
+
+  tabTocs.push({
+    tabId: "errores",
+    tabLabel: "Errores típicos",
+    subGrupos,
+    itemFinal,
+  });
+} else {
+  // Fallback sin grupos (Ronda 5)
+  const itemsErrores: TocItem[] = [];
+  if (unidad.errores && unidad.errores.length > 0) {
+    unidad.errores.forEach((err, idx) => {
+      itemsErrores.push({
+        id: `error-${idx + 1}`,
+        label: err.corto || formaCortaError(err.mal),
+        badge: `#${String(idx + 1).padStart(2, "0")}`,
+        isError: true,
+      });
+    });
+  }
+  if (unidad.resumen && unidad.resumen.length > 0) {
+    itemsErrores.push({ id: "resumen", label: "Para recordar" });
+  }
+  tabTocs.push({ tabId: "errores", tabLabel: "Errores típicos", items: itemsErrores });
+}
+
+// 4. Pestaña En contexto y práctica (Ronda 6: «Tu turno»)
 const itemsContexto: TocItem[] = [];
 if (unidad.ejemplos && unidad.ejemplos.items && unidad.ejemplos.items.length > 0) {
   itemsContexto.push({ id: "ejemplos", label: unidad.ejemplos.titulo || "Ejemplos en contexto" });
 }
 if (unidad.aplicacion) {
-  itemsContexto.push({ id: "aplicacion", label: "Tu turno (producción)" });
+  // Ronda 6 requisito 5: cambia «Tu turno (producción)» por «Tu turno» en el índice
+  itemsContexto.push({ id: "aplicacion", label: "Tu turno" });
 }
 if (unidad.practica) {
   itemsContexto.push({ id: "practica", label: "Práctica interactiva" });
@@ -138,9 +180,52 @@ if (tieneMaterial) {
           hidden={grupo.tabId !== defaultTab}
         >
           <span class="u-toc-group-title sr-only">{grupo.tabLabel}</span>
-          <ul class="u-toc-lista" role="list">
-            {
-              grupo.items.map((item) => (
+
+          {grupo.subGrupos && grupo.subGrupos.length > 0 ? (
+            /* Visualización agrupada para Errores (Ronda 6) */
+            <div class="u-toc-subgrupos-wrap">
+              {grupo.subGrupos.map((sg) => (
+                <div class="u-toc-subgrupo">
+                  <a
+                    href={`#${sg.id}`}
+                    class="u-toc-link u-toc-link-subgrupo"
+                    data-toc-target={sg.id}
+                  >
+                    <span class="u-toc-subgrupo-bullet" aria-hidden="true">•</span>
+                    <span class="u-toc-label-sg">{sg.titulo}</span>
+                  </a>
+                  <ul class="u-toc-lista-sub" role="list">
+                    {sg.items.map((subItem) => (
+                      <li class="u-toc-item u-toc-item-sub">
+                        <a
+                          href={`#${subItem.id}`}
+                          class="u-toc-link u-toc-link-nested"
+                          data-toc-target={subItem.id}
+                        >
+                          <span class="u-toc-sub-bullet" aria-hidden="true">›</span>
+                          <span class="u-toc-label">{subItem.label}</span>
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+              {grupo.itemFinal && (
+                <div class="u-toc-item-final">
+                  <a
+                    href={`#${grupo.itemFinal.id}`}
+                    class="u-toc-link u-toc-link-final"
+                    data-toc-target={grupo.itemFinal.id}
+                  >
+                    <span class="u-toc-label">{grupo.itemFinal.label}</span>
+                  </a>
+                </div>
+              )}
+            </div>
+          ) : (
+            /* Visualización estándar plana */
+            <ul class="u-toc-lista" role="list">
+              {grupo.items?.map((item) => (
                 <li class={`u-toc-item ${item.isError ? "u-toc-item-error" : ""}`}>
                   <a
                     href={`#${item.id}`}
@@ -151,9 +236,9 @@ if (tieneMaterial) {
                     <span class="u-toc-label">{item.label}</span>
                   </a>
                 </li>
-              ))
-            }
-          </ul>
+              ))}
+            </ul>
+          )}
         </div>
       ))
     }
@@ -277,7 +362,6 @@ if (tieneMaterial) {
 
       observer = new IntersectionObserver(
         (entries) => {
-          // Tomar la primera sección visible que interseccione
           const visible = entries.find((e) => e.isIntersecting);
           if (visible && visible.target) {
             marcarLinkActivo(visible.target.id);
@@ -292,7 +376,6 @@ if (tieneMaterial) {
       targets.forEach((t) => observer.observe(t));
     }
 
-    // Inicializar scroll spy al cargar
     setTimeout(iniciarScrollSpy, 300);
   })();
 </script>
@@ -401,10 +484,75 @@ if (tieneMaterial) {
     white-space: nowrap;
   }
 
-  /* Caso especial de errores: fuente ligeramente más pequeña y texto en cursiva sutil */
-  .u-toc-item-error .u-toc-label {
-    font-style: italic;
-    font-family: inherit;
+  /* Subgrupos de errores (Ronda 6) */
+  .u-toc-subgrupos-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    max-height: 54vh;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    padding-right: 0.2rem;
+  }
+
+  .u-toc-subgrupo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .u-toc-link-subgrupo {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--color-blue-dark, #0b2f55);
+    padding: 0.35rem 0.5rem;
+    background: rgba(11, 47, 85, 0.03);
+    border-radius: var(--radius-sm, 0.35rem);
+  }
+
+  .u-toc-subgrupo-bullet {
+    color: var(--color-gold, #b8860b);
+    font-size: 0.9rem;
+    line-height: 1;
+  }
+
+  .u-toc-label-sg {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .u-toc-lista-sub {
+    list-style: none;
+    margin: 0;
+    padding: 0.1rem 0 0.15rem 0.85rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .u-toc-link-nested {
+    font-size: 0.78rem;
+    padding: 0.25rem 0.45rem;
+    color: var(--color-text, #2e2b27);
+  }
+
+  .u-toc-sub-bullet {
+    color: var(--color-text-muted, #6d6861);
+    font-size: 0.72rem;
+    opacity: 0.7;
+  }
+
+  .u-toc-item-final {
+    margin-top: 0.45rem;
+    padding-top: 0.45rem;
+    border-top: 1px dashed var(--color-border, #e2ded7);
+  }
+
+  .u-toc-link-final {
+    font-weight: 700;
+    color: var(--color-blue-dark, #0b2f55);
   }
 
   .sr-only {
