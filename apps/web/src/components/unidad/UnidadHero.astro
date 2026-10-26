@@ -22,8 +22,8 @@ const tienePractica = Boolean(unidad.practica);
         unidad.minutos && (
           <span class="u-pill u-pill-tiempo">
             <svg
-              width="14"
-              height="14"
+              width="13"
+              height="13"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -35,40 +35,40 @@ const tienePractica = Boolean(unidad.practica);
               <circle cx="12" cy="12" r="10" />
               <polyline points="12 6 12 12 16 14" />
             </svg>
-            <span>{unidad.minutos} min de lectura</span>
+            <span>{unidad.minutos} min</span>
           </span>
         )
       }
     </div>
 
-    <h1 class="u-hero-titulo">{unidad.titulo}</h1>
+    <div class="u-hero-main-row">
+      <div class="u-hero-texto-wrap">
+        <h1 class="u-hero-titulo">{unidad.titulo}</h1>
+        {unidad.objetivo && <p class="u-hero-objetivo">{unidad.objetivo}</p>}
+      </div>
 
-    {unidad.objetivo && <p class="u-hero-objetivo">{unidad.objetivo}</p>}
-
-    <div class="u-hero-acciones">
       {
         tienePractica && (
-          <a class="u-btn-hero-primary" href="#practica">
-            <svg
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              aria-hidden="true"
-            >
-              <polygon points="5 3 19 12 5 21 5 3" />
-            </svg>
-            <span>Practicar ahora</span>
-          </a>
+          <div class="u-hero-btn-wrap">
+            <a class="u-btn-hero-primary" href="#practica">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <polygon points="5 3 19 12 5 21 5 3" />
+              </svg>
+              <span>Practicar ahora</span>
+            </a>
+          </div>
         )
       }
-      <a class="u-btn-hero-ghost" href="#idea-clave">
-        <span>Ver explicación ↓</span>
-      </a>
     </div>
   </div>
 </header>
@@ -77,35 +77,35 @@ const tienePractica = Boolean(unidad.practica);
   .u-hero {
     background: linear-gradient(180deg, var(--color-blue-dark, #0b2f55) 0%, #071f38 100%);
     color: #ffffff;
-    padding-block: 2.75rem 3.25rem;
-    border-radius: 0 0 28px 28px;
-    box-shadow: 0 10px 30px rgba(11, 47, 85, 0.15);
+    padding-block: 1.6rem 1.8rem;
+    border-radius: 0 0 20px 20px;
+    box-shadow: 0 8px 24px rgba(11, 47, 85, 0.12);
   }
 
   .u-hero-inner {
-    width: min(100% - 2rem, 900px);
+    width: min(100% - 2rem, 1180px);
     margin-inline: auto;
     display: flex;
     flex-direction: column;
-    gap: 1.25rem;
+    gap: 0.85rem;
   }
 
   .u-hero-meta {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 0.6rem;
+    gap: 0.5rem;
   }
 
   .u-pill {
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
-    padding: 0.28rem 0.75rem;
+    padding: 0.22rem 0.65rem;
     border-radius: 999px;
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     font-weight: 700;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.04em;
     text-transform: uppercase;
   }
 
@@ -127,92 +127,82 @@ const tienePractica = Boolean(unidad.practica);
     border: 1px solid rgba(255, 255, 255, 0.15);
   }
 
+  .u-hero-main-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+  }
+
+  .u-hero-texto-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    max-width: 720px;
+  }
+
   .u-hero-titulo {
     font-family: var(--font-display, "Playfair Display", Georgia, serif);
-    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-size: clamp(1.8rem, 3.8vw, 2.5rem);
     font-weight: 700;
-    line-height: 1.12;
+    line-height: 1.15;
     color: #ffffff;
     margin: 0;
-    letter-spacing: -0.015em;
+    letter-spacing: -0.01em;
   }
 
   .u-hero-objetivo {
-    font-size: clamp(1.05rem, 2.2vw, 1.25rem);
-    line-height: 1.5;
+    font-size: clamp(0.95rem, 1.8vw, 1.08rem);
+    line-height: 1.45;
     color: #cdd8e6;
     margin: 0;
-    max-width: 680px;
   }
 
-  .u-hero-acciones {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.85rem;
-    padding-top: 0.5rem;
+  .u-hero-btn-wrap {
+    flex-shrink: 0;
   }
 
   .u-btn-hero-primary {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 0.55rem;
-    min-height: 3.1rem;
-    padding: 0.65rem 1.6rem;
+    gap: 0.45rem;
+    min-height: 2.65rem;
+    padding: 0.5rem 1.35rem;
     background: var(--color-gold, #b8860b);
     color: #1a1608;
     border-radius: 999px;
     font-weight: 700;
-    font-size: 0.98rem;
+    font-size: 0.92rem;
     text-decoration: none;
-    box-shadow: 0 4px 14px rgba(184, 134, 11, 0.35);
-    transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 4px 12px rgba(184, 134, 11, 0.35);
+    transition: all 0.16s ease;
   }
 
   .u-btn-hero-primary:hover {
     background: #9c7108;
     color: #ffffff;
     transform: translateY(-1px);
-    box-shadow: 0 6px 20px rgba(184, 134, 11, 0.45);
-  }
-
-  .u-btn-hero-ghost {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 3.1rem;
-    padding: 0.65rem 1.4rem;
-    background: rgba(255, 255, 255, 0.08);
-    color: #ffffff;
-    border: 1px solid rgba(255, 255, 255, 0.35);
-    border-radius: 999px;
-    font-weight: 600;
-    font-size: 0.95rem;
-    text-decoration: none;
-    transition: all 0.18s ease;
-  }
-
-  .u-btn-hero-ghost:hover {
-    background: rgba(255, 255, 255, 0.18);
-    border-color: #ffffff;
-    transform: translateY(-1px);
   }
 
   @media (max-width: 640px) {
     .u-hero {
-      padding-block: 2rem 2.5rem;
-      border-radius: 0 0 20px 20px;
+      padding-block: 1.25rem 1.45rem;
+      border-radius: 0 0 16px 16px;
     }
 
-    .u-hero-acciones {
+    .u-hero-main-row {
       flex-direction: column;
-      align-items: stretch;
+      align-items: flex-start;
+      gap: 0.85rem;
     }
 
-    .u-btn-hero-primary,
-    .u-btn-hero-ghost {
+    .u-hero-btn-wrap {
       width: 100%;
-      text-align: center;
+    }
+
+    .u-btn-hero-primary {
+      width: 100%;
     }
   }
 </style>
