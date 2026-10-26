@@ -1,0 +1,141 @@
+---
+import type { Unidad } from "../../data/unidades/tipos";
+
+interface Props {
+  resumen?: Unidad["resumen"];
+}
+
+const { resumen } = Astro.props;
+if (!resumen || resumen.length === 0) return null;
+---
+
+<section class="u-seccion u-resumen" id="resumen" aria-labelledby="resumen-titulo">
+  <div class="u-resumen-card">
+    <div class="u-resumen-header">
+      <span class="u-resumen-badge">
+        <svg
+          width="15"
+          height="15"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <polyline points="20 6 9 17 4 12" />
+        </svg>
+        <span>Ideas principales</span>
+      </span>
+      <h2 id="resumen-titulo" class="u-resumen-titulo">Para recordar</h2>
+      <p class="u-resumen-sub">Los puntos esenciales que debes retener de esta lección:</p>
+    </div>
+
+    <ol class="u-resumen-lista">
+      {
+        resumen.map((punto, index) => (
+          <li class="u-resumen-item">
+            <span class="u-resumen-num">{index + 1}</span>
+            <p class="u-resumen-texto">{punto}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .u-seccion {
+    scroll-margin-top: 5rem;
+  }
+
+  .u-resumen-card {
+    background: #ffffff;
+    border: 2px solid rgba(11, 47, 85, 0.15);
+    border-radius: var(--radius-lg, 1.25rem);
+    padding: 1.85rem 2rem;
+    box-shadow: 0 6px 22px rgba(11, 47, 85, 0.05);
+  }
+
+  .u-resumen-header {
+    margin-bottom: 1.35rem;
+  }
+
+  .u-resumen-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.28rem 0.75rem;
+    background: rgba(0, 85, 164, 0.1);
+    color: var(--color-blue, #0055a4);
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .u-resumen-titulo {
+    font-family: var(--font-display, "Playfair Display", Georgia, serif);
+    font-size: clamp(1.5rem, 3vw, 1.9rem);
+    color: var(--color-blue-dark, #0b2f55);
+    margin: 0 0 0.35rem;
+    line-height: 1.2;
+  }
+
+  .u-resumen-sub {
+    font-size: 0.96rem;
+    color: var(--color-text-muted, #6d6861);
+    margin: 0;
+  }
+
+  .u-resumen-lista {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  .u-resumen-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.85rem;
+    padding: 0.85rem 1rem;
+    background: var(--color-surface-soft, #efede8);
+    border-radius: var(--radius-md, 0.875rem);
+    border: 1px solid var(--color-border, #e2ded7);
+  }
+
+  .u-resumen-num {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--color-blue-dark, #0b2f55);
+    color: #ffffff;
+    font-size: 0.76rem;
+    font-weight: 800;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+  }
+
+  .u-resumen-texto {
+    margin: 0;
+    font-size: 0.98rem;
+    line-height: 1.5;
+    color: var(--color-text, #2e2b27);
+    font-weight: 500;
+  }
+
+  @media (max-width: 640px) {
+    .u-resumen-card {
+      padding: 1.35rem 1.15rem;
+    }
+  }
+</style>

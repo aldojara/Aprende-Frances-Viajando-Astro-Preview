@@ -1,0 +1,157 @@
+---
+import type { Unidad } from "../../data/unidades/tipos";
+import UnidadHero from "./UnidadHero.astro";
+import UnidadIndice from "./UnidadIndice.astro";
+import UnidadIdeaClave from "./UnidadIdeaClave.astro";
+import UnidadUsos from "./UnidadUsos.astro";
+import UnidadFormacion from "./UnidadFormacion.astro";
+import UnidadConsulta from "./UnidadConsulta.astro";
+import UnidadPractica from "./UnidadPractica.astro";
+import UnidadErrores from "./UnidadErrores.astro";
+import UnidadEjemplos from "./UnidadEjemplos.astro";
+import UnidadAplicacion from "./UnidadAplicacion.astro";
+import UnidadMaterial from "./UnidadMaterial.astro";
+import UnidadCaptacion from "./UnidadCaptacion.astro";
+import UnidadResumen from "./UnidadResumen.astro";
+import UnidadRelacionados from "./UnidadRelacionados.astro";
+
+interface Props {
+  unidad: Unidad;
+}
+
+const { unidad } = Astro.props;
+---
+
+<article class="u-unidad-page">
+  <!-- Bloque 1: Cabecera Hero -->
+  <UnidadHero unidad={unidad} />
+
+  <!-- Bloque 2 (Móvil): Barra horizontal fija -->
+  <UnidadIndice unidad={unidad} modo="movil" />
+
+  <!-- Contenedor central con distribución adaptable -->
+  <div class="u-cuerpo-layout">
+    <div class="u-cuerpo-grid">
+      <!-- Bloque 2 (Escritorio): Columna lateral fija -->
+      <aside class="u-cuerpo-sidebar" aria-label="Navegación del tema">
+        <UnidadIndice unidad={unidad} modo="escritorio" />
+      </aside>
+
+      <!-- Columna principal con los bloques de la lección -->
+      <div class="u-cuerpo-contenido">
+        <!-- Bloque 3: La idea clave -->
+        {unidad.ideaClave && <UnidadIdeaClave ideaClave={unidad.ideaClave} />}
+
+        <!-- Bloque 4: Cuándo se usa -->
+        {unidad.usos && unidad.usos.length > 0 && (
+          <UnidadUsos usos={unidad.usos} usosNota={unidad.usosNota} />
+        )}
+
+        <!-- Bloque 5: Cómo se forma -->
+        {unidad.formacion && <UnidadFormacion formacion={unidad.formacion} />}
+
+        <!-- Bloque 6: Tablas de consulta -->
+        {unidad.consulta && unidad.consulta.length > 0 && (
+          <UnidadConsulta consulta={unidad.consulta} />
+        )}
+
+        <!-- Bloque 7: Practica (tarjeta CTA hacia la práctica existente) -->
+        {unidad.practica && <UnidadPractica practica={unidad.practica} />}
+
+        <!-- Bloque 8: Errores del hispanohablante -->
+        {unidad.errores && unidad.errores.length > 0 && (
+          <UnidadErrores errores={unidad.errores} practicaUrl={unidad.practica?.url} />
+        )}
+
+        <!-- Bloque 9: Ejemplos en contexto -->
+        {unidad.ejemplos && unidad.ejemplos.items && unidad.ejemplos.items.length > 0 && (
+          <UnidadEjemplos ejemplos={unidad.ejemplos} />
+        )}
+
+        <!-- Bloque 10: Aplicación (tu turno) -->
+        {unidad.aplicacion && <UnidadAplicacion aplicacion={unidad.aplicacion} />}
+
+        <!-- Bloque 11: Material del tema (vitrina condicional) -->
+        {unidad.material && unidad.material.length > 0 && (
+          <UnidadMaterial material={unidad.material} />
+        )}
+
+        <!-- Bloque 12: Espacio de captación (condicional) -->
+        {unidad.captacion && <UnidadCaptacion captacion={unidad.captacion} />}
+
+        <!-- Bloque 13: Resumen para recordar -->
+        {unidad.resumen && unidad.resumen.length > 0 && (
+          <UnidadResumen resumen={unidad.resumen} />
+        )}
+
+        <!-- Bloque 14: Sigue aprendiendo -->
+        {unidad.relacionados && unidad.relacionados.length > 0 && (
+          <UnidadRelacionados relacionados={unidad.relacionados} />
+        )}
+      </div>
+    </div>
+  </div>
+</article>
+
+<style>
+  .u-unidad-page {
+    background-color: var(--color-bg, #f7f4ed);
+    color: var(--color-text, #2e2b27);
+    font-family: var(--font-body, "Inter", Arial, sans-serif);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  .u-cuerpo-layout {
+    width: min(100% - 2rem, 1180px);
+    margin-inline: auto;
+    padding-block: 2.5rem 4.5rem;
+  }
+
+  .u-cuerpo-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
+  .u-cuerpo-sidebar {
+    display: none;
+  }
+
+  .u-cuerpo-contenido {
+    display: flex;
+    flex-direction: column;
+    gap: 3.25rem;
+    min-width: 0;
+  }
+
+  /* Distribución de escritorio con barra lateral */
+  @media (min-width: 1024px) {
+    .u-cuerpo-grid {
+      display: grid;
+      grid-template-columns: 240px minmax(0, 1fr);
+      gap: 3.5rem;
+      align-items: start;
+    }
+
+    .u-cuerpo-sidebar {
+      display: block;
+    }
+
+    .u-cuerpo-contenido {
+      max-width: 840px;
+      gap: 3.5rem;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .u-cuerpo-layout {
+      width: min(100% - 1.5rem, 640px);
+      padding-block: 1.8rem 3rem;
+    }
+
+    .u-cuerpo-contenido {
+      gap: 2.25rem;
+    }
+  }
+</style>

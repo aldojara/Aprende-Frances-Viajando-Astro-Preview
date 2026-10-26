@@ -1,0 +1,189 @@
+---
+import type { Unidad } from "../../data/unidades/tipos";
+
+interface Props {
+  ejemplos?: Unidad["ejemplos"];
+}
+
+const { ejemplos } = Astro.props;
+if (!ejemplos || !ejemplos.items || ejemplos.items.length === 0) return null;
+---
+
+<section class="u-seccion u-ejemplos" id="ejemplos" aria-labelledby="ejemplos-titulo">
+  <div class="u-seccion-header">
+    <p class="u-eyebrow">Historia de viaje en contexto real</p>
+    <h2 id="ejemplos-titulo" class="u-seccion-titulo">
+      {ejemplos.titulo || "Ejemplos en contexto"}
+    </h2>
+    {ejemplos.intro && <p class="u-seccion-sub">{ejemplos.intro}</p>}
+  </div>
+
+  <div class="u-diario-lista">
+    {
+      ejemplos.items.map((item, index) => (
+        <article class="u-diario-item">
+          <div class="u-diario-num-wrap">
+            <span class="u-diario-num">{index + 1}</span>
+            {index < ejemplos.items.length - 1 && <span class="u-diario-linea" aria-hidden="true" />}
+          </div>
+
+          <div class="u-diario-cuerpo">
+            <p class="u-diario-fr" lang="fr">
+              {item.fr}
+            </p>
+            <p class="u-diario-es">{item.es}</p>
+            {item.nota && (
+              <div class="u-diario-nota-wrap">
+                <span class="u-diario-nota">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                    <circle cx="12" cy="12" r="10" />
+                    <line x1="12" y1="16" x2="12" y2="12" />
+                    <line x1="12" y1="8" x2="12.01" y2="8" />
+                  </svg>
+                  {item.nota}
+                </span>
+              </div>
+            )}
+          </div>
+        </article>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .u-seccion {
+    scroll-margin-top: 5rem;
+  }
+
+  .u-seccion-header {
+    margin-bottom: 1.6rem;
+  }
+
+  .u-eyebrow {
+    margin: 0 0 0.35rem;
+    color: var(--color-blue, #0055a4);
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .u-seccion-titulo {
+    font-family: var(--font-display, "Playfair Display", Georgia, serif);
+    font-size: clamp(1.6rem, 3.2vw, 2.1rem);
+    color: var(--color-blue-dark, #0b2f55);
+    margin: 0 0 0.45rem;
+    line-height: 1.2;
+  }
+
+  .u-seccion-sub {
+    font-size: 0.98rem;
+    color: var(--color-text-muted, #6d6861);
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  .u-diario-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    background: #ffffff;
+    border: 1px solid var(--color-border, #e2ded7);
+    border-radius: var(--radius-lg, 1.25rem);
+    padding: 1.5rem 1.6rem;
+    box-shadow: 0 4px 18px rgba(11, 47, 85, 0.04);
+  }
+
+  .u-diario-item {
+    display: flex;
+    gap: 1.2rem;
+    position: relative;
+    padding-bottom: 1.5rem;
+  }
+
+  .u-diario-item:last-child {
+    padding-bottom: 0;
+  }
+
+  .u-diario-num-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+    width: 32px;
+  }
+
+  .u-diario-num {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: rgba(0, 85, 164, 0.1);
+    color: var(--color-blue, #0055a4);
+    font-weight: 800;
+    font-size: 0.82rem;
+    border: 1px solid rgba(0, 85, 164, 0.2);
+    z-index: 2;
+  }
+
+  .u-diario-linea {
+    width: 2px;
+    flex: 1;
+    background: var(--color-border, #e2ded7);
+    margin-top: 0.4rem;
+    margin-bottom: -0.4rem;
+  }
+
+  .u-diario-cuerpo {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding-top: 0.15rem;
+  }
+
+  .u-diario-fr {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--color-blue-dark, #0b2f55);
+    line-height: 1.45;
+  }
+
+  .u-diario-es {
+    margin: 0;
+    font-size: 0.95rem;
+    color: var(--color-text, #2e2b27);
+    line-height: 1.5;
+  }
+
+  .u-diario-nota-wrap {
+    margin-top: 0.25rem;
+  }
+
+  .u-diario-nota {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.78rem;
+    color: var(--color-gold, #b8860b);
+    background: rgba(184, 134, 11, 0.1);
+    border: 1px solid rgba(184, 134, 11, 0.25);
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    font-weight: 600;
+  }
+
+  @media (max-width: 640px) {
+    .u-diario-lista {
+      padding: 1.2rem 1.1rem;
+    }
+
+    .u-diario-item {
+      gap: 0.85rem;
+    }
+  }
+</style>

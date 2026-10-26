@@ -1,0 +1,205 @@
+---
+import type { Unidad } from "../../data/unidades/tipos";
+import { withBase } from "../../utils/paths";
+
+interface Props {
+  practica?: Unidad["practica"];
+}
+
+const { practica } = Astro.props;
+if (!practica) return null;
+
+const practicaUrl = withBase(practica.url);
+---
+
+<section class="u-seccion u-practica-bloque" id="practica" aria-labelledby="practica-cta-titulo">
+  <div class="u-practica-card">
+    <div class="u-practica-decoracion" aria-hidden="true">
+      <div class="u-decoracion-circulo"></div>
+    </div>
+
+    <div class="u-practica-contenido">
+      <div class="u-practica-badge">
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <polygon points="5 3 19 12 5 21 5 3" />
+        </svg>
+        <span>Práctica interactiva recomendada</span>
+      </div>
+
+      <h2 id="practica-cta-titulo" class="u-practica-titulo">
+        {practica.titulo}
+      </h2>
+
+      <p class="u-practica-texto">{practica.texto}</p>
+
+      <div class="u-practica-garantias">
+        <span class="u-garantia">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12" /></svg>
+          Corrección al instante
+        </span>
+        <span class="u-garantia">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12" /></svg>
+          Explicación para cada error
+        </span>
+      </div>
+
+      <div class="u-practica-accion">
+        <a class="u-btn-practica" href={practicaUrl}>
+          <span>Practicar ahora</span>
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <line x1="5" y1="12" x2="19" y2="12" />
+            <polyline points="12 5 19 12 12 19" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .u-seccion {
+    scroll-margin-top: 5rem;
+  }
+
+  .u-practica-card {
+    position: relative;
+    background: linear-gradient(135deg, var(--color-blue-dark, #0b2f55) 0%, #071f38 100%);
+    color: #ffffff;
+    border-radius: var(--radius-lg, 1.25rem);
+    padding: 2.2rem 2.4rem;
+    overflow: hidden;
+    box-shadow: 0 12px 32px rgba(11, 47, 85, 0.16);
+    border: 1px solid rgba(240, 212, 138, 0.3);
+  }
+
+  .u-practica-decoracion {
+    position: absolute;
+    top: -50px;
+    right: -50px;
+    pointer-events: none;
+  }
+
+  .u-decoracion-circulo {
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(184, 134, 11, 0.22) 0%, rgba(11, 47, 85, 0) 70%);
+  }
+
+  .u-practica-contenido {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    max-width: 680px;
+  }
+
+  .u-practica-badge {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.28rem 0.75rem;
+    background: rgba(240, 212, 138, 0.16);
+    color: #f0d48a;
+    border: 1px solid rgba(240, 212, 138, 0.35);
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .u-practica-titulo {
+    font-family: var(--font-display, "Playfair Display", Georgia, serif);
+    font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+    color: #ffffff;
+    margin: 0;
+    line-height: 1.15;
+  }
+
+  .u-practica-texto {
+    font-size: 1.05rem;
+    line-height: 1.5;
+    color: #d1dde9;
+    margin: 0;
+  }
+
+  .u-practica-garantias {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem 1.25rem;
+    padding-block: 0.2rem 0.5rem;
+  }
+
+  .u-garantia {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.85rem;
+    color: #c0d2e5;
+  }
+
+  .u-garantia svg {
+    color: #48bb78;
+  }
+
+  .u-practica-accion {
+    padding-top: 0.35rem;
+  }
+
+  .u-btn-practica {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.65rem;
+    min-height: 3.2rem;
+    padding: 0.7rem 1.8rem;
+    background: var(--color-gold, #b8860b);
+    color: #1a1608;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 1.02rem;
+    text-decoration: none;
+    box-shadow: 0 4px 16px rgba(184, 134, 11, 0.4);
+    transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .u-btn-practica:hover {
+    background: #9c7108;
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 22px rgba(184, 134, 11, 0.5);
+  }
+
+  @media (max-width: 640px) {
+    .u-practica-card {
+      padding: 1.5rem 1.25rem;
+    }
+
+    .u-btn-practica {
+      width: 100%;
+    }
+  }
+</style>
