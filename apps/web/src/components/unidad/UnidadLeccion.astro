@@ -17,6 +17,7 @@ import UnidadResumen from "./UnidadResumen.astro";
 import UnidadRelacionados from "./UnidadRelacionados.astro";
 import UnidadStickyPractica from "./UnidadStickyPractica.astro";
 import UnidadMaterialAdicional from "./UnidadMaterialAdicional.astro";
+import UnidadIndiceContextual from "./UnidadIndiceContextual.astro";
 
 interface Props {
   unidad: Unidad;
@@ -104,30 +105,15 @@ const defaultTab = tieneTeoria ? "teoria" : "regla";
   <div class="u-cuerpo-layout">
     <div class="u-cuerpo-grid">
       <!-- Columna lateral para escritorio -->
-      <aside class="u-cuerpo-sidebar" aria-label="Navegación y práctica">
+      <aside class="u-cuerpo-sidebar" aria-label="Navegación contextual y práctica">
         <div class="u-sidebar-sticky">
-          <!-- Menú de pestañas vertical en escritorio -->
-          <nav class="u-sidebar-nav" aria-label="Pestañas de la lección">
-            <span class="u-sidebar-nav-titulo">Contenido de la unidad</span>
-            <div class="u-sidebar-tablist" role="tablist" aria-orientation="vertical">
-              {
-                tabs.map((tab, idx) => (
-                  <button
-                    type="button"
-                    role="tab"
-                    id={`side-tab-${tab.id}`}
-                    class={`u-side-tab ${tab.id === defaultTab ? "u-side-active" : ""}`}
-                    aria-selected={tab.id === defaultTab ? "true" : "false"}
-                    aria-controls={`panel-${tab.id}`}
-                    data-tab={tab.id}
-                  >
-                    <span class="u-side-num">{String(idx + 1).padStart(2, "0")}</span>
-                    <span class="u-side-texto">{tab.nombreDesktop}</span>
-                  </button>
-                ))
-              }
-            </div>
-          </nav>
+          <!-- Índice contextual «En esta pestaña» (Ronda 5) -->
+          <UnidadIndiceContextual
+            unidad={unidad}
+            tieneTeoria={tieneTeoria}
+            tieneMaterial={tieneMaterial}
+            defaultTab={defaultTab}
+          />
 
           <!-- Tarjeta fija de práctica en escritorio (como en la v1) -->
           <UnidadStickyPractica practica={unidad.practica} />
@@ -303,7 +289,6 @@ const defaultTab = tieneTeoria ? "teoria" : "regla";
     if (!root) return;
 
     const tabsTop = Array.from(root.querySelectorAll(".u-tablist button[role='tab']"));
-    const tabsSide = Array.from(root.querySelectorAll(".u-sidebar-tablist button[role='tab']"));
     const panels = Array.from(root.querySelectorAll("main > section[role='tabpanel']"));
 
     const tieneTeoria = root.dataset.tieneTeoria === "true";
@@ -340,23 +325,11 @@ const defaultTab = tieneTeoria ? "teoria" : "regla";
         t.setAttribute("tabindex", coincide ? "0" : "-1");
         if (coincide) {
           t.classList.add("u-tab-active");
-          // Desplazamiento suave para visibilidad en barra con scroll horizontal
           try {
             t.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
           } catch (_) {}
         } else {
           t.classList.remove("u-tab-active");
-        }
-      });
-
-      tabsSide.forEach(function (t) {
-        const coincide = t.dataset.tab === nombreTab;
-        t.setAttribute("aria-selected", coincide ? "true" : "false");
-        t.setAttribute("tabindex", coincide ? "0" : "-1");
-        if (coincide) {
-          t.classList.add("u-side-active");
-        } else {
-          t.classList.remove("u-side-active");
         }
       });
 
@@ -371,12 +344,17 @@ const defaultTab = tieneTeoria ? "teoria" : "regla";
         }
       });
 
+      // Notificar al índice contextual de la columna lateral
+      if (typeof window.__actualizarIndiceContextual === "function") {
+        window.__actualizarIndiceContextual(nombreTab);
+      }
+
       if (actualizarHash && window.history && window.history.replaceState) {
         window.history.replaceState(null, "", "#" + nombreTab);
       }
     }
 
-    [...tabsTop, ...tabsSide].forEach(function (btn) {
+    tabsTop.forEach(function (btn) {
       btn.addEventListener("click", function () {
         activarTab(btn.dataset.tab, true);
       });
@@ -403,18 +381,42 @@ const defaultTab = tieneTeoria ? "teoria" : "regla";
     });
 
     function resolverHash() {
-      const hash = window.location.hash.replace("#", "").toLowerCase();
-      if (hash === "teoria" || hash === "video") {
-        activarTab(tieneTeoria ? "teoria" : "regla", false);
-      } else if (hash === "regla" || hash === "aprende" || hash === "idea-clave") {
-        activarTab("regla", false);
-      } else if (hash === "errores") {
-        activarTab("errores", false);
-      } else if (hash === "contexto" || hash === "practica" || hash === "ejemplos") {
-        activarTab("contexto", false);
-      } else if (hash === "material" || hash === "materiales" || hash === "recursos") {
-        activarTab(tieneMaterial ? "material" : defaultTab, false);
-      } else if (!hash) {
+      const rawHash = window.location.hash.replace("#", "").toLowerCase();
+      if (!rawHash) {
+        activarTab(defaultTab, false);
+        return;
+      }
+
+      let tabDestino = null;
+      if (rawHash === "teoria" || rawHash === "video" || rawHash === "video-teoria" || rawHash === "audio-resumen") {
+        tabDestino = tieneTeoria ? "teoria" : "regla";
+      } else if (rawHash === "regla" || rawHash === "aprende" || rawHash === "usos" || rawHash === "formacion" || rawHash === "consulta") {
+        tabDestino = "regla";
+      } else if (rawHash === "idea-clave") {
+        tabDestino = tieneTeoria ? "teoria" : "regla";
+      } else if (rawHash === "errores" || rawHash === "resumen" || rawHash.startsWith("error-")) {
+        tabDestino = "errores";
+      } else if (rawHash === "contexto" || rawHash === "practica" || rawHash === "ejemplos" || rawHash === "aplicacion" || rawHash === "relacionados") {
+        tabDestino = "contexto";
+      } else if (rawHash === "material" || rawHash === "materiales" || rawHash === "recursos" || rawHash.startsWith("subpanel-")) {
+        tabDestino = tieneMaterial ? "material" : defaultTab;
+      }
+
+      if (tabDestino) {
+        activarTab(tabDestino, false);
+        // Si el hash apunta a una sección específica, desplazarse hacia ella
+        setTimeout(() => {
+          if (rawHash.startsWith("subpanel-")) {
+            const matSub = rawHash.replace("subpanel-", "");
+            const subBtn = document.querySelector(`[data-mat-subtab="${matSub}"]`);
+            if (subBtn) subBtn.click();
+          }
+          const targetEl = document.getElementById(rawHash);
+          if (targetEl) {
+            targetEl.scrollIntoView({ behavior: "smooth", block: "start" });
+          }
+        }, 120);
+      } else {
         activarTab(defaultTab, false);
       }
     }
@@ -603,86 +605,6 @@ const defaultTab = tieneTeoria ? "teoria" : "regla";
       display: flex;
       flex-direction: column;
       gap: 1.25rem;
-    }
-
-    .u-sidebar-nav {
-      background: #ffffff;
-      border: 1px solid var(--color-border, #e2ded7);
-      border-radius: var(--radius-md, 0.875rem);
-      padding: 1rem;
-      box-shadow: 0 2px 8px rgba(11, 47, 85, 0.04);
-    }
-
-    .u-sidebar-nav-titulo {
-      display: block;
-      font-size: 0.72rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--color-text-muted, #6d6861);
-      margin-bottom: 0.65rem;
-      padding-bottom: 0.45rem;
-      border-bottom: 1px solid var(--color-border, #e2ded7);
-    }
-
-    .u-sidebar-tablist {
-      display: flex;
-      flex-direction: column;
-      gap: 0.35rem;
-    }
-
-    .u-side-tab {
-      display: flex;
-      align-items: center;
-      gap: 0.65rem;
-      padding: 0.6rem 0.75rem;
-      border-radius: var(--radius-sm, 0.5rem);
-      border: 1px solid transparent;
-      background: transparent;
-      color: var(--color-text, #2e2b27);
-      font-family: var(--font-body, "Inter", sans-serif);
-      font-size: 0.88rem;
-      font-weight: 600;
-      text-align: left;
-      cursor: pointer;
-      transition: all 0.15s ease;
-    }
-
-    .u-side-tab:hover {
-      background: var(--color-surface, #fcfbf9);
-      border-color: var(--color-border, #e2ded7);
-      color: var(--color-blue, #0055a4);
-    }
-
-    .u-side-tab:focus-visible {
-      outline: 2px solid var(--color-blue, #0055a4);
-      outline-offset: 1px;
-    }
-
-    .u-side-active {
-      background: var(--color-blue-dark, #0b2f55) !important;
-      color: #ffffff !important;
-      font-weight: 700;
-    }
-
-    .u-side-num {
-      font-size: 0.72rem;
-      font-weight: 800;
-      opacity: 0.75;
-      font-feature-settings: "tnum";
-    }
-
-    .u-side-active .u-side-num {
-      opacity: 1;
-      color: var(--color-gold, #b8860b);
-    }
-
-    .u-side-texto {
-      flex: 1;
-      min-width: 0;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
     }
   }
 

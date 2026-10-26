@@ -28,7 +28,7 @@ if (!errores || errores.length === 0) return null;
   <div class="u-errores-grid">
     {
       errores.map((item, idx) => (
-        <article class="u-error-card">
+        <article class="u-error-card" id={`error-${idx + 1}`}>
           <div class="u-error-cabeza">
             <span class="u-error-indice">Caso #{String(idx + 1).padStart(2, "0")}</span>
             {item.tipoPractica && (
@@ -138,6 +138,7 @@ if (!errores || errores.length === 0) return null;
   }
 
   .u-error-card {
+    scroll-margin-top: 5rem;
     background: #ffffff;
     border: 1px solid var(--color-border, #e2ded7);
     border-radius: var(--radius-sm, 0.5rem);
