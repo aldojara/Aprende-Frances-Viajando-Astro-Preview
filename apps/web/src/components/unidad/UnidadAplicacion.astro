@@ -52,7 +52,7 @@ if (!aplicacion) return null;
 
 <style>
   .u-seccion {
-    scroll-margin-top: 5rem;
+    scroll-margin-top: var(--u-scroll-margin, 9.25rem);
   }
 
   .u-seccion-header {
@@ -98,7 +98,7 @@ if (!aplicacion) return null;
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.06em;
-    color: var(--color-gold, #b8860b);
+    color: var(--color-gold-text, #855d00);
   }
 
   .u-app-consigna-texto {
@@ -165,7 +165,7 @@ if (!aplicacion) return null;
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.06em;
-    color: var(--color-gold, #b8860b);
+    color: var(--color-gold-text, #855d00);
   }
 
   .u-modelo-cita {

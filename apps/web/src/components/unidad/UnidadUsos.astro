@@ -45,7 +45,7 @@ if (!usos || usos.length === 0) return null;
 
 <style>
   .u-seccion {
-    scroll-margin-top: 5rem;
+    scroll-margin-top: var(--u-scroll-margin, 9.25rem);
   }
 
   .u-seccion-header {
@@ -97,7 +97,7 @@ if (!usos || usos.length === 0) return null;
   .u-uso-num {
     font-size: 0.74rem;
     font-weight: 800;
-    color: var(--color-gold, #b8860b);
+    color: var(--color-gold-text, #855d00);
     background: rgba(184, 134, 11, 0.12);
     padding: 0.15rem 0.45rem;
     border-radius: 4px;

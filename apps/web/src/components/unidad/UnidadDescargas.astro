@@ -99,6 +99,11 @@ if (!descargas || descargas.length === 0) return null;
     transform: translateY(-1px);
   }
 
+  .u-descarga-pill:focus-visible {
+    outline: 2px solid var(--color-blue, #0055a4);
+    outline-offset: 2px;
+  }
+
   .u-descarga-tipo {
     font-size: 0.65rem;
     font-weight: 800;
@@ -123,7 +128,7 @@ if (!descargas || descargas.length === 0) return null;
 
   .u-descarga-flecha {
     font-weight: 800;
-    color: var(--color-gold, #b8860b);
+    color: var(--color-gold-text, #855d00);
   }
 
   @media (min-width: 1024px) {

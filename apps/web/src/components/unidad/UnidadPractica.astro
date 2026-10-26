@@ -78,7 +78,7 @@ const practicaUrl = withBase(practica.url);
 
 <style>
   .u-seccion {
-    scroll-margin-top: 5rem;
+    scroll-margin-top: var(--u-scroll-margin, 9.25rem);
   }
 
   .u-practica-card {
@@ -191,6 +191,11 @@ const practicaUrl = withBase(practica.url);
     color: #ffffff;
     transform: translateY(-2px);
     box-shadow: 0 6px 22px rgba(184, 134, 11, 0.5);
+  }
+
+  .u-btn-practica:focus-visible {
+    outline: 3px solid #ffffff;
+    outline-offset: 3px;
   }
 
   @media (max-width: 640px) {

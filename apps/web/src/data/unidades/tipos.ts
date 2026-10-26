@@ -83,12 +83,6 @@ export interface Unidad {
 
   ejemplos: { titulo?: string; intro?: string; items: { fr: string; es: string; nota?: string }[] };
   aplicacion?: { consigna: string; requisitos?: string[]; modelo: string };
-  material?: {
-    tipo: "video" | "audio" | "infografia" | "presentacion";
-    titulo: string;
-    url?: string;
-    miniatura?: string;
-  }[];
   captacion?: { titulo: string; texto: string; boton: string; url: string };
   resumen: string[];
   relacionados: { titulo: string; url: string; estado: "disponible" | "proximamente" }[];

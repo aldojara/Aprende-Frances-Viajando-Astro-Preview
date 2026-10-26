@@ -94,7 +94,7 @@ const thumbUrl = infografia.miniatura ? withBase(infografia.miniatura) : imgUrl;
 
 <style>
   .u-seccion {
-    scroll-margin-top: 5rem;
+    scroll-margin-top: var(--u-scroll-margin, 9.25rem);
   }
 
   .u-info-card {
@@ -158,6 +158,11 @@ const thumbUrl = infografia.miniatura ? withBase(infografia.miniatura) : imgUrl;
     padding: 0;
     background: var(--color-surface-soft, #efede8);
     cursor: pointer;
+  }
+
+  .u-info-preview-btn:focus-visible {
+    outline: 3px solid var(--color-blue, #0055a4);
+    outline-offset: 2px;
   }
 
   .u-info-thumb {

@@ -296,6 +296,11 @@ const primeraActiva = subsecciones[0].id;
     border-color: #d0c9bd;
   }
 
+  .u-mat-pill:focus-visible {
+    outline: 2px solid var(--color-blue, #0055a4);
+    outline-offset: 2px;
+  }
+
   .u-mat-pill-active {
     background: var(--color-blue-dark, #0b2f55) !important;
     border-color: var(--color-blue-dark, #0b2f55) !important;
@@ -314,7 +319,7 @@ const primeraActiva = subsecciones[0].id;
   }
 
   .u-mat-subpanel {
-    scroll-margin-top: 5rem;
+    scroll-margin-top: var(--u-scroll-margin, 9.25rem);
     display: flex;
     flex-direction: column;
   }

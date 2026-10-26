@@ -101,7 +101,7 @@ if (!formacion) return null;
 
 <style>
   .u-seccion {
-    scroll-margin-top: 5rem;
+    scroll-margin-top: var(--u-scroll-margin, 9.25rem);
   }
 
   .u-seccion-header {
@@ -177,7 +177,7 @@ if (!formacion) return null;
 
   .u-formula-plus {
     font-weight: 800;
-    color: var(--color-gold, #b8860b);
+    color: var(--color-gold-text, #855d00);
   }
 
   /* Tabla */
@@ -209,7 +209,7 @@ if (!formacion) return null;
   }
 
   .u-col-sujeto { color: var(--color-text-muted, #6d6861); width: 22%; }
-  .u-col-avoir { color: var(--color-gold, #b8860b); width: 39%; }
+  .u-col-avoir { color: var(--color-gold-text, #855d00); width: 39%; }
   .u-col-etre { color: var(--color-blue, #0055a4); width: 39%; }
 
   .u-tabla td {

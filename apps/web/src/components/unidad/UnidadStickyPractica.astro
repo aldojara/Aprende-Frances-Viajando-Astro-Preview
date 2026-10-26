@@ -98,6 +98,11 @@ const practicaUrl = withBase(practica.url);
     color: #ffffff;
   }
 
+  .u-practica-movil-btn:focus-visible {
+    outline: 3px solid var(--color-blue, #0055a4);
+    outline-offset: 2px;
+  }
+
   /* Tarjeta de escritorio */
   .u-practica-desktop-card {
     display: none;
@@ -169,6 +174,11 @@ const practicaUrl = withBase(practica.url);
       background: #9c7108;
       color: #ffffff;
       transform: translateY(-1px);
+    }
+
+    .u-pcard-btn:focus-visible {
+      outline: 3px solid #ffffff;
+      outline-offset: 3px;
     }
   }
 </style>

@@ -95,7 +95,7 @@ const embedUrl = videoId ? `https://www.youtube-nocookie.com/embed/${videoId}?au
 
 <style>
   .u-seccion {
-    scroll-margin-top: 5rem;
+    scroll-margin-top: var(--u-scroll-margin, 9.25rem);
   }
 
   .u-video-card {
@@ -158,6 +158,11 @@ const embedUrl = videoId ? `https://www.youtube-nocookie.com/embed/${videoId}?au
     height: 100%;
     position: relative;
     text-decoration: none;
+  }
+
+  .u-video-facade-link:focus-visible {
+    outline: 3px solid var(--color-blue, #0055a4);
+    outline-offset: 2px;
   }
 
   .u-video-thumb {

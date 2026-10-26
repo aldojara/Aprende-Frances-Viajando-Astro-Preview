@@ -165,7 +165,7 @@ if (!tarjetas || tarjetas.length === 0) return null;
 
 <style>
   .u-seccion {
-    scroll-margin-top: 5rem;
+    scroll-margin-top: var(--u-scroll-margin, 9.25rem);
   }
 
   .u-tarjetas-card {
@@ -306,8 +306,13 @@ if (!tarjetas || tarjetas.length === 0) return null;
 
   .u-cara-pista {
     font-size: 0.8rem;
-    color: var(--color-gold, #b8860b);
+    color: var(--color-gold-text, #855d00);
     font-weight: 500;
+  }
+
+  .u-flashcard:focus-visible {
+    outline: 3px solid var(--color-blue, #0055a4);
+    outline-offset: 2px;
   }
 
   .u-cara-girar-hint {
@@ -345,6 +350,11 @@ if (!tarjetas || tarjetas.length === 0) return null;
   .u-btn-card-nav:hover {
     background: var(--color-surface-soft, #efede8);
     border-color: var(--color-blue, #0055a4);
+  }
+
+  .u-btn-card-nav:focus-visible {
+    outline: 2px solid var(--color-blue, #0055a4);
+    outline-offset: 2px;
   }
 
   .u-card-contador {

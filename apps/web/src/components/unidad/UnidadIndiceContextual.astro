@@ -135,9 +135,6 @@ if (unidad.aplicacion) {
 if (unidad.practica) {
   itemsContexto.push({ id: "practica", label: "Práctica interactiva" });
 }
-if (unidad.material && unidad.material.length > 0) {
-  itemsContexto.push({ id: "material-tema", label: "Material del tema" });
-}
 if (unidad.captacion) {
   itemsContexto.push({ id: "captacion", label: unidad.captacion.titulo || "Recursos adicionales" });
 }
@@ -401,7 +398,7 @@ if (tieneMaterial) {
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    color: var(--color-gold, #b8860b);
+    color: var(--color-gold-text, #855d00);
   }
 
   .u-toc-titulo {
@@ -469,10 +466,17 @@ if (tieneMaterial) {
     border-left-color: var(--color-blue, #0055a4) !important;
   }
 
+  .u-toc-link:focus-visible,
+  .u-toc-link-subgrupo:focus-visible {
+    outline: 2px solid var(--color-blue, #0055a4);
+    outline-offset: 1px;
+    border-radius: var(--radius-sm, 0.35rem);
+  }
+
   .u-toc-badge {
     font-size: 0.7rem;
     font-weight: 800;
-    color: var(--color-gold, #b8860b);
+    color: var(--color-gold-text, #855d00);
     flex-shrink: 0;
     font-feature-settings: "tnum";
   }
@@ -511,7 +515,7 @@ if (tieneMaterial) {
   }
 
   .u-toc-subgrupo-bullet {
-    color: var(--color-gold, #b8860b);
+    color: var(--color-gold-text, #855d00);
     font-size: 0.9rem;
     line-height: 1;
   }

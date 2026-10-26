@@ -11,7 +11,6 @@ import UnidadPractica from "./UnidadPractica.astro";
 import UnidadErrores from "./UnidadErrores.astro";
 import UnidadEjemplos from "./UnidadEjemplos.astro";
 import UnidadAplicacion from "./UnidadAplicacion.astro";
-import UnidadMaterial from "./UnidadMaterial.astro";
 import UnidadCaptacion from "./UnidadCaptacion.astro";
 import UnidadResumen from "./UnidadResumen.astro";
 import UnidadRelacionados from "./UnidadRelacionados.astro";
@@ -130,6 +129,7 @@ const defaultTab = tieneTeoria ? "teoria" : "regla";
             <section
               id="panel-teoria"
               role="tabpanel"
+              tabindex="0"
               aria-labelledby="tab-teoria"
               class={`u-tabpanel ${defaultTab === "teoria" ? "u-panel-active" : ""}`}
               data-panel="teoria"
@@ -160,6 +160,7 @@ const defaultTab = tieneTeoria ? "teoria" : "regla";
         <section
           id="panel-regla"
           role="tabpanel"
+          tabindex="0"
           aria-labelledby="tab-regla"
           class={`u-tabpanel ${defaultTab === "regla" ? "u-panel-active" : ""}`}
           data-panel="regla"
@@ -187,6 +188,7 @@ const defaultTab = tieneTeoria ? "teoria" : "regla";
         <section
           id="panel-errores"
           role="tabpanel"
+          tabindex="0"
           aria-labelledby="tab-errores"
           class="u-tabpanel"
           data-panel="errores"
@@ -213,6 +215,7 @@ const defaultTab = tieneTeoria ? "teoria" : "regla";
         <section
           id="panel-contexto"
           role="tabpanel"
+          tabindex="0"
           aria-labelledby="tab-contexto"
           class="u-tabpanel"
           data-panel="contexto"
@@ -226,10 +229,6 @@ const defaultTab = tieneTeoria ? "teoria" : "regla";
             {unidad.aplicacion && <UnidadAplicacion aplicacion={unidad.aplicacion} />}
 
             {unidad.practica && <UnidadPractica practica={unidad.practica} />}
-
-            {unidad.material && unidad.material.length > 0 && (
-              <UnidadMaterial material={unidad.material} />
-            )}
 
             {unidad.captacion && <UnidadCaptacion captacion={unidad.captacion} />}
 
@@ -247,6 +246,7 @@ const defaultTab = tieneTeoria ? "teoria" : "regla";
             <section
               id="panel-material"
               role="tabpanel"
+              tabindex="0"
               aria-labelledby="tab-material"
               class="u-tabpanel"
               data-panel="material"
@@ -367,9 +367,9 @@ const defaultTab = tieneTeoria ? "teoria" : "regla";
     tabsTop.forEach(function (tab, idx) {
       tab.addEventListener("keydown", function (e) {
         let siguiente = null;
-        if (e.key === "ArrowRight") {
+        if (e.key === "ArrowRight" || e.key === "ArrowDown") {
           siguiente = tabsTop[(idx + 1) % tabsTop.length];
-        } else if (e.key === "ArrowLeft") {
+        } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
           siguiente = tabsTop[(idx - 1 + tabsTop.length) % tabsTop.length];
         } else if (e.key === "Home") {
           siguiente = tabsTop[0];
@@ -384,67 +384,148 @@ const defaultTab = tieneTeoria ? "teoria" : "regla";
       });
     });
 
+    function encontrarTabParaId(targetId) {
+      if (!targetId) return null;
+
+      // a) ¿Es directamente el id de una pestaña?
+      const tabDirecto = tabsTop.find(function (t) {
+        return t.dataset.tab === targetId;
+      });
+      if (tabDirecto) return targetId;
+
+      // b) Buscar el elemento en el DOM por ID exacto o minúsculas
+      let targetEl = document.getElementById(targetId);
+      if (!targetEl) {
+        targetEl = document.getElementById(targetId.toLowerCase());
+      }
+
+      if (targetEl) {
+        // Encontrar el panel padre que contiene este elemento
+        const panelPadre = targetEl.closest("section[role='tabpanel'][data-panel]");
+        if (panelPadre && panelPadre.dataset.panel) {
+          return panelPadre.dataset.panel;
+        }
+      }
+
+      // c) Mapeos de prefijos o palabras clave
+      const lower = targetId.toLowerCase();
+      if (lower.startsWith("error-") || lower.startsWith("grupo-") || lower === "errores" || lower === "resumen") {
+        return "errores";
+      }
+      if (
+        lower.startsWith("subpanel-") ||
+        lower.startsWith("material") ||
+        lower === "infografia" ||
+        lower === "mapa-mental" ||
+        lower === "tarjetas-didacticas" ||
+        lower === "descargas"
+      ) {
+        return tieneMaterial ? "material" : defaultTab;
+      }
+      if (lower === "teoria" || lower === "video" || lower === "video-teoria" || lower === "audio-resumen") {
+        return tieneTeoria ? "teoria" : "regla";
+      }
+      if (
+        lower === "regla" ||
+        lower === "aprende" ||
+        lower === "usos" ||
+        lower === "formacion" ||
+        lower === "consulta" ||
+        lower === "idea-clave"
+      ) {
+        return "regla";
+      }
+      if (
+        lower === "contexto" ||
+        lower === "practica" ||
+        lower === "ejemplos" ||
+        lower === "aplicacion" ||
+        lower === "relacionados" ||
+        lower === "captacion"
+      ) {
+        return "contexto";
+      }
+
+      return null;
+    }
+
     function resolverHash() {
-      const rawHash = window.location.hash.replace("#", "").toLowerCase();
+      const rawHash = window.location.hash.replace("#", "").trim();
       if (!rawHash) {
         activarTab(defaultTab, false);
         return;
       }
 
-      let tabDestino = null;
-      if (rawHash === "teoria" || rawHash === "video" || rawHash === "video-teoria" || rawHash === "audio-resumen") {
-        tabDestino = tieneTeoria ? "teoria" : "regla";
-      } else if (rawHash === "regla" || rawHash === "aprende" || rawHash === "usos" || rawHash === "formacion" || rawHash === "consulta") {
-        tabDestino = "regla";
-      } else if (rawHash === "idea-clave") {
-        tabDestino = tieneTeoria ? "teoria" : "regla";
-      } else if (rawHash === "errores" || rawHash === "resumen" || rawHash.startsWith("error-") || rawHash.startsWith("grupo-")) {
-        tabDestino = "errores";
-      } else if (rawHash === "contexto" || rawHash === "practica" || rawHash === "ejemplos" || rawHash === "aplicacion" || rawHash === "relacionados") {
-        tabDestino = "contexto";
-      } else if (rawHash === "material" || rawHash === "materiales" || rawHash === "recursos" || rawHash.startsWith("subpanel-")) {
-        tabDestino = tieneMaterial ? "material" : defaultTab;
-      }
+      const tabDestino = encontrarTabParaId(rawHash) || defaultTab;
+      activarTab(tabDestino, false);
 
-      if (tabDestino) {
-        activarTab(tabDestino, false);
-        // Si el hash apunta a una sección específica, desplazarse hacia ella
-        setTimeout(() => {
+      // Si el hash apunta a una sección específica, desplazarse hacia ella
+      requestAnimationFrame(function () {
+        setTimeout(function () {
+          // Si está dentro de un subpanel de material adicional
           if (rawHash.startsWith("subpanel-")) {
             const matSub = rawHash.replace("subpanel-", "");
             const subBtn = document.querySelector(`[data-mat-subtab="${matSub}"]`);
             if (subBtn) subBtn.click();
           }
-          const targetEl = document.getElementById(rawHash);
+
+          const targetEl =
+            document.getElementById(rawHash) || document.getElementById(rawHash.toLowerCase());
           if (targetEl) {
             targetEl.scrollIntoView({ behavior: "smooth", block: "start" });
           }
-        }, 120);
-      } else {
-        activarTab(defaultTab, false);
-      }
+        }, 80);
+      });
     }
 
-    resolverHash();
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", resolverHash);
+    } else {
+      resolverHash();
+    }
     window.addEventListener("hashchange", resolverHash);
   })();
 </script>
 
 <style>
+  :global(.u-unidad-page) {
+    --u-header-height: 77px;
+    --u-tabs-height: 52px;
+    --u-sticky-total: calc(var(--u-header-height) + var(--u-tabs-height));
+    --u-scroll-margin: calc(var(--u-sticky-total) + 1.25rem);
+    --color-gold-text: #855d00;
+  }
+
   .u-unidad-page {
     position: relative;
     padding-bottom: 5.5rem; /* Espacio para barra móvil flotante */
+    --u-header-height: 77px;
+    --u-tabs-height: 52px;
+    --u-sticky-total: calc(var(--u-header-height) + var(--u-tabs-height));
+    --u-scroll-margin: calc(var(--u-sticky-total) + 1.25rem);
+    --color-gold-text: #855d00;
   }
 
-  /* Barra de pestañas sticky superior */
+  /* Barra de pestañas sticky superior: queda justo debajo de la cabecera (77px) */
   .u-tabs-bar-wrap {
     position: sticky;
-    top: 0;
+    top: var(--u-header-height, 77px);
     z-index: 40;
     background: #ffffff;
     border-bottom: 2px solid var(--color-border, #e2ded7);
     box-shadow: 0 4px 12px rgba(11, 47, 85, 0.05);
     margin-bottom: 1.5rem;
+  }
+
+  /* Desplazamiento seguro para anclas bajo cabecera y barra fija */
+  :global(.u-seccion),
+  :global(.u-grupo-errores),
+  :global(.u-error-card),
+  :global(.u-material-subpanel),
+  :global([id^="grupo-"]),
+  :global([id^="error-"]),
+  :global([id^="subpanel-"]) {
+    scroll-margin-top: var(--u-scroll-margin, 9.25rem) !important;
   }
 
   .u-tabs-container {
@@ -529,8 +610,9 @@ const defaultTab = tieneTeoria ? "teoria" : "regla";
   }
 
   .u-tab-btn:focus-visible {
-    outline: 2px solid var(--color-blue, #0055a4);
+    outline: 3px solid var(--color-blue, #0055a4);
     outline-offset: -2px;
+    z-index: 2;
   }
 
   .u-tab-active {
@@ -538,6 +620,12 @@ const defaultTab = tieneTeoria ? "teoria" : "regla";
     border-color: var(--color-blue-dark, #0b2f55) !important;
     color: #ffffff !important;
     font-weight: 700;
+  }
+
+  .u-tab-active:focus-visible {
+    outline: 3px solid #ffffff;
+    outline-offset: -3px;
+    box-shadow: 0 0 0 2px var(--color-blue-dark, #0b2f55);
   }
 
   .u-tab-icon {
@@ -596,23 +684,27 @@ const defaultTab = tieneTeoria ? "teoria" : "regla";
       display: grid;
       grid-template-columns: 280px minmax(0, 1fr);
       gap: 3.5rem;
-      align-items: start;
+      align-items: stretch;
     }
 
     .u-cuerpo-sidebar {
       display: block;
+      align-self: stretch;
+      height: 100%;
     }
 
     .u-sidebar-sticky {
       position: sticky;
-      top: 5rem;
+      top: calc(var(--u-sticky-total, 129px) + 1.25rem);
       display: flex;
       flex-direction: column;
       gap: 1.25rem;
+      max-height: calc(100vh - var(--u-sticky-total, 129px) - 2rem);
+      overflow-y: auto;
     }
   }
 
-  /* Paneles */
+  /* Paneles: sin animacion de entrada que retarde o desvanezca el contenido */
   .u-tabpanel {
     display: none;
   }
@@ -620,17 +712,14 @@ const defaultTab = tieneTeoria ? "teoria" : "regla";
   .u-tabpanel.u-panel-active,
   .u-tabpanel:not([hidden]) {
     display: block;
-    animation: uFadeIn 0.2s ease-in-out;
   }
 
-  @keyframes uFadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(4px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
     }
   }
 </style>
