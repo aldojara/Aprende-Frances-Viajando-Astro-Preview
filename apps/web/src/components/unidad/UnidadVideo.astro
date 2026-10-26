@@ -1,0 +1,237 @@
+---
+import type { Unidad } from "../../data/unidades/tipos";
+
+interface Props {
+  video?: Unidad["videoTeoria"];
+}
+
+const { video } = Astro.props;
+if (!video) return null;
+
+function getYouTubeId(url: string): string {
+  const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
+  return match ? match[1] : "";
+}
+
+const videoId = getYouTubeId(video.url);
+const thumbnail = video.miniatura || (videoId ? `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg` : "");
+const embedUrl = videoId ? `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1` : video.url;
+---
+
+<section class="u-seccion u-video-bloque" id="video-teoria" aria-labelledby="video-teoria-titulo">
+  <div class="u-video-card">
+    <div class="u-video-meta">
+      <span class="u-video-pill">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+          <polygon points="5 3 19 12 5 21 5 3" />
+        </svg>
+        <span>Explicación en vídeo</span>
+      </span>
+      <h3 id="video-teoria-titulo" class="u-video-titulo">{video.titulo}</h3>
+      {video.duracion && <span class="u-video-duracion">{video.duracion}</span>}
+    </div>
+
+    <div class="u-video-facade-wrap" data-video-wrap data-video-id={videoId}>
+      <a
+        href={embedUrl}
+        class="u-video-facade-link"
+        target="_blank"
+        rel="noopener"
+        aria-label={`Reproducir vídeo: ${video.titulo}`}
+      >
+        <img
+          src={thumbnail}
+          alt={video.titulo}
+          class="u-video-thumb"
+          loading="lazy"
+        />
+        <div class="u-video-overlay">
+          <span class="u-play-btn" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <polygon points="6 3 20 12 6 21 6 3" />
+            </svg>
+          </span>
+          <span class="u-play-label">Ver en YouTube</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  (function () {
+    const wraps = document.querySelectorAll("[data-video-wrap]");
+    wraps.forEach(function (wrap) {
+      const link = wrap.querySelector("a.u-video-facade-link");
+      const videoId = wrap.dataset.videoId;
+      if (!link || !videoId) return;
+
+      // Cambiar texto de etiqueta a "Reproducir vídeo" cuando hay JS
+      const label = link.querySelector(".u-play-label");
+      if (label) label.textContent = "Reproducir vídeo";
+
+      link.addEventListener("click", function (e) {
+        e.preventDefault();
+        const iframe = document.createElement("iframe");
+        iframe.setAttribute(
+          "src",
+          "https://www.youtube-nocookie.com/embed/" + videoId + "?autoplay=1"
+        );
+        iframe.setAttribute("title", "Vídeo de la teoría");
+        iframe.setAttribute("frameborder", "0");
+        iframe.setAttribute(
+          "allow",
+          "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        );
+        iframe.setAttribute("allowfullscreen", "");
+        iframe.className = "u-video-iframe";
+
+        wrap.innerHTML = "";
+        wrap.appendChild(iframe);
+      });
+    });
+  })();
+</script>
+
+<style>
+  .u-seccion {
+    scroll-margin-top: 5rem;
+  }
+
+  .u-video-card {
+    background: #ffffff;
+    border: 1px solid var(--color-border, #e2ded7);
+    border-radius: var(--radius-sm, 0.5rem);
+    padding: 0.85rem 1rem;
+    box-shadow: 0 2px 8px rgba(11, 47, 85, 0.03);
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+
+  .u-video-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .u-video-pill {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    background: rgba(185, 64, 53, 0.1);
+    color: #a32f25;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .u-video-titulo {
+    font-family: var(--font-display, "Playfair Display", Georgia, serif);
+    font-size: 1.15rem;
+    color: var(--color-blue-dark, #0b2f55);
+    margin: 0;
+    line-height: 1.3;
+  }
+
+  .u-video-duracion {
+    font-size: 0.8rem;
+    color: var(--color-text-muted, #6d6861);
+  }
+
+  .u-video-facade-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: var(--radius-sm, 0.5rem);
+    overflow: hidden;
+    background: #000000;
+  }
+
+  .u-video-facade-link {
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    text-decoration: none;
+  }
+
+  .u-video-thumb {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.9;
+    transition: transform 0.25s ease, opacity 0.25s ease;
+  }
+
+  .u-video-facade-link:hover .u-video-thumb {
+    transform: scale(1.02);
+    opacity: 0.98;
+  }
+
+  .u-video-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background: rgba(11, 47, 85, 0.25);
+    transition: background 0.2s ease;
+  }
+
+  .u-video-facade-link:hover .u-video-overlay {
+    background: rgba(11, 47, 85, 0.4);
+  }
+
+  .u-play-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--color-gold, #b8860b);
+    color: #ffffff;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+    transition: transform 0.2s ease, background 0.2s ease;
+  }
+
+  .u-video-facade-link:hover .u-play-btn {
+    transform: scale(1.1);
+    background: #9c7108;
+  }
+
+  .u-play-label {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #ffffff;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.55);
+    padding: 0.2rem 0.65rem;
+    border-radius: 999px;
+    backdrop-filter: blur(4px);
+  }
+
+  :global(.u-video-iframe) {
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  @media (max-width: 640px) {
+    .u-video-card {
+      padding: 0.85rem 1rem;
+    }
+
+    .u-play-btn {
+      width: 48px;
+      height: 48px;
+    }
+  }
+</style>

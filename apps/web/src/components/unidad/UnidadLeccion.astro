@@ -2,11 +2,16 @@
 import type { Unidad } from "../../data/unidades/tipos";
 import UnidadHero from "./UnidadHero.astro";
 import UnidadIdeaClave from "./UnidadIdeaClave.astro";
+import UnidadVideo from "./UnidadVideo.astro";
+import UnidadAudio from "./UnidadAudio.astro";
 import UnidadUsos from "./UnidadUsos.astro";
 import UnidadFormacion from "./UnidadFormacion.astro";
 import UnidadConsulta from "./UnidadConsulta.astro";
+import UnidadInfografia from "./UnidadInfografia.astro";
+import UnidadMapaMental from "./UnidadMapaMental.astro";
 import UnidadPractica from "./UnidadPractica.astro";
 import UnidadErrores from "./UnidadErrores.astro";
+import UnidadTarjetas from "./UnidadTarjetas.astro";
 import UnidadEjemplos from "./UnidadEjemplos.astro";
 import UnidadAplicacion from "./UnidadAplicacion.astro";
 import UnidadMaterial from "./UnidadMaterial.astro";
@@ -14,6 +19,7 @@ import UnidadCaptacion from "./UnidadCaptacion.astro";
 import UnidadResumen from "./UnidadResumen.astro";
 import UnidadRelacionados from "./UnidadRelacionados.astro";
 import UnidadStickyPractica from "./UnidadStickyPractica.astro";
+import UnidadDescargas from "./UnidadDescargas.astro";
 
 interface Props {
   unidad: Unidad;
@@ -135,6 +141,11 @@ const { unidad } = Astro.props;
 
           <!-- Tarjeta fija de práctica en escritorio -->
           <UnidadStickyPractica practica={unidad.practica} />
+
+          <!-- Descargas en columna lateral en escritorio -->
+          {unidad.descargas && unidad.descargas.length > 0 && (
+            <UnidadDescargas descargas={unidad.descargas} modo="desktop" />
+          )}
         </div>
       </aside>
 
@@ -153,6 +164,12 @@ const { unidad } = Astro.props;
           <div class="u-panel-flujo">
             {unidad.ideaClave && <UnidadIdeaClave ideaClave={unidad.ideaClave} />}
 
+            {/* Vídeo de teoría opcional (YouTube facade) */}
+            {unidad.videoTeoria && <UnidadVideo video={unidad.videoTeoria} />}
+
+            {/* Resumen en audio opcional */}
+            {unidad.audioResumen && <UnidadAudio audio={unidad.audioResumen} />}
+
             {unidad.usos && unidad.usos.length > 0 && (
               <UnidadUsos usos={unidad.usos} usosNota={unidad.usosNota} />
             )}
@@ -161,6 +178,17 @@ const { unidad } = Astro.props;
 
             {unidad.consulta && unidad.consulta.length > 0 && (
               <UnidadConsulta consulta={unidad.consulta} />
+            )}
+
+            {/* Infografía visual opcional */}
+            {unidad.infografia && <UnidadInfografia infografia={unidad.infografia} />}
+
+            {/* Mapa mental NotebookLM opcional */}
+            {unidad.mapaMental && <UnidadMapaMental mapa={unidad.mapaMental} />}
+
+            {/* Descargas al final de pestaña 1 en móvil */}
+            {unidad.descargas && unidad.descargas.length > 0 && (
+              <UnidadDescargas descargas={unidad.descargas} modo="mobile" />
             )}
           </div>
         </section>
@@ -199,6 +227,11 @@ const { unidad } = Astro.props;
           hidden
         >
           <div class="u-panel-flujo">
+            {/* Tarjetas didácticas opcionales */}
+            {unidad.tarjetasDidacticas && unidad.tarjetasDidacticas.length > 0 && (
+              <UnidadTarjetas tarjetas={unidad.tarjetasDidacticas} />
+            )}
+
             {unidad.ejemplos && unidad.ejemplos.items && unidad.ejemplos.items.length > 0 && (
               <UnidadEjemplos ejemplos={unidad.ejemplos} />
             )}
@@ -265,7 +298,6 @@ const { unidad } = Astro.props;
     function activarTab(nombreTab, actualizarHash) {
       if (!nombreTab) return;
 
-      // Actualizar botones principales
       tabsTop.forEach(function (t) {
         const coincide = t.dataset.tab === nombreTab;
         t.setAttribute("aria-selected", coincide ? "true" : "false");
@@ -277,7 +309,6 @@ const { unidad } = Astro.props;
         }
       });
 
-      // Actualizar botones de barra lateral
       tabsSide.forEach(function (t) {
         const coincide = t.dataset.tab === nombreTab;
         t.setAttribute("aria-selected", coincide ? "true" : "false");
@@ -289,7 +320,6 @@ const { unidad } = Astro.props;
         }
       });
 
-      // Mostrar/ocultar paneles
       panels.forEach(function (p) {
         const coincide = p.dataset.panel === nombreTab;
         if (coincide) {
@@ -306,14 +336,12 @@ const { unidad } = Astro.props;
       }
     }
 
-    // Manejar clics
     [...tabsTop, ...tabsSide].forEach(function (btn) {
       btn.addEventListener("click", function () {
         activarTab(btn.dataset.tab, true);
       });
     });
 
-    // Accesibilidad con teclado (flechas izq/der en tablist superior)
     tabsTop.forEach(function (tab, idx) {
       tab.addEventListener("keydown", function (e) {
         let siguiente = null;
@@ -334,7 +362,6 @@ const { unidad } = Astro.props;
       });
     });
 
-    // Detectar hash al cargar la página
     function resolverHash() {
       const hash = window.location.hash.replace("#", "").toLowerCase();
       if (hash === "errores") {
@@ -358,7 +385,7 @@ const { unidad } = Astro.props;
     font-family: var(--font-body, "Inter", Arial, sans-serif);
     line-height: 1.6;
     min-height: 100vh;
-    padding-bottom: 5.5rem; /* Espacio para barra fija móvil */
+    padding-bottom: 5rem;
   }
 
   /* Barra de pestañas */
@@ -383,7 +410,7 @@ const { unidad } = Astro.props;
     overflow-x: auto;
     scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
-    padding: 0.65rem 0;
+    padding: 0.55rem 0;
   }
 
   .u-tablist::-webkit-scrollbar {
@@ -395,12 +422,12 @@ const { unidad } = Astro.props;
     display: inline-flex;
     align-items: center;
     gap: 0.45rem;
-    padding: 0.55rem 1.15rem;
+    padding: 0.5rem 1.1rem;
     border-radius: 999px;
     background: var(--color-surface-soft, #efede8);
     border: 1px solid transparent;
     color: var(--color-text, #2e2b27);
-    font-size: 0.92rem;
+    font-size: 0.9rem;
     font-weight: 700;
     cursor: pointer;
     transition: all 0.16s ease;
@@ -419,16 +446,16 @@ const { unidad } = Astro.props;
   }
 
   .u-tab-icon {
-    font-size: 1rem;
+    font-size: 0.95rem;
     line-height: 1;
   }
 
   .u-tab-badge {
     background: rgba(185, 64, 53, 0.15);
     color: #9a3329;
-    padding: 0.15rem 0.45rem;
+    padding: 0.12rem 0.45rem;
     border-radius: 999px;
-    font-size: 0.72rem;
+    font-size: 0.7rem;
     font-weight: 800;
   }
 
@@ -441,13 +468,13 @@ const { unidad } = Astro.props;
   .u-cuerpo-layout {
     width: min(100% - 2rem, 1180px);
     margin-inline: auto;
-    padding-block: 2rem 3rem;
+    padding-block: 1.5rem 2.5rem;
   }
 
   .u-cuerpo-grid {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 1.5rem;
   }
 
   .u-cuerpo-sidebar {
@@ -461,13 +488,13 @@ const { unidad } = Astro.props;
   .u-panel-flujo {
     display: flex;
     flex-direction: column;
-    gap: 1.4rem;
+    gap: 1.15rem;
   }
 
   /* Escritorio */
   @media (min-width: 1024px) {
     .u-unidad-page {
-      padding-bottom: 3rem;
+      padding-bottom: 2.5rem;
     }
 
     .u-cuerpo-grid {
@@ -483,48 +510,48 @@ const { unidad } = Astro.props;
 
     .u-sidebar-sticky {
       position: sticky;
-      top: 5.5rem;
+      top: 5rem;
       display: flex;
       flex-direction: column;
-      gap: 1.5rem;
+      gap: 1.25rem;
     }
 
     .u-sidebar-nav {
       background: #ffffff;
       border: 1px solid var(--color-border, #e2ded7);
       border-radius: var(--radius-md, 0.875rem);
-      padding: 1.25rem 1.1rem;
+      padding: 1.15rem 1rem;
       box-shadow: 0 4px 16px rgba(11, 47, 85, 0.04);
     }
 
     .u-sidebar-nav-titulo {
       display: block;
-      font-size: 0.76rem;
+      font-size: 0.74rem;
       font-weight: 700;
       letter-spacing: 0.08em;
       text-transform: uppercase;
       color: var(--color-text-muted, #6d6861);
-      margin-bottom: 0.85rem;
-      padding-bottom: 0.5rem;
+      margin-bottom: 0.75rem;
+      padding-bottom: 0.45rem;
       border-bottom: 1px solid var(--color-border, #e2ded7);
     }
 
     .u-sidebar-tablist {
       display: flex;
       flex-direction: column;
-      gap: 0.35rem;
+      gap: 0.3rem;
     }
 
     .u-side-tab {
       display: flex;
       align-items: center;
       gap: 0.65rem;
-      padding: 0.65rem 0.8rem;
+      padding: 0.6rem 0.75rem;
       border-radius: var(--radius-sm, 0.5rem);
       background: transparent;
       border: 1px solid transparent;
       color: var(--color-text-muted, #6d6861);
-      font-size: 0.92rem;
+      font-size: 0.9rem;
       font-weight: 600;
       cursor: pointer;
       text-align: left;
@@ -532,7 +559,7 @@ const { unidad } = Astro.props;
     }
 
     .u-side-num {
-      font-size: 0.76rem;
+      font-size: 0.74rem;
       font-weight: 800;
       color: var(--color-gold, #b8860b);
       width: 1.4rem;
@@ -559,12 +586,16 @@ const { unidad } = Astro.props;
   @media (max-width: 640px) {
     .u-cuerpo-layout {
       width: min(100% - 1.5rem, 640px);
-      padding-block: 1.5rem 2.5rem;
+      padding-block: 1rem 1.8rem;
+    }
+
+    .u-panel-flujo {
+      gap: 0.85rem;
     }
 
     .u-tab-btn {
-      padding: 0.45rem 0.9rem;
-      font-size: 0.85rem;
+      padding: 0.42rem 0.85rem;
+      font-size: 0.84rem;
     }
   }
 </style>

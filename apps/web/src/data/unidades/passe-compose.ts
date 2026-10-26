@@ -20,6 +20,11 @@ export const passeCompose: Unidad = {
     nota: "Existe otro tiempo, el passé simple, pero solo aparece en libros y textos escritos formales. Para hablar y escribir mensajes, el passé composé es el pasado de las acciones terminadas.",
   },
 
+  videoTeoria: {
+    url: "https://www.youtube.com/watch?v=QoonSm52zcc",
+    titulo: "Passé composé en francés: guía completa (avoir, être y concordancia)",
+  },
+
   usos: [
     { titulo: "Una acción terminada en un momento concreto", ejemplo: "Hier, nous avons visité Rennes." },
     { titulo: "Una acción terminada que importa ahora", ejemplo: "J'ai perdu mon billet !", nota: "Y ahora no lo tengo." },

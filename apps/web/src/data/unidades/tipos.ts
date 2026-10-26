@@ -6,6 +6,25 @@ export interface Tabla {
   filas: string[][];
 }
 
+export interface NodoMapaMental {
+  titulo: string;
+  nota?: string;
+  hijos?: NodoMapaMental[];
+}
+
+export interface TarjetaDidactica {
+  frente: string;
+  reverso: string;
+  pista?: string;
+}
+
+export interface RecursoDescarga {
+  titulo: string;
+  url: string;
+  tipo: "pdf" | "presentacion" | "audio" | "otro";
+  peso?: string;
+}
+
 export interface Unidad {
   slug: string;
   titulo: string;
@@ -13,6 +32,20 @@ export interface Unidad {
   minutos: number;
   objetivo: string;
   ideaClave: { titulo: string; texto: string; tabla?: { es: string; fr: string }[]; nota?: string };
+
+  // Materiales audiovisuales y de apoyo (Ronda 3)
+  videoTeoria?: {
+    url: string;
+    titulo: string;
+    duracion?: string;
+    miniatura?: string;
+  };
+  audioResumen?: {
+    url: string;
+    titulo: string;
+    duracion?: string;
+  };
+
   usos: { titulo: string; ejemplo: string; nota?: string }[];
   usosNota?: string;
   formacion: {
@@ -22,8 +55,22 @@ export interface Unidad {
     notas?: string[];
   };
   consulta?: { titulo: string; tabla?: Tabla; puntos?: string[] }[];
+
+  // Material visual complementario (Ronda 3)
+  infografia?: {
+    url: string;
+    titulo: string;
+    miniatura?: string;
+    descripcion?: string;
+  };
+  mapaMental?: NodoMapaMental;
+
   practica?: { titulo: string; texto: string; url: string };
   errores: { mal: string; bien: string; porque: string; tipoPractica?: string }[];
+
+  // Tarjetas didácticas de repaso (Ronda 3)
+  tarjetasDidacticas?: TarjetaDidactica[];
+
   ejemplos: { titulo?: string; intro?: string; items: { fr: string; es: string; nota?: string }[] };
   aplicacion?: { consigna: string; requisitos?: string[]; modelo: string };
   material?: {
@@ -35,4 +82,7 @@ export interface Unidad {
   captacion?: { titulo: string; texto: string; boton: string; url: string };
   resumen: string[];
   relacionados: { titulo: string; url: string; estado: "disponible" | "proximamente" }[];
+
+  // Descargas de apoyo (Ronda 3)
+  descargas?: RecursoDescarga[];
 }
