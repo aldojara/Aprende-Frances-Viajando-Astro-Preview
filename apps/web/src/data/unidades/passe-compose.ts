@@ -120,8 +120,17 @@ export const passeCompose: Unidad = {
     url: "/practica/avoir-o-etre/",
   },
 
+  gruposErrores: [
+    { id: "tiempo", titulo: "¿Qué pasado uso?", descripcion: "El tiempo y las expresiones de tiempo.", tiposPractica: ["T5"] },
+    { id: "auxiliar", titulo: "El auxiliar: ¿avoir o être?", tiposPractica: ["T1", "T2"] },
+    { id: "participio", titulo: "El participio", descripcion: "Cómo se forma y cuándo concuerda.", tiposPractica: ["T4"] },
+    { id: "orden", titulo: "El orden de las palabras" },
+  ],
+
   errores: [
     {
+      grupo: "tiempo",
+      corto: "«je mangeais» por «comí»",
       mal: "Hier, je mangeais une pizza. (para decir «ayer comí»)",
       bien: "Hier, j'ai mangé une pizza.",
       porque:
@@ -129,48 +138,64 @@ export const passeCompose: Unidad = {
       tipoPractica: "T5",
     },
     {
+      grupo: "tiempo",
+      corto: "«fait deux jours» por «hace dos días»",
+      mal: "Je suis arrivé(e) fait deux jours.",
+      bien: "Je suis arrivé(e) il y a deux jours.",
+      porque: "Traducción literal de «hace dos días».",
+    },
+    {
+      grupo: "auxiliar",
+      corto: "J'ai allé",
       mal: "J'ai allé à Nice.",
       bien: "Je suis allé(e) à Nice.",
       porque: "En español todo va con «haber». En francés, los verbos de movimiento van con être.",
       tipoPractica: "T1",
     },
     {
+      grupo: "auxiliar",
+      corto: "Je m'ai levé",
       mal: "Je m'ai levé tard.",
       bien: "Je me suis levé(e) tard.",
       porque: "«Me he levantado» lleva «haber»; los pronominales franceses van siempre con être.",
       tipoPractica: "T2",
     },
     {
+      grupo: "participio",
+      corto: "J'ai prendu · Il a pleuvé",
+      mal: "J'ai prendu le bus. · Il a pleuvé.",
+      bien: "J'ai pris le bus. · Il a plu.",
+      porque: "Se forma el participio como si fuera regular.",
+    },
+    {
+      grupo: "participio",
+      corto: "Elle est allé",
       mal: "Elle est allé au marché.",
       bien: "Elle est allée au marché.",
       porque: "En español el participio no cambia («ella ha ido»). Con être, en francés sí cambia.",
       tipoPractica: "T4",
     },
     {
+      grupo: "participio",
+      corto: "Elles ont visitées",
       mal: "Elles ont visitées le musée.",
       bien: "Elles ont visité le musée.",
       porque: "Se aplica la concordancia también con avoir, por exceso de celo.",
       tipoPractica: "T4",
     },
     {
-      mal: "J'ai prendu le bus. · Il a pleuvé.",
-      bien: "J'ai pris le bus. · Il a plu.",
-      porque: "Se forma el participio como si fuera regular.",
-    },
-    {
+      grupo: "orden",
+      corto: "Je n'ai visité pas",
       mal: "Je n'ai visité pas Rennes.",
       bien: "Je n'ai pas visité Rennes.",
       porque: "En español «no» va delante de todo. En francés, ne… pas rodea al auxiliar.",
     },
     {
+      grupo: "orden",
+      corto: "Déjà j'ai visité",
       mal: "Déjà j'ai visité Lyon. · J'ai visité déjà Lyon.",
       bien: "J'ai déjà visité Lyon.",
       porque: "En español «ya» va delante («ya visité»); en francés, déjà va entre el auxiliar y el participio.",
-    },
-    {
-      mal: "Je suis arrivé(e) fait deux jours.",
-      bien: "Je suis arrivé(e) il y a deux jours.",
-      porque: "Traducción literal de «hace dos días».",
     },
   ],
 

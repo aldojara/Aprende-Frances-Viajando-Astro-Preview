@@ -25,6 +25,13 @@ export interface RecursoDescarga {
   peso?: string;
 }
 
+export interface GrupoErrores {
+  id: string;
+  titulo: string;
+  descripcion?: string;
+  tiposPractica?: string[];
+}
+
 export interface Unidad {
   slug: string;
   titulo: string;
@@ -66,7 +73,10 @@ export interface Unidad {
   mapaMental?: NodoMapaMental;
 
   practica?: { titulo: string; texto: string; url: string };
-  errores: { mal: string; bien: string; porque: string; tipoPractica?: string }[];
+  // Grupos de errores propios de cada tema (por ejemplo, las piezas de la fórmula del tiempo verbal).
+  // Si existen, el índice y el contenido muestran los errores bajo el título de su grupo.
+  gruposErrores?: GrupoErrores[];
+  errores: { mal: string; bien: string; porque: string; tipoPractica?: string; grupo?: string; corto?: string }[];
 
   // Tarjetas didácticas de repaso (Ronda 3)
   tarjetasDidacticas?: TarjetaDidactica[];
