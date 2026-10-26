@@ -168,4 +168,23 @@ if (!relacionados || relacionados.length === 0) return null;
     color: var(--color-text-muted, #6d6861);
     font-weight: 500;
   }
+
+  @media (max-width: 640px) {
+    .u-seccion-header {
+      margin-bottom: 0.75rem;
+    }
+
+    .u-relacionados-grid {
+      gap: 0.65rem;
+    }
+
+    .u-rel-card {
+      padding: 0.7rem 0.85rem;
+      gap: 0.4rem;
+    }
+
+    .u-rel-titulo {
+      font-size: 0.95rem;
+    }
+  }
 </style>

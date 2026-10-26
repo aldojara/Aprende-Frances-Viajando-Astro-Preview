@@ -3,9 +3,10 @@ import type { Unidad } from "../../data/unidades/tipos";
 
 interface Props {
   audio?: Unidad["audioResumen"];
+  invitacion?: string;
 }
 
-const { audio } = Astro.props;
+const { audio, invitacion } = Astro.props;
 if (!audio) return null;
 
 const esDrive = audio.url.includes("drive.google.com");
@@ -19,6 +20,14 @@ if (esDrive) {
 ---
 
 <section class="u-seccion u-audio-bloque" id="audio-resumen" aria-labelledby="audio-resumen-titulo">
+  {
+    invitacion && (
+      <div class="u-audio-invitacion-box">
+        <span class="u-audio-invitacion-icon" aria-hidden="true">🎙️</span>
+        <span class="u-audio-invitacion-texto">{invitacion}</span>
+      </div>
+    )
+  }
   <div class="u-audio-card">
     <div class="u-audio-header">
       <div class="u-audio-icono" aria-hidden="true">🎧</div>
@@ -52,6 +61,21 @@ if (esDrive) {
 <style>
   .u-seccion {
     scroll-margin-top: 5rem;
+  }
+
+  .u-audio-invitacion-box {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--color-blue-dark, #0b2f55);
+  }
+
+  .u-audio-invitacion-icon {
+    font-size: 1rem;
+    line-height: 1;
   }
 
   .u-audio-card {

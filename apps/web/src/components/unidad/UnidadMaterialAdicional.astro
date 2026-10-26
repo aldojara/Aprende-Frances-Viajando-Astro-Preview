@@ -1,0 +1,331 @@
+---
+import type { Unidad } from "../../data/unidades/tipos";
+import UnidadInfografia from "./UnidadInfografia.astro";
+import UnidadMapaMental from "./UnidadMapaMental.astro";
+import UnidadTarjetas from "./UnidadTarjetas.astro";
+import UnidadDescargas from "./UnidadDescargas.astro";
+
+interface Props {
+  infografia?: Unidad["infografia"];
+  mapaMental?: Unidad["mapaMental"];
+  tarjetasDidacticas?: Unidad["tarjetasDidacticas"];
+  descargas?: Unidad["descargas"];
+}
+
+const { infografia, mapaMental, tarjetasDidacticas, descargas } = Astro.props;
+
+interface Subseccion {
+  id: string;
+  label: string;
+  icon: string;
+}
+
+const subsecciones: Subseccion[] = [];
+if (infografia) subsecciones.push({ id: "infografia", label: "Infografía", icon: "📊" });
+if (mapaMental) subsecciones.push({ id: "mapa", label: "Mapa mental", icon: "🧠" });
+if (tarjetasDidacticas && tarjetasDidacticas.length > 0) {
+  subsecciones.push({ id: "tarjetas", label: "Tarjetas", icon: "🗂️" });
+}
+if (descargas && descargas.length > 0) {
+  subsecciones.push({ id: "descargas", label: "Descargas", icon: "📥" });
+}
+
+if (subsecciones.length === 0) return null;
+
+const primeraActiva = subsecciones[0].id;
+---
+
+<div class="u-material-adicional-root" data-material-adicional>
+  <div class="u-mat-encabezado">
+    <div class="u-mat-intro">
+      <span class="u-mat-eyebrow">Recursos complementarios</span>
+      <h2 class="u-mat-titulo">Material adicional</h2>
+      <p class="u-mat-sub">
+        Fichas interactivas, esquemas visuales y documentos descargables para afianzar el tema.
+      </p>
+    </div>
+
+    {subsecciones.length > 1 && (
+      <div class="u-mat-subnav" role="tablist" aria-label="Subsecciones de material">
+        <span class="u-mat-subnav-tag">Ver:</span>
+        <div class="u-mat-pills">
+          {subsecciones.map((sub, idx) => (
+            <button
+              type="button"
+              role="tab"
+              id={`subtab-${sub.id}`}
+              class={`u-mat-pill ${idx === 0 ? "u-mat-pill-active" : ""}`}
+              aria-selected={idx === 0 ? "true" : "false"}
+              aria-controls={`subpanel-${sub.id}`}
+              tabindex={idx === 0 ? "0" : "-1"}
+              data-mat-subtab={sub.id}
+            >
+              <span class="u-mat-pill-icon" aria-hidden="true">{sub.icon}</span>
+              <span class="u-mat-pill-text">{sub.label}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+    )}
+  </div>
+
+  <div class="u-mat-subpaneles">
+    {infografia && (
+      <div
+        id="subpanel-infografia"
+        role="tabpanel"
+        aria-labelledby="subtab-infografia"
+        class={`u-mat-subpanel ${primeraActiva === "infografia" ? "u-subpanel-active" : ""}`}
+        data-mat-subpanel="infografia"
+        hidden={primeraActiva !== "infografia"}
+      >
+        <UnidadInfografia infografia={infografia} />
+      </div>
+    )}
+
+    {mapaMental && (
+      <div
+        id="subpanel-mapa"
+        role="tabpanel"
+        aria-labelledby="subtab-mapa"
+        class={`u-mat-subpanel ${primeraActiva === "mapa" ? "u-subpanel-active" : ""}`}
+        data-mat-subpanel="mapa"
+        hidden={primeraActiva !== "mapa"}
+      >
+        <UnidadMapaMental mapa={mapaMental} />
+      </div>
+    )}
+
+    {tarjetasDidacticas && tarjetasDidacticas.length > 0 && (
+      <div
+        id="subpanel-tarjetas"
+        role="tabpanel"
+        aria-labelledby="subtab-tarjetas"
+        class={`u-mat-subpanel ${primeraActiva === "tarjetas" ? "u-subpanel-active" : ""}`}
+        data-mat-subpanel="tarjetas"
+        hidden={primeraActiva !== "tarjetas"}
+      >
+        <UnidadTarjetas tarjetas={tarjetasDidacticas} />
+      </div>
+    )}
+
+    {descargas && descargas.length > 0 && (
+      <div
+        id="subpanel-descargas"
+        role="tabpanel"
+        aria-labelledby="subtab-descargas"
+        class={`u-mat-subpanel ${primeraActiva === "descargas" ? "u-subpanel-active" : ""}`}
+        data-mat-subpanel="descargas"
+        hidden={primeraActiva !== "descargas"}
+      >
+        <div class="u-descargas-wrapper-panel">
+          <UnidadDescargas descargas={descargas} modo="desktop" />
+        </div>
+      </div>
+    )}
+  </div>
+</div>
+
+<noscript>
+  <style>
+    .u-mat-subpanel[hidden] {
+      display: block !important;
+      margin-bottom: 2rem;
+    }
+    .u-mat-subnav {
+      display: none !important;
+    }
+  </style>
+</noscript>
+
+<script is:inline>
+  (function () {
+    const root = document.querySelector("[data-material-adicional]");
+    if (!root) return;
+
+    const pills = Array.from(root.querySelectorAll("[data-mat-subtab]"));
+    const subpaneles = Array.from(root.querySelectorAll("[data-mat-subpanel]"));
+    if (pills.length === 0) return;
+
+    function activarSub(id) {
+      pills.forEach((p) => {
+        const match = p.dataset.matSubtab === id;
+        p.setAttribute("aria-selected", match ? "true" : "false");
+        p.setAttribute("tabindex", match ? "0" : "-1");
+        if (match) {
+          p.classList.add("u-mat-pill-active");
+        } else {
+          p.classList.remove("u-mat-pill-active");
+        }
+      });
+
+      subpaneles.forEach((sp) => {
+        const match = sp.dataset.matSubpanel === id;
+        if (match) {
+          sp.removeAttribute("hidden");
+          sp.classList.add("u-subpanel-active");
+        } else {
+          sp.setAttribute("hidden", "");
+          sp.classList.remove("u-subpanel-active");
+        }
+      });
+    }
+
+    pills.forEach((p, idx) => {
+      p.addEventListener("click", () => {
+        activarSub(p.dataset.matSubtab);
+      });
+
+      p.addEventListener("keydown", (e) => {
+        let next = null;
+        if (e.key === "ArrowRight") {
+          next = pills[(idx + 1) % pills.length];
+        } else if (e.key === "ArrowLeft") {
+          next = pills[(idx - 1 + pills.length) % pills.length];
+        } else if (e.key === "Home") {
+          next = pills[0];
+        } else if (e.key === "End") {
+          next = pills[pills.length - 1];
+        }
+        if (next) {
+          e.preventDefault();
+          next.focus();
+          activarSub(next.dataset.matSubtab);
+        }
+      });
+    });
+  })();
+</script>
+
+<style>
+  .u-material-adicional-root {
+    display: flex;
+    flex-direction: column;
+    gap: 1.15rem;
+  }
+
+  .u-mat-encabezado {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  .u-mat-intro {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .u-mat-eyebrow {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-blue, #0055a4);
+  }
+
+  .u-mat-titulo {
+    font-family: var(--font-display, "Playfair Display", Georgia, serif);
+    font-size: clamp(1.35rem, 2.5vw, 1.7rem);
+    color: var(--color-blue-dark, #0b2f55);
+    margin: 0;
+    line-height: 1.2;
+  }
+
+  .u-mat-sub {
+    font-size: 0.9rem;
+    color: var(--color-text-muted, #6d6861);
+    margin: 0;
+    line-height: 1.45;
+  }
+
+  /* Subnavegación de botones pequeños */
+  .u-mat-subnav {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.4rem 0.65rem;
+    background: #ffffff;
+    border: 1px solid var(--color-border, #e2ded7);
+    border-radius: var(--radius-sm, 0.5rem);
+    width: fit-content;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .u-mat-subnav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .u-mat-subnav-tag {
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-muted, #6d6861);
+    flex-shrink: 0;
+  }
+
+  .u-mat-pills {
+    display: flex;
+    gap: 0.35rem;
+    flex-wrap: nowrap;
+  }
+
+  .u-mat-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.3rem 0.65rem;
+    border-radius: 999px;
+    border: 1px solid var(--color-border, #e2ded7);
+    background: var(--color-surface, #fcfbf9);
+    color: var(--color-text, #2e2b27);
+    font-family: var(--font-body, "Inter", sans-serif);
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.15s ease;
+  }
+
+  .u-mat-pill:hover {
+    background: #f0ece3;
+    border-color: #d0c9bd;
+  }
+
+  .u-mat-pill-active {
+    background: var(--color-blue-dark, #0b2f55) !important;
+    border-color: var(--color-blue-dark, #0b2f55) !important;
+    color: #ffffff !important;
+    font-weight: 700;
+  }
+
+  .u-mat-pill-icon {
+    font-size: 0.85rem;
+    line-height: 1;
+  }
+
+  .u-mat-subpaneles {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .u-mat-subpanel {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .u-mat-subpanel[hidden] {
+    display: none;
+  }
+
+  .u-descargas-wrapper-panel {
+    background: #ffffff;
+    border: 1px solid var(--color-border, #e2ded7);
+    border-radius: var(--radius-md, 0.875rem);
+    padding: 1.25rem;
+  }
+</style>

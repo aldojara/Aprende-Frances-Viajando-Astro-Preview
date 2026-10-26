@@ -262,41 +262,66 @@ if (!ejemplos || !ejemplos.items || ejemplos.items.length === 0) return null;
       display: none;
     }
 
+    .u-seccion-header {
+      margin-bottom: 0.75rem;
+    }
+
     .u-ejemplo-fila {
-      grid-template-columns: 1.8rem 1fr;
+      grid-template-columns: 1.6rem 1fr auto;
       grid-template-areas:
-        "num fr"
-        "num es"
-        "num nota";
-      gap: 0.35rem 0.6rem;
-      padding: 0.85rem 0.75rem;
+        "num fr nota"
+        "num es es";
+      gap: 0.2rem 0.5rem;
+      padding: 0.45rem 0.6rem;
+      align-items: start;
     }
 
     .u-fila-num {
       grid-area: num;
       align-self: flex-start;
-      margin-top: 0.2rem;
+      margin-top: 0.15rem;
+      width: 20px;
+      height: 20px;
+      font-size: 0.7rem;
     }
 
     .u-fila-fr-col {
       grid-area: fr;
     }
 
+    .u-fila-fr {
+      font-size: 0.88rem;
+      line-height: 1.35;
+    }
+
     .u-fila-es-col {
       grid-area: es;
     }
 
+    .u-fila-es {
+      font-size: 0.82rem;
+      line-height: 1.35;
+    }
+
     .u-fila-nota-col {
       grid-area: nota;
-      justify-content: flex-start;
-      margin-top: 0.25rem;
+      justify-content: flex-end;
+      margin-top: 0;
+    }
+
+    .u-nota-toggle {
+      padding: 0.12rem 0.45rem;
+      font-size: 0.68rem;
     }
 
     .u-nota-body {
-      position: static;
-      min-width: 0;
-      max-width: 100%;
-      margin-top: 0.4rem;
+      position: absolute;
+      right: 0;
+      top: calc(100% + 4px);
+      min-width: 200px;
+      max-width: 280px;
+      margin-top: 0;
+      z-index: 20;
     }
   }
 </style>
