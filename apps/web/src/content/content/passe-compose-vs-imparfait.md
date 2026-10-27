@@ -39,7 +39,7 @@ commonMistakes:
   - "Traducir siempre el preterito español como passé composé."
   - "Usar imparfait para eventos puntuales con fecha cerrada."
 practicalApplication: "Escribe cinco frases sobre tu último viaje: tres acciones puntuales y dos detalles de contexto."
-relatedContent: ["passe-compose", "imparfait", "plus-que-parfait", "gramatica-a1-articulos-basicos", "conditionnel-present"]
+relatedContent: ["passe-compose", "imparfait", "plus-que-parfait", "articulos", "conditionnel-present"]
 tags: ["gramatica", "pasado", "a2", "b1"]
 demonstration: false
 # Desde el 27 oct 2026 la página es la de la plantilla de unidad: src/pages/gramatica/passe-compose-vs-imparfait.astro

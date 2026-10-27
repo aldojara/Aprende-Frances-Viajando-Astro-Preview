@@ -32,7 +32,7 @@ export const modulosGramatica: ModuloGramatica[] = [
     title: "Fundamentos de la frase",
     range: "A1–A2",
     topics: [
-      { planificado: "Artículos", levels: ["A1"] },
+      { leccion: "articulos" },
       { planificado: "Género y número", levels: ["A1"] },
       { planificado: "Presente", levels: ["A1"] },
       { planificado: "Negación", levels: ["A1"] },
@@ -86,7 +86,7 @@ export const modulosGramatica: ModuloGramatica[] = [
     topics: [
       { planificado: "Posesivos", levels: ["A1", "A2"] },
       { planificado: "Demostrativos", levels: ["A1", "A2"] },
-      { planificado: "Pronombres tónicos", levels: ["A1", "A2"] },
+      { leccion: "pronombres-tonicos" },
       { leccion: "pronombres-complemento",
         title: "Pronombres complemento COD, COI, y, en",
         goal: "Evitar repeticiones y conectar ideas",

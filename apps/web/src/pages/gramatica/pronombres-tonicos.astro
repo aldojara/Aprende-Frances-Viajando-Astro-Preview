@@ -1,0 +1,12 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import UnidadLeccion from "../../components/unidad/UnidadLeccion.astro";
+import { pronombresTonicos } from "../../data/unidades/pronombres-tonicos";
+
+const title = `${pronombresTonicos.titulo} · Lección y práctica interactiva`;
+const description = pronombresTonicos.objetivo;
+---
+
+<BaseLayout title={title} description={description}>
+  <UnidadLeccion unidad={pronombresTonicos} mostrarPestanasPendientes />
+</BaseLayout>
