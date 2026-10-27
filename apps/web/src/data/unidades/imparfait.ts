@@ -227,7 +227,7 @@ export const imparfait: Unidad = {
   ],
 
   relacionados: [
-    { titulo: "Tema inventado", url: "/gramatica/no-existe/" },
+    { titulo: "Passé composé", url: "/gramatica/passe-compose/" },
     { titulo: "Passé composé vs imparfait", url: "/gramatica/passe-compose-vs-imparfait/" },
   ],
 };
