@@ -14,13 +14,13 @@ export const subjonctifPresent: Unidad = {
   ideaClave: {
     titulo: "El subjuntivo francés se parece mucho al español",
     texto:
-      "Casi siempre se usa donde tú también lo usarías: «Quiero que vengas» = «Je veux que tu viennes». Las trampas están en las pocas frases donde no coinciden.",
+      "Muchos usos frecuentes coinciden con el español: «Quiero que vengas» = «Je veux que tu viennes». Presta atención a las diferencias.",
     tabla: [
       { es: "Quiero que vengas.", fr: "Je veux que tu viennes." },
       { es: "Es necesario que envíe mis documentos.", fr: "Il faut que j'envoie mes documents." },
     ],
     etiquetaFr: "Francés (subjonctif)",
-    nota: "Cuidado: «cuando llegue» no lleva subjuntivo en francés, sino futuro: quand j'arriverai.",
+    nota: "Cuidado: para un hecho futuro, «cuando llegue» no lleva subjuntivo en francés, sino futuro: quand j'arriverai.",
   },
 
   usos: [
@@ -32,11 +32,11 @@ export const subjonctifPresent: Unidad = {
       ejemplo: "Je révise pour que l'examen se passe bien.",
     },
   ],
-  usosNota: "Si el sujeto es el mismo en las dos partes, se usa el infinitivo: Je veux partir (no «je veux que je parte»).",
+  usosNota: "Con vouloir y otros verbos de voluntad (aimer, préférer…), si quien quiere y quien hace la acción son la misma persona, se usa el infinitivo: Je veux partir (no «je veux que je parte»). Con otras construcciones no siempre es así: Bien que je sois fatiguée, je continue.",
 
   formacion: {
-    regla: "que + raíz de «ils» en presente (sin -ent) + -e, -es, -e, -ions, -iez, -ent.",
-    formula: ["que + sujeto", "Raíz de «ils» en presente (sin -ent)", "-e, -es, -e, -ions, -iez, -ent"],
+    regla: "je, tu, il, ils: raíz de «ils» en presente (sin -ent) + -e, -es, -e, -ent. nous, vous: raíz de «nous» en presente (sin -ons) + -ions, -iez.",
+    formula: ["que + sujeto", "Raíz de «ils» (je, tu, il, ils) o de «nous» (nous, vous)", "-e, -es, -e, -ions, -iez, -ent"],
     tablaTitulo: "Tabla de conjugación: parler, finir y prendre",
     tabla: {
       cabeceras: ["Sujeto", "parler (ils parlent)", "finir (ils finissent)", "prendre (ils prennent)"],
@@ -50,15 +50,15 @@ export const subjonctifPresent: Unidad = {
       ],
     },
     notas: [
-      "Ejemplo: ils prennent → prenn- → que je prenne.",
-      "Con nous y vous, en la mayoría de los verbos la forma es la del imparfait: que nous prenions, que vous preniez (no en être, avoir, faire, pouvoir, savoir).",
-      "Los irregulares que más se usan (être, avoir, aller, faire, pouvoir…) están en la tabla de consulta de abajo.",
+      "je, tu, il, ils: ils prennent → prenn- → que je prenne, qu'ils prennent.",
+      "nous, vous: nous prenons → pren- → que nous prenions, que vous preniez.",
+      "Être, avoir, aller, faire, pouvoir, savoir, vouloir y falloir, entre otros, no siguen esta regla del todo: están en la tabla de consulta de abajo.",
     ],
   },
 
   consulta: [
     {
-      titulo: "Irregulares que más se usan",
+      titulo: "Formas que conviene memorizar",
       tabla: {
         cabeceras: ["Infinitivo", "que je…", "que nous…"],
         filas: [
@@ -81,9 +81,9 @@ export const subjonctifPresent: Unidad = {
       titulo: "¿Subjuntivo o indicativo?",
       puntos: [
         "Con subjuntivo: vouloir que, il faut que, avoir peur que, être content(e) que, douter que, il est possible que, pour que, avant que, bien que, à condition que.",
-        "Con indicativo: espérer que, penser que, croire que, il est probable que, après que.",
-        "Con futuro, no con subjuntivo: quand (cuando llegue → quand j'arriverai).",
-        "La negación cambia el modo, igual que en español: Je pense qu'il vient («creo que viene») → Je ne pense pas qu'il vienne («no creo que venga»).",
+        "Con indicativo (en frases afirmativas): espérer que, penser que, croire que, il est probable que. Après que también va con indicativo.",
+        "Para un hecho futuro, quand va con futuro, no con subjuntivo (cuando llegue → quand j'arriverai).",
+        "La negación puede cambiar el modo, igual que en español: Je pense qu'il vient («creo que viene») → Je ne pense pas qu'il vienne («no creo que venga»).",
       ],
     },
     {
@@ -105,7 +105,7 @@ export const subjonctifPresent: Unidad = {
 
   gruposErrores: [
     { id: "modo", titulo: "¿Subjuntivo o no?", descripcion: "Dónde el español y el francés no coinciden." },
-    { id: "regulares", titulo: "Verbos regulares", descripcion: "La raíz y las terminaciones." },
+    { id: "regulares", titulo: "Raíces y terminaciones", descripcion: "De dónde sale la raíz y qué terminación lleva." },
     { id: "irregulares", titulo: "Irregulares" },
   ],
 
@@ -115,7 +115,7 @@ export const subjonctifPresent: Unidad = {
       corto: "Quand je sois",
       mal: "Quand je sois à Montréal, je t'appellerai.",
       bien: "Quand je serai à Montréal, je t'appellerai.",
-      porque: "«Cuando esté» lleva subjuntivo en español; en francés, quand + futuro.",
+      porque: "«Cuando esté» lleva subjuntivo en español; en francés, para un hecho futuro, quand + futuro.",
     },
     {
       grupo: "modo",
@@ -136,7 +136,7 @@ export const subjonctifPresent: Unidad = {
       corto: "Je veux que je parte",
       mal: "Je veux que je parte demain.",
       bien: "Je veux partir demain.",
-      porque: "Con el mismo sujeto se usa el infinitivo, igual que «quiero irme mañana». Ocurre por querer usar el subjuntivo en todas partes.",
+      porque: "Con vouloir y el mismo sujeto se usa el infinitivo, igual que «quiero irme mañana». Ocurre por querer usar el subjuntivo en todas partes.",
     },
     {
       grupo: "regulares",
@@ -150,7 +150,7 @@ export const subjonctifPresent: Unidad = {
       corto: "Que nous prenons",
       mal: "Il faut que nous prenons rendez-vous.",
       bien: "Il faut que nous prenions rendez-vous.",
-      porque: "Con nous y vous, el subjuntivo lleva -ions, -iez (en la mayoría de los verbos, como el imparfait).",
+      porque: "Con nous y vous, la raíz sale de nous prenons (pren-) y la terminación es -ions, -iez: que nous prenions.",
     },
     {
       grupo: "irregulares",
@@ -208,11 +208,11 @@ export const subjonctifPresent: Unidad = {
   },
 
   resumen: [
-    "Subjuntivo = que + raíz de «ils» en presente + -e, -es, -e, -ions, -iez, -ent (con nous y vous, casi siempre como el imparfait).",
+    "Subjuntivo = que + raíz de «ils» (je, tu, il, ils) o de «nous» (nous, vous) en presente + -e, -es, -e, -ions, -iez, -ent.",
     "Se usa después de voluntad, obligación, sentimiento, duda y de pour que, avant que, bien que.",
-    "Casi siempre coincide con el español. La excepción más común: «cuando llegue» → quand j'arriverai.",
-    "Espérer que e il est probable que van con indicativo.",
-    "Mismo sujeto → infinitivo: je veux partir.",
+    "Muchos usos coinciden con el español. Una diferencia frecuente: para un hecho futuro, «cuando llegue» → quand j'arriverai.",
+    "En afirmativo, espérer que e il est probable que van con indicativo.",
+    "Con vouloir y el mismo sujeto → infinitivo: je veux partir.",
   ],
 
   relacionados: [

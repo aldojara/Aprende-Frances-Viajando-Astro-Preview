@@ -20,7 +20,7 @@ export const pronombresComplemento: Unidad = {
       { es: "¿Tienes hijos? — Sí, tengo dos.", fr: "Tu as des enfants ? — Oui, j'en ai deux." },
     ],
     etiquetaFr: "Francés",
-    nota: "El pronombre va antes del verbo, también en passé composé: je l'ai vu (no «j'ai le vu»).",
+    nota: "Por lo general, el pronombre va antes del verbo, también en passé composé: je l'ai vu (no «j'ai le vu»).",
   },
 
   usos: [
@@ -33,7 +33,7 @@ export const pronombresComplemento: Unidad = {
     "Después de otra preposición (avec, pour, chez, sans) y con penser à + persona, se usa el pronombre tónico: avec lui, je pense à elle.",
 
   formacion: {
-    regla: "El pronombre va antes del verbo conjugado; si hay un infinitivo, antes del infinitivo.",
+    regla: "Por lo general, el pronombre va antes del verbo que completa: el verbo conjugado o, si completa a un infinitivo, el infinitivo.",
     formula: ["Sujeto", "(ne) + pronombre", "Verbo (+ pas)"],
     tablaTitulo: "Tabla de pronombres por persona",
     tabla: {
@@ -50,7 +50,10 @@ export const pronombresComplemento: Unidad = {
     },
     notas: [
       "En passé composé, antes del auxiliar: je l'ai vu, je lui ai écrit, j'y suis allé.",
-      "Con dos verbos, antes del infinitivo: je vais l'appeler, je peux y aller.",
+      "Con aller, pouvoir, vouloir o devoir + infinitivo, antes del infinitivo: je vais l'appeler, je peux y aller.",
+      "Con faire + infinitivo, el pronombre va delante de faire, o de su auxiliar en passé composé: je le fais réparer, je l'ai fait réparer.",
+      "Con laisser, voir o entendre + infinitivo, si el pronombre es la persona que hace la acción, va delante de ese verbo (o de su auxiliar en passé composé): je la laisse partir, je la vois travailler, je l'entends chanter.",
+      "En el imperativo afirmativo va después: appelle-le (detalle en las tablas de consulta).",
     ],
   },
 
@@ -135,7 +138,7 @@ export const pronombresComplemento: Unidad = {
       corto: "Oui, j'ai besoin",
       mal: "Tu as besoin de ton passeport ? — Oui, j'ai besoin.",
       bien: "Tu as besoin de ton passeport ? — Oui, j'en ai besoin.",
-      porque: "Avoir besoin de se completa siempre: de + cosa → en.",
+      porque: "Avoir besoin de necesita su complemento; si ya se sabe cuál es, se retoma con en (de + cosa → en).",
     },
     {
       grupo: "forma",
@@ -197,7 +200,7 @@ export const pronombresComplemento: Unidad = {
     "Sin preposición → le, la, l', les (y me, te, nous, vous).",
     "à + persona → lui, leur. Ojo: appeler, aider y attendre van sin à: je l'appelle.",
     "Un lugar o à + cosa → y; de + cosa o una cantidad → en. Donde el español calla («sí, voy», «tengo dos»), el francés los necesita.",
-    "El pronombre va antes del verbo conjugado, del auxiliar y del infinitivo: je l'ai vu, je vais l'appeler.",
+    "Por lo general, el pronombre va antes del verbo, del auxiliar o del infinitivo que completa: je l'ai vu, je vais l'appeler. Casos aparte: el imperativo afirmativo (appelle-le) y faire + infinitivo (je le fais réparer).",
   ],
 
   relacionados: [
