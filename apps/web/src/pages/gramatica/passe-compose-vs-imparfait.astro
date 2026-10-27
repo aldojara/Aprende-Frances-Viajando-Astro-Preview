@@ -1,0 +1,13 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import UnidadLeccion from "../../components/unidad/UnidadLeccion.astro";
+import { passeComposeVsImparfait } from "../../data/unidades/passe-compose-vs-imparfait";
+
+// Sin práctica propia todavía (bloque E): el título no la promete.
+const title = `${passeComposeVsImparfait.titulo} · Lección${passeComposeVsImparfait.practica ? " y práctica interactiva" : ""}`;
+const description = passeComposeVsImparfait.objetivo;
+---
+
+<BaseLayout title={title} description={description}>
+  <UnidadLeccion unidad={passeComposeVsImparfait} mostrarPestanasPendientes />
+</BaseLayout>

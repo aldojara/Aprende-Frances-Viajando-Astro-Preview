@@ -1,13 +1,13 @@
 ﻿---
 title: "Passé composé vs imparfait"
-description: "Aprende a elegir entre acción puntual, secuencia narrativa y contexto en el pasado."
+description: "Cuenta algo que te pasó: elige entre el hecho que avanza y el escenario que lo rodea."
 publicationStatus: "published"
 coverageStatus: "available"
 levels: ["A2", "B1"]
 contentKind: "lesson"
 format: "article"
 domain: "grammar"
-duration: "14 min"
+duration: "12 min"
 objectives: ["hablar del pasado", "contar experiencias"]
 competencies: ["gramática", "producción escrita", "producción oral"]
 grammarFamily: "Tiempos del pasado"
@@ -17,7 +17,7 @@ moduleOrder: 2
 grammarTopics: ["passé composé", "imparfait", "tiempos del pasado"]
 communicationGoals: ["hablar-del-pasado"]
 status: "available"
-estimatedMinutes: 14
+estimatedMinutes: 12
 lessonOrder: 1
 formation:
   - "Passé composé: auxiliar avoir o etre en presente + participe passe."
@@ -42,6 +42,9 @@ practicalApplication: "Escribe cinco frases sobre tu último viaje: tres accione
 relatedContent: ["passe-compose", "imparfait", "gramatica-a1-articulos-basicos", "conditionnel-present"]
 tags: ["gramatica", "pasado", "a2", "b1"]
 demonstration: false
+# Desde el 27 oct 2026 la página es la de la plantilla de unidad: src/pages/gramatica/passe-compose-vs-imparfait.astro
+# (datos en src/data/unidades/passe-compose-vs-imparfait.ts). Esta ficha solo alimenta los listados.
+paginaUnidad: true
 ---
 
 El contraste entre `passé composé` e `imparfait` organiza la narracion en
