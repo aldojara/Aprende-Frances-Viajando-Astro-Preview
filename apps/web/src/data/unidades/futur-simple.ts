@@ -163,7 +163,7 @@ export const futurSimple: Unidad = {
       corto: "Je serais (por «estaré»)",
       mal: "Demain, je serais au bureau à huit heures. (para «mañana estaré en la oficina»)",
       bien: "Demain, je serai au bureau à huit heures.",
-      porque: "Je serai (estaré, seré) es futur; je serais (estaría, sería) es conditionnel. Muchos hablantes los pronuncian igual (en la pronunciación cuidada, -ai suena como «é» y -ais, como «è»); al escribir, la -s cambia el sentido. En las demás personas suenan distinto: il sera / il serait.",
+      porque: "Je serai (estaré, seré) es futur; je serais (estaría, sería) es conditionnel. Muchos hablantes los pronuncian igual (en la pronunciación tradicional, que distingue las dos terminaciones, -ai suena como «é» y -ais, como «è»); al escribir, la -s cambia el sentido. En las demás personas suenan distinto: il sera / il serait.",
     },
   ],
 
