@@ -13,6 +13,10 @@ Cómo trabajar en local y cómo se publica: ver [README.md](README.md).
   es público. Está en la carpeta local
   `/Volumes/HDD_MAC_WIN/Data/Proyectos/Agentic_AI/Claude/Proyectos_Web/Aprende_Frances_Viajando_Monet/Documentos_Proyecto`.
   Si no tienes acceso a esa carpeta, pide el contexto al usuario.
+- **Antes de cualquier tarea, lee `Documentos_Proyecto/03_Guias/Reglas.md`** (de lectura obligatoria) y
+  `Documentos_Proyecto/00_LEEME.md` (mapa y estado). Las reglas recogen todas las indicaciones del usuario sobre
+  contenido, diseño, proceso y publicación. Cada indicación nueva del usuario se añade a ese archivo en el momento,
+  con su fecha; no basta con guardarla en la memoria de un agente.
 
 ## Decisiones tomadas (no se vuelven a debatir salvo que el usuario lo pida)
 
