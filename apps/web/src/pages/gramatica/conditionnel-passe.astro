@@ -1,0 +1,13 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import UnidadLeccion from "../../components/unidad/UnidadLeccion.astro";
+import { conditionnelPasse } from "../../data/unidades/conditionnel-passe";
+
+// Sin práctica propia todavía (bloque E): el título no la promete.
+const title = `${conditionnelPasse.titulo} · Lección${conditionnelPasse.practica ? " y práctica interactiva" : ""}`;
+const description = conditionnelPasse.objetivo;
+---
+
+<BaseLayout title={title} description={description}>
+  <UnidadLeccion unidad={conditionnelPasse} mostrarPestanasPendientes />
+</BaseLayout>

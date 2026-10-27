@@ -1,0 +1,13 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import UnidadLeccion from "../../components/unidad/UnidadLeccion.astro";
+import { pronombresComplemento } from "../../data/unidades/pronombres-complemento";
+
+// Sin práctica propia todavía (bloque E): el título no la promete.
+const title = `${pronombresComplemento.titulo} · Lección${pronombresComplemento.practica ? " y práctica interactiva" : ""}`;
+const description = pronombresComplemento.objetivo;
+---
+
+<BaseLayout title={title} description={description}>
+  <UnidadLeccion unidad={pronombresComplemento} mostrarPestanasPendientes />
+</BaseLayout>
