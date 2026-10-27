@@ -48,7 +48,7 @@ const tabTocs: TabToc[] = [];
 if (tieneTeoria) {
   const itemsTeoria: TocItem[] = [];
   if (unidad.ideaClave) {
-    itemsTeoria.push({ id: "idea-clave", label: unidad.ideaClave.titulo || "La idea clave" });
+    itemsTeoria.push({ id: "idea-clave", label: "Idea clave" });
   }
   if (unidad.videoTeoria) {
     itemsTeoria.push({ id: "video-teoria", label: "Vídeo de la teoría" });
@@ -66,7 +66,7 @@ if (teoriaPendiente) {
 // 2. Pestaña Aprende la regla
 const itemsRegla: TocItem[] = [];
 if (!tieneTeoria && unidad.ideaClave) {
-  itemsRegla.push({ id: "idea-clave", label: unidad.ideaClave.titulo || "La idea clave" });
+  itemsRegla.push({ id: "idea-clave", label: "Idea clave" });
 }
 if (unidad.usos && unidad.usos.length > 0) {
   itemsRegla.push({ id: "usos", label: "Cuándo se usa" });

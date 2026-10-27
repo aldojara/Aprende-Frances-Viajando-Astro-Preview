@@ -140,7 +140,7 @@ export const passeCompose: Unidad = {
     },
     {
       grupo: "tiempo",
-      corto: "«fait deux jours» por «hace dos días»",
+      corto: "Fait deux jours",
       mal: "Je suis arrivé(e) fait deux jours.",
       bien: "Je suis arrivé(e) il y a deux jours.",
       porque: "Traducción literal de «hace dos días».",
