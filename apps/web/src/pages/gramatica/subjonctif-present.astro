@@ -1,0 +1,13 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import UnidadLeccion from "../../components/unidad/UnidadLeccion.astro";
+import { subjonctifPresent } from "../../data/unidades/subjonctif-present";
+
+// Sin práctica propia todavía (bloque E): el título no la promete.
+const title = `${subjonctifPresent.titulo} · Lección${subjonctifPresent.practica ? " y práctica interactiva" : ""}`;
+const description = subjonctifPresent.objetivo;
+---
+
+<BaseLayout title={title} description={description}>
+  <UnidadLeccion unidad={subjonctifPresent} mostrarPestanasPendientes />
+</BaseLayout>

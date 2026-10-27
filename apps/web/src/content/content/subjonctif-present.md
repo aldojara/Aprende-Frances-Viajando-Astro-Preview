@@ -1,13 +1,13 @@
 ﻿---
 title: "Subjonctif présent"
-description: "Usa el subjuntivo para expresar necesidad, duda, emoción, voluntad y valoración."
+description: "Expresa lo que necesitas, quieres, temes o esperas que pase."
 publicationStatus: "published"
 coverageStatus: "available"
 levels: ["B1", "B2", "C1"]
 contentKind: "lesson"
 format: "article"
 domain: "grammar"
-duration: "16 min"
+duration: "15 min"
 objectives: ["expresar una opinión", "expresar obligación"]
 competencies: ["gramática", "producción oral"]
 grammarFamily: "Subjuntivo"
@@ -17,7 +17,7 @@ moduleOrder: 2
 grammarTopics: ["subjonctif présent", "modo subjuntivo", "duda", "obligación"]
 communicationGoals: ["opinar-y-argumentar", "expresar-obligacion"]
 status: "available"
-estimatedMinutes: 16
+estimatedMinutes: 15
 lessonOrder: 2
 formation:
   - "Parte de ils/elles en presente, quita -ent y agrega -e, -es, -e, -ions, -iez, -ent."
@@ -41,6 +41,9 @@ practicalApplication: "Formula tres recomendaciones para alguien que prepara un 
 relatedContent: ["conditionnel-present", "discours-indirect"]
 tags: ["gramática", "subjuntivo", "b1", "b2"]
 demonstration: false
+# Desde el 27 oct 2026 la página es la de la plantilla de unidad: src/pages/gramatica/subjonctif-present.astro
+# (datos en src/data/unidades/subjonctif-present.ts). Esta ficha solo alimenta los listados.
+paginaUnidad: true
 ---
 
 El `subjonctif présent` no describe simplemente un hecho: introduce una actitud

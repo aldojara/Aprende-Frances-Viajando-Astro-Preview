@@ -55,7 +55,12 @@ if (muestraTeoria) {
 }
 tabs.push({ id: "regla", icon: "📘", nombreDesktop: "Aprende la regla", nombreMobile: "Regla" });
 tabs.push({ id: "errores", icon: "⚠️", nombreDesktop: "Errores típicos", nombreMobile: "Errores", badge: unidad.errores?.length });
-tabs.push({ id: "contexto", icon: "🧳", nombreDesktop: "En contexto y práctica", nombreMobile: "Práctica" });
+// Si el tema aún no tiene práctica, la pestaña no la promete.
+if (unidad.practica) {
+  tabs.push({ id: "contexto", icon: "🧳", nombreDesktop: "En contexto y práctica", nombreMobile: "Práctica" });
+} else {
+  tabs.push({ id: "contexto", icon: "🧳", nombreDesktop: "En contexto", nombreMobile: "Contexto" });
+}
 if (muestraMaterial) {
   tabs.push({ id: "material", icon: "📦", nombreDesktop: "Material adicional", nombreMobile: "Material" });
 }
