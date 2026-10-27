@@ -95,7 +95,7 @@ export const conditionnelPasse: Unidad = {
 
   practica: {
     titulo: "¿Avoir o être?",
-    texto: "Mientras preparamos la práctica de conditionnel passé: repasa la elección del auxiliar, que se mantiene en los tiempos compuestos como el passé composé.",
+    texto: "Mientras preparamos la práctica de conditionnel passé: repasa la elección del auxiliar, que es la misma que en el passé composé: je suis allé(e) → je serais allé(e).",
     url: "/practica/avoir-o-etre/",
   },
   gruposErrores: [
