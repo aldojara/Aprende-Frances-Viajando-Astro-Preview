@@ -92,6 +92,11 @@ export const pronombresComplemento: Unidad = {
     },
   ],
 
+  practica: {
+    titulo: "¿Avoir o être?",
+    texto: "Mientras preparamos la práctica de pronombres complemento: repasa la elección del auxiliar en el passé composé.",
+    url: "/practica/avoir-o-etre/",
+  },
   gruposErrores: [
     { id: "eleccion", titulo: "¿Qué pronombre?", descripcion: "Le, lui o el pronombre tónico." },
     { id: "y-en", titulo: "Lo que el español calla", descripcion: "Los casos donde el francés necesita y o en." },
