@@ -46,7 +46,9 @@ Cómo trabajar en local y cómo se publica: ver [README.md](README.md).
 
 ## Notas técnicas
 
-- Antes de abrir un *pull request*: `cd apps/web && npm run check && npm run build`.
+- Antes de abrir un *pull request*: `cd apps/web && npm run check && npm run build && npm run verificar`
+  (o `npm run validate`, que hace las tres). `verificar` busca etiquetas internas y contenido provisional en la web
+  compilada; GitHub la pasa en cada *pull request*.
 - Al cambiar dependencias, el `package-lock.json` debe aceptarlo el npm de GitHub Actions, que puede ser
   más nuevo y más estricto que el del Mac (en octubre de 2026, el npm 11.19 de Actions rechazó un lock
   que el npm 11.6 del Mac aceptaba). Antes de subirlo: `npx -y npm@11 ci --dry-run --ignore-scripts`
