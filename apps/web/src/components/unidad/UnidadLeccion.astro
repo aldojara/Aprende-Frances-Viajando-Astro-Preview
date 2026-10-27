@@ -701,6 +701,17 @@ const defaultTab = tieneTeoria ? "teoria" : "regla";
       gap: 1.25rem;
       max-height: calc(100vh - var(--u-sticky-total, 129px) - 2rem);
       overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: var(--color-border, #e2ded7) transparent;
+    }
+
+    .u-sidebar-sticky::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .u-sidebar-sticky::-webkit-scrollbar-thumb {
+      background: var(--color-border, #e2ded7);
+      border-radius: 999px;
     }
   }
 
