@@ -106,6 +106,11 @@ export const conditionnelPresent: Unidad = {
     },
   ],
 
+  practica: {
+    titulo: "¿Avoir o être?",
+    texto: "Mientras preparamos la práctica de conditionnel présent: repasa la elección del auxiliar en el passé composé.",
+    url: "/practica/avoir-o-etre/",
+  },
   gruposErrores: [
     { id: "si", titulo: "Frases con si", descripcion: "Qué tiempo va en cada parte." },
     { id: "futur", titulo: "¿Futur o conditionnel?", descripcion: "Una -s o una -ait cambian el sentido." },

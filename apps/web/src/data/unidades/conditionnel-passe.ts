@@ -93,6 +93,11 @@ export const conditionnelPasse: Unidad = {
     },
   ],
 
+  practica: {
+    titulo: "¿Avoir o être?",
+    texto: "Mientras preparamos la práctica de conditionnel passé: repasa la elección del auxiliar, que es la misma que en el passé composé: je suis allé(e) → je serais allé(e).",
+    url: "/practica/avoir-o-etre/",
+  },
   gruposErrores: [
     { id: "si", titulo: "Frases con si", descripcion: "Qué tiempo va en cada parte." },
     { id: "auxiliar", titulo: "Avoir o être", descripcion: "El español siempre usa «haber»; el francés, no." },

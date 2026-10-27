@@ -104,6 +104,11 @@ export const subjonctifPresent: Unidad = {
     },
   ],
 
+  practica: {
+    titulo: "¿Avoir o être?",
+    texto: "Mientras preparamos la práctica de subjonctif présent: repasa la elección del auxiliar en el passé composé.",
+    url: "/practica/avoir-o-etre/",
+  },
   gruposErrores: [
     { id: "modo", titulo: "¿Subjuntivo o no?", descripcion: "Dónde el español y el francés no coinciden." },
     { id: "regulares", titulo: "Raíces y terminaciones", descripcion: "De dónde sale la raíz y qué terminación lleva." },

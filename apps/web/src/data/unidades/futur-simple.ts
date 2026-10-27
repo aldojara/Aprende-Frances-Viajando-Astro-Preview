@@ -102,6 +102,11 @@ export const futurSimple: Unidad = {
     },
   ],
 
+  practica: {
+    titulo: "¿Avoir o être?",
+    texto: "Mientras preparamos la práctica de futur simple: repasa la elección del auxiliar en el passé composé.",
+    url: "/practica/avoir-o-etre/",
+  },
   gruposErrores: [
     { id: "quand-si", titulo: "Después de quand y de si", descripcion: "Donde el español usa otro tiempo." },
     { id: "raices", titulo: "Las raíces irregulares" },
