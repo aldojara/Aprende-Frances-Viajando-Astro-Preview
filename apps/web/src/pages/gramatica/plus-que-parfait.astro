@@ -3,7 +3,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import UnidadLeccion from "../../components/unidad/UnidadLeccion.astro";
 import { plusQueParfait } from "../../data/unidades/plus-que-parfait";
 
-const title = `${plusQueParfait.titulo} · Lección`;
+const title = `${plusQueParfait.titulo} · Lección${plusQueParfait.practica ? " y práctica interactiva" : ""}`;
 const description = plusQueParfait.objetivo;
 ---
 

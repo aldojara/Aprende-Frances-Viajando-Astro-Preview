@@ -10,7 +10,7 @@ export const plusQueParfait: Unidad = {
   objetivo: "Cuenta qué había pasado antes de otro momento del pasado y formula hipótesis sobre lo que no ocurrió.",
   ideaClave: {
     titulo: "Un pasado anterior a otro pasado",
-    texto: "El plus-que-parfait suele corresponder a «había + participio»: Quand j'ai appelé, Mélanie était déjà partie (cuando llamé, Mélanie ya se había ido). El punto de referencia está en el pasado; el plus-que-parfait cuenta lo que ocurrió antes.",
+    texto: "El plus-que-parfait suele corresponder a «había + participio»: Quand j'ai appelé, Mélanie était déjà partie (cuando llamé, Mélanie ya se había ido). Después del si de condición, corresponde a «hubiera + participio»: si j'avais su (si hubiera sabido).",
     tabla: [
       { es: "Cuando llegué, la clase ya había empezado.", fr: "Quand je suis arrivé(e), le cours avait déjà commencé." },
       { es: "Si hubiera sabido, habría llamado.", fr: "Si j'avais su, j'aurais appelé." },
@@ -41,7 +41,7 @@ export const plusQueParfait: Unidad = {
     notasTitulo: "Auxiliar, concordancia y orden",
     notas: [
       "Con être, en los verbos no pronominales, el participio concuerda con el sujeto: elle était partie, ils étaient arrivés. Los pronominales tienen reglas de concordancia propias: elle s'était lavé les mains.",
-      "Con avoir, el participio no concuerda con el sujeto: elle avait préparé. Puede concordar con un complemento directo que va antes: les lettres qu'elle avait écrites.",
+      "Con avoir, el participio no concuerda con el sujeto: elle avait préparé. Concuerda con el complemento directo si va antes: les lettres qu'elle avait écrites.",
       "La negación rodea al auxiliar: je n'avais pas compris, elle n'était pas partie. Los pronombres van antes del auxiliar: je l'avais appelé, elle s'était préparée.",
     ],
   },
@@ -50,12 +50,17 @@ export const plusQueParfait: Unidad = {
       ["Plus-que-parfait", "Hecho anterior", "J'avais préparé mes notes."],
       ["Imparfait", "Situación de fondo", "J'étais calme."],
       ["Passé composé", "Hecho que avanza el relato", "L'entretien a commencé."],
-    ] } },
+    ] }, puntos: ["También aparece al transmitir palabras desde el pasado: Il m'a dit qu'il avait terminé. Descubre este uso en la lección de discours indirect."] },
     { titulo: "Si + plus-que-parfait", puntos: [
       "Para una hipótesis contraria a un hecho pasado: Si j'avais mieux dormi, j'aurais été plus concentré(e).",
       "En la parte con si de condición va plus-que-parfait; en el resultado suele ir conditionnel passé. La página de conditionnel passé desarrolla esa segunda parte.",
     ] },
   ],
+  practica: {
+    titulo: "¿Avoir o être?",
+    texto: "Mientras preparamos la práctica de plus-que-parfait: repasa la elección del auxiliar, que es la misma que en el passé composé.",
+    url: "/practica/avoir-o-etre/",
+  },
   gruposErrores: [
     { id: "tiempo", titulo: "Orden de los hechos" },
     { id: "auxiliar", titulo: "Auxiliar y participio" },
@@ -63,18 +68,18 @@ export const plusQueParfait: Unidad = {
   ],
   errores: [
     { grupo: "tiempo", corto: "J'ai préparé (antes)", mal: "Quand le cours a commencé, j'ai déjà préparé mes notes. (para «ya había preparado»)", bien: "Quand le cours a commencé, j'avais déjà préparé mes notes.", porque: "La preparación es anterior al comienzo del curso. Para marcar esa relación desde el pasado, usa plus-que-parfait." },
-    { grupo: "tiempo", corto: "J'avais arrivé", mal: "Quand je suis entré(e), Mélanie avait déjà arrivé.", bien: "Quand je suis entré(e), Mélanie était déjà arrivée.", porque: "Arriver se construye con être en los tiempos compuestos; aquí el participio concuerda con Mélanie." },
+    { grupo: "auxiliar", corto: "Je m'avais trompé", mal: "Je m'avais trompé(e) dans la réponse.", bien: "Je m'étais trompé(e) dans la réponse.", porque: "Los verbos pronominales se construyen con être en los tiempos compuestos; aquí el participio concuerda con el sujeto." },
     { grupo: "auxiliar", corto: "Elle avait partie", mal: "Elle avait partie avant mon appel.", bien: "Elle était partie avant mon appel.", porque: "Partir lleva être: elle était partie. En este verbo no pronominal, el participio concuerda con elle." },
     { grupo: "auxiliar", corto: "Je n'avais compris pas", mal: "Je n'avais compris pas la question.", bien: "Je n'avais pas compris la question.", porque: "En la negación simple, ne y pas rodean al auxiliar en imparfait." },
     { grupo: "si", corto: "Si j'aurais su", mal: "Si j'aurais su, je t'aurais appelé(e).", bien: "Si j'avais su, je t'aurais appelé(e).", porque: "En una condición contraria a un hecho pasado, la parte con si lleva plus-que-parfait; el resultado, conditionnel passé." },
   ],
   ejemplos: {
-    titulo: "Mariana recuerda su primera clase en línea",
-    intro: "Mariana, de Bogotá, se prepara para mudarse a Montreal. Después de una clase de francés, le cuenta a Andrés cómo le fue.",
+    titulo: "Lucía recuerda su primera clase en línea",
+    intro: "Lucía, de Bogotá, se prepara para mudarse a Montreal. Después de una clase de francés, le cuenta a Andrés cómo le fue.",
     items: [
       { fr: "J'avais préparé mes questions la veille.", es: "Había preparado mis preguntas el día anterior.", nota: "acción anterior" },
-      { fr: "Quand le cours a commencé, j'avais déjà ouvert mes notes.", es: "Cuando empezó la clase, ya había abierto mis apuntes.", nota: "plus-que-parfait antes del passé composé" },
-      { fr: "La professeure était arrivée quelques minutes plus tôt.", es: "La profesora había llegado unos minutos antes.", nota: "arriver → être; concordancia" },
+      { fr: "Quand le cours a commencé, j'avais déjà ouvert mes notes.", es: "Cuando empezó la clase, ya había abierto mis apuntes.", nota: "hecho anterior al del passé composé" },
+      { fr: "La professeure s'était connectée quelques minutes plus tôt.", es: "La profesora se había conectado unos minutos antes.", nota: "se connecter → être; concordancia" },
       { fr: "Je n'avais pas compris une consigne, alors j'ai posé une question.", es: "No había entendido una instrucción, así que hice una pregunta.", nota: "negación alrededor del auxiliar" },
       { fr: "J'étais moins nerveuse parce que j'avais bien révisé.", es: "Estaba menos nerviosa porque había repasado bien.", nota: "imparfait para el estado; plus-que-parfait para la causa anterior" },
       { fr: "Je lui ai montré les phrases que j'avais écrites.", es: "Le mostré las frases que había escrito.", nota: "con avoir, concordancia con objeto directo anterior" },
@@ -84,7 +89,7 @@ export const plusQueParfait: Unidad = {
   aplicacion: {
     consigna: "Cuenta en cuatro frases algo que salió bien o mal en una clase, entrevista o mudanza. Di qué había pasado antes.",
     requisitos: ["dos frases con plus-que-parfait", "un hecho posterior en passé composé", "una causa con parce que", "una hipótesis con si + plus-que-parfait y conditionnel passé"],
-    modelo: "J'avais préparé mes questions la veille. J'avais aussi révisé le vocabulaire. Quand l'entretien a commencé, j'étais calme parce que j'avais bien dormi. Si j'avais oublié mes notes, j'aurais été plus nerveuse.",
+    modelo: "J'avais préparé mes questions la veille. J'avais aussi révisé le vocabulaire. Quand l'entretien a commencé, j'étais calme parce que j'avais bien dormi. Si j'avais oublié mes notes, j'aurais été plus stressé(e).",
   },
   resumen: [
     "Plus-que-parfait = avoir o être en imparfait + participio pasado: j'avais compris, j'étais partie.",
@@ -93,6 +98,7 @@ export const plusQueParfait: Unidad = {
     "Si + plus-que-parfait expresa una hipótesis sobre el pasado: si j'avais su, j'aurais appelé.",
   ],
   relacionados: [
+    { titulo: "Discours indirect", url: "/gramatica/discours-indirect/" },
     { titulo: "Passé composé vs imparfait", url: "/gramatica/passe-compose-vs-imparfait/" },
     { titulo: "Conditionnel passé", url: "/gramatica/conditionnel-passe/" },
     { titulo: "Passé composé", url: "/gramatica/passe-compose/" },
