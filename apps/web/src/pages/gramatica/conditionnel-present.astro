@@ -1,0 +1,13 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import UnidadLeccion from "../../components/unidad/UnidadLeccion.astro";
+import { conditionnelPresent } from "../../data/unidades/conditionnel-present";
+
+// Sin práctica propia todavía (bloque E): el título no la promete.
+const title = `${conditionnelPresent.titulo} · Lección${conditionnelPresent.practica ? " y práctica interactiva" : ""}`;
+const description = conditionnelPresent.objetivo;
+---
+
+<BaseLayout title={title} description={description}>
+  <UnidadLeccion unidad={conditionnelPresent} mostrarPestanasPendientes />
+</BaseLayout>
