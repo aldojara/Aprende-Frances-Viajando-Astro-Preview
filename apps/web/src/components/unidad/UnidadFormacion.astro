@@ -7,6 +7,11 @@ interface Props {
 
 const { formacion } = Astro.props;
 if (!formacion) return null;
+
+// Ancho de columnas: el sujeto fijo y el resto a partes iguales, tenga la tabla 3 o más columnas.
+const columnas = formacion.tabla?.cabeceras.length ?? 0;
+const anchoColumna = columnas > 1 ? `${(78 / (columnas - 1)).toFixed(1)}%` : undefined;
+const claseColumna = (idx: number) => (idx === 0 ? "sujeto" : idx % 2 === 1 ? "avoir" : "etre");
 ---
 
 <section class="u-seccion u-formacion" id="formacion" aria-labelledby="formacion-titulo">
@@ -18,24 +23,31 @@ if (!formacion) return null;
   <!-- Fórmula compacta -->
   <div class="u-formula-banner">
     <span class="u-formula-tag">Fórmula:</span>
-    <span class="u-formula-part">Sujeto</span>
-    <span class="u-formula-plus">+</span>
-    <span class="u-formula-part u-formula-aux">Auxiliar (avoir / être)</span>
-    <span class="u-formula-plus">+</span>
-    <span class="u-formula-part u-formula-participle">Participio pasado</span>
+    {
+      formacion.formula && formacion.formula.length > 0 ? (
+        formacion.formula.map((parte, idx) => (
+          <>
+            {idx > 0 && <span class="u-formula-plus">+</span>}
+            <span class={`u-formula-part ${idx === 1 ? "u-formula-aux" : idx === 2 ? "u-formula-participle" : ""}`}>{parte}</span>
+          </>
+        ))
+      ) : (
+        <span class="u-formula-part">{formacion.regla}</span>
+      )
+    }
   </div>
 
   <!-- Tabla de conjugación -->
   {
     formacion.tabla && (
       <div class="u-tabla-bloque">
-        <h3 class="u-subtitulo">Tabla de conjugación: avoir vs. être</h3>
-        <div class="u-tabla-scroll" tabindex="0" role="region" aria-label="Tabla de conjugación de avoir y être">
+        <h3 class="u-subtitulo">{formacion.tablaTitulo ?? "Tabla de conjugación"}</h3>
+        <div class="u-tabla-scroll" tabindex="0" role="region" aria-label={formacion.tablaTitulo ?? "Tabla de conjugación"}>
           <table class="u-tabla">
             <thead>
               <tr>
                 {formacion.tabla.cabeceras.map((cab, idx) => (
-                  <th scope="col" class={idx === 0 ? "u-col-sujeto" : idx === 1 ? "u-col-avoir" : "u-col-etre"}>
+                  <th scope="col" class={`u-col-${claseColumna(idx)}`} style={idx > 0 && anchoColumna ? `width: ${anchoColumna}` : undefined}>
                     {cab}
                   </th>
                 ))}
@@ -45,7 +57,7 @@ if (!formacion) return null;
               {formacion.tabla.filas.map((fila) => (
                 <tr>
                   {fila.map((celda, cIdx) => (
-                    <td class={cIdx === 0 ? "u-celda-sujeto" : cIdx === 1 ? "u-celda-avoir" : "u-celda-etre"}>
+                    <td class={`u-celda-${claseColumna(cIdx)}`}>
                       <span lang="fr">{celda}</span>
                     </td>
                   ))}
@@ -58,11 +70,11 @@ if (!formacion) return null;
     )
   }
 
-  <!-- Las 3 preguntas para elegir entre avoir y être (compacto) -->
+  <!-- Pasos o preguntas para aplicar la regla (por ejemplo, elegir entre avoir y être) -->
   {
     formacion.pasos && formacion.pasos.length > 0 && (
       <div class="u-pasos-bloque">
-        <h3 class="u-subtitulo">¿Avoir o être? En 3 preguntas clave</h3>
+        {formacion.pasosTitulo && <h3 class="u-subtitulo">{formacion.pasosTitulo}</h3>}
         <div class="u-pasos-lista">
           {formacion.pasos.map((paso, idx) => (
             <div class="u-paso-fila">
@@ -209,8 +221,8 @@ if (!formacion) return null;
   }
 
   .u-col-sujeto { color: var(--color-text-muted, #6d6861); width: 22%; }
-  .u-col-avoir { color: var(--color-gold-text, #855d00); width: 39%; }
-  .u-col-etre { color: var(--color-blue, #0055a4); width: 39%; }
+  .u-col-avoir { color: var(--color-gold-text, #855d00); }
+  .u-col-etre { color: var(--color-blue, #0055a4); }
 
   .u-tabla td {
     padding: 0.45rem 0.85rem;

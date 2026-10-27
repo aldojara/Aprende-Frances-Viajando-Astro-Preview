@@ -38,7 +38,8 @@ export interface Unidad {
   nivel: string[];
   minutos: number;
   objetivo: string;
-  ideaClave: { titulo: string; texto: string; tabla?: { es: string; fr: string }[]; nota?: string };
+  // etiquetaFr: rótulo de la columna en francés de la comparación (por ejemplo, «Francés (imparfait)»).
+  ideaClave: { titulo: string; texto: string; tabla?: { es: string; fr: string }[]; nota?: string; etiquetaFr?: string };
 
   // Materiales audiovisuales y de apoyo (Ronda 3)
   videoTeoria?: {
@@ -57,6 +58,10 @@ export interface Unidad {
   usosNota?: string;
   formacion: {
     regla: string;
+    // Piezas de la fórmula, en orden (se muestran unidas con «+»). Sin ellas se muestra la regla en texto.
+    formula?: string[];
+    tablaTitulo?: string;
+    pasosTitulo?: string;
     tabla?: Tabla;
     pasos?: { pregunta: string; respuesta: string; detalle?: string }[];
     notas?: string[];

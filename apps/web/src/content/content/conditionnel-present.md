@@ -38,7 +38,7 @@ commonMistakes:
   - "Usar futuro despues de si en hipótesis irreales."
   - "Confundir je voudrais con je veux en contextos formales."
 practicalApplication: "Escribe cuatro consejos para mejorar la pronunciación usando tu devrais, il faudrait y je te conseillerais."
-relatedContent: ["futur-simple", "subjonctif-present"]
+relatedContent: ["futur-simple", "subjonctif-present", "imparfait"]
 tags: ["gramática", "condicional", "hipótesis"]
 demonstration: false
 ---

@@ -18,6 +18,7 @@ export const passeCompose: Unidad = {
       { es: "Ayer llamé a mi mamá.", fr: "Hier, j'ai appelé ma mère." },
       { es: "Hoy he llamado a mi mamá.", fr: "Aujourd'hui, j'ai appelé ma mère." },
     ],
+    etiquetaFr: "Francés (passé composé)",
     nota: "Existe otro tiempo, el passé simple, pero solo aparece en libros y textos escritos formales. Para hablar y escribir mensajes, el passé composé es el pasado de las acciones terminadas.",
   },
 
@@ -40,6 +41,9 @@ export const passeCompose: Unidad = {
 
   formacion: {
     regla: "Auxiliar (avoir o être) en presente + participio pasado.",
+    formula: ["Sujeto", "Auxiliar (avoir / être)", "Participio pasado"],
+    tablaTitulo: "Tabla de conjugación: avoir vs. être",
+    pasosTitulo: "¿Avoir o être? En 3 preguntas clave",
     tabla: {
       cabeceras: ["Sujeto", "visiter (con avoir)", "partir (con être)"],
       filas: [
@@ -236,6 +240,6 @@ export const passeCompose: Unidad = {
 
   relacionados: [
     { titulo: "Passé composé vs imparfait", url: "/gramatica/passe-compose-vs-imparfait/", estado: "disponible" },
-    { titulo: "Imparfait", url: "/gramatica/imparfait/", estado: "proximamente" },
+    { titulo: "Imparfait", url: "/gramatica/imparfait/", estado: "disponible" },
   ],
 };
