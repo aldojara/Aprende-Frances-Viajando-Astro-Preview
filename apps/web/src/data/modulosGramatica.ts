@@ -64,7 +64,7 @@ export const modulosGramatica: ModuloGramatica[] = [
       { leccion: "conditionnel-present",
         goal: "Dar consejos y formular hipótesis",
       },
-      { planificado: "Plus-que-parfait", levels: ["B1", "B2"], goal: "Hablar del pasado" },
+      { leccion: "plus-que-parfait", goal: "Hablar del pasado" },
       { leccion: "subjonctif-present",
         goal: "Expresar obligación, duda y valoración",
       },

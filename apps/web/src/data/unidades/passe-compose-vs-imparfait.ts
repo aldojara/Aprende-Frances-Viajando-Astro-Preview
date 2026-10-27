@@ -217,6 +217,7 @@ export const passeComposeVsImparfait: Unidad = {
   ],
 
   relacionados: [
+    { titulo: "Plus-que-parfait", url: "/gramatica/plus-que-parfait/" },
     { titulo: "Passé composé", url: "/gramatica/passe-compose/" },
     { titulo: "Imparfait", url: "/gramatica/imparfait/" },
   ],

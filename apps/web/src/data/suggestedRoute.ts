@@ -107,7 +107,8 @@ export const suggestedRoute: SuggestedRoute = {
       description:
         "Transmitir palabras, preguntas e instrucciones de otra persona.",
       state: "Pendiente",
-      available: false,
+      href: "/gramatica/discours-indirect/",
+      available: true,
       category: "Comunicación",
       format: "Transformación",
       icon: "speech",
