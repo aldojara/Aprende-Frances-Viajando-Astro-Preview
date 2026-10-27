@@ -28,7 +28,7 @@ export const levels = [
     slug: "a1",
     label: "A1",
     name: "Principiante",
-    coverageStatus: "expanding",
+    coverageStatus: "planned",
     description:
       "Primer contacto con el frances: saludos, presentaciones, frases esenciales y situaciones cotidianas simples.",
     capabilities: [
