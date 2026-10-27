@@ -9,7 +9,9 @@
     "dev": "astro dev",
     "build": "astro build",
     "check": "astro check",
-    "validate": "npm run check && npm run build",
+    "verificar": "node scripts/verificar-publicacion.mjs",
+    "test:verificar": "node --test scripts/verificar-publicacion.test.mjs",
+    "validate": "npm run check && npm run test:verificar && npm run build && npm run verificar",
     "preview": "astro preview",
     "astro": "astro"
   },

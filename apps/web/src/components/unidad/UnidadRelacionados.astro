@@ -1,4 +1,5 @@
 ---
+import { getCollection } from "astro:content";
 import type { Unidad } from "../../data/unidades/tipos";
 import { withBase } from "../../utils/paths";
 
@@ -6,8 +7,21 @@ interface Props {
   relacionados?: Unidad["relacionados"];
 }
 
-const { relacionados } = Astro.props;
-if (!relacionados || relacionados.length === 0) return null;
+const { relacionados: lista } = Astro.props;
+if (!lista || lista.length === 0) return null;
+
+// El estado de cada recomendación sale de la ficha del tema (coverageStatus), no de los datos de la unidad: así
+// no puede quedar desfasado. Si la url no es la de un tema del catálogo, la compilación se detiene.
+const fichas = await getCollection("content");
+const estadoPorCobertura = { available: "disponible", expanding: "en-expansion", planned: "proximamente" } as const;
+const relacionados = lista.map((item) => {
+  const id = item.url.match(/^\/gramatica\/([^/]+)\/$/)?.[1];
+  const ficha = fichas.find((f) => f.id === id && f.data.domain === "grammar" && !f.data.demonstration);
+  if (!ficha) {
+    throw new Error(`Recomendación «${item.titulo}» (${item.url}): no hay un tema del catálogo con esa dirección.`);
+  }
+  return { ...item, estado: estadoPorCobertura[ficha.data.coverageStatus] };
+});
 ---
 
 <section class="u-seccion u-relacionados" id="relacionados" aria-labelledby="relacionados-titulo">

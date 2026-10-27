@@ -241,7 +241,7 @@ export const passeCompose: Unidad = {
   ],
 
   relacionados: [
-    { titulo: "Passé composé vs imparfait", url: "/gramatica/passe-compose-vs-imparfait/", estado: "disponible" },
-    { titulo: "Imparfait", url: "/gramatica/imparfait/", estado: "disponible" },
+    { titulo: "Passé composé vs imparfait", url: "/gramatica/passe-compose-vs-imparfait/" },
+    { titulo: "Imparfait", url: "/gramatica/imparfait/" },
   ],
 };

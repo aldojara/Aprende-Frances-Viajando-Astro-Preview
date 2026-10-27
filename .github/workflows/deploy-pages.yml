@@ -38,11 +38,19 @@ jobs:
       - name: Comprobar (astro check)
         run: npm run check
 
+      # Pruebas permanentes del verificador: casos que debe bloquear y casos válidos que debe dejar pasar.
+      - name: Probar el verificador
+        run: npm run test:verificar
+
       - name: Compilar (astro build)
         run: npm run build
         env:
           # Dirección del script de formularios (variable del repositorio). Sin ella, los formularios quedan simulados.
           PUBLIC_FORMULARIOS_URL: ${{ vars.PUBLIC_FORMULARIOS_URL }}
+
+      # Busca en la web compilada etiquetas internas y contenido provisional (scripts/verificar-publicacion.mjs).
+      - name: Verificar la web compilada
+        run: npm run verificar
 
       - name: Preparar la web para GitHub Pages
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'

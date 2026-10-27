@@ -46,7 +46,18 @@ Cómo trabajar en local y cómo se publica: ver [README.md](README.md).
 
 ## Notas técnicas
 
-- Antes de abrir un *pull request*: `cd apps/web && npm run check && npm run build`.
+- Antes de abrir un *pull request*: `cd apps/web && npm run validate` (comprueba, prueba el verificador, compila y
+  verifica). `npm run verificar` busca en la web compilada marcas internas y fallos de la plantilla; sus pruebas
+  (`npm run test:verificar`) fijan qué debe bloquear y qué contenido válido debe dejar pasar. GitHub pasa las dos en
+  cada *pull request*.
+- **Convenciones reservadas del proyecto** (las detecta `npm run verificar`; detalle en
+  `apps/web/scripts/verificar-publicacion.mjs`):
+  - Las notas internas en textos o datos se escriben entre dobles corchetes, `[[PENDIENTE: …]]`, o como `TODO:` /
+    `FIXME:` (en mayúsculas y con dos puntos). No se usan esas formas en el contenido de las páginas.
+  - Los nombres de los campos de datos (`coverageStatus`, `paginaUnidad`, `tipoPractica`…) no se usan como texto de la
+    página.
+  - Son convenciones del proyecto, no imposibilidades: si un contenido válido necesitara una de esas formas, se ajusta
+    el verificador y sus pruebas en el mismo *pull request*.
 - Al cambiar dependencias, el `package-lock.json` debe aceptarlo el npm de GitHub Actions, que puede ser
   más nuevo y más estricto que el del Mac (en octubre de 2026, el npm 11.19 de Actions rechazó un lock
   que el npm 11.6 del Mac aceptaba). Antes de subirlo: `npx -y npm@11 ci --dry-run --ignore-scripts`
