@@ -147,7 +147,7 @@ if (unidad.captacion) {
 if (unidad.relacionados && unidad.relacionados.length > 0) {
   itemsContexto.push({ id: "relacionados", label: "Sigue aprendiendo" });
 }
-tabTocs.push({ tabId: "contexto", tabLabel: "En contexto y práctica", items: itemsContexto });
+tabTocs.push({ tabId: "contexto", tabLabel: unidad.practica ? "En contexto y práctica" : "En contexto", items: itemsContexto });
 
 // 5. Pestaña Material adicional
 if (tieneMaterial) {
