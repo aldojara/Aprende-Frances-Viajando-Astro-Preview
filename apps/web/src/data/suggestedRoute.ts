@@ -66,7 +66,8 @@ export const suggestedRoute: SuggestedRoute = {
       description:
         "Narrar experiencias y distinguir acciones puntuales de contexto y duración.",
       state: "Enfoque actual",
-      available: false,
+      href: "/gramatica/passe-compose/",
+      available: true,
       category: "Narración",
       format: "Comparación",
       icon: "grammar",

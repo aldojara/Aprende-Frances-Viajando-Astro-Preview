@@ -57,7 +57,7 @@ const partes = (enunciado: string) => {
 
         <div class="c-titulo-bloque">
           <div class="c-badges">
-            <span class="c-badge-pill">Passé composé · A2–B1</span>
+            <a class="c-badge-pill c-badge-enlace" href={withBase("/gramatica/passe-compose/")} title="Ver la lección del passé composé">Passé composé · A2–B1 →</a>
             <span class="c-badge-pill c-badge-oro">Guía práctica interactiva</span>
           </div>
           <h1>¿Avoir o être? Elige el auxiliar sin dudar</h1>
@@ -641,6 +641,15 @@ const partes = (enunciado: string) => {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
+  }
+
+  .c-badge-enlace {
+    text-decoration: none;
+  }
+
+  .c-badge-enlace:hover,
+  .c-badge-enlace:focus-visible {
+    text-decoration: underline;
   }
 
   .c-badge-pill {

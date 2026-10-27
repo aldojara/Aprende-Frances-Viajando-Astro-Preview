@@ -18,17 +18,19 @@ export async function getStaticPaths() {
       (a, b) => (a.data.lessonOrder ?? 999) - (b.data.lessonOrder ?? 999),
     );
 
-  return lessons.map((lesson, index) => ({
+  // Los temas con paginaUnidad tienen su propia página (plantilla de unidad): aquí no se generan, pero sí cuentan
+  // como lección anterior, siguiente o relacionada de las demás.
+  return lessons.flatMap((lesson, index) => lesson.data.paginaUnidad ? [] : [{
     params: { slug: lesson.id },
     props: {
       lesson,
       previousLesson: lessons[index - 1],
       nextLesson: lessons[index + 1],
       relatedLessons: lessons.filter((item) =>
-        lesson.data.relatedContent.includes(item.id as any),
+        lesson.data.relatedContent.some((ref) => ref.id === item.id),
       ),
     },
-  }));
+  }]);
 }
 
 const { lesson, previousLesson, nextLesson, relatedLessons } = Astro.props;

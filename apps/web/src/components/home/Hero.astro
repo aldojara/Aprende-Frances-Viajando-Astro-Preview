@@ -68,7 +68,7 @@ import { withBase } from "../../utils/paths";
           <div class="lesson lesson-complete">
             <span>✓</span>
             <div>
-              <strong>Passé composé</strong>
+              <strong><a class="lesson-link" href={withBase("/gramatica/passe-compose/")}>Passé composé</a></strong>
               <small>Completado</small>
             </div>
           </div>
@@ -239,6 +239,16 @@ import { withBase } from "../../utils/paths";
       var(--color-blue),
       var(--color-gold)
     );
+  }
+
+  .lesson-link {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .lesson-link:hover,
+  .lesson-link:focus-visible {
+    text-decoration: underline;
   }
 
   .lesson-list {

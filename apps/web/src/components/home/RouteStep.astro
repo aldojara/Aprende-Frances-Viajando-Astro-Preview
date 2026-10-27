@@ -1,5 +1,6 @@
 ---
 import type { RouteStep } from "../../data/suggestedRoute";
+import { withBase } from "../../utils/paths";
 
 interface Props {
   step: RouteStep;
@@ -27,7 +28,13 @@ const stateClass = {
       {step.format && <span class="route-step-format">{step.format}</span>}
     </div>
 
-    <h3>{step.shortTitle || step.title}</h3>
+    <h3>
+      {step.href ? (
+        <a class="route-step-link" href={withBase(step.href)}>{step.shortTitle || step.title}</a>
+      ) : (
+        step.shortTitle || step.title
+      )}
+    </h3>
 
     <p>{step.description}</p>
 
@@ -38,6 +45,12 @@ const stateClass = {
 </article>
 
 <style>
+  .route-step-link {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
   .route-step {
     position: relative;
     display: grid;
