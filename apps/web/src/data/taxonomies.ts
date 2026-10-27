@@ -7,12 +7,12 @@ export const coverageStatuses = [
   {
     id: "expanding",
     label: "En expansión",
-    description: "Base editorial creada con cobertura todavia limitada.",
+    description: "Base editorial creada con cobertura todavía limitada.",
   },
   {
     id: "planned",
     label: "Próximamente",
-    description: "Parte de la arquitectura prevista, aun sin cobertura completa.",
+    description: "Parte de la arquitectura prevista, aún sin cobertura completa.",
   },
 ] as const;
 
@@ -30,10 +30,10 @@ export const levels = [
     name: "Principiante",
     coverageStatus: "planned",
     description:
-      "Primer contacto con el frances: saludos, presentaciones, frases esenciales y situaciones cotidianas simples.",
+      "Primer contacto con el francés: saludos, presentaciones, frases esenciales y situaciones cotidianas simples.",
     capabilities: [
       "Comprender expresiones familiares y frases muy frecuentes.",
-      "Presentarse y responder preguntas personales basicas.",
+      "Presentarse y responder preguntas personales básicas.",
       "Interactuar de forma sencilla si la otra persona habla despacio.",
     ],
   },
@@ -44,7 +44,7 @@ export const levels = [
     name: "Básico",
     coverageStatus: "available",
     description:
-      "Consolidacion de conversaciones simples, rutinas, planes, viajes y estructuras frecuentes del frances practico.",
+      "Consolidación de conversaciones simples, rutinas, planes, viajes y estructuras frecuentes del francés práctico.",
     capabilities: [
       "Comprender mensajes breves sobre necesidades inmediatas.",
       "Describir rutinas, gustos, planes y experiencias simples.",
@@ -58,7 +58,7 @@ export const levels = [
     name: "Intermedio",
     coverageStatus: "expanding",
     description:
-      "Autonomia para narrar experiencias, expresar opiniones y desenvolverse en contextos reales con mayor continuidad.",
+      "Autonomía para narrar experiencias, expresar opiniones y desenvolverse en contextos reales con mayor continuidad.",
     capabilities: [
       "Comprender puntos principales de temas conocidos.",
       "Narrar experiencias, planes, deseos y justificar opiniones.",
@@ -72,7 +72,7 @@ export const levels = [
     name: "Intermedio alto",
     coverageStatus: "planned",
     description:
-      "Precision, argumentacion y comprension de contenidos mas complejos para usos academicos, profesionales o DELF.",
+      "Precisión, argumentación y comprensión de contenidos más complejos para usos académicos, profesionales o DELF.",
     capabilities: [
       "Comprender textos y audios complejos con argumentos claros.",
       "Defender puntos de vista con ventajas, limites y ejemplos.",
@@ -86,9 +86,9 @@ export const levels = [
     name: "Avanzado",
     coverageStatus: "planned",
     description:
-      "Uso flexible del frances para matices, produccion extensa, comprension implicita y comunicacion avanzada.",
+      "Uso flexible del francés para matices, producción extensa, comprensión implícita y comunicación avanzada.",
     capabilities: [
-      "Comprender discursos largos y sentidos implicitos.",
+      "Comprender discursos largos y sentidos implícitos.",
       "Expresarse con fluidez, precision y estructura clara.",
       "Adaptar el registro a contextos sociales, academicos o profesionales.",
     ],

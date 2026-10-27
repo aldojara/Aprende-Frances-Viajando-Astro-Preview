@@ -83,7 +83,9 @@ const bloques = [
         title={`Lo que ya puedes estudiar en ${level.label}`}
         description={
           bloques.length > 0
-            ? "Ordenado como se aprende: primero la gramática, después la preparación del DELF."
+            ? delf.length > 0
+              ? "Ordenado como se aprende: primero la gramática, después la preparación del DELF."
+              : "Ordenado como se aprende."
             : "Todavía no hay temas publicados en este nivel."
         }
       />
