@@ -75,8 +75,8 @@ export const levelCards = [
     name: "Principiante",
     slug: "a1",
     tone: "blue",
-    // Sin temas publicados todavía (solo una demostración, que no se muestra).
-    status: "planned",
+    // Artículos y pronombres tónicos ya tienen página; el nivel sigue creciendo.
+    status: "expanding",
     description: "Comunícate en situaciones muy básicas y cotidianas.",
     goals: [
       "Presentarte y saludar.",

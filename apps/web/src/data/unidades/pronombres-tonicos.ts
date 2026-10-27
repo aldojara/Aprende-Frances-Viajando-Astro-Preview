@@ -23,7 +23,7 @@ export const pronombresTonicos: Unidad = {
     { titulo: "En una respuesta breve", ejemplo: "— Qui vient ? — Moi.", nota: "La forma tónica puede aparecer sola." },
     { titulo: "Después de c'est", ejemplo: "C'est lui.", nota: "Sirve para identificar a la persona." },
   ],
-  usosNota: "Son usos frecuentes, no una lista completa.",
+  usosNota: "Otros usos frecuentes: Moi aussi (yo también), Moi non plus (yo tampoco) y la comparación Il est plus grand que moi (él es más alto que yo). Esta no es una lista completa.",
   formacion: {
     regla: "Cada pronombre sujeto tiene una forma tónica correspondiente. Algunas se escriben igual que el sujeto; el lugar y la función en la frase permiten distinguirlas.",
     tablaTitulo: "De sujeto a forma tónica",
@@ -68,7 +68,7 @@ export const pronombresTonicos: Unidad = {
       { fr: "Ce message est pour eux.", es: "Este mensaje es para ellos.", nota: "después de pour" },
       { fr: "Moi, je prends le métro.", es: "Yo tomo el metro.", nota: "énfasis" },
       { fr: "— Qui vient demain ? — Nous.", es: "— ¿Quién viene mañana? — Nosotros.", nota: "respuesta breve" },
-      { fr: "Je lui téléphone ce soir.", es: "Lo llamo por teléfono esta noche.", nota: "lui como complemento, no como forma tónica" },
+      { fr: "Je lui téléphone ce soir.", es: "Lo (o la) llamo por teléfono esta noche.", nota: "lui como complemento, no como forma tónica" },
     ],
   },
   aplicacion: {
