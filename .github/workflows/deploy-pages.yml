@@ -38,6 +38,10 @@ jobs:
       - name: Comprobar (astro check)
         run: npm run check
 
+      # Pruebas permanentes del verificador: casos que debe bloquear y casos válidos que debe dejar pasar.
+      - name: Probar el verificador
+        run: npm run test:verificar
+
       - name: Compilar (astro build)
         run: npm run build
         env:
