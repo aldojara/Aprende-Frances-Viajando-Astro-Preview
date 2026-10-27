@@ -24,22 +24,21 @@ export const discoursIndirect: Unidad = {
     { titulo: "Transmitir una petición", ejemplo: "Elle nous demande de confirmer l'heure.", nota: "Demander à quelqu'un de + infinitivo." },
   ],
   formacion: {
-    regla: "Afirmación: dire que + oración. Pregunta de sí o no: demander si + oración. Pregunta abierta: demander + palabra interrogativa + oración; qu'est-ce que pasa a ce que y qu'est-ce qui a ce qui. Petición u orden: demander o dire à quelqu'un de + infinitivo.",
-    formula: ["Verbo introductor", "que / si / palabra interrogativa (ce que, ce qui) / de", "Mensaje adaptado"],
+    regla: "Afirmación: dire que. Pregunta de sí o no: demander si. Pregunta abierta: demander + interrogativo (qu'est-ce que → ce que; qu'est-ce qui → ce qui). Petición u orden: demander/dire à quelqu'un de + infinitivo.",
+    formula: ["Verbo introductor", "que / si / interrogativo / de", "Mensaje adaptado"],
     tablaTitulo: "De palabras directas a palabras transmitidas",
     tabla: {
       cabeceras: ["En directo", "En indirecto"],
       filas: [
         ["« Tu as reçu le courriel ? »", "Elle demande si j'ai reçu le courriel."],
         ["« Où est la salle ? »", "Elle demande où est la salle."],
-        ["« Qu'est-ce que tu veux ? »", "Elle demande ce que je veux."],
         ["« Confirmez l'heure. »", "Elle nous demande de confirmer l'heure."],
       ],
     },
     notasTitulo: "Qué hay que adaptar",
     notas: [
       "Adapta los pronombres a quien cuenta: «Je pars» → elle dit qu'elle part; «Tu viens ?» → elle me demande si je viens.",
-      "En la pregunta indirecta no se usan est-ce que ni la inversión con guion del pronombre: «Où est la salle ?» → elle demande où est la salle. Con un sujeto que es un nombre, el verbo puede ir antes.",
+      "En la pregunta indirecta no se usan est-ce que ni la inversión con guion (est-elle). Con sujeto nombre, el verbo puede ir antes: «Où est la salle ?» → elle demande où est la salle.",
       "Aquí y mañana pueden mantenerse si todavía son el mismo lugar y el mismo día. Si cambia el punto de referencia, ici puede pasar a là y demain a le lendemain.",
     ],
   },
