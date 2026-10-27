@@ -49,6 +49,7 @@ export const subjonctifPresent: Unidad = {
         ["qu'ils / elles", "qu'ils parlent", "qu'ils finissent", "qu'ils prennent"],
       ],
     },
+    notasTitulo: "Las dos raíces y las formas irregulares",
     notas: [
       "je, tu, il, ils: ils prennent → prenn- → que je prenne, qu'ils prennent.",
       "nous, vous: nous prenons → pren- → que nous prenions, que vous preniez.",
@@ -218,6 +219,6 @@ export const subjonctifPresent: Unidad = {
   relacionados: [
     { titulo: "Imparfait", url: "/gramatica/imparfait/", estado: "disponible" },
     { titulo: "Conditionnel présent", url: "/gramatica/conditionnel-present/", estado: "disponible" },
-    { titulo: "Discours indirect", url: "/gramatica/discours-indirect/", estado: "disponible" },
+    { titulo: "Discours indirect", url: "/gramatica/discours-indirect/", estado: "en-expansion" },
   ],
 };

@@ -93,11 +93,11 @@ const claseColumna = (idx: number) => (idx === 0 ? "sujeto" : idx % 2 === 1 ? "a
     )
   }
 
-  <!-- Notas sobre concordancia -->
+  <!-- Notas de formación: el título lo da cada tema (formacion.notasTitulo) -->
   {
     formacion.notas && formacion.notas.length > 0 && (
       <div class="u-notas-bloque">
-        <h3 class="u-subtitulo">Puntos clave sobre la concordancia</h3>
+        <h3 class="u-subtitulo">{formacion.notasTitulo ?? "Puntos clave"}</h3>
         <ul class="u-notas-lista">
           {formacion.notas.map((nota) => (
             <li class="u-nota-item">

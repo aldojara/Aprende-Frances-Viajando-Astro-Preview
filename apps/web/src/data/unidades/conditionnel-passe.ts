@@ -47,6 +47,7 @@ export const conditionnelPasse: Unidad = {
         ["ils / elles", "ils auraient aimé · elles auraient aimé", "ils seraient allés · elles seraient allées"],
       ],
     },
+    notasTitulo: "El auxiliar y la concordancia",
     notas: [
       "Lleva el mismo auxiliar que el passé composé: si dices je suis allé(e), aquí es je serais allé(e).",
       "Con être, en los verbos no pronominales, el participio concuerda con el sujeto: elle serait partie, nous serions venus.",

@@ -49,6 +49,7 @@ export const imparfait: Unidad = {
         ["ils / elles", "ils parlaient", "ils finissaient", "ils étaient"],
       ],
     },
+    notasTitulo: "Detalles de conjugación y ortografía",
     notas: [
       "Être es el único irregular: j'étais, tu étais, il était, nous étions, vous étiez, ils étaient. Falloir y pleuvoir no tienen forma con nous: il fallait, il pleuvait.",
       "Ejemplo: nous prenons → pren- → je prenais.",
@@ -102,11 +103,11 @@ export const imparfait: Unidad = {
     },
   ],
 
-  // Aún no hay práctica propia del imparfait (bloque E). ¿Avoir o être? incluye el tipo T5: elegir entre
-  // passé composé e imparfait.
+  // Aún no hay práctica propia del imparfait (bloque E). La práctica enlazada es la de los auxiliares del passé
+  // composé: el texto no promete practicar el imparfait.
   practica: {
     titulo: "¿Avoir o être?",
-    texto: "Mientras preparamos la práctica del imparfait: elige entre passé composé e imparfait, con corrección al momento.",
+    texto: "Mientras preparamos la práctica del imparfait: repasa la elección del auxiliar en el passé composé, que usarás al combinar los dos tiempos.",
     url: "/practica/avoir-o-etre/",
   },
 
