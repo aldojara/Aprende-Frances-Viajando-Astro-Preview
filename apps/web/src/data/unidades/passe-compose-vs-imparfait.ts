@@ -46,8 +46,9 @@ export const passeComposeVsImparfait: Unidad = {
         respuesta: "imparfait",
       },
       {
-        pregunta: "¿Es una costumbre, o algo que estaba pasando en ese momento?",
+        pregunta: "¿Es una costumbre que describes como hábito, o algo que estaba pasando en ese momento?",
         respuesta: "imparfait",
+        detalle: "Si cuentas acciones repetidas como un conjunto terminado, van en passé composé: Pendant mon séjour, j'ai pris le métro tous les jours.",
       },
       {
         pregunta: "¿Es un hecho que pasó y terminó (una vez, un número de veces que cuentas, como deux fois, o uno detrás de otro)?",
@@ -57,7 +58,7 @@ export const passeComposeVsImparfait: Unidad = {
     ],
     notasTitulo: "Para elegir bien",
     notas: [
-      "Las expresiones de tiempo son pistas, no reglas: Hier, il faisait froid (una descripción) · Pendant mon séjour, j'ai pris le métro tous les jours (un conjunto terminado).",
+      "Las expresiones de tiempo son pistas, no reglas: Hier, il faisait froid (una descripción) · La semaine dernière, je travaillais quand tu as appelé (una acción en curso).",
       "Cuando quand une algo que estaba pasando con algo que lo interrumpe, lo primero va en imparfait y lo segundo, en passé composé: Je dormais quand le téléphone a sonné.",
     ],
   },
@@ -78,17 +79,18 @@ export const passeComposeVsImparfait: Unidad = {
       },
     },
     {
-      titulo: "Verbos que cambian de sentido (como en español)",
+      titulo: "Verbos que cambian de sentido (según el contexto)",
       tabla: {
         cabeceras: ["Verbo", "Imparfait", "Passé composé"],
         filas: [
           ["savoir", "je savais · sabía", "j'ai su · supe, me enteré"],
           ["pouvoir", "je pouvais · podía", "j'ai pu · pude, logré"],
           ["vouloir", "je voulais · quería", "j'ai voulu · quise (a veces: intenté)"],
-          ["connaître", "je connaissais · conocía", "j'ai connu · conocí (a alguien, por primera vez)"],
+          ["connaître", "je connaissais · conocía", "j'ai connu · conocí (a alguien); según el contexto, viví"],
           ["avoir", "j'avais · tenía", "j'ai eu · tuve, recibí"],
         ],
       },
+      puntos: ["Son los sentidos más frecuentes; el contexto decide: j'ai connu des hivers difficiles (viví inviernos difíciles)."],
     },
     {
       titulo: "Pistas frecuentes (orientan, no deciden)",
@@ -207,7 +209,7 @@ export const passeComposeVsImparfait: Unidad = {
   },
 
   resumen: [
-    "Passé composé: un hecho presentado como terminado (una vez, un número de veces que cuentas o uno detrás de otro). Imparfait: el escenario, las costumbres y lo que estaba pasando.",
+    "Passé composé: un hecho presentado como terminado (una vez, un número de veces que cuentas o uno detrás de otro). Imparfait: el escenario, las costumbres descritas como hábito y lo que estaba pasando.",
     "Muchas veces coincide con el español: «llegué» → passé composé; «llegaba» → imparfait.",
     "Las expresiones de tiempo son pistas, no reglas. Una duración cerrada suele ir en passé composé: j'ai habité trois ans à Lima.",
     "Con quand, si un hecho interrumpe algo en curso: lo que estaba pasando, en imparfait; lo que llega, en passé composé.",
