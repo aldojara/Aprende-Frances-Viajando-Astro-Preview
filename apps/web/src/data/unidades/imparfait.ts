@@ -32,7 +32,7 @@ export const imparfait: Unidad = {
     },
     { titulo: "Un estado o un sentimiento", ejemplo: "J'avais peur de parler au téléphone." },
   ],
-  usosNota: "TODO revisar. Para un hecho presentado como terminado («fui», «llegué», «me asusté») se usa el passé composé, aunque sea un sentimiento: j'ai eu peur.",
+  usosNota: "Para un hecho presentado como terminado («fui», «llegué», «me asusté») se usa el passé composé, aunque sea un sentimiento: j'ai eu peur.",
 
   formacion: {
     regla: "Raíz de «nous» en presente (sin -ons) + -ais, -ais, -ait, -ions, -iez, -aient.",
@@ -227,7 +227,7 @@ export const imparfait: Unidad = {
   ],
 
   relacionados: [
-    { titulo: "Passé composé", url: "/gramatica/passe-compose/" },
+    { titulo: "Tema inventado", url: "/gramatica/no-existe/" },
     { titulo: "Passé composé vs imparfait", url: "/gramatica/passe-compose-vs-imparfait/" },
   ],
 };
