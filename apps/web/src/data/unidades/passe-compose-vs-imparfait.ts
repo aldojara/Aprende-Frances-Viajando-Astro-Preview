@@ -2,7 +2,8 @@
 // (Documentos_Proyecto/05_Unidades/06_passe-compose-vs-imparfait/fuente.md). Español neutro latinoamericano.
 // Ejemplos guiados por los perfiles de Documentos_Proyecto/02_Audiencia/ (perfil 2: quien ya vive en Quebec).
 // Sustituye a la lección antigua de src/content/content/passe-compose-vs-imparfait.md (que queda como ficha para los listados).
-// Sin práctica propia (bloque E): no se enlaza ¿Avoir o être?, que no practica la elección entre los dos tiempos.
+// Sin práctica propia (bloque E). La tarjeta enlaza ¿Avoir o être? diciendo lo que practica de verdad (el auxiliar),
+// sin prometer la elección entre los dos tiempos; no hay botones por grupo de errores (decisión del usuario, 27 oct 2026).
 import type { Unidad } from "./tipos";
 
 export const passeComposeVsImparfait: Unidad = {
@@ -101,6 +102,12 @@ export const passeComposeVsImparfait: Unidad = {
       },
     },
   ],
+
+  practica: {
+    titulo: "¿Avoir o être?",
+    texto: "Mientras preparamos la práctica de passé composé vs imparfait: repasa la elección del auxiliar en el passé composé, que usarás al contar en pasado.",
+    url: "/practica/avoir-o-etre/",
+  },
 
   gruposErrores: [
     { id: "eleccion", titulo: "¿Qué pasado uso?", descripcion: "El hecho que avanza o el escenario que lo rodea." },
