@@ -78,14 +78,9 @@ const grammarModules = [
     range: "A1–C1",
     topics: [
       planned("Impératif", ["A1", "A2"], "Dar consejos"),
-      // Unidad hecha con la plantilla de unidad (src/data/unidades), no con la colección de contenido.
-      {
-        title: "Passé composé",
-        levels: ["A2"],
-        status: "available" as const,
-        href: withBase("/gramatica/passe-compose/"),
+      topicFromLesson("passe-compose", {
         goal: "Hablar del pasado",
-      },
+      }),
       planned("Imparfait", ["A2", "B1"], "Hablar del pasado"),
       topicFromLesson("passe-compose-vs-imparfait", {
         goal: "Hablar del pasado",

@@ -94,6 +94,10 @@ const content = defineCollection({
     prerequisites: z.array(reference("content")).default([]),
     nextContent: reference("content").optional(),
     lessonOrder: z.number().int().positive().optional(),
+    // true si el tema tiene su propia página hecha con la plantilla de unidad
+    // (src/pages/gramatica/<tema>.astro + src/data/unidades/<tema>.ts). La entrada solo sirve para que el tema
+    // aparezca en los listados (Niveles, Contenidos, índice de Gramática); [slug].astro no la genera.
+    paginaUnidad: z.boolean().default(false),
     formation: z.array(z.string()).default([]),
     uses: z.array(z.string()).default([]),
     examples: z
