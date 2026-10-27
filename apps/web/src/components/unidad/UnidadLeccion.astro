@@ -17,12 +17,16 @@ import UnidadRelacionados from "./UnidadRelacionados.astro";
 import UnidadStickyPractica from "./UnidadStickyPractica.astro";
 import UnidadMaterialAdicional from "./UnidadMaterialAdicional.astro";
 import UnidadIndiceContextual from "./UnidadIndiceContextual.astro";
+import UnidadPestanaPendiente from "./UnidadPestanaPendiente.astro";
 
 interface Props {
   unidad: Unidad;
+  // Muestra también las pestañas opcionales sin contenido, con un aviso «Próximamente».
+  // Para revisar la unidad completa mientras se prepara; quitarlo cuando rija la regla de ocultarlas.
+  mostrarPestanasPendientes?: boolean;
 }
 
-const { unidad } = Astro.props;
+const { unidad, mostrarPestanasPendientes = false } = Astro.props;
 
 // Ronda 4: Condiciones de pestañas
 const tieneTeoria = Boolean(unidad.videoTeoria);
@@ -32,6 +36,10 @@ const tieneMaterial = Boolean(
   (unidad.tarjetasDidacticas && unidad.tarjetasDidacticas.length > 0) ||
   (unidad.descargas && unidad.descargas.length > 0)
 );
+const teoriaPendiente = !tieneTeoria && mostrarPestanasPendientes;
+const materialPendiente = !tieneMaterial && mostrarPestanasPendientes;
+const muestraTeoria = tieneTeoria || teoriaPendiente;
+const muestraMaterial = tieneMaterial || materialPendiente;
 
 interface TabDef {
   id: string;
@@ -42,13 +50,13 @@ interface TabDef {
 }
 
 const tabs: TabDef[] = [];
-if (tieneTeoria) {
+if (muestraTeoria) {
   tabs.push({ id: "teoria", icon: "▶", nombreDesktop: "Teoría", nombreMobile: "Teoría" });
 }
 tabs.push({ id: "regla", icon: "📘", nombreDesktop: "Aprende la regla", nombreMobile: "Regla" });
 tabs.push({ id: "errores", icon: "⚠️", nombreDesktop: "Errores típicos", nombreMobile: "Errores", badge: unidad.errores?.length });
 tabs.push({ id: "contexto", icon: "🧳", nombreDesktop: "En contexto y práctica", nombreMobile: "Práctica" });
-if (tieneMaterial) {
+if (muestraMaterial) {
   tabs.push({ id: "material", icon: "📦", nombreDesktop: "Material adicional", nombreMobile: "Material" });
 }
 
@@ -58,8 +66,8 @@ const defaultTab = tieneTeoria ? "teoria" : "regla";
 <article
   class="u-unidad-page"
   data-unidad-page
-  data-tiene-teoria={tieneTeoria ? "true" : "false"}
-  data-tiene-material={tieneMaterial ? "true" : "false"}
+  data-tiene-teoria={muestraTeoria ? "true" : "false"}
+  data-tiene-material={muestraMaterial ? "true" : "false"}
   data-default-tab={defaultTab}
 >
   <!-- Bloque 1: Cabecera Hero -->
@@ -111,6 +119,8 @@ const defaultTab = tieneTeoria ? "teoria" : "regla";
             unidad={unidad}
             tieneTeoria={tieneTeoria}
             tieneMaterial={tieneMaterial}
+            teoriaPendiente={teoriaPendiente}
+            materialPendiente={materialPendiente}
             defaultTab={defaultTab}
           />
 
@@ -237,6 +247,54 @@ const defaultTab = tieneTeoria ? "teoria" : "regla";
             )}
           </div>
         </section>
+
+        {
+          teoriaPendiente && (
+            <section
+              id="panel-teoria"
+              role="tabpanel"
+              tabindex="0"
+              aria-labelledby="tab-teoria"
+              class="u-tabpanel"
+              data-panel="teoria"
+              hidden
+            >
+              <div class="u-panel-flujo">
+                <UnidadPestanaPendiente
+                  id="teoria-pendiente"
+                  icono="▶"
+                  titulo="Teoría en vídeo"
+                  texto="Aquí estará la explicación completa del tema en vídeo."
+                  items={["Vídeo con la teoría", "Audio resumen para escuchar"]}
+                />
+              </div>
+            </section>
+          )
+        }
+
+        {
+          materialPendiente && (
+            <section
+              id="panel-material"
+              role="tabpanel"
+              tabindex="0"
+              aria-labelledby="tab-material"
+              class="u-tabpanel"
+              data-panel="material"
+              hidden
+            >
+              <div class="u-panel-flujo">
+                <UnidadPestanaPendiente
+                  id="material-pendiente"
+                  icono="📦"
+                  titulo="Material adicional"
+                  texto="Aquí estarán los materiales de repaso de este tema."
+                  items={["Infografía", "Mapa mental", "Tarjetas didácticas", "Descargas en PDF"]}
+                />
+              </div>
+            </section>
+          )
+        }
 
         <!-- ============================================== -->
         <!-- PANEL 5 (OPCIONAL): MATERIAL ADICIONAL          -->

@@ -5,10 +5,12 @@ interface Props {
   unidad: Unidad;
   tieneTeoria: boolean;
   tieneMaterial: boolean;
+  teoriaPendiente?: boolean;
+  materialPendiente?: boolean;
   defaultTab: string;
 }
 
-const { unidad, tieneTeoria, tieneMaterial, defaultTab } = Astro.props;
+const { unidad, tieneTeoria, tieneMaterial, teoriaPendiente, materialPendiente, defaultTab } = Astro.props;
 
 function formaCortaError(mal: string): string {
   const palabras = mal.trim().replace(/[.!?]+$/, "").split(/\s+/);
@@ -55,6 +57,10 @@ if (tieneTeoria) {
     itemsTeoria.push({ id: "audio-resumen", label: "¿Prefieres escucharlo?" });
   }
   tabTocs.push({ tabId: "teoria", tabLabel: "Teoría", items: itemsTeoria });
+}
+
+if (teoriaPendiente) {
+  tabTocs.push({ tabId: "teoria", tabLabel: "Teoría", items: [{ id: "teoria-pendiente", label: "Próximamente" }] });
 }
 
 // 2. Pestaña Aprende la regla
@@ -159,6 +165,9 @@ if (tieneMaterial) {
     itemsMaterial.push({ id: "subpanel-descargas", label: "Descargas (PDF / Ficha)" });
   }
   tabTocs.push({ tabId: "material", tabLabel: "Material adicional", items: itemsMaterial });
+}
+if (materialPendiente) {
+  tabTocs.push({ tabId: "material", tabLabel: "Material adicional", items: [{ id: "material-pendiente", label: "Próximamente" }] });
 }
 ---
 
