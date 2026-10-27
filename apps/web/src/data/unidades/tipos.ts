@@ -64,6 +64,8 @@ export interface Unidad {
     pasosTitulo?: string;
     tabla?: Tabla;
     pasos?: { pregunta: string; respuesta: string; detalle?: string }[];
+    // Título del bloque de notas (por defecto, «Puntos clave»).
+    notasTitulo?: string;
     notas?: string[];
   };
   consulta?: { titulo: string; tabla?: Tabla; puntos?: string[] }[];
@@ -90,7 +92,8 @@ export interface Unidad {
   aplicacion?: { consigna: string; requisitos?: string[]; modelo: string };
   captacion?: { titulo: string; texto: string; boton: string; url: string };
   resumen: string[];
-  relacionados: { titulo: string; url: string; estado: "disponible" | "proximamente" }[];
+  // estado: el mismo que la página de destino (coverageStatus de su ficha en src/content/content/).
+  relacionados: { titulo: string; url: string; estado: "disponible" | "en-expansion" | "proximamente" }[];
 
   // Descargas de apoyo (Ronda 3)
   descargas?: RecursoDescarga[];

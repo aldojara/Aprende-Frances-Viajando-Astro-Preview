@@ -68,6 +68,7 @@ export const passeCompose: Unidad = {
       },
       { pregunta: "¿Ninguna de las dos?", respuesta: "avoir", detalle: "La gran mayoría de los verbos van con avoir." },
     ],
+    notasTitulo: "El auxiliar y la concordancia",
     notas: [
       "Monter, descendre, sortir, rentrer, retourner y passer van con avoir cuando llevan complemento directo (responden a «¿qué?»): Je suis monté(e). / J'ai monté la valise. · Je suis passé(e) par Québec. / J'ai passé une semaine à Québec.",
       "Con être, en los verbos no pronominales, el participio concuerda con el sujeto: -e si es femenino y -s si es plural. Il est parti. · Elle est partie. · Ils sont partis. · Elles sont parties.",

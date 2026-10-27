@@ -22,11 +22,14 @@ if (!relacionados || relacionados.length === 0) return null;
   <div class="u-relacionados-grid">
     {
       relacionados.map((item) => {
-        const esDisponible = item.estado === "disponible";
-        return esDisponible ? (
+        const enlaza = item.estado !== "proximamente";
+        const enExpansion = item.estado === "en-expansion";
+        return enlaza ? (
           <a class="u-rel-card u-rel-disponible" href={withBase(item.url)}>
             <div class="u-rel-top">
-              <span class="u-rel-badge u-rel-badge-ok">Disponible</span>
+              <span class={`u-rel-badge ${enExpansion ? "u-rel-badge-exp" : "u-rel-badge-ok"}`}>
+                {enExpansion ? "En expansión" : "Disponible"}
+              </span>
               <span class="u-rel-icono" aria-hidden="true">
                 →
               </span>
@@ -142,6 +145,11 @@ if (!relacionados || relacionados.length === 0) return null;
   .u-rel-badge-ok {
     background: rgba(0, 85, 164, 0.1);
     color: var(--color-blue, #0055a4);
+  }
+
+  .u-rel-badge-exp {
+    background: rgba(201, 162, 39, 0.16);
+    color: #6b520a;
   }
 
   .u-rel-badge-soon {

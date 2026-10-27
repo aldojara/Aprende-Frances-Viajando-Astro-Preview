@@ -61,9 +61,6 @@ const erroresConIndice = errores.map((item, idx) => ({
                   <article class="u-error-card" id={`error-${item.globalIdx}`}>
                     <div class="u-error-cabeza">
                       <span class="u-error-indice">Caso #{String(item.globalIdx).padStart(2, "0")}</span>
-                      {item.tipoPractica && (
-                        <span class="u-error-tag-tipo">Tipo {item.tipoPractica}</span>
-                      )}
                     </div>
 
                     <div class="u-error-comparativa">
@@ -100,9 +97,6 @@ const erroresConIndice = errores.map((item, idx) => ({
           <article class="u-error-card" id={`error-${item.globalIdx}`}>
             <div class="u-error-cabeza">
               <span class="u-error-indice">Caso #{String(item.globalIdx).padStart(2, "0")}</span>
-              {item.tipoPractica && (
-                <span class="u-error-tag-tipo">Tipo {item.tipoPractica}</span>
-              )}
             </div>
 
             <div class="u-error-comparativa">
@@ -324,15 +318,6 @@ const erroresConIndice = errores.map((item, idx) => ({
     color: var(--color-gold-text, #855d00);
     font-feature-settings: "tnum";
     letter-spacing: 0.04em;
-  }
-
-  .u-error-tag-tipo {
-    font-size: 0.68rem;
-    font-weight: 700;
-    color: var(--color-blue, #0055a4);
-    background: rgba(0, 85, 164, 0.08);
-    padding: 0.12rem 0.45rem;
-    border-radius: 999px;
   }
 
   .u-error-comparativa {

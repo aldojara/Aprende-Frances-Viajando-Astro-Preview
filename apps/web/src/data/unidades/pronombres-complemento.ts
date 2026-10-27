@@ -48,6 +48,7 @@ export const pronombresComplemento: Unidad = {
         ["ils / elles", "les", "leur", "eux / elles"],
       ],
     },
+    notasTitulo: "Dónde va el pronombre",
     notas: [
       "En passé composé, antes del auxiliar: je l'ai vu, je lui ai écrit, j'y suis allé.",
       "Con aller, pouvoir, vouloir o devoir + infinitivo, antes del infinitivo: je vais l'appeler, je peux y aller.",
@@ -206,6 +207,6 @@ export const pronombresComplemento: Unidad = {
   relacionados: [
     { titulo: "Passé composé", url: "/gramatica/passe-compose/", estado: "disponible" },
     { titulo: "Passé composé vs imparfait", url: "/gramatica/passe-compose-vs-imparfait/", estado: "disponible" },
-    { titulo: "Discours indirect", url: "/gramatica/discours-indirect/", estado: "disponible" },
+    { titulo: "Discours indirect", url: "/gramatica/discours-indirect/", estado: "en-expansion" },
   ],
 };
