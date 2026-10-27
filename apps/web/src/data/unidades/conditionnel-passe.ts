@@ -199,6 +199,7 @@ export const conditionnelPasse: Unidad = {
   ],
 
   relacionados: [
+    { titulo: "Plus-que-parfait", url: "/gramatica/plus-que-parfait/" },
     { titulo: "Conditionnel présent", url: "/gramatica/conditionnel-present/" },
     { titulo: "Passé composé", url: "/gramatica/passe-compose/" },
     { titulo: "Imparfait", url: "/gramatica/imparfait/" },

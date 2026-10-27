@@ -1,0 +1,12 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import UnidadLeccion from "../../components/unidad/UnidadLeccion.astro";
+import { discoursIndirect } from "../../data/unidades/discours-indirect";
+
+const title = `${discoursIndirect.titulo} · Lección`;
+const description = discoursIndirect.objetivo;
+---
+
+<BaseLayout title={title} description={description}>
+  <UnidadLeccion unidad={discoursIndirect} mostrarPestanasPendientes />
+</BaseLayout>

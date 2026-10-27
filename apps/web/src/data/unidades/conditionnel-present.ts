@@ -205,6 +205,7 @@ export const conditionnelPresent: Unidad = {
   ],
 
   relacionados: [
+    { titulo: "Plus-que-parfait", url: "/gramatica/plus-que-parfait/" },
     { titulo: "Futur simple", url: "/gramatica/futur-simple/" },
     { titulo: "Conditionnel passé", url: "/gramatica/conditionnel-passe/" },
     { titulo: "Imparfait", url: "/gramatica/imparfait/" },

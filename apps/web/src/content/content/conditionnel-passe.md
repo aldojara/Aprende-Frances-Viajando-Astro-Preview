@@ -19,7 +19,7 @@ communicationGoals: ["formular-hipotesis", "dar-consejos"]
 status: "available"
 estimatedMinutes: 12
 lessonOrder: 7
-relatedContent: ["conditionnel-present", "passe-compose", "imparfait"]
+relatedContent: ["conditionnel-present", "plus-que-parfait", "passe-compose", "imparfait"]
 tags: ["gramática", "condicional", "b2", "c1"]
 demonstration: false
 # La página es la de la plantilla de unidad: src/pages/gramatica/conditionnel-passe.astro
