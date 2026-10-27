@@ -14,7 +14,7 @@ export const conditionnelPasse: Unidad = {
   ideaClave: {
     titulo: "Es el «habría + participio» del español",
     texto:
-      "J'aurais aimé = me habría gustado. Casi siempre funciona igual que en español. Las trampas: «debería haber…» se dice j'aurais dû + infinitivo, y después del si de condición nunca va el condicional.",
+      "J'aurais aimé = me habría gustado. Muchos usos funcionan igual que en español. Las trampas: «debería haber…» se dice j'aurais dû + infinitivo, y después del si de condición nunca va el condicional.",
     tabla: [
       { es: "Debería haber estudiado más.", fr: "J'aurais dû étudier plus." },
       { es: "Si hubiera sabido, habría venido.", fr: "Si j'avais su, je serais venu(e)." },
@@ -49,8 +49,8 @@ export const conditionnelPasse: Unidad = {
     },
     notas: [
       "Lleva el mismo auxiliar que el passé composé: si dices je suis allé(e), aquí es je serais allé(e).",
-      "Con être, el participio concuerda con el sujeto: elle serait partie, nous serions venus.",
-      "Los pronominales también van con être: je me serais préparé(e), elle se serait trompée.",
+      "Con être, en los verbos no pronominales, el participio concuerda con el sujeto: elle serait partie, nous serions venus.",
+      "Los pronominales también van con être, pero su concordancia tiene reglas propias. En los casos de esta lección concuerdan con el sujeto: je me serais préparé(e), elle se serait trompée.",
       "El auxiliar va en conditionnel présent (aurais, serais…), no en presente.",
     ],
   },
@@ -102,9 +102,9 @@ export const conditionnelPasse: Unidad = {
     {
       grupo: "si",
       corto: "Si j'aurais su",
-      mal: "Si j'aurais su, je serais venue plus tôt.",
-      bien: "Si j'avais su, je serais venue plus tôt.",
-      porque: "Después de si nunca va el condicional; va el plus-que-parfait, como «si hubiera sabido».",
+      mal: "Si j'aurais su, je serais venu(e) plus tôt.",
+      bien: "Si j'avais su, je serais venu(e) plus tôt.",
+      porque: "Después del si de condición no va el condicional; va el plus-que-parfait, como «si hubiera sabido».",
     },
     {
       grupo: "si",
@@ -192,9 +192,9 @@ export const conditionnelPasse: Unidad = {
   resumen: [
     "Conditionnel passé = avoir o être en conditionnel présent + participio: j'aurais aimé, je serais allé(e).",
     "Sirve para arrepentimientos, reproches, hipótesis que no se cumplieron e información sin confirmar.",
-    "Si + plus-que-parfait → conditionnel passé: si j'avais su, je serais venu(e). Nunca «si j'aurais».",
+    "Si + plus-que-parfait → conditionnel passé: si j'avais su, je serais venu(e). Nunca «si j'aurais» en una condición.",
     "«Debería haber estudiado» = j'aurais dû étudier (devoir en conditionnel passé + infinitivo).",
-    "Mismo auxiliar que en el passé composé; con être, el participio concuerda.",
+    "Mismo auxiliar que en el passé composé; con être (verbos no pronominales), el participio concuerda con el sujeto.",
   ],
 
   relacionados: [

@@ -19,7 +19,7 @@ export const passeCompose: Unidad = {
       { es: "Hoy he llamado a mi mamá.", fr: "Aujourd'hui, j'ai appelé ma mère." },
     ],
     etiquetaFr: "Francés (passé composé)",
-    nota: "Existe otro tiempo, el passé simple, pero solo aparece en libros y textos escritos formales. Para hablar y escribir mensajes, el passé composé es el pasado de las acciones terminadas.",
+    nota: "Existe otro tiempo, el passé simple, que se encuentra sobre todo en la narración escrita (novelas, cuentos, prensa). Para hablar y escribir mensajes, el passé composé es el pasado de las acciones terminadas.",
   },
 
   videoTeoria: {
@@ -61,17 +61,18 @@ export const passeCompose: Unidad = {
         respuesta: "être",
       },
       {
-        pregunta: "¿Es uno de los 17 verbos de movimiento o cambio de estado?",
+        pregunta: "¿Está en esta lista de verbos frecuentes que van con être?",
         respuesta: "être",
         detalle:
-          "aller, venir, arriver, partir, entrer, sortir, monter, descendre, naître, mourir, rester, tomber, retourner, rentrer, passer, devenir, revenir, y sus derivados (repartir, ressortir, remonter…)",
+          "aller, venir, arriver, partir, entrer, sortir, monter, descendre, naître, mourir, rester, tomber, retourner, rentrer, passer, devenir, revenir, y varios de sus derivados con re- (repartir, ressortir, remonter…). Salvo si llevan complemento directo (j'ai passé une semaine à Montréal). Es una lista para memorizar: no todo verbo de movimiento va con être (courir, marcher y voyager van con avoir).",
       },
-      { pregunta: "¿Ninguna de las dos?", respuesta: "avoir", detalle: "La gran mayoría de los verbos." },
+      { pregunta: "¿Ninguna de las dos?", respuesta: "avoir", detalle: "La gran mayoría de los verbos van con avoir." },
     ],
     notas: [
       "Monter, descendre, sortir, rentrer, retourner y passer van con avoir cuando llevan complemento directo (responden a «¿qué?»): Je suis monté(e). / J'ai monté la valise. · Je suis passé(e) par Québec. / J'ai passé une semaine à Québec.",
-      "Con être, el participio concuerda con el sujeto: -e si es femenino y -s si es plural. Il est parti. · Elle est partie. · Ils sont partis. · Elles sont parties. · Elle s'est perdue.",
-      "Con avoir, el participio no concuerda con el sujeto: Elles ont visité le musée.",
+      "Con être, en los verbos no pronominales, el participio concuerda con el sujeto: -e si es femenino y -s si es plural. Il est parti. · Elle est partie. · Ils sont partis. · Elles sont parties.",
+      "Los pronominales también van con être, pero su concordancia tiene reglas propias. En los casos de esta lección concuerdan con el sujeto: elle s'est levée, elle s'est perdue.",
+      "Con avoir, el participio no concuerda con el sujeto: Elles ont visité le musée. (Más adelante: puede concordar con un complemento directo colocado antes, como en les photos que j'ai prises.)",
     ],
   },
 
@@ -88,7 +89,7 @@ export const passeCompose: Unidad = {
           ["vivre", "vécu"], ["dire", "dit"], ["pleuvoir", "plu"], ["naître", "né"],
         ],
       },
-      puntos: ["Regulares: -er → -é (visiter → visité) · -ir → -i (finir → fini) · -re → -u (attendre → attendu)."],
+      puntos: ["Por familias: los verbos en -er → -é (visiter → visité); los verbos como finir → -i (fini); los verbos como attendre → -u (attendu). Los demás pueden tener un participio irregular (venir → venu, prendre → pris): están en la tabla."],
     },
     {
       titulo: "Negación, preguntas y adverbios",
@@ -97,7 +98,7 @@ export const passeCompose: Unidad = {
         "Con pronominales, ne va delante del pronombre: Je ne me suis pas levé(e) tôt.",
         "Otras negaciones: Je ne suis jamais allé(e) à Québec. · Je n'ai rien acheté. · Je n'ai pas encore trouvé d'appartement.",
         "Preguntas: Tu as pris le métro ? (entonación) · Est-ce que vous êtes allés à la réunion ? · Avez-vous rempli le formulaire ? (formal)",
-        "Adverbios cortos (déjà, bien, mal, beaucoup, trop, souvent, vraiment) entre el auxiliar y el participio: J'ai déjà envoyé les documents. · J'ai bien dormi.",
+        "Adverbios cortos (déjà, bien, mal, beaucoup, trop, souvent, vraiment): su lugar habitual es entre el auxiliar y el participio: J'ai déjà envoyé les documents. · J'ai bien dormi.",
         "Las expresiones de tiempo (hier, ce matin…) van al principio o al final de la frase.",
       ],
     },
@@ -185,7 +186,7 @@ export const passeCompose: Unidad = {
       corto: "Elles ont visitées",
       mal: "Elles ont visitées l'appartement.",
       bien: "Elles ont visité l'appartement.",
-      porque: "Se aplica la concordancia también con avoir, por exceso de celo.",
+      porque: "Con avoir, el participio no concuerda con el sujeto (aquí, elles). Se añade la -es por exceso de celo.",
       tipoPractica: "T4",
     },
     {
@@ -198,9 +199,9 @@ export const passeCompose: Unidad = {
     {
       grupo: "orden",
       corto: "Déjà j'ai envoyé",
-      mal: "Déjà j'ai envoyé les documents. · J'ai envoyé déjà les documents.",
+      mal: "Déjà j'ai envoyé les documents. · J'ai envoyé déjà les documents. (para decir «ya envié los documentos»)",
       bien: "J'ai déjà envoyé les documents.",
-      porque: "En español «ya» va delante («ya envié»); en francés, déjà va entre el auxiliar y el participio.",
+      porque: "En español «ya» va delante («ya envié»). En francés, con este sentido, déjà va entre el auxiliar y el participio; al principio de la frase suele significar otra cosa (coloquial: «para empezar»).",
     },
   ],
 
@@ -213,7 +214,7 @@ export const passeCompose: Unidad = {
       { fr: "Nous sommes allés directement chez ma cousine.", es: "Fuimos directo a la casa de mi prima.", nota: "nous = ella y su esposo → masculino plural" },
       { fr: "On a ouvert un compte à la banque.", es: "Abrimos una cuenta en el banco.", nota: "on = nosotros (oral); ouvrir → ouvert" },
       { fr: "J'ai acheté des bottes d'hiver.", es: "Compré botas de invierno.", nota: "-er → -é" },
-      { fr: "Il a neigé tout l'après-midi.", es: "Nevó toda la tarde.", nota: "neiger → neigé (como pleuvoir → il a plu)" },
+      { fr: "Il a neigé tout l'après-midi.", es: "Nevó toda la tarde.", nota: "neiger → neigé (regular). Ojo: pleuvoir es irregular: il a plu" },
       { fr: "Je me suis perdue dans le métro.", es: "Me perdí en el metro.", nota: "pronominal → être" },
       { fr: "Nous sommes restés une semaine chez elle.", es: "Nos quedamos una semana en su casa.", nota: "rester → être" },
       { fr: "Nous avons passé une soirée magnifique avec ses voisins.", es: "Pasamos una noche increíble con sus vecinos.", nota: "passer + algo → avoir" },
@@ -233,9 +234,9 @@ export const passeCompose: Unidad = {
   resumen: [
     "Passé composé = auxiliar en presente + participio.",
     "«Comí» y «he comido» → passé composé en los dos casos.",
-    "Être con pronominales y con los 17 verbos de movimiento (salvo si llevan complemento directo); avoir con todos los demás.",
-    "Con être, el participio concuerda con el sujeto; con avoir, no.",
-    "Ne… pas rodea al auxiliar; los adverbios cortos van entre el auxiliar y el participio.",
+    "Être con los pronominales y con una lista de verbos frecuentes de movimiento o cambio de estado (salvo si llevan complemento directo); avoir con la gran mayoría de los demás.",
+    "Con être (verbos no pronominales), el participio concuerda con el sujeto; con avoir, no concuerda con el sujeto.",
+    "Ne… pas rodea al auxiliar; los adverbios cortos suelen ir entre el auxiliar y el participio.",
   ],
 
   relacionados: [

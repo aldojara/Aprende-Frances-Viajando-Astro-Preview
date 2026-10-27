@@ -19,7 +19,7 @@ export const imparfait: Unidad = {
       { es: "Hacía mucho frío.", fr: "Il faisait très froid." },
     ],
     etiquetaFr: "Francés (imparfait)",
-    nota: "Regla de la película: el imparfait es el escenario (cómo era, qué pasaba); el passé composé, las acciones que ocurren (qué pasó).",
+    nota: "Una primera ayuda, la regla de la película: el imparfait presenta el escenario, en desarrollo (cómo era, qué pasaba); el passé composé, lo que pasa, como un hecho completo (qué pasó).",
   },
 
   usos: [
@@ -32,7 +32,7 @@ export const imparfait: Unidad = {
     },
     { titulo: "Un estado o un sentimiento", ejemplo: "J'avais peur de parler au téléphone." },
   ],
-  usosNota: "Para una acción terminada en un momento concreto («fui», «llegué») se usa el passé composé.",
+  usosNota: "Para un hecho presentado como terminado («fui», «llegué», «me asusté») se usa el passé composé, aunque sea un sentimiento: j'ai eu peur.",
 
   formacion: {
     regla: "Raíz de «nous» en presente (sin -ons) + -ais, -ais, -ait, -ions, -iez, -aient.",
@@ -50,11 +50,11 @@ export const imparfait: Unidad = {
       ],
     },
     notas: [
-      "Être es el único irregular: j'étais, tu étais, il était, nous étions, vous étiez, ils étaient.",
+      "Être es el único irregular: j'étais, tu étais, il était, nous étions, vous étiez, ils étaient. Falloir y pleuvoir no tienen forma con nous: il fallait, il pleuvait.",
       "Ejemplo: nous prenons → pren- → je prenais.",
       "-ger y -cer: je mangeais, je commençais (la e y la ç desaparecen con nous y vous: nous mangions, nous commencions).",
       "Verbos en -ier: doble i con nous y vous (nous étudiions, vous étudiiez).",
-      "Pronunciación: parlais, parlait y parlaient suenan igual; solo cambian nous y vous.",
+      "Pronunciación: en parler, je parlais, tu parlais, il parlait e ils parlaient suenan igual; solo nous y vous se distinguen.",
     ],
   },
 
@@ -77,10 +77,11 @@ export const imparfait: Unidad = {
       titulo: "¿Imparfait o passé composé?",
       puntos: [
         "Imparfait: escenario, costumbre, acción en curso, estado o sentimiento. Responde a «¿cómo era?» y «¿qué pasaba?».",
-        "Passé composé: acción terminada, una vez o una detrás de otra. Responde a «¿qué pasó?».",
+        "Passé composé: un hecho o un conjunto de hechos presentado como terminado (una vez, varias veces o uno detrás de otro). Responde a «¿qué pasó?».",
         "Juntos: Je regardais la télé quand tu es arrivé.",
         "Pistas de imparfait: tous les jours, chaque, d'habitude, souvent, toujours, avant, à l'époque, quand j'étais petit(e).",
         "Pistas de passé composé: hier, un jour, soudain, tout à coup, ce matin, la semaine dernière.",
+        "Son pistas, no reglas: Hier, il faisait froid (una descripción) · Pendant mon séjour, j'ai pris le métro tous les jours (un conjunto terminado). Elige el tiempo por cómo presentas la situación: en desarrollo o completa.",
       ],
     },
     {
@@ -187,13 +188,13 @@ export const imparfait: Unidad = {
 
   ejemplos: {
     titulo: "Mis primeros meses en Montreal",
-    intro: "La historia la cuenta Andrés, que llegó de Bogotá con su familia. El imparfait describe cómo era todo; el passé composé, lo que pasó una vez.",
+    intro: "La historia la cuenta Andrés, que llegó de Bogotá con su familia. El imparfait describe cómo era todo; el passé composé, lo que pasó.",
     items: [
       { fr: "Quand je suis arrivé à Montréal, je ne parlais pas bien français.", es: "Cuando llegué a Montreal, no hablaba bien francés.", nota: "llegada (passé composé) + situación (imparfait)" },
       { fr: "Nous habitions dans un petit appartement à Côte-des-Neiges.", es: "Vivíamos en un departamento pequeño en Côte-des-Neiges.", nota: "nous habitons → habit-" },
       { fr: "Il faisait très froid et il neigeait presque tous les jours.", es: "Hacía mucho frío y nevaba casi todos los días.", nota: "descripción del tiempo" },
       { fr: "Le matin, je prenais le métro à sept heures.", es: "En las mañanas tomaba el metro a las siete.", nota: "costumbre; nous prenons → pren-" },
-      { fr: "Le soir, j'allais à mon cours de francisation.", es: "En las noches iba a mi curso de francisation.", nota: "costumbre" },
+      { fr: "Le soir, j'allais à mon cours de francisation.", es: "En las noches iba a mi curso de francisation (el curso de francés para personas recién llegadas a Quebec).", nota: "costumbre" },
       { fr: "Mes enfants allaient à l'école du quartier.", es: "Mis hijos iban a la escuela del barrio.", nota: "ils → -aient" },
       { fr: "Ma voisine, Mélanie, était très gentille.", es: "Mi vecina, Mélanie, era muy amable.", nota: "être → ét-" },
       { fr: "Elle nous aidait avec les papiers.", es: "Nos ayudaba con los trámites.", nota: "costumbre" },
@@ -210,7 +211,7 @@ export const imparfait: Unidad = {
       "una descripción (c'était, il y avait)",
       "una costumbre (d'habitude, tous les jours)",
       "un estado o un sentimiento (j'avais, j'étais)",
-      "una acción interrumpida con quand o pendant que",
+      "una acción en curso durante la cual pasa algo (je lisais quand il est arrivé · pendant que je lisais, il est arrivé)",
     ],
     modelo:
       "Il y a cinq ans, j'habitais à Lima, dans un quartier où il y avait beaucoup de bruit. D'habitude, je prenais le bus pour aller au travail. J'étais souvent fatigué(e). Le dimanche, je mangeais chez mes parents. Un jour, pendant que je travaillais, mon chef m'a proposé un nouveau poste.",
@@ -220,7 +221,7 @@ export const imparfait: Unidad = {
     "Imparfait = raíz de «nous» + -ais, -ais, -ait, -ions, -iez, -aient.",
     "Être es el único irregular: j'étais.",
     "Imparfait para el escenario, las costumbres, lo que estaba pasando y los sentimientos.",
-    "Passé composé para lo que pasó una vez; los dos se combinan al contar algo.",
+    "Passé composé para lo que se presenta como terminado (una vez o varias); los dos se combinan al contar algo.",
     "«Había» = il y avait; «iba a + verbo» = j'allais + infinitivo.",
   ],
 
