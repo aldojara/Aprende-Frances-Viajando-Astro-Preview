@@ -54,7 +54,7 @@ export const imparfait: Unidad = {
       "Ejemplo: nous prenons → pren- → je prenais.",
       "-ger y -cer: je mangeais, je commençais (la e y la ç desaparecen con nous y vous: nous mangions, nous commencions).",
       "Verbos en -ier: doble i con nous y vous (nous étudiions, vous étudiiez).",
-      "Pronunciación: en parler, je parlais, tu parlais, il parlait e ils parlaient suenan igual; solo nous y vous se distinguen.",
+      "Pronunciación: las formas parlais, parlait y parlaient se pronuncian igual; solo nous y vous se distinguen (parlions, parliez).",
     ],
   },
 
