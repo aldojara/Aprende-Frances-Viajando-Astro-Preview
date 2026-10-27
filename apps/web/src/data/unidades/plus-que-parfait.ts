@@ -63,7 +63,7 @@ export const plusQueParfait: Unidad = {
   },
   gruposErrores: [
     { id: "tiempo", titulo: "Orden de los hechos" },
-    { id: "auxiliar", titulo: "Auxiliar y participio" },
+    { id: "auxiliar", titulo: "Auxiliar, participio y negación" },
     { id: "si", titulo: "Hipótesis con si" },
   ],
   errores: [
