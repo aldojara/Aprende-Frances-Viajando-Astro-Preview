@@ -44,6 +44,10 @@ jobs:
           # Dirección del script de formularios (variable del repositorio). Sin ella, los formularios quedan simulados.
           PUBLIC_FORMULARIOS_URL: ${{ vars.PUBLIC_FORMULARIOS_URL }}
 
+      # Busca en la web compilada etiquetas internas y contenido provisional (scripts/verificar-publicacion.mjs).
+      - name: Verificar la web compilada
+        run: npm run verificar
+
       - name: Preparar la web para GitHub Pages
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         uses: actions/upload-pages-artifact@v4

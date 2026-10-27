@@ -205,8 +205,8 @@ export const pronombresComplemento: Unidad = {
   ],
 
   relacionados: [
-    { titulo: "Passé composé", url: "/gramatica/passe-compose/", estado: "disponible" },
-    { titulo: "Passé composé vs imparfait", url: "/gramatica/passe-compose-vs-imparfait/", estado: "disponible" },
-    { titulo: "Discours indirect", url: "/gramatica/discours-indirect/", estado: "en-expansion" },
+    { titulo: "Passé composé", url: "/gramatica/passe-compose/" },
+    { titulo: "Passé composé vs imparfait", url: "/gramatica/passe-compose-vs-imparfait/" },
+    { titulo: "Discours indirect", url: "/gramatica/discours-indirect/" },
   ],
 };

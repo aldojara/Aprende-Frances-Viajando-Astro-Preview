@@ -92,8 +92,9 @@ export interface Unidad {
   aplicacion?: { consigna: string; requisitos?: string[]; modelo: string };
   captacion?: { titulo: string; texto: string; boton: string; url: string };
   resumen: string[];
-  // estado: el mismo que la página de destino (coverageStatus de su ficha en src/content/content/).
-  relacionados: { titulo: string; url: string; estado: "disponible" | "en-expansion" | "proximamente" }[];
+  // El estado («Disponible», «En expansión», «Próximamente») no se escribe aquí: sale de la ficha del tema en
+  // src/content/content/ (coverageStatus). Una url que no sea de un tema del catálogo detiene la compilación.
+  relacionados: { titulo: string; url: string }[];
 
   // Descargas de apoyo (Ronda 3)
   descargas?: RecursoDescarga[];
