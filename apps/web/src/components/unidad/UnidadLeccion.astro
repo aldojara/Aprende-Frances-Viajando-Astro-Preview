@@ -115,7 +115,7 @@ const defaultTab = tieneTeoria ? "teoria" : "regla";
           />
 
           <!-- Tarjeta fija de práctica en escritorio (como en la v1) -->
-          <UnidadStickyPractica practica={unidad.practica} />
+          <UnidadStickyPractica practica={unidad.practica} variante="escritorio" />
         </div>
       </aside>
 
@@ -268,7 +268,7 @@ const defaultTab = tieneTeoria ? "teoria" : "regla";
   </div>
 
   <!-- Barra fija inferior para móvil (como en la v1) -->
-  <UnidadStickyPractica practica={unidad.practica} />
+  <UnidadStickyPractica practica={unidad.practica} variante="movil" />
 </article>
 
 <!-- Fallback sin JavaScript: todo abierto y apilado -->

@@ -4,38 +4,47 @@ import { withBase } from "../../utils/paths";
 
 interface Props {
   practica?: Unidad["practica"];
+  variante?: "escritorio" | "movil";
 }
 
-const { practica } = Astro.props;
+const { practica, variante } = Astro.props;
 if (!practica) return null;
 
 const practicaUrl = withBase(practica.url);
+const esMovil = !variante || variante === "movil";
+const esEscritorio = !variante || variante === "escritorio";
 ---
 
-<!-- Barra fija inferior para móvil -->
-<div class="u-practica-movil-bar" aria-label="Acceso directo a la práctica">
-  <div class="u-practica-movil-info">
-    <span class="u-practica-movil-eyebrow">Práctica guiada</span>
-    <strong class="u-practica-movil-titulo">{practica.titulo}</strong>
-  </div>
-  <a class="u-practica-movil-btn" href={practicaUrl}>
-    <span>Practicar</span>
-    <span aria-hidden="true">→</span>
-  </a>
-</div>
+{
+  esMovil && (
+    <div class="u-practica-movil-bar" aria-label="Acceso directo a la práctica">
+      <div class="u-practica-movil-info">
+        <span class="u-practica-movil-eyebrow">Práctica guiada</span>
+        <strong class="u-practica-movil-titulo">{practica.titulo}</strong>
+      </div>
+      <a class="u-practica-movil-btn" href={practicaUrl}>
+        <span>Practicar</span>
+        <span aria-hidden="true">→</span>
+      </a>
+    </div>
+  )
+}
 
-<!-- Tarjeta fija en la columna lateral para escritorio -->
-<aside class="u-practica-desktop-card" aria-label="Acceso a la práctica interactiva">
-  <div class="u-pcard-header">
-    <span class="u-pcard-badge">Práctica interactiva</span>
-    <h3 class="u-pcard-titulo">{practica.titulo}</h3>
-  </div>
-  <p class="u-pcard-desc">{practica.texto}</p>
-  <a class="u-pcard-btn" href={practicaUrl}>
-    <span>Practicar ahora</span>
-    <span aria-hidden="true">→</span>
-  </a>
-</aside>
+{
+  esEscritorio && (
+    <aside class="u-practica-desktop-card" aria-label="Acceso a la práctica interactiva">
+      <div class="u-pcard-header">
+        <span class="u-pcard-badge">Práctica interactiva</span>
+        <h3 class="u-pcard-titulo">{practica.titulo}</h3>
+      </div>
+      <p class="u-pcard-desc">{practica.texto}</p>
+      <a class="u-pcard-btn" href={practicaUrl}>
+        <span>Practicar ahora</span>
+        <span aria-hidden="true">→</span>
+      </a>
+    </aside>
+  )
+}
 
 <style>
   /* Barra móvil fija abajo */
