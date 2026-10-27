@@ -1,0 +1,13 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import UnidadLeccion from "../../components/unidad/UnidadLeccion.astro";
+import { futurSimple } from "../../data/unidades/futur-simple";
+
+// Sin práctica propia todavía (bloque E): el título no la promete.
+const title = `${futurSimple.titulo} · Lección${futurSimple.practica ? " y práctica interactiva" : ""}`;
+const description = futurSimple.objetivo;
+---
+
+<BaseLayout title={title} description={description}>
+  <UnidadLeccion unidad={futurSimple} mostrarPestanasPendientes />
+</BaseLayout>

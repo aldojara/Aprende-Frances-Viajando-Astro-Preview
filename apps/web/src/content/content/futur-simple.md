@@ -1,6 +1,6 @@
 ﻿---
 title: "Futur simple"
-description: "Habla de planes, predicciones y promesas con una estructura clara y productiva."
+description: "Habla de tus planes, haz predicciones y promesas, y di qué harás cuando algo pase."
 publicationStatus: "published"
 coverageStatus: "available"
 levels: ["A2", "B1"]
@@ -41,6 +41,9 @@ practicalApplication: "Redacta un mini plan de estudio para la próxima semana u
 relatedContent: ["conditionnel-present", "passe-compose-vs-imparfait"]
 tags: ["gramática", "futuro", "a2", "b1"]
 demonstration: false
+# Desde el 27 oct 2026 la página es la de la plantilla de unidad: src/pages/gramatica/futur-simple.astro
+# (datos en src/data/unidades/futur-simple.ts). Esta ficha solo alimenta los listados.
+paginaUnidad: true
 ---
 
 El `futur simple` permite hablar de lo que ocurrira con una forma compacta y

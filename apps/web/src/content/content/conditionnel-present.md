@@ -1,6 +1,6 @@
 ﻿---
 title: "Conditionnel présent"
-description: "Expresa hipótesis, consejos, deseos y cortesía con una forma clave del francés intermedio."
+description: "Pide algo con cortesía, da consejos, expresa deseos e imagina situaciones."
 publicationStatus: "published"
 coverageStatus: "available"
 levels: ["A2", "B1", "B2"]
@@ -41,6 +41,9 @@ practicalApplication: "Escribe cuatro consejos para mejorar la pronunciación us
 relatedContent: ["futur-simple", "subjonctif-present", "imparfait"]
 tags: ["gramática", "condicional", "hipótesis"]
 demonstration: false
+# Desde el 27 oct 2026 la página es la de la plantilla de unidad: src/pages/gramatica/conditionnel-present.astro
+# (datos en src/data/unidades/conditionnel-present.ts). Esta ficha solo alimenta los listados.
+paginaUnidad: true
 ---
 
 El `conditionnel présent` suaviza, imagina y aconseja. Es una herramienta
