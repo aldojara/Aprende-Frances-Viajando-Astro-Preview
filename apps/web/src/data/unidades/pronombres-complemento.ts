@@ -210,6 +210,7 @@ export const pronombresComplemento: Unidad = {
   ],
 
   relacionados: [
+    { titulo: "Pronombres tónicos", url: "/gramatica/pronombres-tonicos/" },
     { titulo: "Passé composé", url: "/gramatica/passe-compose/" },
     { titulo: "Passé composé vs imparfait", url: "/gramatica/passe-compose-vs-imparfait/" },
     { titulo: "Discours indirect", url: "/gramatica/discours-indirect/" },
