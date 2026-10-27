@@ -25,6 +25,7 @@ import {
 } from "../../data/taxonomies";
 import { getContentRoute, getFinalContentSlug } from "../../utils/contentRoutes";
 import { withBase } from "../../utils/paths";
+import { ordenLecciones } from "../../data/modulosGramatica";
 
 type ContentEntry = CollectionEntry<"content">;
 type ResourceEntry = CollectionEntry<"resources">;
@@ -244,31 +245,48 @@ const toResourceItem = (item: ResourceEntry): ResourceItem => {
   };
 };
 
-const resourceCatalog = [...contentItems.map(toContentResource), ...resourceItems.map(toResourceItem)]
-  .filter((item) => item.availability !== "planned" || item.source === "content" || item.source === "resources")
-  .sort((a, b) => {
-    const statusOrder: Record<CoverageStatus, number> = {
-      available: 1,
-      expanding: 2,
-      planned: 3,
-    };
-
-    return (
-      statusOrder[a.availability] - statusOrder[b.availability] ||
-      a.title.localeCompare(b.title, "es")
-    );
-  });
-
-const featuredOrder = [
-  "passe-compose-vs-imparfait",
-  "criterios-evaluacion",
-  "production-orale",
-  "comprehension-orale",
+// Orden del catálogo (regla D5 de Documentos_Proyecto/03_Guias/Reglas.md): por nivel (A1 → C1); dentro de cada
+// nivel, primero la gramática en el orden en que se aprende (src/data/modulosGramatica.ts), después el DELF y al
+// final los demás recursos. Las demostraciones no se muestran al alumno.
+const ordenNiveles = ["A1", "A2", "B1", "B2", "C1"];
+const nivelInicial = (lvls: string[]) => Math.min(...lvls.map((l) => ordenNiveles.indexOf(l)).filter((i) => i >= 0));
+const posicionLeccion = (id: string) => {
+  const i = ordenLecciones.indexOf(id);
+  return i === -1 ? 999 : i;
+};
+const ordenDominio: Record<string, number> = { grammar: 0, delf: 1 };
+const conClave = [
+  ...contentItems
+    .filter((item) => !item.data.demonstration)
+    .map((item) => ({
+      clave: [
+        nivelInicial(item.data.levels),
+        ordenDominio[item.data.domain] ?? 2,
+        item.data.domain === "grammar" ? posicionLeccion(item.id) : (item.data.examOrder ?? 999),
+      ],
+      titulo: item.data.title,
+      recurso: toContentResource(item),
+    })),
+  ...resourceItems
+    .filter((item) => !item.data.demonstration)
+    .map((item) => ({
+      clave: [nivelInicial(item.data.levels), 3, 0],
+      titulo: item.data.title,
+      recurso: toResourceItem(item),
+    })),
 ];
-const featuredResources = featuredOrder
-  .map((slug) => resourceCatalog.find((item) => item.slug === slug && item.href))
-  .filter((item): item is ResourceItem => Boolean(item))
-  .slice(0, 4);
+const resourceCatalog = conClave
+  .sort(
+    (a, b) =>
+      a.clave[0] - b.clave[0] ||
+      a.clave[1] - b.clave[1] ||
+      a.clave[2] - b.clave[2] ||
+      a.titulo.localeCompare(b.titulo, "es"),
+  )
+  .map((entrada) => entrada.recurso);
+
+// Sin bloque de destacados: repetía temas que ya salen en el catálogo ordenado.
+const featuredResources: ResourceItem[] = [];
 
 const zeroCounts = <T extends string>(ids: readonly T[]) =>
   Object.fromEntries(ids.map((id) => [id, 0])) as Record<T, number>;

@@ -32,7 +32,7 @@ const { items, featuredItems, counts } = Astro.props;
     <ResourceFilters counts={counts} />
 
     <div class="resource-results-area">
-      <FeaturedResources items={featuredItems} />
+      {featuredItems.length > 0 && <FeaturedResources items={featuredItems} />}
 
       <section class="all-resources" aria-labelledby="catalog-title">
         <div class="section-title-row">

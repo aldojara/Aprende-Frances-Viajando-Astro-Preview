@@ -43,6 +43,15 @@ const {
 
 const Wrapper = href ? "a" : "article";
 const domainLabel = getDomain(domain)?.label ?? domain;
+const contentKindLabels: Record<string, string> = {
+  lesson: "Lección",
+  practice: "Práctica",
+  media: "Multimedia",
+  "exam-preparation": "Preparación de examen",
+  episode: "Episodio",
+  guide: "Guía",
+};
+const contentKindLabel = contentKindLabels[contentKind] ?? contentKind;
 const formatLabel = getFormat(format)?.label ?? format;
 ---
 
@@ -73,7 +82,7 @@ const formatLabel = getFormat(format)?.label ?? format;
     </div>
     <div>
       <dt>Tipo</dt>
-      <dd>{contentKind}</dd>
+      <dd>{contentKindLabel}</dd>
     </div>
     {duration && (
       <div>

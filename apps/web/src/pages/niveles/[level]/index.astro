@@ -5,6 +5,7 @@ import StatusBadge from "../../../components/shared/StatusBadge.astro";
 import SectionHeader from "../../../components/shared/SectionHeader.astro";
 import CatalogGrid from "../../../components/catalog/CatalogGrid.astro";
 import { levels } from "../../../data/taxonomies";
+import { ordenLecciones } from "../../../data/modulosGramatica";
 
 export function getStaticPaths() {
   return levels.map((level) => ({
@@ -15,9 +16,31 @@ export function getStaticPaths() {
 
 const { level } = Astro.props;
 const contentItems = await getCollection("content");
-const levelContent = contentItems.filter((item) =>
-  item.data.levels.includes(level.id),
+// Solo contenido real del nivel (las demostraciones no se muestran al alumno). La gramática va en el orden en
+// que se aprende, el mismo del índice de Gramática (src/data/modulosGramatica.ts); después, el DELF del nivel.
+const delNivel = contentItems.filter(
+  (item) => item.data.levels.includes(level.id) && !item.data.demonstration,
 );
+const posicion = (id: string) => {
+  const i = ordenLecciones.indexOf(id);
+  return i === -1 ? Number.MAX_SAFE_INTEGER : i;
+};
+const gramatica = delNivel
+  .filter((item) => item.data.domain === "grammar")
+  .sort((a, b) => posicion(a.id) - posicion(b.id));
+const delf = delNivel
+  .filter((item) => item.data.domain === "delf")
+  .sort(
+    (a, b) =>
+      (a.data.examOrder ?? 999) - (b.data.examOrder ?? 999) ||
+      a.data.title.localeCompare(b.data.title, "es"),
+  );
+const otros = delNivel.filter((item) => item.data.domain !== "grammar" && item.data.domain !== "delf");
+const bloques = [
+  { id: "gramatica", titulo: "Gramática", descripcion: "En el orden en que se aprende.", items: gramatica },
+  { id: "delf", titulo: `DELF ${level.label}`, descripcion: "Guías para preparar el examen.", items: delf },
+  { id: "otros", titulo: "Más recursos", descripcion: "", items: otros },
+].filter((bloque) => bloque.items.length > 0);
 ---
 
 <ListingLayout
@@ -34,16 +57,16 @@ const levelContent = contentItems.filter((item) =>
         </div>
 
         <p>
-          Cobertura honesta para esta fase: la pagina existe desde el inicio,
-          pero el catalogo se completara progresivamente.
+          Estamos completando este nivel tema a tema. Abajo tienes lo que ya
+          puedes estudiar.
         </p>
       </aside>
 
       <div class="level-main">
         <SectionHeader
-          eyebrow="Capacidades generales"
-          title={`Que deberia poder hacer un estudiante ${level.label}`}
-          description="Estas capacidades orientan la arquitectura editorial. No implican que todo el contenido definitivo ya este publicado."
+          eyebrow="Objetivos del nivel"
+          title={`Qué podrás hacer en ${level.label}`}
+          description="Lo que sabrás hacer en francés al terminar este nivel."
         />
 
         <ul class="capability-list">
@@ -56,24 +79,32 @@ const levelContent = contentItems.filter((item) =>
   <section class="section level-content">
     <div class="container level-content-layout">
       <SectionHeader
-        eyebrow="Contenido semilla"
-        title={`Material inicial relacionado con ${level.label}`}
+        eyebrow={`Nivel ${level.label}`}
+        title={`Lo que ya puedes estudiar en ${level.label}`}
         description={
-          levelContent.length > 0
-            ? "Entradas demostrativas para validar rutas, schemas y estados."
-            : "Este nivel forma parte de la arquitectura A1-C1, aunque su cobertura editorial aun este planificada."
+          bloques.length > 0
+            ? delf.length > 0
+              ? "Ordenado como se aprende: primero la gramática, después la preparación del DELF."
+              : "Ordenado como se aprende."
+            : "Todavía no hay temas publicados en este nivel."
         }
       />
 
-      {levelContent.length > 0 ? (
-        <CatalogGrid items={levelContent} />
+      {bloques.length > 0 ? (
+        bloques.map((bloque) => (
+          <div class="level-bloque" id={`nivel-${bloque.id}`}>
+            <h2 class="level-bloque-titulo">{bloque.titulo}</h2>
+            {bloque.descripcion && <p class="level-bloque-desc">{bloque.descripcion}</p>}
+            <CatalogGrid items={bloque.items} />
+          </div>
+        ))
       ) : (
         <div class="level-empty card">
           <StatusBadge status={level.coverageStatus} />
-          <h2>Cobertura en preparacion</h2>
+          <h2>Muy pronto</h2>
           <p>
-            La pagina del nivel esta disponible para sostener la arquitectura,
-            pero todavia no hay contenido semilla asociado a este nivel.
+            Estamos preparando los primeros temas de este nivel. Mientras tanto,
+            puedes ver los demás niveles.
           </p>
         </div>
       )}
@@ -140,6 +171,26 @@ const levelContent = contentItems.filter((item) =>
     background: var(--color-bg);
     color: var(--color-heading);
     font-weight: 700;
+  }
+
+  .level-bloque {
+    display: grid;
+    gap: 0.6rem;
+  }
+
+  .level-bloque + .level-bloque {
+    margin-top: 1.5rem;
+  }
+
+  .level-bloque-titulo {
+    margin: 0;
+    font-size: 1.35rem;
+    color: var(--color-heading);
+  }
+
+  .level-bloque-desc {
+    margin: 0 0 0.4rem;
+    color: var(--color-text-muted);
   }
 
   .level-content {
