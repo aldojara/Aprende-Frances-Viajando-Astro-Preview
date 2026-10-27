@@ -1,0 +1,12 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import UnidadLeccion from "../../components/unidad/UnidadLeccion.astro";
+import { imparfait } from "../../data/unidades/imparfait";
+
+const title = `${imparfait.titulo} · Lección y práctica interactiva`;
+const description = imparfait.objetivo;
+---
+
+<BaseLayout title={title} description={description}>
+  <UnidadLeccion unidad={imparfait} mostrarPestanasPendientes />
+</BaseLayout>

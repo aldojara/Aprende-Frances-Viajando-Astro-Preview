@@ -22,7 +22,7 @@ communicationGoals: ["hablar-del-pasado"]
 status: "available"
 estimatedMinutes: 12
 lessonOrder: 1
-relatedContent: ["passe-compose-vs-imparfait"]
+relatedContent: ["passe-compose-vs-imparfait", "imparfait"]
 tags: ["gramática", "pasado", "a2"]
 demonstration: false
 paginaUnidad: true
