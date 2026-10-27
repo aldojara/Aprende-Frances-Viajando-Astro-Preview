@@ -53,6 +53,7 @@ const planned = (title: string, levels: string[], goal?: string) => ({
   goal,
 });
 
+// Dentro de cada módulo, los temas van por nivel, en el orden en que se aprenden (estén o no disponibles).
 const grammarModules = [
   {
     id: "fundamentos-frase",
@@ -76,20 +77,7 @@ const grammarModules = [
     title: "Tiempos, modos y formas verbales",
     range: "A1–C1",
     topics: [
-      topicFromLesson("passe-compose-vs-imparfait", {
-        goal: "Hablar del pasado",
-      }),
-      topicFromLesson("futur-simple", {
-        goal: "Hablar de planes y predicciones",
-      }),
-      topicFromLesson("conditionnel-present", {
-        goal: "Dar consejos y formular hipótesis",
-      }),
-      topicFromLesson("subjonctif-present", {
-        goal: "Expresar obligación, duda y valoración",
-      }),
-      planned("Plus-que-parfait", ["B1", "B2"], "Hablar del pasado"),
-      planned("Conditionnel passé", ["B2", "C1"], "Formular hipótesis"),
+      planned("Impératif", ["A1", "A2"], "Dar consejos"),
       // Unidad hecha con la plantilla de unidad (src/data/unidades), no con la colección de contenido.
       {
         title: "Passé composé",
@@ -99,12 +87,25 @@ const grammarModules = [
         goal: "Hablar del pasado",
       },
       planned("Imparfait", ["A2", "B1"], "Hablar del pasado"),
-      planned("Futur antérieur", ["B2", "C1"]),
-      planned("Subjonctif passé", ["B2", "C1"]),
-      planned("Impératif", ["A1", "A2"], "Dar consejos"),
+      topicFromLesson("passe-compose-vs-imparfait", {
+        goal: "Hablar del pasado",
+      }),
+      topicFromLesson("futur-simple", {
+        goal: "Hablar de planes y predicciones",
+      }),
+      topicFromLesson("conditionnel-present", {
+        goal: "Dar consejos y formular hipótesis",
+      }),
+      planned("Plus-que-parfait", ["B1", "B2"], "Hablar del pasado"),
+      topicFromLesson("subjonctif-present", {
+        goal: "Expresar obligación, duda y valoración",
+      }),
       planned("Participe présent", ["B1", "B2"]),
       planned("Gérondif", ["B1", "B2"]),
       planned("Voix passive", ["B1", "B2"]),
+      planned("Futur antérieur", ["B2", "C1"]),
+      planned("Conditionnel passé", ["B2", "C1"], "Formular hipótesis"),
+      planned("Subjonctif passé", ["B2", "C1"]),
     ],
   },
   {
@@ -113,17 +114,17 @@ const grammarModules = [
     title: "Pronombres y determinantes",
     range: "A1–C1",
     topics: [
+      planned("Posesivos", ["A1", "A2"]),
+      planned("Demostrativos", ["A1", "A2"]),
+      planned("Pronombres tónicos", ["A1", "A2"]),
       topicFromLesson("pronombres-complemento", {
         title: "Pronombres complemento COD, COI, y, en",
         goal: "Evitar repeticiones y conectar ideas",
         includes: ["COD", "COI", "y", "en"],
       }),
-      planned("Dobles pronombres", ["B1", "B2"]),
-      planned("Pronombres tónicos", ["A1", "A2"]),
       planned("Pronombres relativos", ["A2", "B1"]),
-      planned("Posesivos", ["A1", "A2"]),
-      planned("Demostrativos", ["A1", "A2"]),
       planned("Indefinidos", ["A2", "B1"]),
+      planned("Dobles pronombres", ["B1", "B2"]),
     ],
   },
   {
@@ -141,8 +142,8 @@ const grammarModules = [
       planned("Transformación de expresiones temporales", ["B1", "B2"]),
       planned("Interrogación indirecta", ["B1", "B2"]),
       planned("Verbos introductores", ["B1", "B2"]),
-      planned("Deícticos", ["B2", "C1"]),
       planned("Voz pasiva", ["B1", "B2"]),
+      planned("Deícticos", ["B2", "C1"]),
       planned("Mise en relief", ["B2", "C1"]),
       planned("Reformulación", ["B2", "C1"]),
       planned("Transformación del discurso", ["B2", "C1"]),
@@ -156,15 +157,15 @@ const grammarModules = [
     topics: [
       planned("Causa", ["A2", "B1"], "Expresar causa y consecuencia"),
       planned("Consecuencia", ["A2", "B1"], "Expresar causa y consecuencia"),
+      planned("Comparación", ["A2", "B1"]),
+      planned("Temporalidad", ["A2", "B1"]),
+      planned("Condición", ["A2", "B1"], "Formular hipótesis"),
+      planned("Hipótesis", ["A2", "B1"], "Formular hipótesis"),
       planned("Finalidad", ["B1", "B2"]),
       planned("Oposición", ["B1", "B2"]),
       planned("Concesión", ["B1", "B2"]),
-      planned("Condición", ["A2", "B1"], "Formular hipótesis"),
-      planned("Hipótesis", ["A2", "B1"], "Formular hipótesis"),
-      planned("Temporalidad", ["A2", "B1"]),
       planned("Simultaneidad", ["B1", "B2"]),
       planned("Anterioridad", ["B1", "B2"]),
-      planned("Comparación", ["A2", "B1"]),
       planned("Restricción", ["B2", "C1"]),
     ],
   },
@@ -175,16 +176,16 @@ const grammarModules = [
     range: "A1–C1",
     topics: [
       planned("Expresar opinión", ["A2", "B1"], "Opinar y argumentar"),
-      planned("Acordar y discrepar", ["B1", "B2"], "Opinar y argumentar"),
+      planned("Expresar emociones", ["A2", "B1"]),
       planned("Dar consejos", ["A2", "B1"], "Dar consejos"),
       planned("Expresar obligación", ["A2", "B1"], "Expresar obligación"),
-      planned("Expresar duda", ["B1", "B2"]),
-      planned("Expresar certeza", ["B1", "B2"]),
-      planned("Expresar emociones", ["A2", "B1"]),
+      planned("Acordar y discrepar", ["B1", "B2"], "Opinar y argumentar"),
       planned("Justificar", ["B1", "B2"], "Opinar y argumentar"),
-      planned("Matizar", ["B2", "C1"], "Opinar y argumentar"),
       planned("Dar ejemplos", ["B1", "B2"], "Opinar y argumentar"),
       planned("Organizar un argumento", ["B1", "B2"], "Opinar y argumentar"),
+      planned("Expresar duda", ["B1", "B2"]),
+      planned("Expresar certeza", ["B1", "B2"]),
+      planned("Matizar", ["B2", "C1"], "Opinar y argumentar"),
       planned("Presentar datos", ["B2", "C1"], "Opinar y argumentar"),
     ],
   },
