@@ -1,13 +1,13 @@
 ﻿---
 title: "Pronombres complemento COD, COI, y, en"
-description: "Sustituye objetos y lugares para hablar con más fluidez y evitar repeticiones."
+description: "Habla con fluidez sin repetir personas, cosas ni lugares."
 publicationStatus: "published"
-coverageStatus: "expanding"
+coverageStatus: "available"
 levels: ["A2", "B1", "B2"]
 contentKind: "lesson"
 format: "article"
 domain: "grammar"
-duration: "18 min"
+duration: "15 min"
 objectives: ["mejorar fluidez", "evitar repeticiones"]
 competencies: ["gramática", "producción oral"]
 grammarFamily: "Pronombres y determinantes"
@@ -16,8 +16,8 @@ moduleId: "pronombres-determinantes"
 moduleOrder: 3
 grammarTopics: ["COD", "COI", "pronombre y", "pronombre en"]
 communicationGoals: ["contar-lo-que-alguien-dijo", "opinar-y-argumentar"]
-status: "expanding"
-estimatedMinutes: 18
+status: "available"
+estimatedMinutes: 15
 lessonOrder: 5
 formation:
   - "COD: me, te, le/la, nous, vous, les."
@@ -42,6 +42,9 @@ practicalApplication: "Transforma seis respuestas largas en respuestas breves us
 relatedContent: ["discours-indirect", "passe-compose-vs-imparfait"]
 tags: ["gramática", "pronombres", "a2", "b1"]
 demonstration: false
+# Desde el 27 oct 2026 la página es la de la plantilla de unidad: src/pages/gramatica/pronombres-complemento.astro
+# (datos en src/data/unidades/pronombres-complemento.ts). Esta ficha solo alimenta los listados.
+paginaUnidad: true
 ---
 
 Los pronombres complemento son una de las llaves de la fluidez. Permiten
