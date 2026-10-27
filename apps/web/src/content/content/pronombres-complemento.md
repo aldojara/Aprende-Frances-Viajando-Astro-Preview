@@ -38,7 +38,7 @@ comparisons:
 commonMistakes:
   - "Usar lui para todos los complementos de persona."
   - "Olvidar que y y en no son equivalentes a pronombres de sujeto."
-prácticalApplication: "Transforma seis respuestas largas en respuestas breves usando le, la, les, lui, leur, y o en."
+practicalApplication: "Transforma seis respuestas largas en respuestas breves usando le, la, les, lui, leur, y o en."
 relatedContent: ["discours-indirect", "passe-compose-vs-imparfait"]
 tags: ["gramática", "pronombres", "a2", "b1"]
 demonstration: false

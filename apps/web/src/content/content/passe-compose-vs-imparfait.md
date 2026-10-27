@@ -38,7 +38,7 @@ comparisons:
 commonMistakes:
   - "Traducir siempre el preterito español como passé composé."
   - "Usar imparfait para eventos puntuales con fecha cerrada."
-prácticalApplication: "Escribe cinco frases sobre tu último viaje: tres acciónes puntuales y dos detalles de contexto."
+practicalApplication: "Escribe cinco frases sobre tu último viaje: tres acciones puntuales y dos detalles de contexto."
 relatedContent: ["gramatica-a1-articulos-basicos", "conditionnel-present"]
 tags: ["gramatica", "pasado", "a2", "b1"]
 demonstration: false

@@ -90,7 +90,14 @@ const grammarModules = [
       }),
       planned("Plus-que-parfait", ["B1", "B2"], "Hablar del pasado"),
       planned("Conditionnel passé", ["B2", "C1"], "Formular hipótesis"),
-      planned("Passé composé", ["A2"], "Hablar del pasado"),
+      // Unidad hecha con la plantilla de unidad (src/data/unidades), no con la colección de contenido.
+      {
+        title: "Passé composé",
+        levels: ["A2"],
+        status: "available" as const,
+        href: withBase("/gramatica/passe-compose/"),
+        goal: "Hablar del pasado",
+      },
       planned("Imparfait", ["A2", "B1"], "Hablar del pasado"),
       planned("Futur antérieur", ["B2", "C1"]),
       planned("Subjonctif passé", ["B2", "C1"]),

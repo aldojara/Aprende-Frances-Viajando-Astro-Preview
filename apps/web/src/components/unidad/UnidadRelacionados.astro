@@ -112,10 +112,16 @@ if (!relacionados || relacionados.length === 0) return null;
     outline-offset: 2px;
   }
 
+  /* Sin opacidad: atenuaba también el texto por debajo del contraste mínimo. */
   .u-rel-proximamente {
-    opacity: 0.65;
     background: var(--color-surface-soft, #efede8);
+    border-style: dashed;
+    box-shadow: none;
     cursor: not-allowed;
+  }
+
+  .u-rel-proximamente .u-rel-titulo {
+    color: #4f4b46;
   }
 
   .u-rel-top {
@@ -140,7 +146,7 @@ if (!relacionados || relacionados.length === 0) return null;
 
   .u-rel-badge-soon {
     background: rgba(109, 104, 97, 0.15);
-    color: var(--color-text-muted, #6d6861);
+    color: #4f4b46;
   }
 
   .u-rel-icono {

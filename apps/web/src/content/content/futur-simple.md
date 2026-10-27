@@ -37,7 +37,7 @@ comparisons:
 commonMistakes:
   - "Usar presente despues de quand cuando se habla de una acción futura."
   - "Olvidar bases irregulares como j'irai, je ferai, je serai, j'aurai."
-prácticalApplication: "Redacta un mini plan de estudio para la próxima semana usando cinco verbos en futuro simple."
+practicalApplication: "Redacta un mini plan de estudio para la próxima semana usando cinco verbos en futuro simple."
 relatedContent: ["conditionnel-present", "passe-compose-vs-imparfait"]
 tags: ["gramática", "futuro", "a2", "b1"]
 demonstration: false

@@ -38,7 +38,7 @@ comparisons:
 commonMistakes:
   - "Mantener el orden de pregunta directa despues de si."
   - "Olvidar cambiar pronombres, posesivos o marcadores de tiempo segun el punto de vista."
-prácticalApplication: "Convierte cuatro frases directas de una conversación de viaje en discurso indirecto."
+practicalApplication: "Convierte cuatro frases directas de una conversación de viaje en discurso indirecto."
 relatedContent: ["pronombres-complemento", "subjonctif-present"]
 tags: ["gramática", "discurso indirecto", "b1", "b2"]
 demonstration: false
