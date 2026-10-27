@@ -216,6 +216,7 @@ export const subjonctifPresent: Unidad = {
   ],
 
   relacionados: [
+    { titulo: "Imparfait", url: "/gramatica/imparfait/", estado: "disponible" },
     { titulo: "Conditionnel présent", url: "/gramatica/conditionnel-present/", estado: "disponible" },
     { titulo: "Discours indirect", url: "/gramatica/discours-indirect/", estado: "disponible" },
   ],
