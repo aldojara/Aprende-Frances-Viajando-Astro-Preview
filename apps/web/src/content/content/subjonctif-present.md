@@ -37,7 +37,7 @@ comparisons:
 commonMistakes:
   - "Usar indicativo despues de il faut que."
   - "Olvidar que el sujeto suele cambiar entre las dos partes de la frase."
-prácticalApplication: "Formula tres recomendaciones para alguien que prepara un examen DELF usando il faut que."
+practicalApplication: "Formula tres recomendaciones para alguien que prepara un examen DELF usando il faut que."
 relatedContent: ["conditionnel-present", "discours-indirect"]
 tags: ["gramática", "subjuntivo", "b1", "b2"]
 demonstration: false

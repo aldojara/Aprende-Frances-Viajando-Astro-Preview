@@ -1,0 +1,264 @@
+---
+import type { Unidad } from "../../data/unidades/tipos";
+import { withBase } from "../../utils/paths";
+
+interface Props {
+  infografia?: Unidad["infografia"];
+}
+
+const { infografia } = Astro.props;
+if (!infografia) return null;
+
+const imgUrl = withBase(infografia.url);
+const thumbUrl = infografia.miniatura ? withBase(infografia.miniatura) : imgUrl;
+---
+
+<section class="u-seccion u-infografia-bloque" id="infografia" aria-labelledby="infografia-titulo">
+  <div class="u-info-card">
+    <div class="u-info-header">
+      <span class="u-info-badge">📊 Infografía visual</span>
+      <h3 id="infografia-titulo" class="u-info-titulo">{infografia.titulo}</h3>
+      {infografia.descripcion && <p class="u-info-desc">{infografia.descripcion}</p>}
+    </div>
+
+    <div class="u-info-preview-wrap" data-infografia-wrap>
+      <button
+        type="button"
+        class="u-info-preview-btn"
+        aria-haspopup="dialog"
+        data-abrir-infografia
+      >
+        <img src={thumbUrl} alt={infografia.titulo} class="u-info-thumb" loading="lazy" />
+        <span class="u-info-zoom-indicator">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            <line x1="11" y1="8" x2="11" y2="14" />
+            <line x1="8" y1="11" x2="14" y2="11" />
+          </svg>
+          <span>Toca para ampliar</span>
+        </span>
+      </button>
+
+      <!-- Diálogo modal nativo para ver en grande -->
+      <dialog class="u-info-dialog" data-dialog-infografia>
+        <div class="u-dialog-cuerpo">
+          <button type="button" class="u-dialog-cerrar" data-cerrar-infografia aria-label="Cerrar infografía">×</button>
+          <img src={imgUrl} alt={infografia.titulo} class="u-info-img-full" />
+          <div class="u-dialog-pie">
+            <span>{infografia.titulo}</span>
+            <a href={imgUrl} target="_blank" rel="noopener" class="u-link-externo">Abrir en pestaña nueva ↗</a>
+          </div>
+        </div>
+      </dialog>
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  (function () {
+    const wrap = document.querySelector("[data-infografia-wrap]");
+    if (!wrap) return;
+
+    const btnAbrir = wrap.querySelector("[data-abrir-infografia]");
+    const dialog = wrap.querySelector("[data-dialog-infografia]");
+    const btnCerrar = wrap.querySelector("[data-cerrar-infografia]");
+
+    if (!btnAbrir || !dialog) return;
+
+    btnAbrir.addEventListener("click", function () {
+      if (typeof dialog.showModal === "function") {
+        dialog.showModal();
+      } else {
+        dialog.setAttribute("open", "");
+      }
+    });
+
+    if (btnCerrar) {
+      btnCerrar.addEventListener("click", function () {
+        if (typeof dialog.close === "function") {
+          dialog.close();
+        } else {
+          dialog.removeAttribute("open");
+        }
+      });
+    }
+
+    dialog.addEventListener("click", function (e) {
+      if (e.target === dialog) {
+        if (typeof dialog.close === "function") dialog.close();
+      }
+    });
+  })();
+</script>
+
+<style>
+  .u-seccion {
+    scroll-margin-top: var(--u-scroll-margin, 9.25rem);
+  }
+
+  .u-info-card {
+    background: #ffffff;
+    border: 1px solid var(--color-border, #e2ded7);
+    border-radius: var(--radius-md, 0.875rem);
+    padding: 1rem 1.25rem;
+    box-shadow: 0 2px 8px rgba(11, 47, 85, 0.03);
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .u-info-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .u-info-badge {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.18rem 0.55rem;
+    border-radius: 999px;
+    background: rgba(0, 85, 164, 0.08);
+    color: var(--color-blue, #0055a4);
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .u-info-titulo {
+    font-family: var(--font-display, "Playfair Display", Georgia, serif);
+    font-size: 1.15rem;
+    color: var(--color-blue-dark, #0b2f55);
+    margin: 0;
+    line-height: 1.25;
+  }
+
+  .u-info-desc {
+    font-size: 0.85rem;
+    color: var(--color-text-muted, #6d6861);
+    margin: 0;
+  }
+
+  .u-info-preview-wrap {
+    width: 100%;
+  }
+
+  .u-info-preview-btn {
+    position: relative;
+    display: block;
+    width: 100%;
+    max-height: 260px;
+    border: 1px solid var(--color-border, #e2ded7);
+    border-radius: var(--radius-sm, 0.5rem);
+    overflow: hidden;
+    padding: 0;
+    background: var(--color-surface-soft, #efede8);
+    cursor: pointer;
+  }
+
+  .u-info-preview-btn:focus-visible {
+    outline: 3px solid var(--color-blue, #0055a4);
+    outline-offset: 2px;
+  }
+
+  .u-info-thumb {
+    width: 100%;
+    height: 100%;
+    max-height: 260px;
+    object-fit: cover;
+    object-position: top;
+    display: block;
+    transition: transform 0.2s ease;
+  }
+
+  .u-info-preview-btn:hover .u-info-thumb {
+    transform: scale(1.02);
+  }
+
+  .u-info-zoom-indicator {
+    position: absolute;
+    bottom: 0.65rem;
+    right: 0.65rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.3rem 0.75rem;
+    border-radius: 999px;
+    background: rgba(11, 47, 85, 0.85);
+    color: #ffffff;
+    font-size: 0.76rem;
+    font-weight: 700;
+    backdrop-filter: blur(4px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  }
+
+  /* Modal */
+  .u-info-dialog {
+    border: 0;
+    padding: 0;
+    border-radius: var(--radius-md, 0.875rem);
+    background: #ffffff;
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3);
+    max-width: 90vw;
+    max-height: 90vh;
+  }
+
+  .u-info-dialog::backdrop {
+    background: rgba(7, 31, 56, 0.65);
+    backdrop-filter: blur(4px);
+  }
+
+  .u-dialog-cuerpo {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    max-height: 90vh;
+  }
+
+  .u-dialog-cerrar {
+    position: absolute;
+    top: 0.6rem;
+    right: 0.6rem;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 0;
+    background: rgba(0, 0, 0, 0.65);
+    color: #ffffff;
+    font-size: 1.4rem;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 2;
+  }
+
+  .u-info-img-full {
+    max-width: 85vw;
+    max-height: 78vh;
+    object-fit: contain;
+    display: block;
+    margin-inline: auto;
+  }
+
+  .u-dialog-pie {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.65rem 1rem;
+    border-top: 1px solid var(--color-border, #e2ded7);
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .u-link-externo {
+    color: var(--color-blue, #0055a4);
+    text-decoration: none;
+    font-weight: 700;
+  }
+</style>

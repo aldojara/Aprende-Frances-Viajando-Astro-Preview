@@ -1,0 +1,574 @@
+---
+import type { Unidad } from "../../data/unidades/tipos";
+
+interface Props {
+  unidad: Unidad;
+  tieneTeoria: boolean;
+  tieneMaterial: boolean;
+  teoriaPendiente?: boolean;
+  materialPendiente?: boolean;
+  defaultTab: string;
+}
+
+const { unidad, tieneTeoria, tieneMaterial, teoriaPendiente, materialPendiente, defaultTab } = Astro.props;
+
+function formaCortaError(mal: string): string {
+  const palabras = mal.trim().replace(/[.!?]+$/, "").split(/\s+/);
+  if (palabras.length >= 4 && (palabras[1].includes("n'") || palabras[1] === "ne")) {
+    return palabras.slice(0, 4).join(" ") + "…";
+  }
+  const cant = (palabras[0].includes("'") || palabras.length <= 2) ? 2 : 3;
+  return palabras.slice(0, Math.min(cant, palabras.length)).join(" ") + "…";
+}
+
+interface TocItem {
+  id: string;
+  label: string;
+  badge?: string;
+  isError?: boolean;
+}
+
+interface TocSubGrupo {
+  id: string;
+  titulo: string;
+  items: TocItem[];
+}
+
+interface TabToc {
+  tabId: string;
+  tabLabel: string;
+  items?: TocItem[];
+  subGrupos?: TocSubGrupo[];
+  itemFinal?: TocItem;
+}
+
+const tabTocs: TabToc[] = [];
+
+// 1. Pestaña Teoría
+if (tieneTeoria) {
+  const itemsTeoria: TocItem[] = [];
+  if (unidad.ideaClave) {
+    itemsTeoria.push({ id: "idea-clave", label: unidad.ideaClave.titulo || "La idea clave" });
+  }
+  if (unidad.videoTeoria) {
+    itemsTeoria.push({ id: "video-teoria", label: "Vídeo de la teoría" });
+  }
+  if (unidad.audioResumen) {
+    itemsTeoria.push({ id: "audio-resumen", label: "¿Prefieres escucharlo?" });
+  }
+  tabTocs.push({ tabId: "teoria", tabLabel: "Teoría", items: itemsTeoria });
+}
+
+if (teoriaPendiente) {
+  tabTocs.push({ tabId: "teoria", tabLabel: "Teoría", items: [{ id: "teoria-pendiente", label: "Próximamente" }] });
+}
+
+// 2. Pestaña Aprende la regla
+const itemsRegla: TocItem[] = [];
+if (!tieneTeoria && unidad.ideaClave) {
+  itemsRegla.push({ id: "idea-clave", label: unidad.ideaClave.titulo || "La idea clave" });
+}
+if (unidad.usos && unidad.usos.length > 0) {
+  itemsRegla.push({ id: "usos", label: "Cuándo se usa" });
+}
+if (unidad.formacion) {
+  itemsRegla.push({ id: "formacion", label: "Cómo se forma" });
+}
+if (unidad.consulta && unidad.consulta.length > 0) {
+  itemsRegla.push({ id: "consulta", label: "Tablas de consulta rápida" });
+}
+tabTocs.push({ tabId: "regla", tabLabel: "Aprende la regla", items: itemsRegla });
+
+// 3. Pestaña Errores típicos (Ronda 6: Agrupados si existen gruposErrores)
+if (unidad.gruposErrores && unidad.gruposErrores.length > 0 && unidad.errores && unidad.errores.length > 0) {
+  const subGrupos: TocSubGrupo[] = [];
+  const erroresConIndice = unidad.errores.map((item, idx) => ({ ...item, globalIdx: idx + 1 }));
+
+  unidad.gruposErrores.forEach((grupo) => {
+    const erroresGrupo = erroresConIndice.filter((e) => e.grupo === grupo.id);
+    if (erroresGrupo.length > 0) {
+      subGrupos.push({
+        id: `grupo-${grupo.id}`,
+        titulo: grupo.titulo,
+        items: erroresGrupo.map((err) => ({
+          id: `error-${err.globalIdx}`,
+          label: err.corto || formaCortaError(err.mal),
+          isError: true,
+        })),
+      });
+    }
+  });
+
+  const itemFinal: TocItem | undefined =
+    unidad.resumen && unidad.resumen.length > 0
+      ? { id: "resumen", label: "Para recordar" }
+      : undefined;
+
+  tabTocs.push({
+    tabId: "errores",
+    tabLabel: "Errores típicos",
+    subGrupos,
+    itemFinal,
+  });
+} else {
+  // Fallback sin grupos (Ronda 5)
+  const itemsErrores: TocItem[] = [];
+  if (unidad.errores && unidad.errores.length > 0) {
+    unidad.errores.forEach((err, idx) => {
+      itemsErrores.push({
+        id: `error-${idx + 1}`,
+        label: err.corto || formaCortaError(err.mal),
+        badge: `#${String(idx + 1).padStart(2, "0")}`,
+        isError: true,
+      });
+    });
+  }
+  if (unidad.resumen && unidad.resumen.length > 0) {
+    itemsErrores.push({ id: "resumen", label: "Para recordar" });
+  }
+  tabTocs.push({ tabId: "errores", tabLabel: "Errores típicos", items: itemsErrores });
+}
+
+// 4. Pestaña En contexto y práctica (Ronda 6: «Tu turno»)
+const itemsContexto: TocItem[] = [];
+if (unidad.ejemplos && unidad.ejemplos.items && unidad.ejemplos.items.length > 0) {
+  itemsContexto.push({ id: "ejemplos", label: unidad.ejemplos.titulo || "Ejemplos en contexto" });
+}
+if (unidad.aplicacion) {
+  // Ronda 6 requisito 5: cambia «Tu turno (producción)» por «Tu turno» en el índice
+  itemsContexto.push({ id: "aplicacion", label: "Tu turno" });
+}
+if (unidad.practica) {
+  itemsContexto.push({ id: "practica", label: "Práctica interactiva" });
+}
+if (unidad.captacion) {
+  itemsContexto.push({ id: "captacion", label: unidad.captacion.titulo || "Recursos adicionales" });
+}
+if (unidad.relacionados && unidad.relacionados.length > 0) {
+  itemsContexto.push({ id: "relacionados", label: "Sigue aprendiendo" });
+}
+tabTocs.push({ tabId: "contexto", tabLabel: "En contexto y práctica", items: itemsContexto });
+
+// 5. Pestaña Material adicional
+if (tieneMaterial) {
+  const itemsMaterial: TocItem[] = [];
+  if (unidad.infografia) {
+    itemsMaterial.push({ id: "subpanel-infografia", label: "Infografía visual" });
+  }
+  if (unidad.mapaMental) {
+    itemsMaterial.push({ id: "subpanel-mapa", label: "Mapa mental" });
+  }
+  if (unidad.tarjetasDidacticas && unidad.tarjetasDidacticas.length > 0) {
+    itemsMaterial.push({ id: "subpanel-tarjetas", label: "Tarjetas didácticas" });
+  }
+  if (unidad.descargas && unidad.descargas.length > 0) {
+    itemsMaterial.push({ id: "subpanel-descargas", label: "Descargas (PDF / Ficha)" });
+  }
+  tabTocs.push({ tabId: "material", tabLabel: "Material adicional", items: itemsMaterial });
+}
+if (materialPendiente) {
+  tabTocs.push({ tabId: "material", tabLabel: "Material adicional", items: [{ id: "material-pendiente", label: "Próximamente" }] });
+}
+---
+
+<nav class="u-contextual-toc" aria-label="En esta pestaña" data-contextual-toc>
+  <div class="u-toc-header">
+    <span class="u-toc-eyebrow" aria-hidden="true">Índice</span>
+    <h3 class="u-toc-titulo">En esta pestaña</h3>
+  </div>
+
+  <div class="u-toc-listas-wrap">
+    {
+      tabTocs.map((grupo) => (
+        <div
+          class={`u-toc-tab-group ${grupo.tabId === defaultTab ? "u-toc-group-active" : ""}`}
+          data-toc-group={grupo.tabId}
+          hidden={grupo.tabId !== defaultTab}
+        >
+          <span class="u-toc-group-title sr-only">{grupo.tabLabel}</span>
+
+          {grupo.subGrupos && grupo.subGrupos.length > 0 ? (
+            /* Visualización agrupada para Errores (Ronda 6) */
+            <div class="u-toc-subgrupos-wrap">
+              {grupo.subGrupos.map((sg) => (
+                <div class="u-toc-subgrupo">
+                  <a
+                    href={`#${sg.id}`}
+                    class="u-toc-link u-toc-link-subgrupo"
+                    data-toc-target={sg.id}
+                  >
+                    <span class="u-toc-subgrupo-bullet" aria-hidden="true">•</span>
+                    <span class="u-toc-label-sg">{sg.titulo}</span>
+                  </a>
+                  <ul class="u-toc-lista-sub" role="list">
+                    {sg.items.map((subItem) => (
+                      <li class="u-toc-item u-toc-item-sub">
+                        <a
+                          href={`#${subItem.id}`}
+                          class="u-toc-link u-toc-link-nested"
+                          data-toc-target={subItem.id}
+                        >
+                          <span class="u-toc-sub-bullet" aria-hidden="true">›</span>
+                          <span class="u-toc-label">{subItem.label}</span>
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+              {grupo.itemFinal && (
+                <div class="u-toc-item-final">
+                  <a
+                    href={`#${grupo.itemFinal.id}`}
+                    class="u-toc-link u-toc-link-final"
+                    data-toc-target={grupo.itemFinal.id}
+                  >
+                    <span class="u-toc-label">{grupo.itemFinal.label}</span>
+                  </a>
+                </div>
+              )}
+            </div>
+          ) : (
+            /* Visualización estándar plana */
+            <ul class="u-toc-lista" role="list">
+              {grupo.items?.map((item) => (
+                <li class={`u-toc-item ${item.isError ? "u-toc-item-error" : ""}`}>
+                  <a
+                    href={`#${item.id}`}
+                    class="u-toc-link"
+                    data-toc-target={item.id}
+                  >
+                    {item.badge && <span class="u-toc-badge">{item.badge}</span>}
+                    <span class="u-toc-label">{item.label}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      ))
+    }
+  </div>
+</nav>
+
+<!-- Degradación sin JavaScript: muestra todas las secciones agrupadas -->
+<noscript>
+  <style>
+    .u-toc-tab-group[hidden] {
+      display: block !important;
+      margin-bottom: 1rem;
+    }
+    .u-toc-group-title {
+      display: block !important;
+      font-size: 0.76rem;
+      font-weight: 800;
+      color: #0b2f55;
+      text-transform: uppercase;
+      margin: 0.5rem 0 0.25rem;
+      border-bottom: 1px solid #e2ded7;
+      padding-bottom: 0.2rem;
+    }
+  </style>
+</noscript>
+
+<script is:inline>
+  (function () {
+    const toc = document.querySelector("[data-contextual-toc]");
+    if (!toc) return;
+
+    const groups = Array.from(toc.querySelectorAll("[data-toc-group]"));
+    const allLinks = Array.from(toc.querySelectorAll(".u-toc-link"));
+
+    function actualizarGrupoToc(tabId) {
+      if (!tabId) return;
+      groups.forEach((g) => {
+        const match = g.dataset.tocGroup === tabId;
+        if (match) {
+          g.removeAttribute("hidden");
+          g.classList.add("u-toc-group-active");
+        } else {
+          g.setAttribute("hidden", "");
+          g.classList.remove("u-toc-group-active");
+        }
+      });
+      iniciarScrollSpy();
+    }
+
+    // Exponer para que UnidadLeccion pueda notificar el cambio de pestaña
+    window.__actualizarIndiceContextual = actualizarGrupoToc;
+
+    // Manejar clics en enlaces con desplazamiento suave y soporte para subsecciones
+    allLinks.forEach((link) => {
+      link.addEventListener("click", function (e) {
+        const targetId = this.dataset.tocTarget;
+        if (!targetId) return;
+
+        // Si es un subpanel de Material adicional, activar su botón primero
+        if (targetId.startsWith("subpanel-")) {
+          const matSubId = targetId.replace("subpanel-", "");
+          const subtabBtn = document.querySelector(`[data-mat-subtab="${matSubId}"]`);
+          if (subtabBtn) subtabBtn.click();
+        }
+
+        const targetEl = document.getElementById(targetId);
+        if (targetEl) {
+          e.preventDefault();
+          const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+          targetEl.scrollIntoView({
+            behavior: prefersReduced ? "auto" : "smooth",
+            block: "start"
+          });
+
+          // Accesibilidad: transferir foco
+          if (!targetEl.hasAttribute("tabindex")) {
+            targetEl.setAttribute("tabindex", "-1");
+          }
+          targetEl.focus({ preventScroll: true });
+
+          // Actualizar estado activo en TOC
+          marcarLinkActivo(targetId);
+
+          if (window.history && window.history.replaceState) {
+            window.history.replaceState(null, "", "#" + targetId);
+          }
+        }
+      });
+    });
+
+    function marcarLinkActivo(id) {
+      const activeGroup = toc.querySelector(".u-toc-group-active");
+      if (!activeGroup) return;
+      const links = activeGroup.querySelectorAll(".u-toc-link");
+      links.forEach((l) => {
+        const match = l.dataset.tocTarget === id;
+        if (match) {
+          l.classList.add("u-toc-link-active");
+          l.setAttribute("aria-current", "location");
+        } else {
+          l.classList.remove("u-toc-link-active");
+          l.removeAttribute("aria-current");
+        }
+      });
+    }
+
+    let observer = null;
+    function iniciarScrollSpy() {
+      if (observer) observer.disconnect();
+      if (!window.IntersectionObserver) return;
+
+      const activeGroup = toc.querySelector(".u-toc-group-active");
+      if (!activeGroup) return;
+
+      const links = Array.from(activeGroup.querySelectorAll(".u-toc-link"));
+      const targets = links
+        .map((l) => document.getElementById(l.dataset.tocTarget))
+        .filter(Boolean);
+
+      if (targets.length === 0) return;
+
+      observer = new IntersectionObserver(
+        (entries) => {
+          const visible = entries.find((e) => e.isIntersecting);
+          if (visible && visible.target) {
+            marcarLinkActivo(visible.target.id);
+          }
+        },
+        {
+          rootMargin: "-20% 0px -65% 0px",
+          threshold: 0
+        }
+      );
+
+      targets.forEach((t) => observer.observe(t));
+    }
+
+    setTimeout(iniciarScrollSpy, 300);
+  })();
+</script>
+
+<style>
+  .u-contextual-toc {
+    background: #ffffff;
+    border: 1px solid var(--color-border, #e2ded7);
+    border-radius: var(--radius-md, 0.875rem);
+    padding: 1rem;
+    box-shadow: 0 2px 8px rgba(11, 47, 85, 0.04);
+  }
+
+  .u-toc-header {
+    margin-bottom: 0.65rem;
+    padding-bottom: 0.45rem;
+    border-bottom: 1px solid var(--color-border, #e2ded7);
+  }
+
+  .u-toc-eyebrow {
+    display: block;
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-gold-text, #855d00);
+  }
+
+  .u-toc-titulo {
+    font-family: var(--font-body, "Inter", sans-serif);
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--color-blue-dark, #0b2f55);
+    margin: 0;
+    line-height: 1.25;
+  }
+
+  .u-toc-listas-wrap {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .u-toc-tab-group[hidden] {
+    display: none;
+  }
+
+  .u-toc-lista {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .u-toc-item {
+    display: flex;
+  }
+
+  .u-toc-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    width: 100%;
+    padding: 0.4rem 0.55rem;
+    border-radius: var(--radius-sm, 0.4rem);
+    border-left: 2px solid transparent;
+    color: var(--color-text-muted, #6d6861);
+    font-size: 0.82rem;
+    font-weight: 500;
+    text-decoration: none;
+    line-height: 1.35;
+    transition: all 0.15s ease;
+  }
+
+  .u-toc-link:hover {
+    background: var(--color-surface, #fcfbf9);
+    color: var(--color-blue, #0055a4);
+    border-left-color: var(--color-border, #e2ded7);
+  }
+
+  .u-toc-link-active,
+  .u-toc-link[aria-current="location"] {
+    background: rgba(0, 85, 164, 0.08) !important;
+    color: var(--color-blue-dark, #0b2f55) !important;
+    font-weight: 700 !important;
+    border-left-color: var(--color-blue, #0055a4) !important;
+  }
+
+  .u-toc-link:focus-visible,
+  .u-toc-link-subgrupo:focus-visible {
+    outline: 2px solid var(--color-blue, #0055a4);
+    outline-offset: 1px;
+    border-radius: var(--radius-sm, 0.35rem);
+  }
+
+  .u-toc-badge {
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: var(--color-gold-text, #855d00);
+    flex-shrink: 0;
+    font-feature-settings: "tnum";
+  }
+
+  .u-toc-label {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Subgrupos de errores (Ronda 6) */
+  .u-toc-subgrupos-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+
+  .u-toc-subgrupo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .u-toc-link-subgrupo {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--color-blue-dark, #0b2f55);
+    padding: 0.35rem 0.5rem;
+    background: rgba(11, 47, 85, 0.03);
+    border-radius: var(--radius-sm, 0.35rem);
+  }
+
+  .u-toc-subgrupo-bullet {
+    color: var(--color-gold-text, #855d00);
+    font-size: 0.9rem;
+    line-height: 1;
+  }
+
+  .u-toc-label-sg {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .u-toc-lista-sub {
+    list-style: none;
+    margin: 0;
+    padding: 0.1rem 0 0.15rem 0.85rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .u-toc-link-nested {
+    font-size: 0.78rem;
+    padding: 0.25rem 0.45rem;
+    color: var(--color-text, #2e2b27);
+  }
+
+  .u-toc-sub-bullet {
+    color: var(--color-text-muted, #6d6861);
+    font-size: 0.72rem;
+    opacity: 0.7;
+  }
+
+  .u-toc-item-final {
+    margin-top: 0.45rem;
+    padding-top: 0.45rem;
+    border-top: 1px dashed var(--color-border, #e2ded7);
+  }
+
+  .u-toc-link-final {
+    font-weight: 700;
+    color: var(--color-blue-dark, #0b2f55);
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+</style>

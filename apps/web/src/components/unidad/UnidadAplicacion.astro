@@ -1,0 +1,198 @@
+---
+import type { Unidad } from "../../data/unidades/tipos";
+
+interface Props {
+  aplicacion?: Unidad["aplicacion"];
+}
+
+const { aplicacion } = Astro.props;
+if (!aplicacion) return null;
+---
+
+<section class="u-seccion u-aplicacion" id="aplicacion" aria-labelledby="aplicacion-titulo">
+  <div class="u-seccion-header">
+    <p class="u-eyebrow">Práctica de producción activa</p>
+    <h2 id="aplicacion-titulo" class="u-seccion-titulo">Tu turno: cuenta tu viaje</h2>
+  </div>
+
+  <div class="u-aplicacion-card">
+    <div class="u-app-consigna-box">
+      <span class="u-app-tag">Consigna:</span>
+      <p class="u-app-consigna-texto">{aplicacion.consigna}</p>
+    </div>
+
+    {
+      aplicacion.requisitos && aplicacion.requisitos.length > 0 && (
+        <div class="u-app-requisitos">
+          <span class="u-req-titulo">Incluye en tu texto:</span>
+          <ul class="u-req-chips">
+            {aplicacion.requisitos.map((req) => (
+              <li class="u-req-chip">
+                <span class="u-req-check" aria-hidden="true">✓</span>
+                <span>{req}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )
+    }
+
+    {
+      aplicacion.modelo && (
+        <div class="u-app-modelo-box">
+          <span class="u-modelo-tag">Ejemplo modelo:</span>
+          <blockquote class="u-modelo-cita" lang="fr">
+            «{aplicacion.modelo}»
+          </blockquote>
+        </div>
+      )
+    }
+  </div>
+</section>
+
+<style>
+  .u-seccion {
+    scroll-margin-top: var(--u-scroll-margin, 9.25rem);
+  }
+
+  .u-seccion-header {
+    margin-bottom: 0.85rem;
+  }
+
+  .u-eyebrow {
+    margin: 0 0 0.25rem;
+    color: var(--color-blue, #0055a4);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .u-seccion-titulo {
+    font-family: var(--font-display, "Playfair Display", Georgia, serif);
+    font-size: clamp(1.35rem, 2.5vw, 1.7rem);
+    color: var(--color-blue-dark, #0b2f55);
+    margin: 0;
+    line-height: 1.2;
+  }
+
+  .u-aplicacion-card {
+    background: #ffffff;
+    border: 1px solid var(--color-border, #e2ded7);
+    border-radius: var(--radius-md, 0.875rem);
+    padding: 1.15rem 1.35rem;
+    box-shadow: 0 2px 8px rgba(11, 47, 85, 0.03);
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  .u-app-consigna-box {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .u-app-tag {
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-gold-text, #855d00);
+  }
+
+  .u-app-consigna-texto {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-blue-dark, #0b2f55);
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  .u-app-requisitos {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .u-req-titulo {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-muted, #6d6861);
+  }
+
+  .u-req-chips {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .u-req-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    background: var(--color-surface-soft, #efede8);
+    border: 1px solid var(--color-border, #e2ded7);
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--color-text, #2e2b27);
+  }
+
+  .u-req-check {
+    color: #276749;
+    font-weight: 800;
+  }
+
+  .u-app-modelo-box {
+    background: rgba(247, 244, 237, 0.7);
+    border-left: 3px solid var(--color-gold, #b8860b);
+    border-radius: 0 var(--radius-sm, 0.5rem) var(--radius-sm, 0.5rem) 0;
+    padding: 0.65rem 0.85rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .u-modelo-tag {
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-gold-text, #855d00);
+  }
+
+  .u-modelo-cita {
+    margin: 0;
+    font-size: 0.88rem;
+    font-style: italic;
+    color: var(--color-blue-dark, #0b2f55);
+    line-height: 1.45;
+  }
+
+  @media (max-width: 640px) {
+    .u-seccion-header {
+      margin-bottom: 0.65rem;
+    }
+
+    .u-aplicacion-card {
+      padding: 0.85rem 1rem;
+      gap: 0.65rem;
+    }
+
+    .u-app-consigna-texto {
+      font-size: 0.92rem;
+    }
+
+    .u-req-chip {
+      padding: 0.2rem 0.5rem;
+      font-size: 0.74rem;
+    }
+  }
+</style>

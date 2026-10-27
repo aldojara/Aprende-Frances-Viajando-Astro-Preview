@@ -1,0 +1,463 @@
+---
+import type { Unidad } from "../../data/unidades/tipos";
+import { withBase } from "../../utils/paths";
+
+interface Props {
+  errores?: Unidad["errores"];
+  gruposErrores?: Unidad["gruposErrores"];
+  practicaUrl?: string;
+}
+
+const { errores, gruposErrores, practicaUrl = "/practica/avoir-o-etre/" } = Astro.props;
+if (!errores || errores.length === 0) return null;
+
+const tieneGrupos = Boolean(gruposErrores && gruposErrores.length > 0);
+
+// Preservar el índice global 1..N para las anclas #error-1..#error-N
+const erroresConIndice = errores.map((item, idx) => ({
+  ...item,
+  globalIdx: idx + 1,
+}));
+---
+
+<section class="u-seccion u-errores" id="errores" aria-labelledby="errores-titulo">
+  <div class="u-seccion-header">
+    <div class="u-errores-badge-header">
+      <span class="u-badge-radar">
+        <span class="u-radar-punto"></span>
+        Especial para hispanohablantes
+      </span>
+    </div>
+    <h2 id="errores-titulo" class="u-seccion-titulo">Errores típicos del hispanohablante</h2>
+    <p class="u-seccion-sub">
+      Toca en <strong>«¿Por qué ocurre?»</strong> para ver la explicación lingüística de cada caso.
+    </p>
+  </div>
+
+  {
+    tieneGrupos ? (
+      <div class="u-grupos-contenedor">
+        {gruposErrores!.map((grupo) => {
+          const erroresDelGrupo = erroresConIndice.filter((e) => e.grupo === grupo.id);
+          if (erroresDelGrupo.length === 0) return null;
+
+          return (
+            <div class="u-grupo-errores" id={`grupo-${grupo.id}`}>
+              <div class="u-grupo-header">
+                <div class="u-grupo-info">
+                  <h3 class="u-grupo-titulo">{grupo.titulo}</h3>
+                  {grupo.descripcion && <p class="u-grupo-desc">{grupo.descripcion}</p>}
+                </div>
+                {grupo.tiposPractica && grupo.tiposPractica.length > 0 && practicaUrl && (
+                  <a class="u-btn-grupo-practica" href={`${withBase(practicaUrl)}#practica`}>
+                    <span>Practicar este tipo de error</span>
+                    <span aria-hidden="true">→</span>
+                  </a>
+                )}
+              </div>
+
+              <div class="u-errores-grid">
+                {erroresDelGrupo.map((item) => (
+                  <article class="u-error-card" id={`error-${item.globalIdx}`}>
+                    <div class="u-error-cabeza">
+                      <span class="u-error-indice">Caso #{String(item.globalIdx).padStart(2, "0")}</span>
+                      {item.tipoPractica && (
+                        <span class="u-error-tag-tipo">Tipo {item.tipoPractica}</span>
+                      )}
+                    </div>
+
+                    <div class="u-error-comparativa">
+                      <div class="u-fila-mal">
+                        <span class="u-signo-mal" aria-hidden="true">✕</span>
+                        <span class="u-frase-mal" lang="fr">{item.mal}</span>
+                      </div>
+                      <div class="u-fila-bien">
+                        <span class="u-signo-bien" aria-hidden="true">✓</span>
+                        <span class="u-frase-bien" lang="fr">{item.bien}</span>
+                      </div>
+                    </div>
+
+                    <details class="u-error-details" open>
+                      <summary class="u-error-summary">
+                        <span class="u-summary-texto">¿Por qué ocurre desde el español?</span>
+                        <span class="u-summary-icon" aria-hidden="true">▾</span>
+                      </summary>
+                      <div class="u-error-exp-body">
+                        <p class="u-exp-texto">{item.porque}</p>
+                      </div>
+                    </details>
+                  </article>
+                ))}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    ) : (
+      /* Fallback si el tema no tiene gruposErrores: lista plana idéntica a v4 */
+      <div class="u-errores-grid">
+        {erroresConIndice.map((item) => (
+          <article class="u-error-card" id={`error-${item.globalIdx}`}>
+            <div class="u-error-cabeza">
+              <span class="u-error-indice">Caso #{String(item.globalIdx).padStart(2, "0")}</span>
+              {item.tipoPractica && (
+                <span class="u-error-tag-tipo">Tipo {item.tipoPractica}</span>
+              )}
+            </div>
+
+            <div class="u-error-comparativa">
+              <div class="u-fila-mal">
+                <span class="u-signo-mal" aria-hidden="true">✕</span>
+                <span class="u-frase-mal" lang="fr">{item.mal}</span>
+              </div>
+              <div class="u-fila-bien">
+                <span class="u-signo-bien" aria-hidden="true">✓</span>
+                <span class="u-frase-bien" lang="fr">{item.bien}</span>
+              </div>
+            </div>
+
+            <details class="u-error-details" open>
+              <summary class="u-error-summary">
+                <span class="u-summary-texto">¿Por qué ocurre desde el español?</span>
+                <span class="u-summary-icon" aria-hidden="true">▾</span>
+              </summary>
+              <div class="u-error-exp-body">
+                <p class="u-exp-texto">{item.porque}</p>
+                {item.tipoPractica && (
+                  <div class="u-error-accion">
+                    <a
+                      class="u-btn-error-practica"
+                      href={`${withBase(practicaUrl)}#practica`}
+                    >
+                      <span>Practicar este error</span>
+                      <span aria-hidden="true">→</span>
+                    </a>
+                  </div>
+                )}
+              </div>
+            </details>
+          </article>
+        ))}
+      </div>
+    )
+  }
+</section>
+
+<style>
+  .u-seccion {
+    scroll-margin-top: var(--u-scroll-margin, 9.25rem);
+  }
+
+  .u-seccion-header {
+    margin-bottom: 0.85rem;
+  }
+
+  .u-errores-badge-header {
+    margin-bottom: 0.35rem;
+  }
+
+  .u-badge-radar {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.2rem 0.65rem;
+    border-radius: 999px;
+    background: rgba(185, 64, 53, 0.1);
+    color: #a32f25;
+    border: 1px solid rgba(185, 64, 53, 0.25);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .u-radar-punto {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #b94035;
+    box-shadow: 0 0 4px rgba(185, 64, 53, 0.6);
+  }
+
+  .u-seccion-titulo {
+    font-family: var(--font-display, "Playfair Display", Georgia, serif);
+    font-size: clamp(1.35rem, 2.5vw, 1.7rem);
+    color: var(--color-blue-dark, #0b2f55);
+    margin: 0 0 0.25rem;
+    line-height: 1.2;
+  }
+
+  .u-seccion-sub {
+    font-size: 0.9rem;
+    color: var(--color-text-muted, #6d6861);
+    margin: 0;
+    line-height: 1.45;
+  }
+
+  /* Contenedor de grupos de errores */
+  .u-grupos-contenedor {
+    display: flex;
+    flex-direction: column;
+    gap: 1.15rem;
+  }
+
+  .u-grupo-errores {
+    scroll-margin-top: var(--u-scroll-margin, 9.25rem);
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+
+  .u-grupo-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 0.85rem;
+    padding-bottom: 0.35rem;
+    border-bottom: 2px solid var(--color-border, #e2ded7);
+  }
+
+  .u-grupo-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    min-width: 0;
+  }
+
+  .u-grupo-titulo {
+    font-family: var(--font-body, "Inter", sans-serif);
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--color-blue-dark, #0b2f55);
+    margin: 0;
+    line-height: 1.3;
+  }
+
+  .u-grupo-desc {
+    font-size: 0.82rem;
+    color: var(--color-text-muted, #6d6861);
+    margin: 0;
+    line-height: 1.35;
+  }
+
+  .u-btn-grupo-practica {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.25rem 0.65rem;
+    border-radius: 999px;
+    background: rgba(184, 134, 11, 0.1);
+    border: 1px solid rgba(184, 134, 11, 0.35);
+    color: #6f5006;
+    font-size: 0.74rem;
+    font-weight: 700;
+    text-decoration: none;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: all 0.15s ease;
+  }
+
+  .u-btn-grupo-practica:hover {
+    background: #8b6508;
+    color: #ffffff;
+    border-color: #8b6508;
+  }
+
+  .u-btn-grupo-practica:focus-visible {
+    outline: 2px solid var(--color-blue, #0055a4);
+    outline-offset: 2px;
+  }
+
+  @media (max-width: 640px) {
+    .u-grupo-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.35rem;
+    }
+
+    .u-grupos-contenedor {
+      gap: 0.95rem;
+    }
+  }
+
+  /* Cuadrícula de tarjetas de error */
+  .u-errores-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.65rem;
+  }
+
+  @media (min-width: 768px) {
+    .u-errores-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+    }
+  }
+
+  .u-error-card {
+    scroll-margin-top: var(--u-scroll-margin, 9.25rem);
+    background: #ffffff;
+    border: 1px solid var(--color-border, #e2ded7);
+    border-radius: var(--radius-sm, 0.5rem);
+    padding: 0.75rem 0.85rem;
+    box-shadow: 0 2px 6px rgba(11, 47, 85, 0.03);
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    transition: border-color 0.16s ease;
+  }
+
+  .u-error-card:hover {
+    border-color: rgba(184, 134, 11, 0.4);
+  }
+
+  .u-error-cabeza {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .u-error-indice {
+    font-size: 0.72rem;
+    font-weight: 800;
+    color: var(--color-gold-text, #855d00);
+    font-feature-settings: "tnum";
+    letter-spacing: 0.04em;
+  }
+
+  .u-error-tag-tipo {
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--color-blue, #0055a4);
+    background: rgba(0, 85, 164, 0.08);
+    padding: 0.12rem 0.45rem;
+    border-radius: 999px;
+  }
+
+  .u-error-comparativa {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .u-fila-mal,
+  .u-fila-bien {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.45rem;
+    font-size: 0.88rem;
+    line-height: 1.35;
+  }
+
+  .u-signo-mal {
+    color: #b94035;
+    font-weight: 800;
+    font-size: 0.85rem;
+    line-height: 1.3;
+    flex-shrink: 0;
+  }
+
+  .u-signo-bien {
+    color: #2e7d32;
+    font-weight: 800;
+    font-size: 0.85rem;
+    line-height: 1.3;
+    flex-shrink: 0;
+  }
+
+  .u-frase-mal {
+    color: #9a3329;
+    text-decoration: line-through;
+    text-decoration-color: rgba(185, 64, 53, 0.5);
+    font-weight: 500;
+  }
+
+  .u-frase-bien {
+    color: var(--color-blue-dark, #0b2f55);
+    font-weight: 700;
+  }
+
+  /* Desplegable interactivo para la explicación */
+  .u-error-details {
+    margin-top: 0.15rem;
+    border-top: 1px dashed var(--color-border, #e2ded7);
+    padding-top: 0.4rem;
+  }
+
+  .u-error-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+    padding: 0.15rem 0;
+  }
+
+  .u-error-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .u-error-summary:focus-visible {
+    outline: 2px solid var(--color-blue, #0055a4);
+    outline-offset: 2px;
+    border-radius: var(--radius-xs, 0.25rem);
+  }
+
+  .u-summary-texto {
+    font-size: 0.76rem;
+    font-weight: 700;
+    color: var(--color-blue, #0055a4);
+  }
+
+  .u-summary-icon {
+    font-size: 0.72rem;
+    color: var(--color-blue, #0055a4);
+    transition: transform 0.2s ease;
+  }
+
+  .u-error-details[open] .u-summary-icon {
+    transform: rotate(180deg);
+  }
+
+  .u-error-exp-body {
+    margin-top: 0.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .u-exp-texto {
+    font-size: 0.82rem;
+    color: var(--color-text, #2e2b27);
+    line-height: 1.45;
+    margin: 0;
+  }
+
+  .u-error-accion {
+    align-self: flex-start;
+  }
+
+  .u-btn-error-practica {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.28rem 0.65rem;
+    background: rgba(184, 134, 11, 0.12);
+    border: 1px solid rgba(184, 134, 11, 0.35);
+    border-radius: 999px;
+    color: #8b6508;
+    font-size: 0.74rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.15s ease;
+  }
+
+  .u-btn-error-practica:hover {
+    background: var(--color-gold, #b8860b);
+    color: #ffffff;
+    border-color: var(--color-gold, #b8860b);
+  }
+</style>

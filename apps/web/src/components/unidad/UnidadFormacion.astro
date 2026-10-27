@@ -1,0 +1,327 @@
+---
+import type { Unidad } from "../../data/unidades/tipos";
+
+interface Props {
+  formacion?: Unidad["formacion"];
+}
+
+const { formacion } = Astro.props;
+if (!formacion) return null;
+---
+
+<section class="u-seccion u-formacion" id="formacion" aria-labelledby="formacion-titulo">
+  <div class="u-seccion-header">
+    <p class="u-eyebrow">Estructura y conjugación</p>
+    <h2 id="formacion-titulo" class="u-seccion-titulo">Cómo se forma</h2>
+  </div>
+
+  <!-- Fórmula compacta -->
+  <div class="u-formula-banner">
+    <span class="u-formula-tag">Fórmula:</span>
+    <span class="u-formula-part">Sujeto</span>
+    <span class="u-formula-plus">+</span>
+    <span class="u-formula-part u-formula-aux">Auxiliar (avoir / être)</span>
+    <span class="u-formula-plus">+</span>
+    <span class="u-formula-part u-formula-participle">Participio pasado</span>
+  </div>
+
+  <!-- Tabla de conjugación -->
+  {
+    formacion.tabla && (
+      <div class="u-tabla-bloque">
+        <h3 class="u-subtitulo">Tabla de conjugación: avoir vs. être</h3>
+        <div class="u-tabla-scroll" tabindex="0" role="region" aria-label="Tabla de conjugación de avoir y être">
+          <table class="u-tabla">
+            <thead>
+              <tr>
+                {formacion.tabla.cabeceras.map((cab, idx) => (
+                  <th scope="col" class={idx === 0 ? "u-col-sujeto" : idx === 1 ? "u-col-avoir" : "u-col-etre"}>
+                    {cab}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {formacion.tabla.filas.map((fila) => (
+                <tr>
+                  {fila.map((celda, cIdx) => (
+                    <td class={cIdx === 0 ? "u-celda-sujeto" : cIdx === 1 ? "u-celda-avoir" : "u-celda-etre"}>
+                      <span lang="fr">{celda}</span>
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    )
+  }
+
+  <!-- Las 3 preguntas para elegir entre avoir y être (compacto) -->
+  {
+    formacion.pasos && formacion.pasos.length > 0 && (
+      <div class="u-pasos-bloque">
+        <h3 class="u-subtitulo">¿Avoir o être? En 3 preguntas clave</h3>
+        <div class="u-pasos-lista">
+          {formacion.pasos.map((paso, idx) => (
+            <div class="u-paso-fila">
+              <div class="u-paso-head">
+                <span class="u-paso-pill">Paso {idx + 1}</span>
+                <span class="u-paso-preg">{paso.pregunta}</span>
+                <span class={`u-paso-res ${paso.respuesta.toLowerCase() === "être" ? "u-res-etre" : "u-res-avoir"}`}>
+                  → {paso.respuesta}
+                </span>
+              </div>
+              {paso.detalle && <p class="u-paso-det">{paso.detalle}</p>}
+            </div>
+          ))}
+        </div>
+      </div>
+    )
+  }
+
+  <!-- Notas sobre concordancia -->
+  {
+    formacion.notas && formacion.notas.length > 0 && (
+      <div class="u-notas-bloque">
+        <h3 class="u-subtitulo">Puntos clave sobre la concordancia</h3>
+        <ul class="u-notas-lista">
+          {formacion.notas.map((nota) => (
+            <li class="u-nota-item">
+              <span class="u-nota-bullet" aria-hidden="true">✓</span>
+              <span>{nota}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )
+  }
+</section>
+
+<style>
+  .u-seccion {
+    scroll-margin-top: var(--u-scroll-margin, 9.25rem);
+  }
+
+  .u-seccion-header {
+    margin-bottom: 0.85rem;
+  }
+
+  .u-eyebrow {
+    margin: 0 0 0.25rem;
+    color: var(--color-blue, #0055a4);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .u-seccion-titulo {
+    font-family: var(--font-display, "Playfair Display", Georgia, serif);
+    font-size: clamp(1.35rem, 2.5vw, 1.7rem);
+    color: var(--color-blue-dark, #0b2f55);
+    margin: 0;
+    line-height: 1.2;
+  }
+
+  .u-subtitulo {
+    font-family: var(--font-display, "Playfair Display", Georgia, serif);
+    font-size: 1.05rem;
+    color: var(--color-blue-dark, #0b2f55);
+    margin: 0 0 0.45rem;
+  }
+
+  /* Fórmula compacta */
+  .u-formula-banner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem;
+    background: #ffffff;
+    border: 1px solid var(--color-border, #e2ded7);
+    border-radius: var(--radius-sm, 0.5rem);
+    padding: 0.55rem 0.85rem;
+    margin-bottom: 1.25rem;
+    font-size: 0.86rem;
+  }
+
+  .u-formula-tag {
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    color: var(--color-text-muted, #6d6861);
+    margin-right: 0.2rem;
+  }
+
+  .u-formula-part {
+    padding: 0.2rem 0.55rem;
+    border-radius: 4px;
+    background: var(--color-surface-soft, #efede8);
+    font-weight: 600;
+    color: var(--color-blue-dark, #0b2f55);
+  }
+
+  .u-formula-aux {
+    background: rgba(184, 134, 11, 0.12);
+    color: #8b6508;
+    border: 1px solid rgba(184, 134, 11, 0.25);
+  }
+
+  .u-formula-participle {
+    background: rgba(0, 85, 164, 0.08);
+    color: var(--color-blue, #0055a4);
+    border: 1px solid rgba(0, 85, 164, 0.2);
+  }
+
+  .u-formula-plus {
+    font-weight: 800;
+    color: var(--color-gold-text, #855d00);
+  }
+
+  /* Tabla */
+  .u-tabla-bloque {
+    margin-bottom: 1.25rem;
+  }
+
+  .u-tabla-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border: 1px solid var(--color-border, #e2ded7);
+    border-radius: var(--radius-sm, 0.5rem);
+    background: #ffffff;
+  }
+
+  .u-tabla {
+    width: 100%;
+    min-width: 480px;
+    border-collapse: collapse;
+    font-size: 0.86rem;
+    text-align: left;
+  }
+
+  .u-tabla th {
+    padding: 0.55rem 0.85rem;
+    background: var(--color-surface-soft, #efede8);
+    font-weight: 700;
+    border-bottom: 2px solid var(--color-border, #e2ded7);
+  }
+
+  .u-col-sujeto { color: var(--color-text-muted, #6d6861); width: 22%; }
+  .u-col-avoir { color: var(--color-gold-text, #855d00); width: 39%; }
+  .u-col-etre { color: var(--color-blue, #0055a4); width: 39%; }
+
+  .u-tabla td {
+    padding: 0.45rem 0.85rem;
+    border-bottom: 1px solid var(--color-border, #e2ded7);
+  }
+
+  .u-tabla tbody tr:last-child td { border-bottom: 0; }
+  .u-tabla tbody tr:nth-child(even) { background: rgba(247, 244, 237, 0.4); }
+
+  .u-celda-sujeto { font-weight: 700; color: var(--color-blue-dark, #0b2f55); }
+
+  /* Pasos compactos */
+  .u-pasos-bloque {
+    margin-bottom: 1.25rem;
+  }
+
+  .u-pasos-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+
+  .u-paso-fila {
+    background: #ffffff;
+    border: 1px solid var(--color-border, #e2ded7);
+    border-radius: var(--radius-sm, 0.5rem);
+    padding: 0.65rem 0.85rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .u-paso-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.45rem;
+  }
+
+  .u-paso-pill {
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    background: var(--color-surface-soft, #efede8);
+    color: var(--color-text-muted, #6d6861);
+    padding: 0.15rem 0.45rem;
+    border-radius: 4px;
+  }
+
+  .u-paso-preg {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--color-heading, #0b2f55);
+    flex: 1;
+    min-width: 200px;
+  }
+
+  .u-paso-res {
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 0.15rem 0.55rem;
+    border-radius: 999px;
+  }
+
+  .u-res-etre {
+    background: rgba(0, 85, 164, 0.12);
+    color: var(--color-blue, #0055a4);
+  }
+
+  .u-res-avoir {
+    background: rgba(184, 134, 11, 0.15);
+    color: #8b6508;
+  }
+
+  .u-paso-det {
+    font-size: 0.8rem;
+    line-height: 1.45;
+    color: var(--color-text-muted, #6d6861);
+    margin: 0;
+  }
+
+  /* Notas */
+  .u-notas-bloque {
+    margin-bottom: 0.5rem;
+  }
+
+  .u-notas-lista {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+
+  .u-nota-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    line-height: 1.45;
+    color: var(--color-text, #2e2b27);
+    background: #ffffff;
+    border: 1px solid var(--color-border, #e2ded7);
+    border-radius: 4px;
+    padding: 0.55rem 0.75rem;
+  }
+
+  .u-nota-bullet {
+    color: var(--color-blue, #0055a4);
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+</style>

@@ -1,0 +1,72 @@
+---
+// Contenido de una pestaña que todavía no tiene material (solo con mostrarPestanasPendientes).
+interface Props {
+  id: string;
+  icono: string;
+  titulo: string;
+  texto: string;
+  items: string[];
+}
+
+const { id, icono, titulo, texto, items } = Astro.props;
+---
+
+<div class="u-pendiente" id={id}>
+  <span class="u-pendiente-badge">Próximamente</span>
+  <h2 class="u-pendiente-titulo">
+    <span aria-hidden="true">{icono}</span>
+    {titulo}
+  </h2>
+  <p class="u-pendiente-texto">{texto}</p>
+  <ul class="u-pendiente-lista">
+    {items.map((item) => <li>{item}</li>)}
+  </ul>
+</div>
+
+<style>
+  .u-pendiente {
+    background: var(--color-surface-soft, #efede8);
+    border: 1px dashed var(--color-border, #e2ded7);
+    border-radius: var(--radius-md, 0.875rem);
+    padding: 1.5rem 1.35rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.6rem;
+    scroll-margin-top: 150px;
+  }
+
+  .u-pendiente-badge {
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    background: rgba(109, 104, 97, 0.15);
+    color: #4f4b46;
+  }
+
+  .u-pendiente-titulo {
+    font-family: var(--font-display, "Playfair Display", Georgia, serif);
+    font-size: 1.35rem;
+    color: var(--color-blue-dark, #0b2f55);
+    margin: 0;
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .u-pendiente-texto {
+    margin: 0;
+    color: #4f4b46;
+    line-height: 1.5;
+  }
+
+  .u-pendiente-lista {
+    margin: 0;
+    padding-left: 1.2rem;
+    color: #4f4b46;
+    line-height: 1.7;
+  }
+</style>

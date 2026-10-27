@@ -1,0 +1,794 @@
+---
+import type { Unidad } from "../../data/unidades/tipos";
+import UnidadHero from "./UnidadHero.astro";
+import UnidadIdeaClave from "./UnidadIdeaClave.astro";
+import UnidadVideo from "./UnidadVideo.astro";
+import UnidadAudio from "./UnidadAudio.astro";
+import UnidadUsos from "./UnidadUsos.astro";
+import UnidadFormacion from "./UnidadFormacion.astro";
+import UnidadConsulta from "./UnidadConsulta.astro";
+import UnidadPractica from "./UnidadPractica.astro";
+import UnidadErrores from "./UnidadErrores.astro";
+import UnidadEjemplos from "./UnidadEjemplos.astro";
+import UnidadAplicacion from "./UnidadAplicacion.astro";
+import UnidadCaptacion from "./UnidadCaptacion.astro";
+import UnidadResumen from "./UnidadResumen.astro";
+import UnidadRelacionados from "./UnidadRelacionados.astro";
+import UnidadStickyPractica from "./UnidadStickyPractica.astro";
+import UnidadMaterialAdicional from "./UnidadMaterialAdicional.astro";
+import UnidadIndiceContextual from "./UnidadIndiceContextual.astro";
+import UnidadPestanaPendiente from "./UnidadPestanaPendiente.astro";
+
+interface Props {
+  unidad: Unidad;
+  // Muestra también las pestañas opcionales sin contenido, con un aviso «Próximamente».
+  // Para revisar la unidad completa mientras se prepara; quitarlo cuando rija la regla de ocultarlas.
+  mostrarPestanasPendientes?: boolean;
+}
+
+const { unidad, mostrarPestanasPendientes = false } = Astro.props;
+
+// Ronda 4: Condiciones de pestañas
+const tieneTeoria = Boolean(unidad.videoTeoria);
+const tieneMaterial = Boolean(
+  unidad.infografia ||
+  unidad.mapaMental ||
+  (unidad.tarjetasDidacticas && unidad.tarjetasDidacticas.length > 0) ||
+  (unidad.descargas && unidad.descargas.length > 0)
+);
+const teoriaPendiente = !tieneTeoria && mostrarPestanasPendientes;
+const materialPendiente = !tieneMaterial && mostrarPestanasPendientes;
+const muestraTeoria = tieneTeoria || teoriaPendiente;
+const muestraMaterial = tieneMaterial || materialPendiente;
+
+interface TabDef {
+  id: string;
+  icon: string;
+  nombreDesktop: string;
+  nombreMobile: string;
+  badge?: number;
+}
+
+const tabs: TabDef[] = [];
+if (muestraTeoria) {
+  tabs.push({ id: "teoria", icon: "▶", nombreDesktop: "Teoría", nombreMobile: "Teoría" });
+}
+tabs.push({ id: "regla", icon: "📘", nombreDesktop: "Aprende la regla", nombreMobile: "Regla" });
+tabs.push({ id: "errores", icon: "⚠️", nombreDesktop: "Errores típicos", nombreMobile: "Errores", badge: unidad.errores?.length });
+tabs.push({ id: "contexto", icon: "🧳", nombreDesktop: "En contexto y práctica", nombreMobile: "Práctica" });
+if (muestraMaterial) {
+  tabs.push({ id: "material", icon: "📦", nombreDesktop: "Material adicional", nombreMobile: "Material" });
+}
+
+const defaultTab = tieneTeoria ? "teoria" : "regla";
+---
+
+<article
+  class="u-unidad-page"
+  data-unidad-page
+  data-tiene-teoria={muestraTeoria ? "true" : "false"}
+  data-tiene-material={muestraMaterial ? "true" : "false"}
+  data-default-tab={defaultTab}
+>
+  <!-- Bloque 1: Cabecera Hero -->
+  <UnidadHero unidad={unidad} />
+
+  <!-- Barra de pestañas principal (Móvil y Escritorio) -->
+  <div class="u-tabs-bar-wrap">
+    <div class="u-tabs-container">
+      <div
+        class="u-tablist"
+        role="tablist"
+        aria-label="Secciones de la unidad"
+      >
+        {
+          tabs.map((tab) => (
+            <button
+              type="button"
+              role="tab"
+              id={`tab-${tab.id}`}
+              class={`u-tab-btn ${tab.id === defaultTab ? "u-tab-active" : ""}`}
+              aria-selected={tab.id === defaultTab ? "true" : "false"}
+              aria-controls={`panel-${tab.id}`}
+              tabindex={tab.id === defaultTab ? "0" : "-1"}
+              data-tab={tab.id}
+            >
+              <span class="u-tab-icon" aria-hidden="true">{tab.icon}</span>
+              <span class="u-tab-texto">
+                <span class="u-tab-nom-desktop">{tab.nombreDesktop}</span>
+                <span class="u-tab-nom-mobile">{tab.nombreMobile}</span>
+              </span>
+              {tab.badge && tab.badge > 0 && (
+                <span class="u-tab-badge">{tab.badge}</span>
+              )}
+            </button>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- Contenedor central de contenidos -->
+  <div class="u-cuerpo-layout">
+    <div class="u-cuerpo-grid">
+      <!-- Columna lateral para escritorio -->
+      <aside class="u-cuerpo-sidebar" aria-label="Navegación contextual y práctica">
+        <div class="u-sidebar-sticky">
+          <!-- Índice contextual «En esta pestaña» (Ronda 5) -->
+          <UnidadIndiceContextual
+            unidad={unidad}
+            tieneTeoria={tieneTeoria}
+            tieneMaterial={tieneMaterial}
+            teoriaPendiente={teoriaPendiente}
+            materialPendiente={materialPendiente}
+            defaultTab={defaultTab}
+          />
+
+          <!-- Tarjeta fija de práctica en escritorio (como en la v1) -->
+          <UnidadStickyPractica practica={unidad.practica} variante="escritorio" />
+        </div>
+      </aside>
+
+      <!-- Paneles principales -->
+      <main class="u-cuerpo-contenido" id="contenido-unidad">
+        <!-- ============================================== -->
+        <!-- PANEL 1 (OPCIONAL): TEORÍA (VÍDEO + AUDIO)      -->
+        <!-- ============================================== -->
+        {
+          tieneTeoria && (
+            <section
+              id="panel-teoria"
+              role="tabpanel"
+              tabindex="0"
+              aria-labelledby="tab-teoria"
+              class={`u-tabpanel ${defaultTab === "teoria" ? "u-panel-active" : ""}`}
+              data-panel="teoria"
+              hidden={defaultTab !== "teoria"}
+            >
+              <div class="u-panel-flujo">
+                {/* 1. Idea clave compacta */}
+                {unidad.ideaClave && <UnidadIdeaClave ideaClave={unidad.ideaClave} />}
+
+                {/* 2. Vídeo de teoría en YouTube */}
+                {unidad.videoTeoria && <UnidadVideo video={unidad.videoTeoria} />}
+
+                {/* 3. Resumen en audio si existe */}
+                {unidad.audioResumen && (
+                  <UnidadAudio
+                    audio={unidad.audioResumen}
+                    invitacion="¿Prefieres escucharlo?"
+                  />
+                )}
+              </div>
+            </section>
+          )
+        }
+
+        <!-- ============================================== -->
+        <!-- PANEL 2: APRENDE LA REGLA                       -->
+        <!-- ============================================== -->
+        <section
+          id="panel-regla"
+          role="tabpanel"
+          tabindex="0"
+          aria-labelledby="tab-regla"
+          class={`u-tabpanel ${defaultTab === "regla" ? "u-panel-active" : ""}`}
+          data-panel="regla"
+          hidden={defaultTab !== "regla"}
+        >
+          <div class="u-panel-flujo">
+            {/* Si no hay pestaña Teoría, empieza con la idea clave como en la v1. Si existe Teoría, no se repite */}
+            {!tieneTeoria && unidad.ideaClave && <UnidadIdeaClave ideaClave={unidad.ideaClave} />}
+
+            {unidad.usos && unidad.usos.length > 0 && (
+              <UnidadUsos usos={unidad.usos} usosNota={unidad.usosNota} />
+            )}
+
+            {unidad.formacion && <UnidadFormacion formacion={unidad.formacion} />}
+
+            {unidad.consulta && unidad.consulta.length > 0 && (
+              <UnidadConsulta consulta={unidad.consulta} />
+            )}
+          </div>
+        </section>
+
+        <!-- ============================================== -->
+        <!-- PANEL 3: ERRORES TÍPICOS                        -->
+        <!-- ============================================== -->
+        <section
+          id="panel-errores"
+          role="tabpanel"
+          tabindex="0"
+          aria-labelledby="tab-errores"
+          class="u-tabpanel"
+          data-panel="errores"
+          hidden
+        >
+          <div class="u-panel-flujo">
+            {unidad.errores && unidad.errores.length > 0 && (
+              <UnidadErrores
+                errores={unidad.errores}
+                gruposErrores={unidad.gruposErrores}
+                practicaUrl={unidad.practica?.url}
+              />
+            )}
+
+            {unidad.resumen && unidad.resumen.length > 0 && (
+              <UnidadResumen resumen={unidad.resumen} />
+            )}
+          </div>
+        </section>
+
+        <!-- ============================================== -->
+        <!-- PANEL 4: EN CONTEXTO Y PRÁCTICA                 -->
+        <!-- ============================================== -->
+        <section
+          id="panel-contexto"
+          role="tabpanel"
+          tabindex="0"
+          aria-labelledby="tab-contexto"
+          class="u-tabpanel"
+          data-panel="contexto"
+          hidden
+        >
+          <div class="u-panel-flujo">
+            {unidad.ejemplos && unidad.ejemplos.items && unidad.ejemplos.items.length > 0 && (
+              <UnidadEjemplos ejemplos={unidad.ejemplos} />
+            )}
+
+            {unidad.aplicacion && <UnidadAplicacion aplicacion={unidad.aplicacion} />}
+
+            {unidad.practica && <UnidadPractica practica={unidad.practica} />}
+
+            {unidad.captacion && <UnidadCaptacion captacion={unidad.captacion} />}
+
+            {unidad.relacionados && unidad.relacionados.length > 0 && (
+              <UnidadRelacionados relacionados={unidad.relacionados} />
+            )}
+          </div>
+        </section>
+
+        {
+          teoriaPendiente && (
+            <section
+              id="panel-teoria"
+              role="tabpanel"
+              tabindex="0"
+              aria-labelledby="tab-teoria"
+              class="u-tabpanel"
+              data-panel="teoria"
+              hidden
+            >
+              <div class="u-panel-flujo">
+                <UnidadPestanaPendiente
+                  id="teoria-pendiente"
+                  icono="▶"
+                  titulo="Teoría en vídeo"
+                  texto="Aquí estará la explicación completa del tema en vídeo."
+                  items={["Vídeo con la teoría", "Audio resumen para escuchar"]}
+                />
+              </div>
+            </section>
+          )
+        }
+
+        {
+          materialPendiente && (
+            <section
+              id="panel-material"
+              role="tabpanel"
+              tabindex="0"
+              aria-labelledby="tab-material"
+              class="u-tabpanel"
+              data-panel="material"
+              hidden
+            >
+              <div class="u-panel-flujo">
+                <UnidadPestanaPendiente
+                  id="material-pendiente"
+                  icono="📦"
+                  titulo="Material adicional"
+                  texto="Aquí estarán los materiales de repaso de este tema."
+                  items={["Infografía", "Mapa mental", "Tarjetas didácticas", "Descargas en PDF"]}
+                />
+              </div>
+            </section>
+          )
+        }
+
+        <!-- ============================================== -->
+        <!-- PANEL 5 (OPCIONAL): MATERIAL ADICIONAL          -->
+        <!-- ============================================== -->
+        {
+          tieneMaterial && (
+            <section
+              id="panel-material"
+              role="tabpanel"
+              tabindex="0"
+              aria-labelledby="tab-material"
+              class="u-tabpanel"
+              data-panel="material"
+              hidden
+            >
+              <div class="u-panel-flujo">
+                <UnidadMaterialAdicional
+                  infografia={unidad.infografia}
+                  mapaMental={unidad.mapaMental}
+                  tarjetasDidacticas={unidad.tarjetasDidacticas}
+                  descargas={unidad.descargas}
+                />
+              </div>
+            </section>
+          )
+        }
+      </main>
+    </div>
+  </div>
+
+  <!-- Barra fija inferior para móvil (como en la v1) -->
+  <UnidadStickyPractica practica={unidad.practica} variante="movil" />
+</article>
+
+<!-- Fallback sin JavaScript: todo abierto y apilado -->
+<noscript>
+  <style>
+    .u-tabpanel[hidden] {
+      display: block !important;
+      margin-bottom: 3rem;
+    }
+    .u-tabs-bar-wrap {
+      display: none !important;
+    }
+    .u-sidebar-nav {
+      display: none !important;
+    }
+  </style>
+</noscript>
+
+<script is:inline>
+  (function () {
+    const root = document.querySelector("[data-unidad-page]");
+    if (!root) return;
+
+    const tabsTop = Array.from(root.querySelectorAll(".u-tablist button[role='tab']"));
+    const panels = Array.from(root.querySelectorAll("main > section[role='tabpanel']"));
+
+    const tieneTeoria = root.dataset.tieneTeoria === "true";
+    const tieneMaterial = root.dataset.tieneMaterial === "true";
+    const defaultTab = root.dataset.defaultTab || "regla";
+
+    // Cerrar acordeones y detalles por defecto al cargar si hay JS
+    document.querySelectorAll(".u-acordeon").forEach(function (el) {
+      el.removeAttribute("open");
+    });
+    document.querySelectorAll(".u-error-details").forEach(function (el) {
+      el.removeAttribute("open");
+    });
+    document.querySelectorAll(".u-ejemplo-nota-details").forEach(function (el) {
+      el.removeAttribute("open");
+    });
+
+    function activarTab(nombreTab, actualizarHash) {
+      if (!nombreTab) return;
+
+      // Si intentan abrir teoria pero no hay video, redirige a regla
+      if (nombreTab === "teoria" && !tieneTeoria) {
+        nombreTab = "regla";
+      }
+
+      // Si intentan abrir material pero no hay materiales, redirige a default
+      if (nombreTab === "material" && !tieneMaterial) {
+        nombreTab = defaultTab;
+      }
+
+      tabsTop.forEach(function (t) {
+        const coincide = t.dataset.tab === nombreTab;
+        t.setAttribute("aria-selected", coincide ? "true" : "false");
+        t.setAttribute("tabindex", coincide ? "0" : "-1");
+        if (coincide) {
+          t.classList.add("u-tab-active");
+          try {
+            t.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
+          } catch (_) {}
+        } else {
+          t.classList.remove("u-tab-active");
+        }
+      });
+
+      panels.forEach(function (p) {
+        const coincide = p.dataset.panel === nombreTab;
+        if (coincide) {
+          p.removeAttribute("hidden");
+          p.classList.add("u-panel-active");
+        } else {
+          p.setAttribute("hidden", "");
+          p.classList.remove("u-panel-active");
+        }
+      });
+
+      // Notificar al índice contextual de la columna lateral
+      if (typeof window.__actualizarIndiceContextual === "function") {
+        window.__actualizarIndiceContextual(nombreTab);
+      }
+
+      if (actualizarHash && window.history && window.history.replaceState) {
+        window.history.replaceState(null, "", "#" + nombreTab);
+      }
+    }
+
+    tabsTop.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        activarTab(btn.dataset.tab, true);
+      });
+    });
+
+    tabsTop.forEach(function (tab, idx) {
+      tab.addEventListener("keydown", function (e) {
+        let siguiente = null;
+        if (e.key === "ArrowRight" || e.key === "ArrowDown") {
+          siguiente = tabsTop[(idx + 1) % tabsTop.length];
+        } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+          siguiente = tabsTop[(idx - 1 + tabsTop.length) % tabsTop.length];
+        } else if (e.key === "Home") {
+          siguiente = tabsTop[0];
+        } else if (e.key === "End") {
+          siguiente = tabsTop[tabsTop.length - 1];
+        }
+        if (siguiente) {
+          e.preventDefault();
+          siguiente.focus();
+          activarTab(siguiente.dataset.tab, true);
+        }
+      });
+    });
+
+    function encontrarTabParaId(targetId) {
+      if (!targetId) return null;
+
+      // a) ¿Es directamente el id de una pestaña?
+      const tabDirecto = tabsTop.find(function (t) {
+        return t.dataset.tab === targetId;
+      });
+      if (tabDirecto) return targetId;
+
+      // b) Buscar el elemento en el DOM por ID exacto o minúsculas
+      let targetEl = document.getElementById(targetId);
+      if (!targetEl) {
+        targetEl = document.getElementById(targetId.toLowerCase());
+      }
+
+      if (targetEl) {
+        // Encontrar el panel padre que contiene este elemento
+        const panelPadre = targetEl.closest("section[role='tabpanel'][data-panel]");
+        if (panelPadre && panelPadre.dataset.panel) {
+          return panelPadre.dataset.panel;
+        }
+      }
+
+      // c) Mapeos de prefijos o palabras clave
+      const lower = targetId.toLowerCase();
+      if (lower.startsWith("error-") || lower.startsWith("grupo-") || lower === "errores" || lower === "resumen") {
+        return "errores";
+      }
+      if (
+        lower.startsWith("subpanel-") ||
+        lower.startsWith("material") ||
+        lower === "infografia" ||
+        lower === "mapa-mental" ||
+        lower === "tarjetas-didacticas" ||
+        lower === "descargas"
+      ) {
+        return tieneMaterial ? "material" : defaultTab;
+      }
+      if (lower === "teoria" || lower === "video" || lower === "video-teoria" || lower === "audio-resumen") {
+        return tieneTeoria ? "teoria" : "regla";
+      }
+      if (
+        lower === "regla" ||
+        lower === "aprende" ||
+        lower === "usos" ||
+        lower === "formacion" ||
+        lower === "consulta" ||
+        lower === "idea-clave"
+      ) {
+        return "regla";
+      }
+      if (
+        lower === "contexto" ||
+        lower === "practica" ||
+        lower === "ejemplos" ||
+        lower === "aplicacion" ||
+        lower === "relacionados" ||
+        lower === "captacion"
+      ) {
+        return "contexto";
+      }
+
+      return null;
+    }
+
+    function resolverHash() {
+      const rawHash = window.location.hash.replace("#", "").trim();
+      if (!rawHash) {
+        activarTab(defaultTab, false);
+        return;
+      }
+
+      const tabDestino = encontrarTabParaId(rawHash) || defaultTab;
+      activarTab(tabDestino, false);
+
+      // Si el hash apunta a una sección específica, desplazarse hacia ella
+      requestAnimationFrame(function () {
+        setTimeout(function () {
+          // Si está dentro de un subpanel de material adicional
+          if (rawHash.startsWith("subpanel-")) {
+            const matSub = rawHash.replace("subpanel-", "");
+            const subBtn = document.querySelector(`[data-mat-subtab="${matSub}"]`);
+            if (subBtn) subBtn.click();
+          }
+
+          const targetEl =
+            document.getElementById(rawHash) || document.getElementById(rawHash.toLowerCase());
+          if (targetEl) {
+            targetEl.scrollIntoView({ behavior: "smooth", block: "start" });
+          }
+        }, 80);
+      });
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", resolverHash);
+    } else {
+      resolverHash();
+    }
+    window.addEventListener("hashchange", resolverHash);
+  })();
+</script>
+
+<style>
+  :global(.u-unidad-page) {
+    --u-header-height: 77px;
+    --u-tabs-height: 52px;
+    --u-sticky-total: calc(var(--u-header-height) + var(--u-tabs-height));
+    --u-scroll-margin: calc(var(--u-sticky-total) + 1.25rem);
+    --color-gold-text: #855d00;
+  }
+
+  .u-unidad-page {
+    position: relative;
+    padding-bottom: 5.5rem; /* Espacio para barra móvil flotante */
+    --u-header-height: 77px;
+    --u-tabs-height: 52px;
+    --u-sticky-total: calc(var(--u-header-height) + var(--u-tabs-height));
+    --u-scroll-margin: calc(var(--u-sticky-total) + 1.25rem);
+    --color-gold-text: #855d00;
+  }
+
+  /* Barra de pestañas sticky superior: queda justo debajo de la cabecera (77px) */
+  .u-tabs-bar-wrap {
+    position: sticky;
+    top: var(--u-header-height, 77px);
+    z-index: 40;
+    background: #ffffff;
+    border-bottom: 2px solid var(--color-border, #e2ded7);
+    box-shadow: 0 4px 12px rgba(11, 47, 85, 0.05);
+    margin-bottom: 1.5rem;
+  }
+
+  /* Desplazamiento seguro para anclas bajo cabecera y barra fija */
+  :global(.u-seccion),
+  :global(.u-grupo-errores),
+  :global(.u-error-card),
+  :global(.u-material-subpanel),
+  :global([id^="grupo-"]),
+  :global([id^="error-"]),
+  :global([id^="subpanel-"]) {
+    scroll-margin-top: var(--u-scroll-margin, 9.25rem) !important;
+  }
+
+  .u-tabs-container {
+    width: min(100% - 1rem, 1180px);
+    margin-inline: auto;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .u-tabs-container::-webkit-scrollbar {
+    display: none;
+  }
+
+  .u-tablist {
+    display: flex;
+    gap: 0.35rem;
+    padding-top: 0.5rem;
+    width: max-content;
+    min-width: 100%;
+  }
+
+  @media (min-width: 768px) {
+    .u-tabs-container {
+      width: min(100% - 2rem, 1180px);
+    }
+
+    .u-tablist {
+      width: 100%;
+      justify-content: flex-start;
+    }
+  }
+
+  .u-tab-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    padding: 0.65rem 0.85rem;
+    border: 1px solid var(--color-border, #e2ded7);
+    border-bottom: 0;
+    border-radius: var(--radius-sm, 0.5rem) var(--radius-sm, 0.5rem) 0 0;
+    background: var(--color-surface, #fcfbf9);
+    color: var(--color-text-muted, #6d6861);
+    font-family: var(--font-body, "Inter", sans-serif);
+    font-size: 0.86rem;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.15s ease;
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .u-tab-nom-desktop {
+    display: inline;
+  }
+
+  .u-tab-nom-mobile {
+    display: none;
+  }
+
+  @media (max-width: 640px) {
+    .u-tab-btn {
+      padding: 0.55rem 0.65rem;
+      font-size: 0.8rem;
+      gap: 0.3rem;
+    }
+
+    .u-tab-nom-desktop {
+      display: none;
+    }
+
+    .u-tab-nom-mobile {
+      display: inline;
+    }
+  }
+
+  .u-tab-btn:hover {
+    background: #ffffff;
+    color: var(--color-blue, #0055a4);
+  }
+
+  .u-tab-btn:focus-visible {
+    outline: 3px solid var(--color-blue, #0055a4);
+    outline-offset: -2px;
+    z-index: 2;
+  }
+
+  .u-tab-active {
+    background: var(--color-blue-dark, #0b2f55) !important;
+    border-color: var(--color-blue-dark, #0b2f55) !important;
+    color: #ffffff !important;
+    font-weight: 700;
+  }
+
+  .u-tab-active:focus-visible {
+    outline: 3px solid #ffffff;
+    outline-offset: -3px;
+    box-shadow: 0 0 0 2px var(--color-blue-dark, #0b2f55);
+  }
+
+  .u-tab-icon {
+    font-size: 0.95rem;
+    line-height: 1;
+  }
+
+  .u-tab-badge {
+    background: rgba(185, 64, 53, 0.15);
+    color: #9a3329;
+    padding: 0.12rem 0.45rem;
+    border-radius: 999px;
+    font-size: 0.7rem;
+    font-weight: 800;
+  }
+
+  .u-tab-active .u-tab-badge {
+    background: rgba(255, 255, 255, 0.25);
+    color: #ffffff;
+  }
+
+  /* Layout principal */
+  .u-cuerpo-layout {
+    width: min(100% - 2rem, 1180px);
+    margin-inline: auto;
+    padding-block: 1rem 2.5rem;
+  }
+
+  .u-cuerpo-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .u-cuerpo-sidebar {
+    display: none;
+  }
+
+  .u-cuerpo-contenido {
+    min-width: 0;
+  }
+
+  .u-panel-flujo {
+    display: flex;
+    flex-direction: column;
+    gap: 1.15rem;
+  }
+
+  /* Escritorio */
+  @media (min-width: 1024px) {
+    .u-unidad-page {
+      padding-bottom: 2.5rem;
+    }
+
+    .u-cuerpo-grid {
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      gap: 3.5rem;
+      align-items: stretch;
+    }
+
+    .u-cuerpo-sidebar {
+      display: block;
+      align-self: stretch;
+      height: 100%;
+    }
+
+    .u-sidebar-sticky {
+      position: sticky;
+      top: calc(var(--u-sticky-total, 129px) + 1.25rem);
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      max-height: calc(100vh - var(--u-sticky-total, 129px) - 2rem);
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: var(--color-border, #e2ded7) transparent;
+    }
+
+    .u-sidebar-sticky::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .u-sidebar-sticky::-webkit-scrollbar-thumb {
+      background: var(--color-border, #e2ded7);
+      border-radius: 999px;
+    }
+  }
+
+  /* Paneles: sin animacion de entrada que retarde o desvanezca el contenido */
+  .u-tabpanel {
+    display: none;
+  }
+
+  .u-tabpanel.u-panel-active,
+  .u-tabpanel:not([hidden]) {
+    display: block;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+</style>
