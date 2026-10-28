@@ -85,5 +85,6 @@ export const pronombresTonicos: Unidad = {
   relacionados: [
     { titulo: "Pronombres complemento", url: "/gramatica/pronombres-complemento/" },
     { titulo: "Artículos", url: "/gramatica/articulos/" },
+    { titulo: "Posesivos", url: "/gramatica/posesivos/" },
   ],
 };

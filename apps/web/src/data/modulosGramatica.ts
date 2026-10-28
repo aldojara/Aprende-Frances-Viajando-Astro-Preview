@@ -84,8 +84,8 @@ export const modulosGramatica: ModuloGramatica[] = [
     title: "Pronombres y determinantes",
     range: "A1–C1",
     topics: [
-      { planificado: "Posesivos", levels: ["A1", "A2"] },
-      { planificado: "Demostrativos", levels: ["A1", "A2"] },
+      { leccion: "posesivos" },
+      { leccion: "demostrativos" },
       { leccion: "pronombres-tonicos" },
       { leccion: "pronombres-complemento",
         title: "Pronombres complemento COD, COI, y, en",
