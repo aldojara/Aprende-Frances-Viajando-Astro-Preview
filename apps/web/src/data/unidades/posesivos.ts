@@ -58,15 +58,18 @@ export const posesivos: Unidad = {
     { grupo: "concordancia", corto: "Leur dossiers", mal: "Ce sont leur dossiers.", bien: "Ce sont leurs dossiers.", porque: "Dossiers está en plural; con ellos o ellas se usa leurs delante de un nombre plural." },
     { grupo: "vocal", corto: "Ma amie", mal: "C'est ma amie.", bien: "C'est mon amie.", porque: "Amie es femenino, pero empieza por vocal. Delante de ese nombre se usa mon." },
     { grupo: "su", corto: "Su de ellos", mal: "Ils préparent son dossier. (para decir «su expediente de ellos»)", bien: "Ils préparent leur dossier.", porque: "Si el expediente es de ellos, se usa leur. Son correspondería a una sola persona: él o ella." },
+    { grupo: "su", corto: "Su de usted", mal: "Monsieur, c'est son passeport ? (para decir «¿es su pasaporte, señor?»)", bien: "Monsieur, c'est votre passeport ?", porque: "Al hablar con usted, se usa votre. Son se refiere a él o ella, una tercera persona." },
   ],
   ejemplos: {
     titulo: "Camila prepara sus cosas en Bogotá",
-    intro: "Camila organiza una mudanza y habla con su amiga Inès sobre lo que va a llevar.",
+    intro: "Camila organiza una mudanza. Habla con su amiga Inès y recibe ayuda de sus padres.",
     items: [
       { fr: "Mon dossier est sur la table.", es: "Mi expediente está sobre la mesa.", nota: "mon + nombre masculino" },
       { fr: "Ma valise est prête.", es: "Mi maleta está lista.", nota: "ma + nombre femenino" },
       { fr: "Mon amie Inès a mes livres.", es: "Mi amiga Inès tiene mis libros.", nota: "mon ante vocal; mes ante plural" },
       { fr: "Ses clés sont dans son sac.", es: "Sus llaves están en su bolso.", nota: "El contexto indica de quién son." },
+      { fr: "Madame, votre dossier est ici.", es: "Señora, su expediente está aquí.", nota: "votre para hablar con usted" },
+      { fr: "Ses parents préparent leurs valises.", es: "Sus padres preparan sus maletas.", nota: "leurs acompaña a valises, plural" },
     ],
   },
   aplicacion: {

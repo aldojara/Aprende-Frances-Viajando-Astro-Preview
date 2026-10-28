@@ -39,7 +39,7 @@ export const demostrativos: Unidad = {
       "Si hace falta distinguir dos cosas, añade -ci o -là al nombre: ce livre-ci (este libro), ce livre-là (ese libro). Sin contraste, ce livre puede traducirse según el contexto como «este», «ese» o «aquel libro».",
       "La h muda se comporta como una vocal: cet homme. Ante h aspirada se mantiene ce: ce héros.",
       "En A2, un pronombre puede reemplazar al nombre: Je prends ce livre-ci. Tu prends celui-là. Celui-là significa «ese» o «aquel» y retoma livre. Otras formas son celle, ceux y celles, según el nombre que retoman.",
-      "Ce también puede ser pronombre en c'est: C'est mon livre. Ça equivale a «eso» en una frase como Ça va. No se coloca ça delante de livre para decir «ese libro».",
+      "Ce también puede ser pronombre en c'est: C'est mon livre. Ça puede equivaler a «eso»: Je prends ça (tomo eso). No se coloca ça delante de livre para decir «ese libro».",
     ],
   },
   practica: {
@@ -53,7 +53,7 @@ export const demostrativos: Unidad = {
     { id: "pronombre", titulo: "Nombre o pronombre" },
   ],
   errores: [
-    { grupo: "forma", corto: "Ce maison", mal: "Ce maison est grande.", bien: "Cette maison est grande.", porque: "Maison es femenino singular; se usa cette." },
+    { grupo: "forma", corto: "Ce voiture", mal: "Ce voiture est grande.", bien: "Cette voiture est grande.", porque: "Voiture es femenino singular en francés, aunque «carro» sea masculino en español; se usa cette." },
     { grupo: "forma", corto: "Cette livres", mal: "Cette livres sont ici.", bien: "Ces livres sont ici.", porque: "Livres está en plural; se usa ces." },
     { grupo: "vocal", corto: "Ce appartement", mal: "Ce appartement est libre.", bien: "Cet appartement est libre.", porque: "Appartement es masculino y empieza por vocal; se usa cet." },
     { grupo: "pronombre", corto: "Ça livre", mal: "Je prends ça livre. (para decir «tomo ese libro»)", bien: "Je prends ce livre.", porque: "Delante de livre se usa el determinante ce; ça es un pronombre y no acompaña al nombre." },
@@ -66,6 +66,7 @@ export const demostrativos: Unidad = {
       { fr: "Cet album est pour les enfants.", es: "Este álbum es para los niños.", nota: "cet + masculino con vocal" },
       { fr: "Cette histoire est courte.", es: "Esta historia es corta.", nota: "cette + femenino singular" },
       { fr: "Ces livres sont à Olivier.", es: "Estos libros son de Olivier.", nota: "ces + plural" },
+      { fr: "Je prends ce livre-ci, pas ce livre-là.", es: "Tomo este libro, no ese.", nota: "-ci y -là distinguen dos libros" },
     ],
   },
   aplicacion: {
