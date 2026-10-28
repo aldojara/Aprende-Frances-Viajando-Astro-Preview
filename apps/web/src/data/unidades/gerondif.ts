@@ -20,7 +20,7 @@ export const gerondif: Unidad = {
     { titulo: "Simultaneidad", ejemplo: "En sortant du métro, Teresa a appelé sa voisine.", nota: "Teresa llamó a su vecina mientras salía del metro." },
     { titulo: "Manera o medio", ejemplo: "Elle apprend de nouveaux mots en lisant les journaux.", nota: "La lectura es el medio para aprender palabras." },
     { titulo: "Condición", ejemplo: "En partant tôt, tu arriveras à l'heure.", nota: "Si sales temprano, llegarás a tiempo." },
-    { titulo: "Oposición con tout", ejemplo: "Tout en travaillant, Teresa suit un cours de français.", nota: "Teresa trabaja y, a la vez, sigue un curso; tout en puede destacar el contraste." },
+    { titulo: "Oposición con tout en", ejemplo: "Tout en sachant que c'était difficile, Teresa a postulé.", nota: "Aunque sabía que era difícil, Teresa se postuló. El contexto muestra un contraste claro." },
   ],
   formacion: {
     regla: "Pon en delante del participe présent: en sortant, en lisant. Para formar el participe présent y ver sus excepciones, consulta esa lección; aquí importa la relación entre las dos acciones.",
@@ -35,7 +35,7 @@ export const gerondif: Unidad = {
   },
   practica: {
     titulo: "¿Avoir o être?",
-    texto: "Esta práctica elige el auxiliar del passé composé. No entrena el gérondif; se ofrece como repaso de otro tema mientras preparamos una práctica propia.",
+    texto: "Esta práctica elige el auxiliar del passé composé. No entrena el gérondif; sirve para repasar el auxiliar de otro tema.",
     url: "/practica/avoir-o-etre/",
   },
   gruposErrores: [
@@ -56,7 +56,7 @@ export const gerondif: Unidad = {
       { fr: "En sortant du métro, Teresa a appelé Chloé.", es: "Al salir del metro, Teresa llamó a Chloé.", nota: "Las dos acciones se refieren a Teresa." },
       { fr: "Teresa apprend du vocabulaire en lisant les journaux.", es: "Teresa aprende vocabulario leyendo los periódicos.", nota: "La lectura es el medio." },
       { fr: "En partant tôt, elle arrivera à l'heure.", es: "Si sale temprano, llegará a tiempo.", nota: "El gérondif expresa aquí una condición." },
-      { fr: "Tout en travaillant, elle suit un cours de français.", es: "Aunque trabaja, sigue un curso de francés.", nota: "Tout en destaca dos hechos que contrastan y coinciden en el tiempo." },
+      { fr: "Tout en sachant que c'était difficile, elle a postulé.", es: "Aun sabiendo que era difícil, se postuló.", nota: "Tout en introduce aquí una concesión: conocía la dificultad, pero se postuló." },
     ],
   },
   aplicacion: {

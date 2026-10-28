@@ -39,7 +39,7 @@ export const participePresent: Unidad = {
     notas: [
       "El participe présent es invariable: les candidats parlant espagnol. El adjetivo verbal concuerda: des enfants obéissants. No todas las formas en -ant son intercambiables.",
       "En algunos pares también cambia la escritura: fatiguant (participe présent) / fatigant (adjetivo verbal); précédant / précédent. Es un detalle de nivel B2.",
-      "La forma compuesta usa ayant o étant + participio pasado: ayant terminé, étant arrivée. El auxiliar se elige como en passé composé. Con être no pronominal, el participio concuerda con el sujeto; con avoir, no concuerda con el sujeto y puede concordar con un objeto directo anterior. En los pronominales interviene la función del pronombre.",
+      "La forma compuesta usa ayant o étant + participio pasado: ayant terminé, étant arrivée. El auxiliar se elige como en passé composé. Con être no pronominal, el participio concuerda con el sujeto; con avoir, no concuerda con el sujeto y concuerda con un objeto directo situado antes del verbo. En los pronominales interviene la función del pronombre.",
       "Cuando el participe présent abre la oración sin sujeto propio, en la norma suele referirse al sujeto principal: Étant malade, Renata a reporté son rendez-vous. Si el sujeto cambia, hay que expresarlo: Les candidats étant absents, Renata a reporté la réunion.",
     ],
   },
