@@ -22,6 +22,11 @@ export const imparfait: Unidad = {
     nota: "Una primera ayuda, la regla de la película: el imparfait presenta el escenario, en desarrollo (cómo era, qué pasaba); el passé composé, lo que pasa, como un hecho completo (qué pasó).",
   },
 
+  videoTeoria: {
+    url: "https://www.youtube.com/watch?v=Gw8ORoN_NBo",
+    titulo: "Domina el imparfait: el tiempo de los recuerdos en francés",
+  },
+
   usos: [
     { titulo: "Una costumbre del pasado", ejemplo: "Le samedi, j'allais au marché Jean-Talon.", nota: "«Iba» cada sábado." },
     { titulo: "Una descripción: lugar, tiempo, personas, edad", ejemplo: "Il faisait froid et la rue était vide." },

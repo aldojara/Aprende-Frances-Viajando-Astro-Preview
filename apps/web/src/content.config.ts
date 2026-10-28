@@ -122,6 +122,10 @@ const content = defineCollection({
     taskType: z.string().optional(),
     examOrder: z.number().int().positive().optional(),
     sourceCheckedAt: z.string().optional(),
+    // Vídeo de YouTube que se muestra al comienzo del artículo (páginas del DELF).
+    videoTeoria: z
+      .object({ url: z.string().url(), titulo: z.string(), duracion: z.string().optional() })
+      .optional(),
   }),
 });
 

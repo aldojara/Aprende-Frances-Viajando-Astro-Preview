@@ -72,8 +72,20 @@ export const footerSections: FooterSection[] = [
 ];
 
 export const socialChannels: SocialChannel[] = [
-  { id: "tiktok", label: "TikTok", status: "Próximamente", icon: "video" },
-  { id: "youtube", label: "YouTube", status: "Próximamente", icon: "play" },
+  {
+    id: "tiktok",
+    label: "TikTok",
+    href: "https://www.tiktok.com/@aprende_frances_viajando",
+    status: "Disponible",
+    icon: "video",
+  },
+  {
+    id: "youtube",
+    label: "YouTube",
+    href: "https://www.youtube.com/@aprende.frances.viajando",
+    status: "Disponible",
+    icon: "play",
+  },
   { id: "instagram", label: "Instagram", status: "Próximamente", icon: "camera" },
   { id: "blog", label: "Blog", status: "Próximamente", icon: "article" },
   { id: "comunidad", label: "Comunidad", status: "Próximamente", icon: "community" },

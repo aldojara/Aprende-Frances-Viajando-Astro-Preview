@@ -19,6 +19,10 @@ examSkill: "speaking"
 examContentType: "skill-guide"
 examOrder: 2
 sourceCheckedAt: "2026-07-18"
+videoTeoria:
+  url: "https://www.youtube.com/watch?v=DenSul_iSYI"
+  titulo: "DELF B1 Producción Oral: las 3 partes explicadas paso a paso (con ejemplos)"
+  duracion: "5 min"
 relatedContent:
   - "delf/b1/monologue-suivi"
   - "delf/b1/criterios-evaluacion"
