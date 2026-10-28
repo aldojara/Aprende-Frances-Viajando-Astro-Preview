@@ -35,10 +35,11 @@ export const vozPasiva: Unidad = {
     },
     notasTitulo: "Agente y otras formas",
     notas: [
-      "La transformación necesita un objeto directo: L'équipe examine les demandes → Les demandes sont examinées. Un verbo como téléphoner à alguien no ofrece ese objeto directo.",
+      "La transformación necesita un objeto directo: L'équipe examine les demandes → Les demandes sont examinées. Un verbo como téléphoner à quelqu'un no ofrece ese objeto directo.",
       "El agente suele ir con par. Con algunos verbos de sentimiento o estado aparece de: Elle est aimée de ses voisins; La maison est entourée d'arbres. Es una tendencia, no un cambio automático.",
       "Para un agente indeterminado en una frase cotidiana, suele sonar natural on: On examine les demandes. Para una propiedad general, puede servir una construcción pronominal: Ça se vend bien. La pasiva es útil cuando el foco está en lo recibido o en el resultado, especialmente en avisos y noticias.",
       "El francés suele preferir la forma activa u on en contextos donde el inglés recurre a la pasiva. No traduzcas mecánicamente el «se» español: «Se venden casas» puede expresarse con On vend des maisons; Ça se vend bien significa «eso se vende bien» y destaca una propiedad.",
+      "Être + participio no basta para identificar una pasiva. Il est invité puede reconstruirse como L'équipe l'invite; il est parti es el passé composé de partir y no admite esa transformación.",
     ],
   },
   practica: {
@@ -54,12 +55,12 @@ export const vozPasiva: Unidad = {
   errores: [
     { grupo: "formacion", corto: "Sin concordancia", mal: "Les demandes sont examiné.", bien: "Les demandes sont examinées.", porque: "Demandes es femenino plural; el participio de la pasiva concuerda con ese sujeto." },
     { grupo: "formacion", corto: "Verbo sin objeto directo", mal: "Marie est téléphonée par Paul. (para «Paul llama a Marie»)", bien: "Paul téléphone à Marie.", porque: "Téléphoner à Marie lleva complemento indirecto; esa frase no admite la transformación pasiva de esta lección." },
-    { grupo: "uso", corto: "Calco del «se»", mal: "Des maisons se sont vendues ici. (si solo se anuncia que hay casas en venta)", bien: "On vend des maisons ici.", porque: "La primera frase significa que las casas ya se vendieron. Para anunciar la venta actual, on expresa un agente indeterminado." },
-    { grupo: "distincion", corto: "Est parti", mal: "Il est parti par l'équipe. (para decir que el equipo lo invitó)", bien: "Il est invité par l'équipe.", porque: "Il est parti es passé composé de partir, una acción del propio sujeto. Invité admite una activa: L'équipe l'invite." },
+    { grupo: "uso", corto: "Calco del «se»", mal: "Se vendent des maisons ici.", bien: "On vend des maisons ici.", porque: "El francés no tiene el «se» impersonal del español: el verbo necesita un sujeto. Para un agente indeterminado, usa on." },
+    { grupo: "distincion", corto: "Presente por pasado", mal: "La maison est construite en 1920. (para contar un hecho pasado)", bien: "La maison a été construite en 1920.", porque: "Para contar el hecho pasado, usa el passé composé de la pasiva: a été construite. Est construite indica aquí un estado actual o un presente." },
   ],
   ejemplos: {
     titulo: "Sofía lee los avisos de su barrio",
-    intro: "Sofía vive en Montreal. Comenta con su vecino Étienne un aviso municipal y una noticia del barrio.",
+    intro: "Sofía vive en Montreal y lee un aviso municipal y una noticia del barrio.",
     items: [
       { fr: "Les demandes sont examinées chaque semaine.", es: "Las solicitudes se revisan cada semana.", nota: "Presente pasivo; no se nombra al agente." },
       { fr: "Le dossier a été accepté hier.", es: "El expediente fue aceptado ayer.", nota: "Passé composé pasivo: a été accepté." },
