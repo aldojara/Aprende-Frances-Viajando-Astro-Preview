@@ -213,6 +213,8 @@ export const futurSimple: Unidad = {
   ],
 
   relacionados: [
+    { titulo: "Futur antérieur", url: "/gramatica/futur-anterieur/" },
+    { titulo: "Voz pasiva", url: "/gramatica/voz-pasiva/" },
     { titulo: "Conditionnel présent", url: "/gramatica/conditionnel-present/" },
     { titulo: "Passé composé vs imparfait", url: "/gramatica/passe-compose-vs-imparfait/" },
   ],

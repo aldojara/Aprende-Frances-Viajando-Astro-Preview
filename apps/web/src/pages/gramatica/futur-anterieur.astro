@@ -1,0 +1,12 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import UnidadLeccion from "../../components/unidad/UnidadLeccion.astro";
+import { futurAnterieur } from "../../data/unidades/futur-anterieur";
+
+const title = `${futurAnterieur.titulo} · Lección y práctica interactiva`;
+const description = futurAnterieur.objetivo;
+---
+
+<BaseLayout title={title} description={description}>
+  <UnidadLeccion unidad={futurAnterieur} mostrarPestanasPendientes />
+</BaseLayout>
