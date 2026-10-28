@@ -1,0 +1,12 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import UnidadLeccion from "../../components/unidad/UnidadLeccion.astro";
+import { posesivos } from "../../data/unidades/posesivos";
+
+const title = `${posesivos.titulo} · Lección y práctica interactiva`;
+const description = posesivos.objetivo;
+---
+
+<BaseLayout title={title} description={description}>
+  <UnidadLeccion unidad={posesivos} mostrarPestanasPendientes />
+</BaseLayout>

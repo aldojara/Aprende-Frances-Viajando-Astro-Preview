@@ -89,5 +89,7 @@ export const articulos: Unidad = {
   ],
   relacionados: [
     { titulo: "Pronombres tónicos", url: "/gramatica/pronombres-tonicos/" },
+    { titulo: "Posesivos", url: "/gramatica/posesivos/" },
+    { titulo: "Demostrativos", url: "/gramatica/demostrativos/" },
   ],
 };

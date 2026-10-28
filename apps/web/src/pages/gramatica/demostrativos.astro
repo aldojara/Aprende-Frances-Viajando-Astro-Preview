@@ -1,0 +1,12 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import UnidadLeccion from "../../components/unidad/UnidadLeccion.astro";
+import { demostrativos } from "../../data/unidades/demostrativos";
+
+const title = `${demostrativos.titulo} · Lección y práctica interactiva`;
+const description = demostrativos.objetivo;
+---
+
+<BaseLayout title={title} description={description}>
+  <UnidadLeccion unidad={demostrativos} mostrarPestanasPendientes />
+</BaseLayout>
