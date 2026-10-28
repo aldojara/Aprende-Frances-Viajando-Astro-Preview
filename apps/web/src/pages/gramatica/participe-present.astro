@@ -1,0 +1,12 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import UnidadLeccion from "../../components/unidad/UnidadLeccion.astro";
+import { participePresent } from "../../data/unidades/participe-present";
+
+const title = `${participePresent.titulo} · Lección y práctica interactiva`;
+const description = participePresent.objetivo;
+---
+
+<BaseLayout title={title} description={description}>
+  <UnidadLeccion unidad={participePresent} mostrarPestanasPendientes />
+</BaseLayout>

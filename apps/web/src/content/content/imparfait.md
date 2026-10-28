@@ -22,7 +22,7 @@ communicationGoals: ["hablar-del-pasado"]
 status: "available"
 estimatedMinutes: 12
 lessonOrder: 1
-relatedContent: ["passe-compose", "passe-compose-vs-imparfait"]
+relatedContent: ["passe-compose", "passe-compose-vs-imparfait", "participe-present", "gerondif"]
 tags: ["gramática", "pasado", "a2", "b1"]
 demonstration: false
 paginaUnidad: true
