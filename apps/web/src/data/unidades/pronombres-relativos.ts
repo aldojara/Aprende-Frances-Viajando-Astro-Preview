@@ -38,7 +38,7 @@ export const pronombresRelativos: Unidad = {
     notasTitulo: "Tres detalles útiles",
     notas: [
       "Que se convierte en qu' ante vocal o h muda: le livre qu'il a acheté. Qui no se elide: la voisine qui habite ici. Entre qui y el verbo puede haber otras palabras: la voisine qui me parle.",
-      "Dont ya contiene la idea de. Se dice le dossier dont j'ai besoin, sin repetir de delante de besoin ni agregar en para el mismo complemento. También puede expresar posesión, como «cuyo»: la voisine dont le fils parle espagnol (la vecina cuyo hijo habla español).",
+      "Dont ya contiene la preposición de. Se dice le dossier dont j'ai besoin, sin repetir de delante de besoin ni agregar en para el mismo complemento. También puede expresar posesión, como «cuyo»: la voisine dont le fils parle espagnol (la vecina cuyo hijo habla español).",
       "En B1, tras ciertas preposiciones aparece un relativo compuesto: le dossier sur lequel je travaille. Lequel cambia según el nombre: la table sur laquelle je travaille. Esta lección solo lo presenta; se centra en qui, que, où y dont.",
     ],
   },
