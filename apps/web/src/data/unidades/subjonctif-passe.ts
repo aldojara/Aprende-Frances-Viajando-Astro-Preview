@@ -40,8 +40,9 @@ export const subjonctifPasse: Unidad = {
     notasTitulo: "Auxiliar y concordancia",
     notas: [
       "Con être, en verbos no pronominales como arriver, el participio concuerda con el sujeto: elle soit arrivée. Los verbos pronominales requieren atender además a la función del pronombre.",
-      "Con avoir, el participio no concuerda con el sujeto: elle ait terminé. Puede haber concordancia con un complemento directo anterior al verbo, un caso distinto que aquí no desarrollamos.",
+      "Con avoir, el participio no concuerda con el sujeto: elle ait terminé. Concuerda con un complemento directo anterior al verbo, un caso distinto que aquí no desarrollamos.",
       "El presente o el pasado no lo decide por sí sola la expresión introductora: Je suis contente que tu viennes aujourd'hui / que tu sois venu hier. Revisa el subjonctif présent si necesitas recordar cuándo se usa este modo.",
+      "Tras un verbo en pasado, el español suele usar el imperfecto de subjuntivo: «me alegró que vinieras». En el francés corriente se usa el subjonctif présent para una acción simultánea o posterior (j'étais contente que tu viennes) y el passé para una anterior («me alegró que hubieras venido» → j'étais contente que tu sois venu).",
     ],
   },
   practica: {
@@ -57,6 +58,7 @@ export const subjonctifPasse: Unidad = {
   errores: [
     { grupo: "tiempo", corto: "Indicativo", mal: "Je suis contente que tu as envoyé le dossier.", bien: "Je suis contente que tu aies envoyé le dossier.", porque: "Être content que expresa aquí una valoración y pide subjuntivo; el envío se presenta como ya hecho." },
     { grupo: "tiempo", corto: "Presente por pasado", mal: "Je suis contente que tu envoies le dossier hier. (para una acción terminada ayer)", bien: "Je suis contente que tu aies envoyé le dossier hier.", porque: "Si el envío ocurrió ayer, se presenta como anterior: corresponde el subjonctif passé." },
+    { grupo: "tiempo", corto: "Indicativo tras pasado", mal: "J'étais contente que tu venais.", bien: "J'étais contente que tu viennes.", porque: "Aunque el verbo principal esté en pasado, la valoración pide subjuntivo; para la llegada simultánea se usa el subjonctif présent en el francés corriente." },
     { grupo: "auxiliar", corto: "Ait arrivée", mal: "Je doute qu'elle ait arrivée hier.", bien: "Je doute qu'elle soit arrivée hier.", porque: "Arriver se conjuga con être en este tiempo compuesto." },
     { grupo: "acuerdo", corto: "Soit arrivé", mal: "Je suis contente que Valeria soit arrivé.", bien: "Je suis contente que Valeria soit arrivée.", porque: "Con être y el verbo no pronominal arriver, el participio concuerda con Valeria, femenino singular." },
   ],

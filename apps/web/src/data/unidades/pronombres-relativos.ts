@@ -13,7 +13,7 @@ export const pronombresRelativos: Unidad = {
     texto: "El «que» español puede ser qui o que en francés. Mira qué papel tiene el nombre retomado dentro de la parte que añades: si realiza la acción, qui; si recibe directamente la acción, que.",
     tabla: [
       { es: "La vecina que vive aquí", fr: "La voisine qui habite ici" },
-      { es: "La vecina que conocí", fr: "La voisine que j'ai rencontrée" },
+      { es: "La vecina que conozco", fr: "La voisine que je connais" },
     ],
     etiquetaFr: "Francés",
   },
@@ -38,7 +38,7 @@ export const pronombresRelativos: Unidad = {
     notasTitulo: "Tres detalles útiles",
     notas: [
       "Que se convierte en qu' ante vocal o h muda: le livre qu'il a acheté. Qui no se elide: la voisine qui habite ici. Entre qui y el verbo puede haber otras palabras: la voisine qui me parle.",
-      "Dont ya contiene la idea de de. Se dice le dossier dont j'ai besoin, sin repetir de delante de besoin ni agregar en para el mismo complemento.",
+      "Dont ya contiene la idea de. Se dice le dossier dont j'ai besoin, sin repetir de delante de besoin ni agregar en para el mismo complemento. También puede expresar posesión, como «cuyo»: la voisine dont le fils parle espagnol (la vecina cuyo hijo habla español).",
       "En B1, tras ciertas preposiciones aparece un relativo compuesto: le dossier sur lequel je travaille. Lequel cambia según el nombre: la table sur laquelle je travaille. Esta lección solo lo presenta; se centra en qui, que, où y dont.",
     ],
   },
@@ -56,7 +56,7 @@ export const pronombresRelativos: Unidad = {
     { grupo: "funcion", corto: "Que habite", mal: "La voisine que habite ici est gentille.", bien: "La voisine qui habite ici est gentille.", porque: "La vecina realiza la acción de vivir aquí: qui es el sujeto de habite." },
     { grupo: "funcion", corto: "Qui j'ai acheté", mal: "Voici le livre qui j'ai acheté.", bien: "Voici le livre que j'ai acheté.", porque: "El libro es lo que compré: que es objeto directo de ai acheté." },
     { grupo: "de-tiempo", corto: "Que j'ai besoin", mal: "C'est le dossier que j'ai besoin.", bien: "C'est le dossier dont j'ai besoin.", porque: "La expresión es avoir besoin de; dont retoma ese complemento introducido por de." },
-    { grupo: "de-tiempo", corto: "Le jour que", mal: "C'est le jour que je suis arrivé. (para indicar cuándo llegué)", bien: "C'est le jour où je suis arrivé.", porque: "Cuando el antecedente es un momento, como le jour, se usa où para situar la acción en ese tiempo." },
+    { grupo: "de-tiempo", corto: "Le jour que", mal: "C'est le jour que je suis arrivé. (para indicar cuándo llegué)", bien: "C'est le jour où je suis arrivé.", porque: "En el francés actual, cuando le jour indica el momento en que ocurrió algo, se usa où. Le jour que existe en usos antiguos o literarios." },
     { grupo: "acuerdo", corto: "Que j'ai pris", mal: "Les photos que j'ai pris sont ici.", bien: "Les photos que j'ai prises sont ici.", porque: "Que retoma les photos, objeto directo situado antes de avoir; en este caso prises concuerda con photos." },
   ],
   ejemplos: {
@@ -67,6 +67,7 @@ export const pronombresRelativos: Unidad = {
       { fr: "Voici le café que Chloé aime.", es: "Este es el café que le gusta a Chloé.", nota: "Que retoma el café, objeto directo de aime." },
       { fr: "C'est le quartier où Nicolás habite.", es: "Es el barrio donde vive Nicolás.", nota: "Où retoma un lugar." },
       { fr: "Voici le document dont Nicolás a besoin.", es: "Este es el documento que Nicolás necesita.", nota: "Avoir besoin de → dont." },
+      { fr: "Chloé est la voisine dont le fils parle espagnol.", es: "Chloé es la vecina cuyo hijo habla español.", nota: "Dont puede expresar la relación de posesión: le fils de la voisine." },
       { fr: "Le jour où il a emménagé, Chloé l'a aidé.", es: "El día que se mudó, Chloé lo ayudó.", nota: "Où también retoma un momento." },
     ],
   },
