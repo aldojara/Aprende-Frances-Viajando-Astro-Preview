@@ -38,7 +38,7 @@ commonMistakes:
   - "Usar indicativo despues de il faut que."
   - "Olvidar que el sujeto suele cambiar entre las dos partes de la frase."
 practicalApplication: "Formula tres recomendaciones para alguien que prepara un examen DELF usando il faut que."
-relatedContent: ["conditionnel-present", "discours-indirect"]
+relatedContent: ["subjonctif-passe", "imparfait", "conditionnel-present", "discours-indirect"]
 tags: ["gramática", "subjuntivo", "b1", "b2"]
 demonstration: false
 # Desde el 27 oct 2026 la página es la de la plantilla de unidad: src/pages/gramatica/subjonctif-present.astro
