@@ -21,6 +21,10 @@ examSkill: "overview"
 examContentType: "exam-overview"
 examOrder: 1
 sourceCheckedAt: "2026-07-18"
+videoTeoria:
+  url: "https://www.youtube.com/watch?v=sQw3Vwx88Xs"
+  titulo: "DELF B1: escribe 160 palabras sin miedo | Plan + modelo de examen"
+  duracion: "5 min"
 relatedContent:
   - "delf/b1/production-orale"
   - "delf/b1/criterios-evaluacion"
