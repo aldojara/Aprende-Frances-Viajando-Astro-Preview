@@ -1,0 +1,12 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import UnidadLeccion from "../../components/unidad/UnidadLeccion.astro";
+import { pronombresRelativos } from "../../data/unidades/pronombres-relativos";
+
+const title = `${pronombresRelativos.titulo} · Lección y práctica interactiva`;
+const description = pronombresRelativos.objetivo;
+---
+
+<BaseLayout title={title} description={description}>
+  <UnidadLeccion unidad={pronombresRelativos} mostrarPestanasPendientes />
+</BaseLayout>

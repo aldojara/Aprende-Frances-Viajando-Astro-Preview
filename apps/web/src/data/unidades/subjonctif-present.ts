@@ -222,7 +222,7 @@ export const subjonctifPresent: Unidad = {
   ],
 
   relacionados: [
-    { titulo: "Imparfait", url: "/gramatica/imparfait/" },
+    { titulo: "Subjonctif passé", url: "/gramatica/subjonctif-passe/" },
     { titulo: "Conditionnel présent", url: "/gramatica/conditionnel-present/" },
     { titulo: "Discours indirect", url: "/gramatica/discours-indirect/" },
   ],

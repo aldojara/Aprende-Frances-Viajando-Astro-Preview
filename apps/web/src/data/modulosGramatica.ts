@@ -75,7 +75,7 @@ export const modulosGramatica: ModuloGramatica[] = [
       { leccion: "conditionnel-passe",
         goal: "Formular hipótesis",
       },
-      { planificado: "Subjonctif passé", levels: ["B2", "C1"] },
+      { leccion: "subjonctif-passe", goal: "Valorar una acción ya terminada" },
     ],
   },
   {
@@ -92,7 +92,7 @@ export const modulosGramatica: ModuloGramatica[] = [
         goal: "Evitar repeticiones y conectar ideas",
         includes: ["COD", "COI", "y", "en"],
       },
-      { planificado: "Pronombres relativos", levels: ["A2", "B1"] },
+      { leccion: "pronombres-relativos", goal: "Conectar ideas sin repetir" },
       { planificado: "Indefinidos", levels: ["A2", "B1"] },
       { planificado: "Dobles pronombres", levels: ["B1", "B2"] },
     ],

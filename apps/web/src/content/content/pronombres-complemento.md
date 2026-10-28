@@ -39,7 +39,7 @@ commonMistakes:
   - "Usar lui para todos los complementos de persona."
   - "Olvidar que y y en no son equivalentes a pronombres de sujeto."
 practicalApplication: "Transforma seis respuestas largas en respuestas breves usando le, la, les, lui, leur, y o en."
-relatedContent: ["discours-indirect", "passe-compose-vs-imparfait", "pronombres-tonicos"]
+relatedContent: ["pronombres-relativos", "passe-compose-vs-imparfait", "pronombres-tonicos"]
 tags: ["gramática", "pronombres", "a2", "b1"]
 demonstration: false
 # Desde el 27 oct 2026 la página es la de la plantilla de unidad: src/pages/gramatica/pronombres-complemento.astro

@@ -1,0 +1,12 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import UnidadLeccion from "../../components/unidad/UnidadLeccion.astro";
+import { subjonctifPasse } from "../../data/unidades/subjonctif-passe";
+
+const title = `${subjonctifPasse.titulo} · Lección y práctica interactiva`;
+const description = subjonctifPasse.objetivo;
+---
+
+<BaseLayout title={title} description={description}>
+  <UnidadLeccion unidad={subjonctifPasse} mostrarPestanasPendientes />
+</BaseLayout>
