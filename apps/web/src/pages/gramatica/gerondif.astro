@@ -1,0 +1,12 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import UnidadLeccion from "../../components/unidad/UnidadLeccion.astro";
+import { gerondif } from "../../data/unidades/gerondif";
+
+const title = `${gerondif.titulo} · Lección y práctica interactiva`;
+const description = gerondif.objetivo;
+---
+
+<BaseLayout title={title} description={description}>
+  <UnidadLeccion unidad={gerondif} mostrarPestanasPendientes />
+</BaseLayout>

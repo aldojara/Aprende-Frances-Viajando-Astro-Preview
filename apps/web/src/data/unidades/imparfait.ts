@@ -227,6 +227,8 @@ export const imparfait: Unidad = {
   ],
 
   relacionados: [
+    { titulo: "Participe présent", url: "/gramatica/participe-present/" },
+    { titulo: "Gérondif", url: "/gramatica/gerondif/" },
     { titulo: "Passé composé", url: "/gramatica/passe-compose/" },
     { titulo: "Passé composé vs imparfait", url: "/gramatica/passe-compose-vs-imparfait/" },
   ],
