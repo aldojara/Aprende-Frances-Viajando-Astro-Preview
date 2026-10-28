@@ -38,7 +38,7 @@ commonMistakes:
   - "Usar presente despues de quand cuando se habla de una acción futura."
   - "Olvidar bases irregulares como j'irai, je ferai, je serai, j'aurai."
 practicalApplication: "Redacta un mini plan de estudio para la próxima semana usando cinco verbos en futuro simple."
-relatedContent: ["conditionnel-present", "passe-compose-vs-imparfait"]
+relatedContent: ["conditionnel-present", "passe-compose-vs-imparfait", "futur-anterieur", "voz-pasiva"]
 tags: ["gramática", "futuro", "a2", "b1"]
 demonstration: false
 # Desde el 27 oct 2026 la página es la de la plantilla de unidad: src/pages/gramatica/futur-simple.astro

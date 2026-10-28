@@ -1,0 +1,12 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import UnidadLeccion from "../../components/unidad/UnidadLeccion.astro";
+import { vozPasiva } from "../../data/unidades/voz-pasiva";
+
+const title = `${vozPasiva.titulo} · Lección y práctica interactiva`;
+const description = vozPasiva.objetivo;
+---
+
+<BaseLayout title={title} description={description}>
+  <UnidadLeccion unidad={vozPasiva} mostrarPestanasPendientes />
+</BaseLayout>

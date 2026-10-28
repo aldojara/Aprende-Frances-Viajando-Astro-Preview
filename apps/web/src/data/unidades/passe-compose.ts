@@ -241,6 +241,8 @@ export const passeCompose: Unidad = {
   ],
 
   relacionados: [
+    { titulo: "Voz pasiva", url: "/gramatica/voz-pasiva/" },
+    { titulo: "Futur antérieur", url: "/gramatica/futur-anterieur/" },
     { titulo: "Passé composé vs imparfait", url: "/gramatica/passe-compose-vs-imparfait/" },
     { titulo: "Imparfait", url: "/gramatica/imparfait/" },
   ],
